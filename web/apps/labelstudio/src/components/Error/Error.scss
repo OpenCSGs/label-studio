@@ -1,0 +1,89 @@
+.inline-error {
+  width: 100%;
+  padding: 16px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: var(--color-neutral-background);
+}
+
+.error-message {
+  max-width: 100%;
+
+  &__heidi {
+    display: block;
+    margin: 32px auto 0;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 20px;
+    margin: 32px auto;
+    color: var(--color-negative-content);
+  }
+
+  &__detail {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-neutral-content);
+    margin: 16px 0;
+    white-space: pre-line;
+    word-break: break-word;
+  }
+
+  &__exception {
+    margin: 15px 0;
+  }
+
+  &__stacktrace {
+    margin: 16px 0;
+    padding: 16px;
+    overflow: auto;
+    line-height: 26px;
+    max-height: 200px;
+    white-space: pre;
+    border-radius: 5px;
+    content: var(--color-neutral-content);
+    background-color: var(--color-neutral-surface);
+    font-family: var(--font-mono);
+  }
+
+  &__version {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 16px 0;
+  }
+
+  &__validation {
+    padding: 0;
+    margin: 16px 0;
+    list-style-type: none;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  &__message {
+    margin: 5px 0;
+    color: var(--color-neutral-content-subtle);
+    padding: 0;
+    white-space: pre-line;
+    word-break: break-word;
+  }
+
+  &__actions {
+    display: flex;
+    padding: 16px 0 0;
+  }
+
+  &__slack {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+
+    img {
+      height: 16px;
+      width: 16px;
+      margin-right: 8px;
+    }
+  }
+}

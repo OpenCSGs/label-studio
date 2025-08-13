@@ -1,0 +1,762 @@
+<i> [1m[32m[webpack-dev-server] [HPM] Proxy created: /api  -> http://localhost:8080/api[39m[22m
+<i> [1m[32m[webpack-dev-server] [HPM] Proxy rewrite rule created: "^/api" ~> ""[39m[22m
+<i> [1m[32m[webpack-dev-server] [HPM] Proxy created: /  -> http://localhost:8080[39m[22m
+<i> [1m[32m[webpack-dev-server] Project is running at:[39m[22m
+<i> [1m[32m[webpack-dev-server] Loopback: [36mhttp://localhost:8010/[39m, [36mhttp://127.0.0.1:8010/[39m[39m[22m
+<i> [1m[32m[webpack-dev-server] Content not from webpack is served from '[36m/Users/zhanglongbin/PycharmProjects/label-studio-wl/label_studio/core/static[39m' directory[39m[22m
+<i> [1m[32m[webpack-dev-server] 404s will fallback to '[36m/index.html[39m'[39m[22m
+
+[7m[1m[36m NX [39m[22m[27m [1mWeb Development Server is listening at http://localhost:8010/[22m
+
+<i> [1m[32m[webpack-dev-middleware] wait until bundle finished: /[39m[22m
+Entrypoint [1mmain[39m[22m [1m[33m[big][39m[22m 9.03 MiB (9.39 MiB) = [1m[32mruntime.js[39m[22m 61.8 KiB [1m[32mvendor.js[39m[22m 1.69 MiB [1m[32mmain.css[39m[22m 205 KiB [1m[32mmain.js[39m[22m 7.08 MiB 264 auxiliary assets
+chunk (runtime: runtime) [1m[32mdefaultVendors-node_modules_ant-design_icons_es_icons_ApartmentOutlined_js-node_modules_ant-d-9208c6.js[39m[22m (id hint: defaultVendors) 4.23 MiB [1m[32m[rendered][39m[22m [1m[33msplit chunk (cache group: defaultVendors)[39m[22m
+chunk (runtime: runtime) [1m[32mdefaultVendors-node_modules_ant-design_icons_es_icons_CloseOutlined_js-node_modules_ant-desig-1c71c6.js[39m[22m (id hint: defaultVendors) 407 KiB [1m[32m[rendered][39m[22m [1m[33msplit chunk (cache group: defaultVendors)[39m[22m
+chunk (runtime: be92649ffed53ebb) [1m[32mdefaultVendors-node_modules_pmmmwh_react-refresh-webpack-plugin_lib_runtime_RefreshUtils_js.js[39m[22m (id hint: defaultVendors) 31.2 KiB [1m[32m[rendered][39m[22m [1m[33msplit chunk (cache group: defaultVendors)[39m[22m
+chunk (runtime: runtime) [1m[32mdefaultVendors-node_modules_react-datepicker_dist_react-datepicker_css-node_modules_date-fns_-9d86bd.css[39m[22m, [1m[32mdefaultVendors-node_modules_react-datepicker_dist_react-datepicker_css-node_modules_date-fns_-9d86bd.js[39m[22m (id hint: defaultVendors) 23.5 KiB (css/mini-extract) 462 KiB (javascript) [1m[32m[rendered][39m[22m [1m[33msplit chunk (cache group: defaultVendors)[39m[22m
+chunk (runtime: runtime) [1m[32mdefaultVendors-node_modules_webfft_lib_main_js.js[39m[22m (id hint: defaultVendors) 187 KiB [1m[32m[rendered][39m[22m [1m[33msplit chunk (cache group: defaultVendors)[39m[22m
+chunk (runtime: runtime) [1m[32mlibs_datamanager_src_index_js.css[39m[22m, [1m[32mlibs_datamanager_src_index_js.js[39m[22m 54.5 KiB (css/mini-extract) 914 KiB (javascript) [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mlibs_editor_src_env_development_js.js[39m[22m 8.74 KiB [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mlibs_editor_src_env_production_js.js[39m[22m 4.16 KiB [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mlibs_editor_src_index_js.css[39m[22m, [1m[32mlibs_editor_src_index_js.js[39m[22m 5.42 MiB (css/mini-extract) 4.28 MiB (javascript) [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mlibs_editor_src_lib_AudioUltra_Analysis_FFTProcessor_ts.js[39m[22m 17.2 KiB [1m[32m[rendered][39m[22m
+chunk (runtime: be92649ffed53ebb) [1m[32mlibs_editor_src_lib_AudioUltra_Media_SplitChannelWorker_ts.js[39m[22m 35.1 KiB (runtime) 5.75 KiB (javascript) [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mmain.css[39m[22m, [1m[32mmain.js[39m[22m (main) 205 KiB (css/mini-extract) 5.87 MiB (javascript) [1m[33m[initial][39m[22m [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mruntime.js[39m[22m (runtime) 42.3 KiB [1m[33m[entry][39m[22m [1m[32m[rendered][39m[22m
+chunk (runtime: runtime) [1m[32mvendor.js[39m[22m (vendor) (id hint: commonVendor) 1.65 MiB [1m[33m[initial][39m[22m [1m[32m[rendered][39m[22m [1m[33msplit chunk (cache group: commonVendor) (name: vendor)[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9        @import
+libs/editor/src/components/App/Grid.module.scss 2:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9        @import
+libs/editor/src/components/App/Grid.module.scss 2:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/Grid.module.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "../../assets/styles/global";
+
+
+libs/editor/src/components/App/Grid.module.scss 2:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9        @import
+libs/editor/src/components/App/Grid.module.scss 2:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9        @import
+libs/editor/src/components/App/Grid.module.scss 2:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 14, column 2 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/Grid.module.scss:14:2:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+14 |   grid-auto-flow: column;
+
+
+libs/editor/src/components/App/Grid.module.scss 15:3  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 15, column 2 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/Grid.module.scss:15:2:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+15 |   grid-column-gap: $gap;
+
+
+libs/editor/src/components/App/Grid.module.scss 16:3  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 16, column 2 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/Grid.module.scss:16:2:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+16 |   margin: 0 30px;
+
+
+libs/editor/src/components/App/Grid.module.scss 17:3  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 17, column 2 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/Grid.module.scss:17:2:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+17 |   overflow: auto;
+
+
+libs/editor/src/components/App/Grid.module.scss 18:3  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/Grid.module.scss[39m[22m (../../libs/editor/src/components/App/Grid.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/App/Grid.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 18, column 2 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/Grid.module.scss:18:2:
+Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+18 |   position: relative;
+
+
+libs/editor/src/components/App/Grid.module.scss 19:3  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/Segment/Segment.module.scss[39m[22m (../../libs/editor/src/components/Segment/Segment.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/Segment/Segment.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9               @import
+libs/editor/src/components/Segment/Segment.module.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/Segment/Segment.module.scss[39m[22m (../../libs/editor/src/components/Segment/Segment.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/Segment/Segment.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/Segment/Segment.module.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../assets/styles/global";
+
+
+libs/editor/src/components/Segment/Segment.module.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/Segment/Segment.module.scss[39m[22m (../../libs/editor/src/components/Segment/Segment.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/Segment/Segment.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9               @import
+libs/editor/src/components/Segment/Segment.module.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/Segment/Segment.module.scss[39m[22m (../../libs/editor/src/components/Segment/Segment.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/Segment/Segment.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9               @import
+libs/editor/src/components/Segment/Segment.module.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/Segment/Segment.module.scss[39m[22m (../../libs/editor/src/components/Segment/Segment.module.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[3]!../../libs/editor/src/components/Segment/Segment.module.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9               @import
+libs/editor/src/components/Segment/Segment.module.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/app/App.scss[39m[22m (./src/app/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!./src/app/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/apps/labelstudio/src/app/App.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../themes/default/variables";
+
+
+apps/labelstudio/src/app/App.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/app/App.scss[39m[22m (./src/app/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!./src/app/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/apps/labelstudio/src/themes/default/tokens.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import '@humansignal/ui/src/tokens/tokens';
+
+apps/labelstudio/src/themes/default/tokens.scss 1:9     @import
+apps/labelstudio/src/themes/default/variables.scss 1:9  @import
+apps/labelstudio/src/app/App.scss 1:9                   root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/app/App.scss[39m[22m (./src/app/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!./src/app/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/apps/labelstudio/src/themes/default/variables.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import './tokens';
+
+
+apps/labelstudio/src/themes/default/variables.scss 1:9  @import
+apps/labelstudio/src/app/App.scss 1:9                   root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/app/App.scss[39m[22m (./src/app/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!./src/app/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/apps/labelstudio/src/themes/default/variables.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import './colors';
+
+
+apps/labelstudio/src/themes/default/variables.scss 2:9  @import
+apps/labelstudio/src/app/App.scss 1:9                   root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/app/App.scss[39m[22m (./src/app/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!./src/app/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/apps/labelstudio/src/themes/default/variables.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import './typography';
+
+
+apps/labelstudio/src/themes/default/variables.scss 3:9  @import
+apps/labelstudio/src/app/App.scss 1:9                   root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m./src/app/App.scss[39m[22m (./src/app/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!./src/app/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+1 repetitive deprecation warnings omitted.
+Run in verbose mode to see all warnings.[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/datamanager/src/components/Label/Label.scss[39m[22m (../../libs/datamanager/src/components/Label/Label.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/datamanager/src/components/Label/Label.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/datamanager/src/components/Label/Label.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../styles/waiting";
+
+
+libs/datamanager/src/components/Label/Label.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/assets/styles/global.scss[39m[22m (../../libs/editor/src/assets/styles/global.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/assets/styles/global.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/assets/styles/global.scss[39m[22m (../../libs/editor/src/assets/styles/global.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/assets/styles/global.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/assets/styles/global.scss[39m[22m (../../libs/editor/src/assets/styles/global.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/assets/styles/global.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/assets/styles/global.scss[39m[22m (../../libs/editor/src/assets/styles/global.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/assets/styles/global.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/App.scss[39m[22m (../../libs/editor/src/components/App/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/App/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9  @import
+libs/editor/src/components/App/App.scss 1:9    root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/App.scss[39m[22m (../../libs/editor/src/components/App/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/App/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/App/App.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../assets/styles/global";
+
+
+libs/editor/src/components/App/App.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/App.scss[39m[22m (../../libs/editor/src/components/App/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/App/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9  @import
+libs/editor/src/components/App/App.scss 1:9    root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/App.scss[39m[22m (../../libs/editor/src/components/App/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/App/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9  @import
+libs/editor/src/components/App/App.scss 1:9    root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/App/App.scss[39m[22m (../../libs/editor/src/components/App/App.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/App/App.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9  @import
+libs/editor/src/components/App/App.scss 1:9    root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/PanelBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/PanelBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/PanelBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9             @import
+libs/editor/src/components/SidePanels/PanelBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/PanelBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/PanelBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/PanelBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/SidePanels/PanelBase.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../assets/styles/global";
+
+
+libs/editor/src/components/SidePanels/PanelBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/PanelBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/PanelBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/PanelBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9             @import
+libs/editor/src/components/SidePanels/PanelBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/PanelBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/PanelBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/PanelBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9             @import
+libs/editor/src/components/SidePanels/PanelBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/PanelBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/PanelBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/PanelBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9             @import
+libs/editor/src/components/SidePanels/PanelBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/SidePanels.scss[39m[22m (../../libs/editor/src/components/SidePanels/SidePanels.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/SidePanels.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9              @import
+libs/editor/src/components/SidePanels/SidePanels.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/SidePanels.scss[39m[22m (../../libs/editor/src/components/SidePanels/SidePanels.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/SidePanels.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/SidePanels/SidePanels.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../assets/styles/global";
+
+
+libs/editor/src/components/SidePanels/SidePanels.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/SidePanels.scss[39m[22m (../../libs/editor/src/components/SidePanels/SidePanels.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/SidePanels.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9              @import
+libs/editor/src/components/SidePanels/SidePanels.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/SidePanels.scss[39m[22m (../../libs/editor/src/components/SidePanels/SidePanels.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/SidePanels.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9              @import
+libs/editor/src/components/SidePanels/SidePanels.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/SidePanels.scss[39m[22m (../../libs/editor/src/components/SidePanels/SidePanels.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/SidePanels.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9              @import
+libs/editor/src/components/SidePanels/SidePanels.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9                           @import
+libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../../assets/styles/global";
+
+
+libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9                           @import
+libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9                           @import
+libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9                           @import
+libs/editor/src/components/SidePanels/TabPanels/PanelTabsBase.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "./antd-no-reset";
+
+
+libs/editor/src/assets/styles/global.scss 1:9                  @import
+libs/editor/src/components/SidePanels/TabPanels/Tabs.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 0, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/components/SidePanels/TabPanels/Tabs.scss:0:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+0 | @import "../../../assets/styles/global";
+
+
+libs/editor/src/components/SidePanels/TabPanels/Tabs.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 1, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:1:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+1 | @import "./variables";
+
+
+libs/editor/src/assets/styles/global.scss 2:9                  @import
+libs/editor/src/components/SidePanels/TabPanels/Tabs.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 2, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:2:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+2 | @import "./mixins";
+
+
+libs/editor/src/assets/styles/global.scss 3:9                  @import
+libs/editor/src/components/SidePanels/TabPanels/Tabs.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss[39m[22m (../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/components/SidePanels/TabPanels/Tabs.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 3, column 8 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/assets/styles/global.scss:3:8:
+Sass @import rules are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+3 | @import "./functions";
+
+
+libs/editor/src/assets/styles/global.scss 4:9                  @import
+libs/editor/src/components/SidePanels/TabPanels/Tabs.scss 1:9  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/tags/control/Choice/Choice.scss[39m[22m (../../libs/editor/src/tags/control/Choice/Choice.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/tags/control/Choice/Choice.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 20, column 13 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/tags/control/Choice/Choice.scss:20:13:
+Global built-in functions are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+[1m[33mUse selector.append instead[39m[22m[1m.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+20 |   @at-root #{selector-append(&,_leaf,&,_hidden)},
+
+
+libs/editor/src/tags/control/Choice/Choice.scss 21:14  root stylesheet
+[39m[22m
+
+[1m[33mWARNING[39m[22m in [1m../../libs/editor/src/tags/control/Choice/Choice.scss[39m[22m (../../libs/editor/src/tags/control/Choice/Choice.scss.webpack[javascript/auto]!=!../../node_modules/@nx/webpack/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[1]!../../node_modules/@nx/webpack/node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[2]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[5].use[3]!../../libs/editor/src/tags/control/Choice/Choice.scss)
+[1mModule Warning (from ../../node_modules/sass-loader/dist/cjs.js):
+Deprecation Warning on line 21, column 4 of file:///Users/zhanglongbin/PycharmProjects/label-studio-wl/web/libs/editor/src/tags/control/Choice/Choice.scss:21:4:
+Global built-in functions are [1m[33mdeprecated[39m[22m[1m and will be removed in Dart Sass 3.0.0.
+[1m[33mUse selector.append instead[39m[22m[1m.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+21 |   #{selector-append(&,_notLeaf,&,_hidden)} {
+
+
+libs/editor/src/tags/control/Choice/Choice.scss 22:5  root stylesheet
+[39m[22m
+
+webpack compiled with [1m[33m53 warnings[39m[22m (550aa1fa70e1af54)
+<e> [1m[31m[webpack-dev-server] [HPM] Error occurred while proxying request localhost:8010/ to http://localhost:8080/ [ECONNREFUSED] (https://nodejs.org/api/errors.html#errors_common_system_errors)[39m[22m
+^C<i> [1m[32m[webpack-dev-server] Gracefully shutting down. To force exit, press ^C again. Please wait...[39m[22m
+<i> [1m[32m[webpack-dev-server] [HPM] server close signal received: closing proxy server[39m[22m
+<i> [1m[32m[webpack-dev-server] [HPM] server close signal received: closing proxy server[39m[22m

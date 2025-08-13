@@ -1,0 +1,19 @@
+title: Medical Image Classification with Bounding Boxes
+type: community
+group: Computer Vision
+image: /static/templates/medical-image-classification.png
+details: <h1>Classify medical images and draw regions</h1>
+config: |
+  <View>
+    <Image name="image" value="$image"/>
+
+    <RectangleLabels name="label" toName="image">
+      <Label value="Tumor" background="green"/>
+    </RectangleLabels>
+
+    <Choices name="classification" toName="image">
+      <Choice value="Benign"/>
+      <Choice value="Malignant"/>
+      <Choice value="Normal"/>
+    </Choices>
+  </View>

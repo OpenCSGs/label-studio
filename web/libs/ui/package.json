@@ -1,0 +1,8 @@
+{
+  "name": "@humansignal/ui",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "src/index.ts",
+  "files": ["src/tailwind.css", "src/shad/components", "src/ui/assets"]
+}

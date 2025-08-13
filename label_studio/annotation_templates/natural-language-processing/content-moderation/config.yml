@@ -1,0 +1,23 @@
+title: Content Moderation
+type: community
+group: Natural Language Processing
+image: /static/templates/content-moderation.png
+details: <h1>Content moderation</h1>
+config: |
+  <View>
+    <Text name="text" value="$text"/>
+
+    <Choices name="content_moderation" toName="text" choice="multiple" showInline="false">
+      <Choice value="Toxic" background="red"/>
+      <Choice value="Severely Toxic" background="brown"/>
+      <Choice value="Obscene" background="green"/>
+      <Choice value="Threat" background="blue"/>
+      <Choice value="Insult" background="orange"/>
+      <Choice value="Hate" background="grey"/>
+    </Choices>
+
+    <View style="margin: var(--spacing-tight); box-shadow: 0 4px 8px rgba(var(--color-neutral-shadow-raw) / 10%); padding: var(--spacing-tight) var(--spacing-base); border-radius: var(--corner-radius-small); background-color: var(--color-neutral-background); border: 1px solid var(--color-neutral-border);">
+      <Header value="Please provide additional comments"/>
+      <TextArea name="comments" toName="text" required="false"/>
+    </View>
+  </View>

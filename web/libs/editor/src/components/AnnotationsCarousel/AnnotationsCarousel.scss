@@ -1,0 +1,80 @@
+.annotations-carousel {
+  --carousel-left: 0;
+
+  position: relative;
+  height: 100%;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+
+  &__container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  &__carosel {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    white-space: nowrap;
+    padding-right: 77px;
+    position: relative;
+    transform: translateX(calc(-1 * var(--carousel-left)));
+    transition: all 0.15s ease-in-out 0s;
+  }
+
+  &__carousel-controls {
+    position: absolute;
+    right: 0;
+    white-space: nowrap;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 4px;
+    padding-right: 4px;
+  }
+
+  &__nav {
+    padding: 0;
+    height: 28px;
+    width: 28px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%);
+
+    &:hover {
+      background: var(--color-primary-emphasis-subtle);
+      box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%);
+    }
+
+    &_disabled {
+      background: var(--color-background-surface);
+
+      svg {
+        opacity: 0.4;
+      }
+
+      &:hover {
+        background: var(--color-neutral-surface);
+        filter: none;
+      }
+    }
+
+    .button {
+      &:hover {
+        filter: none;
+      }
+
+      &__arrow {
+        &_left {
+          transform: rotate(-90deg);
+        }
+
+        &_right {
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
+}

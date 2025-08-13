@@ -1,0 +1,13 @@
+{
+  "z275748353": {
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNjRhODRiZGQtNzcwMy00MDdlLWEwYmQtNmY2ZTVlNjBlZmM0IiwiY3VycmVudF91c2VyIjoiejI3NTc0ODM1MyIsImlzcyI6Ik9wZW5DU0ciLCJleHAiOjE3NTUxMzc2NDl9.YZ527UJ64bOcz4F_knXTaZjLnwVodsfjgGr1BqYIjxw",
+    "user_token": "9eba3d0173eb48ed99bb6952233bbb50",
+    "user_name": "z275748353",
+    "dataset": [
+      "z275748353/test"
+    ],
+    "datasetBranches": [
+      "v1"
+    ]
+  }
+}

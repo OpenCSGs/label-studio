@@ -1,0 +1,8 @@
+steps:
+  - target: '[data-testid="ask-ai-button"]'
+    placement: bottom
+    title: 'Hi! There’s a new way to get support'
+    content: Click on the AI Assistant icon and quickly get answers to any questions regarding Label Studio.
+    disableBeacon: true
+    locale:
+      last: "OK"
