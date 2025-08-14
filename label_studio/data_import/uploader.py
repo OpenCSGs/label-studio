@@ -163,7 +163,9 @@ def tasks_from_url(file_upload_ids,project, user, body, could_be_tasks_list):
 
 
     # LOCAL_FOLDER_PATH = "D:\label-studio\label-studio-develop\label_studio\data_import\Downloads"  # 本地文件夹路径
-    LOCAL_FOLDER_PATH = r"D:\name\label-studio-develop\label-studio-develop\label_studio\data_import\Downloads"  # 本地文件夹路径
+    # LOCAL_FOLDER_PATH = r"D:\name\label-studio-develop\label-studio-develop\label_studio\data_import\Downloads"  # 本地文件夹路径
+    LOCAL_FOLDER_PATH = os.path.join(os.path.dirname(__file__), 'Downloads')  # 本地文件夹路径
+    os.makedirs(LOCAL_FOLDER_PATH, exist_ok=True)  # 确保目录存在
     try:
         from pycsghub.snapshot_download import snapshot_download
         import uuid
@@ -200,7 +202,7 @@ def tasks_from_url(file_upload_ids,project, user, body, could_be_tasks_list):
 
 
 
-        endpoint = settings.CSG_HUB_ENDPOINT
+        endpoint =  os.environ['CSG_HUB_ENDPOINT']
         repo_id = project.dataset
         repo_type = "dataset"
         revision = project.datasetBranches

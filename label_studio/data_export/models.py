@@ -159,7 +159,7 @@ class DataExport(object):
             f.write(data)
         with open(filename_info, 'w', encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
-        print(project_dir,100*'*')
+        # print(project_dir,100*'*')
         upload_without_cache_check(request,local_folder=project_dir,project=project)
         # clear_folder(project_dir)
         return filename_results

@@ -883,5 +883,3 @@ RESOLVER_PROXY_CACHE_TIMEOUT = int(get_env('RESOLVER_PROXY_CACHE_TIMEOUT', 3600)
 # Advanced validator for ImportStorageSerializer in enterprise
 IMPORT_STORAGE_SERIALIZER_VALIDATE = None
 
-# CSG Hub 服务端点
-CSG_HUB_ENDPOINT = "http://net-power.9free.com.cn:18120"
