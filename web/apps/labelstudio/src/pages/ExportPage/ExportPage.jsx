@@ -65,7 +65,7 @@ export const ExportPage = () => {
     if (response.ok) {
       const blob = await response.blob();
 
-      downloadFile(blob, response.headers.get("filename"));
+//       downloadFile(blob, response.headers.get("filename"));
     } else {
       api.handleError(response);
     }

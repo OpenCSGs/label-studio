@@ -210,11 +210,14 @@ class ExportAPI(generics.RetrieveAPIView):
             request,project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
         )
 
-        r = FileResponse(export_file, as_attachment=False, content_type=content_type, filename=filename)
-        r['filename'] = filename
+        # r = FileResponse(export_file, as_attachment=False, content_type=content_type, filename=filename)
+        # r['filename'] = filename
 
-
-        return r
+        return Response(
+            {"message": "Export completed successfully"},
+            status=status.HTTP_200_OK
+        )
+        # return r
         # return Response(status=status.HTTP_200_OK)
 
 # @method_decorator(

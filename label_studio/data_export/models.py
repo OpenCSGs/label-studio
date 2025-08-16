@@ -100,7 +100,7 @@ class DataExport(object):
 
 
     @staticmethod
-    def save_export_files(request,project, now, get_args, data, md5, name):
+    def save_export_files(project, now, get_args, data, md5, name):
         # print(name)
         username = project.created_by.username if project.created_by else 'anonymous'
         # print(username)
@@ -159,9 +159,8 @@ class DataExport(object):
             f.write(data)
         with open(filename_info, 'w', encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
-        # print(project_dir,100*'*')
+
         upload_without_cache_check(request,local_folder=project_dir,project=project)
-        # clear_folder(project_dir)
         return filename_results
 
     @staticmethod
@@ -178,7 +177,7 @@ class DataExport(object):
         return sorted(formats, key=lambda f: f.get('disabled', False))
 
     @staticmethod
-    def generate_export_file(reuest,project, tasks, output_format, download_resources, get_args, hostname=None):
+    def generate_export_file(request,project, tasks, output_format, download_resources, get_args, hostname=None):
         """Generate export file and return it as an open file object.
 
         Be sure to close the file after using it, to avoid wasting disk space.
@@ -190,7 +189,7 @@ class DataExport(object):
         md5 = hashlib.md5(json.dumps(data).encode('utf-8')).hexdigest()   # nosec
         name = 'project-' + str(project.id) + '-at-' + now.strftime('%Y-%m-%d-%H-%M') + f'-{md5[0:8]}'
 
-        input_json = DataExport.save_export_files(reuest,project, now, get_args, data, md5, name)
+        input_json = DataExport.save_export_files(request,project, now, get_args, data, md5, name)
 
         converter = Converter(
             config=project.get_parsed_config(),
@@ -222,6 +221,7 @@ class DataExport(object):
                 content_type = f'application/{ext}'
                 # 返回路径而非文件对象
                 return target_path, content_type, target_filename
+                # return None
             else:
                 # otherwise pack output directory into archive
                 zip_path = shutil.make_archive(os.path.join(tmp_dir, name), 'zip', tmp_dir)
@@ -233,6 +233,7 @@ class DataExport(object):
 
 
                 return target_path, content_type, target_filename
+                # return None
 #
 
 class ConvertedFormat(models.Model):

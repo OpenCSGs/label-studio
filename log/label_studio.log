@@ -8096,3 +8096,658 @@ TypeError: upload_without_cache_check() got an unexpected keyword argument 'user
 [2025-08-13 17:10:22,894] [django.server::log_message::213] [INFO] "GET /api/projects/3/export/formats HTTP/1.1" 200 4452
 [2025-08-13 17:10:22,976] [django.server::log_message::213] [INFO] "GET /api/projects/3 HTTP/1.1" 200 1263
 [2025-08-13 17:10:30,024] [django.server::log_message::213] [INFO] "GET /api/projects/3/export?exportType=JSON HTTP/1.1" 200 71
+[2025-08-13 18:13:25,026] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-13 18:13:28,461] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:13:28,589] [django.server::log_message::213] [INFO] "GET /react-app/runtime.js?v=none HTTP/1.1" 200 6175
+[2025-08-13 18:13:28,661] [django.server::log_message::213] [INFO] "GET /static/fonts/Figtree-Regular.ttf HTTP/1.1" 200 40584
+[2025-08-13 18:13:28,678] [django.server::log_message::213] [INFO] "GET /react-app/vendor.js?v=1 HTTP/1.1" 200 280822
+[2025-08-13 18:13:28,733] [django.server::log_message::213] [INFO] "GET /react-app/main.css?v=none HTTP/1.1" 200 180212
+[2025-08-13 18:13:28,744] [django.server::log_message::213] [INFO] "GET /static/fonts/Figtree-SemiBold.ttf HTTP/1.1" 200 40852
+[2025-08-13 18:13:28,815] [django.server::log_message::213] [INFO] "GET /react-app/main.js?v=none HTTP/1.1" 200 1925288
+[2025-08-13 18:13:28,829] [django.server::log_message::213] [INFO] "GET /static/js/jquery.min.e6c2415c0ace.js HTTP/1.1" 200 87462
+[2025-08-13 18:13:29,416] [django.server::log_message::213] [INFO] "GET /api/current-user/whoami HTTP/1.1" 200 385
+[2025-08-13 18:13:29,441] [django.server::log_message::213] [INFO] "GET /api/version HTTP/1.1" 200 424
+[2025-08-13 18:13:29,458] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 684
+[2025-08-13 18:13:29,607] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:13:29,657] [django.server::log_message::213] [INFO] "GET /api/projects?ids=3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 686
+[2025-08-13 18:13:32,973] [django.server::log_message::213] [INFO] "GET /react-app/960.css HTTP/1.1" 200 21839
+[2025-08-13 18:13:33,020] [django.server::log_message::213] [INFO] "GET /react-app/503.js HTTP/1.1" 200 132744
+[2025-08-13 18:13:33,040] [django.server::log_message::213] [INFO] "GET /react-app/972.css HTTP/1.1" 200 47440
+[2025-08-13 18:13:33,061] [django.server::log_message::213] [INFO] "GET /react-app/960.js HTTP/1.1" 200 217466
+[2025-08-13 18:13:33,167] [django.server::log_message::213] [INFO] "GET /react-app/972.js HTTP/1.1" 200 337232
+[2025-08-13 18:13:33,302] [django.server::log_message::213] [INFO] "GET /react-app/44.css HTTP/1.1" 200 2020188
+[2025-08-13 18:13:33,273] [django.server::log_message::213] [INFO] "GET /react-app/44.js HTTP/1.1" 200 1001721
+[2025-08-13 18:13:33,288] [django.server::log_message::213] [INFO] "GET /react-app/171.js HTTP/1.1" 200 1435507
+[2025-08-13 18:13:33,241] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-13 18:13:33,767] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-13 18:13:33,837] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-13 18:13:34,067] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2170
+[2025-08-13 18:13:34,103] [django.server::log_message::213] [INFO] "GET /api/users?project=1 HTTP/1.1" 200 387
+[2025-08-13 18:13:34,129] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-13 18:13:34,138] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 1004
+[2025-08-13 18:13:34,323] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=4&project=1 HTTP/1.1" 200 5702
+[2025-08-13 18:13:34,657] [django.server::log_message::213] [INFO] "GET /data/upload/1/2ad919b3-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-13 18:13:34,710] [django.server::log_message::213] [INFO] "GET /data/upload/1/2c057238-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-13 18:13:34,710] [django.server::log_message::213] [INFO] "GET /data/upload/1/199068a7-z275748353_test_.msc HTTP/1.1" 200 328
+[2025-08-13 18:13:34,789] [django.server::log_message::213] [INFO] "GET /data/upload/1/3a56167d-z275748353_test_.mv HTTP/1.1" 200 11
+[2025-08-13 18:13:34,799] [django.server::log_message::213] [INFO] "GET /data/upload/1/492de600-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-13 18:13:34,841] [django.server::log_message::213] [INFO] "GET /data/upload/1/8969b1e9-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json HTTP/1.1" 200 2
+[2025-08-13 18:13:34,862] [django.server::log_message::213] [INFO] "GET /data/upload/1/f5f18946-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-13 18:13:39,408] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 684
+[2025-08-13 18:13:39,581] [django.server::log_message::213] [INFO] "GET /api/projects?ids=3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 686
+[2025-08-13 18:13:39,597] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:13:43,599] [django.server::log_message::213] [INFO] "GET /api/projects/3 HTTP/1.1" 200 1263
+[2025-08-13 18:13:43,666] [django.server::log_message::213] [INFO] "GET /api/ml?project=3 HTTP/1.1" 200 2
+[2025-08-13 18:13:43,740] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=3 HTTP/1.1" 200 4250
+[2025-08-13 18:13:43,949] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=3 HTTP/1.1" 200 1004
+[2025-08-13 18:13:44,003] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=3 HTTP/1.1" 200 1447
+[2025-08-13 18:13:44,029] [django.server::log_message::213] [INFO] "GET /api/users?project=3 HTTP/1.1" 200 387
+[2025-08-13 18:13:44,030] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=3 HTTP/1.1" 200 2043
+[2025-08-13 18:13:44,192] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=5&project=3 HTTP/1.1" 200 10999
+[2025-08-13 18:13:53,100] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 684
+[2025-08-13 18:13:53,253] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:13:53,275] [django.server::log_message::213] [INFO] "GET /api/projects?ids=3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 686
+[2025-08-13 18:13:57,132] [django.server::log_message::213] [INFO] "GET /api/projects HTTP/1.1" 200 6520
+[2025-08-13 18:13:57,401] [django.server::log_message::213] [INFO] "POST /api/projects HTTP/1.1" 201 1285
+[2025-08-13 18:13:57,449] [django.server::log_message::213] [INFO] "GET /api/projects/4/file-uploads HTTP/1.1" 200 2
+[2025-08-13 18:13:58,213] [django.server::log_message::213] [INFO] "POST /api/projects/4/reimport HTTP/1.1" 200 129
+[2025-08-13 18:13:58,310] [django.server::log_message::213] [INFO] "POST /__lsa/?__=%7B%22event%22%3A%22create_project.create%22%2C%22url%22%3A%22http%3A%2F%2F192.168.10.72%3A8080%2Fprojects%3Fpage%3D1%22%7D HTTP/1.1" 204 0
+[2025-08-13 18:13:58,345] [core.label_config::parse_config::51] [WARNING] Using deprecated method - switch to label_studio.tools.label_config.parse_config!
+[2025-08-13 18:13:58,349] [core.label_config::parse_config::51] [WARNING] Using deprecated method - switch to label_studio.tools.label_config.parse_config!
+[2025-08-13 18:13:58,452] [django.server::log_message::213] [INFO] "PATCH /api/projects/4 HTTP/1.1" 200 1261
+[2025-08-13 18:13:58,562] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1261
+[2025-08-13 18:13:58,612] [django.server::log_message::213] [INFO] "GET /api/ml?project=4 HTTP/1.1" 200 2
+[2025-08-13 18:13:58,664] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=4 HTTP/1.1" 200 4073
+[2025-08-13 18:13:58,886] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=4 HTTP/1.1" 200 2
+[2025-08-13 18:13:58,930] [django.server::log_message::213] [INFO] "GET /api/users?project=4 HTTP/1.1" 200 387
+[2025-08-13 18:13:58,962] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=4 HTTP/1.1" 200 1445
+[2025-08-13 18:13:58,962] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=4 HTTP/1.1" 200 2043
+[2025-08-13 18:13:59,023] [django.server::log_message::213] [INFO] "POST /api/dm/views?tabID=0&project=4 HTTP/1.1" 201 1002
+[2025-08-13 18:13:59,169] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=6&project=4 HTTP/1.1" 200 66
+[2025-08-13 18:13:59,259] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=6&project=4 HTTP/1.1" 200 66
+[2025-08-13 18:13:59,349] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=6&project=4 HTTP/1.1" 200 66
+[2025-08-13 18:14:03,748] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-13 18:14:03,900] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:14:03,925] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-13 18:14:04,148] [django.server::log_message::213] [INFO] "GET /api/import/public-list HTTP/1.1" 200 66
+[2025-08-13 18:14:04,793] [django.server::log_message::213] [INFO] "GET /api/ml?project=3 HTTP/1.1" 200 2
+[2025-08-13 18:14:04,804] [django.server::log_message::213] [INFO] "GET /api/projects/3 HTTP/1.1" 200 1263
+[2025-08-13 18:14:04,878] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=3 HTTP/1.1" 200 4250
+[2025-08-13 18:14:05,059] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=3 HTTP/1.1" 200 2043
+[2025-08-13 18:14:05,072] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=3 HTTP/1.1" 200 1004
+[2025-08-13 18:14:05,073] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=3 HTTP/1.1" 200 1447
+[2025-08-13 18:14:05,241] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=5&project=3 HTTP/1.1" 200 10999
+[2025-08-13 18:14:07,295] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-13 18:14:07,439] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:14:07,473] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-13 18:14:08,026] [django.server::log_message::213] [INFO] "GET /api/projects/2 HTTP/1.1" 200 3217
+[2025-08-13 18:14:08,089] [django.server::log_message::213] [INFO] "GET /api/ml?project=2 HTTP/1.1" 200 2
+[2025-08-13 18:14:08,175] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=2 HTTP/1.1" 200 4410
+[2025-08-13 18:14:08,423] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=2 HTTP/1.1" 200 1004
+[2025-08-13 18:14:08,459] [django.server::log_message::213] [INFO] "GET /api/users?project=2 HTTP/1.1" 200 387
+[2025-08-13 18:14:08,488] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=2 HTTP/1.1" 200 2043
+[2025-08-13 18:14:08,517] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=2 HTTP/1.1" 200 3401
+[2025-08-13 18:14:08,782] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=2&project=2 HTTP/1.1" 200 19197
+[2025-08-13 18:14:10,800] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-13 18:14:10,947] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:14:11,002] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-13 18:14:11,654] [django.server::log_message::213] [INFO] "GET /api/ml?project=4 HTTP/1.1" 200 2
+[2025-08-13 18:14:11,679] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1261
+[2025-08-13 18:14:11,734] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=4 HTTP/1.1" 200 4073
+[2025-08-13 18:14:11,934] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=4 HTTP/1.1" 200 2043
+[2025-08-13 18:14:11,953] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=4 HTTP/1.1" 200 1004
+[2025-08-13 18:14:11,969] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=4 HTTP/1.1" 200 1445
+[2025-08-13 18:14:12,054] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=6&project=4 HTTP/1.1" 200 66
+[2025-08-13 18:14:19,074] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-13 18:14:19,216] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-13 18:14:19,246] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-14 10:09:29,848] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-14 10:13:40,611] [django.server::log_message::213] [INFO] "GET /projects/2/data/import HTTP/1.1" 200 34277
+[2025-08-14 14:22:03,569] [django.utils.autoreload::trigger_reload::265] [INFO] E:\label-studio-develop (2)\label_studio\data_import\uploader.py changed, reloading.
+[2025-08-14 14:22:39,634] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-14 14:24:36,743] [django.utils.autoreload::trigger_reload::265] [INFO] E:\label-studio-develop (2)\label_studio\data_export\models.py changed, reloading.
+[2025-08-14 14:25:01,528] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-14 14:25:07,771] [django.server::log_message::213] [INFO] "GET /projects?page=1 HTTP/1.1" 200 34277
+[2025-08-14 14:25:07,992] [django.server::log_message::213] [INFO] "GET /react-app/main.css?v=none HTTP/1.1" 200 180212
+[2025-08-14 14:25:07,969] [django.server::log_message::213] [INFO] "GET /static/fonts/Figtree-SemiBold.ttf HTTP/1.1" 200 40852
+[2025-08-14 14:25:08,007] [django.server::log_message::213] [INFO] "GET /react-app/runtime.js?v=none HTTP/1.1" 200 6175
+[2025-08-14 14:25:08,121] [django.server::log_message::213] [INFO] "GET /react-app/main.js?v=none HTTP/1.1" 200 1925288
+[2025-08-14 14:25:08,154] [django.server::log_message::213] [INFO] "GET /static/js/jquery.min.e6c2415c0ace.js HTTP/1.1" 200 87462
+[2025-08-14 14:25:08,239] [django.server::log_message::213] [INFO] "GET /static/fonts/Figtree-Regular.ttf HTTP/1.1" 200 40584
+[2025-08-14 14:25:08,322] [django.server::log_message::213] [INFO] "GET /react-app/vendor.js?v=1 HTTP/1.1" 200 280822
+[2025-08-14 14:25:08,879] [django.server::log_message::213] [INFO] "GET /api/version HTTP/1.1" 200 424
+[2025-08-14 14:25:08,918] [django.server::log_message::213] [INFO] "GET /api/current-user/whoami HTTP/1.1" 200 385
+[2025-08-14 14:25:08,964] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-14 14:25:09,134] [django.server::log_message::213] [INFO] "GET /projects?page=1 HTTP/1.1" 200 34277
+[2025-08-14 14:25:09,191] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-14 14:25:14,179] [django.server::log_message::213] [INFO] "GET /react-app/960.css HTTP/1.1" 200 21839
+[2025-08-14 14:25:14,366] [django.server::log_message::213] [INFO] "GET /react-app/503.js HTTP/1.1" 200 132744
+[2025-08-14 14:25:14,390] [django.server::log_message::213] [INFO] "GET /react-app/960.js HTTP/1.1" 200 217466
+[2025-08-14 14:25:14,731] [django.server::log_message::213] [INFO] "GET /react-app/171.js HTTP/1.1" 200 1435507
+[2025-08-14 14:25:14,750] [django.server::log_message::213] [INFO] "GET /react-app/972.css HTTP/1.1" 200 47440
+[2025-08-14 14:25:14,772] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:25:14,837] [django.server::log_message::213] [INFO] "GET /react-app/44.css HTTP/1.1" 200 2020188
+[2025-08-14 14:25:14,899] [django.server::log_message::213] [INFO] "GET /react-app/972.js HTTP/1.1" 200 337232
+[2025-08-14 14:25:15,302] [django.server::log_message::213] [INFO] "GET /react-app/44.js HTTP/1.1" 200 1001721
+[2025-08-14 14:25:16,110] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:25:16,243] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-14 14:25:16,551] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2170
+[2025-08-14 14:25:16,669] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 1004
+[2025-08-14 14:25:16,672] [django.server::log_message::213] [INFO] "GET /api/users?project=1 HTTP/1.1" 200 387
+[2025-08-14 14:25:16,706] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-14 14:25:17,017] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=4&project=1 HTTP/1.1" 200 5702
+[2025-08-14 14:25:17,530] [django.server::log_message::213] [INFO] "GET /data/upload/1/199068a7-z275748353_test_.msc HTTP/1.1" 200 328
+[2025-08-14 14:25:17,536] [django.server::log_message::213] [INFO] "GET /data/upload/1/2ad919b3-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-14 14:25:17,588] [django.server::log_message::213] [INFO] "GET /data/upload/1/2c057238-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-14 14:25:17,630] [django.server::log_message::213] [INFO] "GET /data/upload/1/3a56167d-z275748353_test_.mv HTTP/1.1" 200 11
+[2025-08-14 14:25:17,641] [django.server::log_message::213] [INFO] "GET /data/upload/1/492de600-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:25:17,721] [django.server::log_message::213] [INFO] "GET /data/upload/1/8969b1e9-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:25:17,748] [django.server::log_message::213] [INFO] "GET /data/upload/1/f5f18946-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-14 14:25:17,762] [django.server::log_message::213] [INFO] "GET /data/upload/1/e3538836-z275748353_test_project-44-at-2025-08-12-21-52-c3180152.json HTTP/1.1" 200 43439
+[2025-08-14 14:25:18,903] [django.server::log_message::213] [INFO] "GET /data/upload/1/2c057238-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-14 14:25:18,910] [django.server::log_message::213] [INFO] "GET /data/upload/1/2ad919b3-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-14 14:25:20,176] [django.server::log_message::213] [INFO] "GET /data/upload/1/f5f18946-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-14 14:25:20,183] [django.server::log_message::213] [INFO] "GET /data/upload/1/e3538836-z275748353_test_project-44-at-2025-08-12-21-52-c3180152.json HTTP/1.1" 200 43439
+[2025-08-14 14:25:21,919] [django.server::log_message::213] [INFO] "GET /data/upload/1/2c057238-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-14 14:25:21,959] [django.server::log_message::213] [INFO] "GET /data/upload/1/199068a7-z275748353_test_.msc HTTP/1.1" 200 328
+[2025-08-14 14:25:21,967] [django.server::log_message::213] [INFO] "GET /data/upload/1/2ad919b3-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-14 14:25:22,202] [django.server::log_message::213] [INFO] "GET /data/upload/1/3a56167d-z275748353_test_.mv HTTP/1.1" 200 11
+[2025-08-14 14:25:22,216] [django.server::log_message::213] [INFO] "GET /data/upload/1/492de600-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:25:22,263] [django.server::log_message::213] [INFO] "GET /data/upload/1/8969b1e9-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:25:22,287] [django.server::log_message::213] [INFO] "GET /data/upload/1/f5f18946-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-14 14:25:24,267] [django.server::log_message::213] [INFO] "GET /api/dm/actions/delete_tasks/form?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:25:25,781] [django.server::log_message::213] [INFO] "GET /data/upload/1/2c057238-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-14 14:25:25,786] [django.server::log_message::213] [INFO] "GET /data/upload/1/199068a7-z275748353_test_.msc HTTP/1.1" 200 328
+[2025-08-14 14:25:25,805] [django.server::log_message::213] [INFO] "GET /data/upload/1/2ad919b3-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-14 14:25:25,865] [django.server::log_message::213] [INFO] "GET /data/upload/1/3a56167d-z275748353_test_.mv HTTP/1.1" 200 11
+[2025-08-14 14:25:25,933] [django.server::log_message::213] [INFO] "POST /api/dm/actions?id=delete_tasks&tabID=4&project=1 HTTP/1.1" 200 62
+[2025-08-14 14:25:26,029] [django.server::log_message::213] [INFO] "GET /data/upload/1/f5f18946-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-14 14:25:26,036] [django.server::log_message::213] [INFO] "GET /data/upload/1/8969b1e9-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:25:26,043] [django.server::log_message::213] [INFO] "GET /data/upload/1/492de600-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:25:26,100] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-14 14:25:26,325] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2170
+[2025-08-14 14:25:26,325] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:25:26,392] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-14 14:25:28,785] [django.server::log_message::213] [INFO] "POST /api/dm/views?tabID=0&project=1 HTTP/1.1" 201 1002
+[2025-08-14 14:25:29,284] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-14 14:25:29,306] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 66
+[2025-08-14 14:25:29,621] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-14 14:25:29,676] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-14 14:25:29,748] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 66
+[2025-08-14 14:25:29,891] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 66
+[2025-08-14 14:25:30,520] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:25:30,532] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:25:30,616] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-14 14:25:30,905] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 1004
+[2025-08-14 14:25:30,907] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2170
+[2025-08-14 14:25:30,923] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-14 14:25:31,106] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 66
+[2025-08-14 14:25:34,063] [django.server::log_message::213] [INFO] "GET /api/projects/1/file-uploads HTTP/1.1" 200 2
+[2025-08-14 14:25:34,135] [projects.api::post::855] [ERROR] Error generating enhanced sample task, falling back to original method: Using labels not defined in labeling config, possible values: {'Car', 'Airplane'}. Label config: <View>
+
+  <Header value="Select label and click the image to start"/>
+  <Image name="image" value="$image" zoom="true"/>
+
+  <PolygonLabels name="label" toName="image"
+                 strokeWidth="3" pointSize="small"
+                 opacity="0.9">
+    <Label value="Airplane" background="red"/>
+    <Label value="Car" background="blue"/>
+  </PolygonLabels>
+
+</View>
+[2025-08-14 14:25:34,164] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,171] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:34,180] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:25:34,344] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:25:34,370] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,374] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:34,479] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,495] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:34,544] [django.server::log_message::213] [INFO] "POST /api/projects/1/sample-task HTTP/1.1" 200 54
+[2025-08-14 14:25:34,640] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,645] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:34,735] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,740] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:34,843] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,848] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:34,968] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:34,972] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:35,053] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:35,057] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,169] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,177] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,277] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,282] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,359] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,363] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,441] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,445] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,524] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,528] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,603] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,607] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,685] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,690] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,771] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,775] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,841] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,846] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,919] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:36,923] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:36,998] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,002] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,081] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,085] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,174] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,178] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,257] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,261] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,338] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,344] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,421] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,426] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,502] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,508] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,593] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,598] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,672] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,676] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,746] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,753] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,831] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,836] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:37,921] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:37,925] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,003] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,007] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,083] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,087] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,156] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,159] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,233] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,237] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,365] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,370] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,464] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,467] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,565] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,569] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,644] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,649] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,744] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,749] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,830] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,834] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:38,927] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:38,932] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,040] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,045] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,129] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,135] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,223] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,228] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,306] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,311] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,384] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,388] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,494] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,499] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,635] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,639] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,757] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,761] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,903] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,908] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:39,982] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:39,987] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,064] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:40,069] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,412] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:40,416] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,482] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:40,486] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,598] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:40,603] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,702] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:40,708] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,844] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:40,858] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:40,889] [django.server::log_message::213] [INFO] "DELETE /api/projects/1/file-uploads HTTP/1.1" 200 13
+[2025-08-14 14:25:41,090] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:41,111] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:41,266] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:25:41,329] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:41,346] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:41,446] [django.server::log_message::213] [INFO] "GET /api/projects?page_size=10 HTTP/1.1" 200 7782
+[2025-08-14 14:25:41,537] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:41,551] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:41,567] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:25:44,063] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:44,701] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:44,987] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-14 14:25:46,234] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-14 14:25:46,310] [django.server::log_message::213] [INFO] "GET /react-app/960.css HTTP/1.1" 200 21839
+[2025-08-14 14:25:46,628] [django.server::log_message::213] [INFO] "GET /react-app/972.css HTTP/1.1" 200 47440
+[2025-08-14 14:25:46,817] [django.server::log_message::213] [INFO] "GET /react-app/main.css?v=none HTTP/1.1" 200 180212
+[2025-08-14 14:25:46,311] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 1004
+[2025-08-14 14:25:46,426] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2170
+[2025-08-14 14:25:47,342] [django.server::log_message::213] [INFO] "GET /react-app/960.css.map HTTP/1.1" 200 29545
+[2025-08-14 14:25:47,551] [django.server::log_message::213] [INFO] "GET /react-app/main.css.map HTTP/1.1" 200 244180
+[2025-08-14 14:25:47,556] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 66
+[2025-08-14 14:25:47,710] [django.server::log_message::213] [INFO] "GET /react-app/972.css.map HTTP/1.1" 200 68000
+[2025-08-14 14:25:47,879] [django.server::log_message::213] [INFO] "GET /react-app/44.css.map HTTP/1.1" 200 4750654
+[2025-08-14 14:25:47,959] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:47,976] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:48,115] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:48,122] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:48,223] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:48,250] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:48,409] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:48,413] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:48,555] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:48,562] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:48,985] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,027] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:49,178] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,212] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:49,321] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,421] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:49,592] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,596] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:49,702] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,707] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:49,791] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,796] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:49,904] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:49,910] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,076] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,085] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,273] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,279] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,415] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,421] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,527] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,539] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,653] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,659] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,812] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,820] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:50,924] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:50,929] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,028] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,034] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,145] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,152] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,261] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,268] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,490] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,495] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,614] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,619] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,685] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,689] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,767] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,771] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,835] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,839] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:51,929] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:51,933] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,189] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,193] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,268] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,273] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,350] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,354] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,451] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,455] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,564] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,568] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,666] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,670] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,752] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,757] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,827] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,832] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,907] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:52,912] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:52,999] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,004] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,078] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,082] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,156] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,160] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,230] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,235] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,305] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,309] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,429] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,434] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,524] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,529] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,621] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,625] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,709] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,714] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,846] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,851] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,915] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,920] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:53,995] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:53,999] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:54,086] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:54,091] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:54,175] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:54,180] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:54,255] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:54,260] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:54,330] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:54,335] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:25:54,412] [django.request::log_response::253] [ERROR] Internal Server Error: /api/import/public-list/
+[2025-08-14 14:25:54,418] [django.server::log_message::213] [ERROR] "GET /api/import/public-list HTTP/1.1" 500 156
+[2025-08-14 14:26:27,088] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-14 14:26:27,446] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 897
+[2025-08-14 14:26:27,502] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-14 14:28:06,692] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-14 14:35:36,722] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:35:36,761] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:35:36,929] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-14 14:35:37,250] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2170
+[2025-08-14 14:35:37,267] [django.server::log_message::213] [INFO] "GET /api/users?project=1 HTTP/1.1" 200 387
+[2025-08-14 14:35:37,348] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-14 14:35:37,350] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 1004
+[2025-08-14 14:35:37,857] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 66
+[2025-08-14 14:35:40,490] [django.server::log_message::213] [INFO] "GET /api/projects/1/file-uploads HTTP/1.1" 200 2
+[2025-08-14 14:35:40,574] [projects.api::post::855] [ERROR] Error generating enhanced sample task, falling back to original method: Using labels not defined in labeling config, possible values: {'Car', 'Airplane'}. Label config: <View>
+
+  <Header value="Select label and click the image to start"/>
+  <Image name="image" value="$image" zoom="true"/>
+
+  <PolygonLabels name="label" toName="image"
+                 strokeWidth="3" pointSize="small"
+                 opacity="0.9">
+    <Label value="Airplane" background="red"/>
+    <Label value="Car" background="blue"/>
+  </PolygonLabels>
+
+</View>
+[2025-08-14 14:35:40,725] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:35:40,999] [django.server::log_message::213] [INFO] "POST /api/projects/1/sample-task HTTP/1.1" 200 54
+[2025-08-14 14:35:41,054] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1986
+[2025-08-14 14:35:41,271] [projects.api::post::855] [ERROR] Error generating enhanced sample task, falling back to original method: Using labels not defined in labeling config, possible values: {'Car', 'Airplane'}. Label config: <View>
+
+  <Header value="Select label and click the image to start"/>
+  <Image name="image" value="$image" zoom="true"/>
+
+  <PolygonLabels name="label" toName="image"
+                 strokeWidth="3" pointSize="small"
+                 opacity="0.9">
+    <Label value="Airplane" background="red"/>
+    <Label value="Car" background="blue"/>
+  </PolygonLabels>
+
+</View>
+[2025-08-14 14:35:41,336] [django.server::log_message::213] [INFO] "POST /api/projects/1/sample-task HTTP/1.1" 200 54
+[2025-08-14 14:35:41,936] [django.server::log_message::213] [INFO] "GET /api/import/public-list HTTP/1.1" 200 66
+[2025-08-14 14:35:43,830] [django.server::log_message::213] [INFO] "GET /api/import/dataset-branches?repo_id=z275748353%2Ftest HTTP/1.1" 200 93
+[2025-08-14 14:35:52,099] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.gitattributes' to 'z275748353_test_.gitattributes'
+[2025-08-14 14:35:52,136] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.mdl' to 'z275748353_test_.mdl'
+[2025-08-14 14:35:52,157] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.msc' to 'z275748353_test_.msc'
+[2025-08-14 14:35:52,176] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.mv' to 'z275748353_test_.mv'
+[2025-08-14 14:35:52,225] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\AI3588-BOX_V1.5.pdf' to 'z275748353_test_AI3588-BOX_V1.5.pdf'
+[2025-08-14 14:35:52,270] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-11-43-20f67367-info.json' to 'z275748353_test_project-1-at-2025-08-13-11-43-20f67367-info.json'
+[2025-08-14 14:35:52,316] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-11-43-20f67367.json' to 'z275748353_test_project-1-at-2025-08-13-11-43-20f67367.json'
+[2025-08-14 14:35:52,357] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-39-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-13-15-39-cc80338d-info.json'
+[2025-08-14 14:35:52,375] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-39-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-13-15-39-cc80338d.json'
+[2025-08-14 14:35:52,417] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-51-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-13-15-51-cc80338d-info.json'
+[2025-08-14 14:35:52,436] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-51-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-13-15-51-cc80338d.json'
+[2025-08-14 14:35:52,487] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-52-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-13-15-52-cc80338d-info.json'
+[2025-08-14 14:35:52,506] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-52-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-13-15-52-cc80338d.json'
+[2025-08-14 14:35:52,526] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-2-at-2025-08-13-11-45-cc80338d-info.json' to 'z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json'
+[2025-08-14 14:35:52,548] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-2-at-2025-08-13-11-45-cc80338d.json' to 'z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json'
+[2025-08-14 14:35:52,597] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-3-at-2025-08-13-17-10-cc80338d-info.json' to 'z275748353_test_project-3-at-2025-08-13-17-10-cc80338d-info.json'
+[2025-08-14 14:35:52,618] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-3-at-2025-08-13-17-10-cc80338d.json' to 'z275748353_test_project-3-at-2025-08-13-17-10-cc80338d.json'
+[2025-08-14 14:35:52,641] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-44-at-2025-08-12-21-52-c3180152-info.json' to 'z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json'
+[2025-08-14 14:35:52,690] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-44-at-2025-08-12-21-52-c3180152.json' to 'z275748353_test_project-44-at-2025-08-12-21-52-c3180152.json'
+[2025-08-14 14:35:52,786] [django.server::log_message::213] [INFO] "POST /api/projects/1/import?commit_to_project=false HTTP/1.1" 200 333
+[2025-08-14 14:35:53,455] [django.server::log_message::213] [INFO] "GET /api/projects/1/file-uploads?ids=%5B437%2C438%2C439%2C440%2C441%2C442%2C443%2C444%2C445%2C446%2C447%2C448%2C449%2C450%2C451%2C452%2C453%2C454%2C455%5D HTTP/1.1" 200 1729
+[2025-08-14 14:35:57,333] [django.server::log_message::213] [INFO] "POST /api/projects/1/reimport HTTP/1.1" 201 299
+[2025-08-14 14:35:58,044] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1988
+[2025-08-14 14:35:58,081] [django.server::log_message::213] [INFO] "GET /api/projects?page_size=10 HTTP/1.1" 200 7784
+[2025-08-14 14:35:58,153] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-14 14:35:58,252] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=1 HTTP/1.1" 200 4237
+[2025-08-14 14:35:58,495] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=1 HTTP/1.1" 200 1004
+[2025-08-14 14:35:58,497] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=1 HTTP/1.1" 200 2043
+[2025-08-14 14:35:58,627] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=1 HTTP/1.1" 200 2172
+[2025-08-14 14:35:59,046] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=7&project=1 HTTP/1.1" 200 12197
+[2025-08-14 14:36:00,317] [django.server::log_message::213] [INFO] "GET /data/upload/1/01905acb-z275748353_test_.mv HTTP/1.1" 200 11
+[2025-08-14 14:36:00,323] [django.server::log_message::213] [INFO] "GET /data/upload/1/1ff318b2-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-14 14:36:00,356] [django.server::log_message::213] [INFO] "GET /data/upload/1/610121f7-z275748353_test_.msc HTTP/1.1" 200 913
+[2025-08-14 14:36:00,367] [django.server::log_message::213] [INFO] "GET /data/upload/1/5ff2cf50-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-14 14:36:00,367] [django.server::log_message::213] [INFO] "GET /data/upload/1/2e860cec-z275748353_test_project-1-at-2025-08-13-11-43-20f67367-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:00,386] [django.server::log_message::213] [INFO] "GET /data/upload/1/432cf7ad-z275748353_test_AI3588-BOX_V1.5.pdf HTTP/1.1" 200 179366
+[2025-08-14 14:36:00,581] [django.server::log_message::213] [INFO] "GET /data/upload/1/e0cd8eab-z275748353_test_project-1-at-2025-08-13-11-43-20f67367.json HTTP/1.1" 200 1401
+[2025-08-14 14:36:02,359] [django.server::log_message::213] [INFO] "GET /data/upload/1/7c358a99-z275748353_test_project-1-at-2025-08-13-15-39-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:02,379] [django.server::log_message::213] [INFO] "GET /data/upload/1/42c87182-z275748353_test_project-1-at-2025-08-13-15-39-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:02,415] [django.server::log_message::213] [INFO] "GET /data/upload/1/605a9b59-z275748353_test_project-1-at-2025-08-13-15-51-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:02,389] [django.server::log_message::213] [INFO] "GET /data/upload/1/dc4e6120-z275748353_test_project-1-at-2025-08-13-15-52-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:02,417] [django.server::log_message::213] [INFO] "GET /data/upload/1/af129f41-z275748353_test_project-1-at-2025-08-13-15-51-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:02,460] [django.server::log_message::213] [INFO] "GET /data/upload/1/73ec03ae-z275748353_test_project-1-at-2025-08-13-15-52-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:02,706] [django.server::log_message::213] [INFO] "GET /data/upload/1/5f3ddb7b-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:02,831] [django.server::log_message::213] [INFO] "GET /data/upload/1/e0351678-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:02,829] [django.server::log_message::213] [INFO] "GET /data/upload/1/c5c224b2-z275748353_test_project-3-at-2025-08-13-17-10-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:02,831] [django.server::log_message::213] [INFO] "GET /data/upload/1/9dccca8b-z275748353_test_project-3-at-2025-08-13-17-10-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:03,118] [django.server::log_message::213] [INFO] "GET /data/upload/1/610121f7-z275748353_test_.msc HTTP/1.1" 200 913
+[2025-08-14 14:36:03,117] [django.server::log_message::213] [INFO] "GET /data/upload/1/ff2690c3-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-14 14:36:03,235] [django.server::log_message::213] [INFO] "GET /data/upload/1/f737ecc7-z275748353_test_project-44-at-2025-08-12-21-52-c3180152.json HTTP/1.1" 200 43439
+[2025-08-14 14:36:03,227] [django.server::log_message::213] [INFO] "GET /data/upload/1/432cf7ad-z275748353_test_AI3588-BOX_V1.5.pdf HTTP/1.1" 200 179366
+[2025-08-14 14:36:03,516] [django.server::log_message::213] [INFO] "GET /data/upload/1/01905acb-z275748353_test_.mv HTTP/1.1" 200 11
+[2025-08-14 14:36:03,646] [django.server::log_message::213] [INFO] "GET /data/upload/1/73ec03ae-z275748353_test_project-1-at-2025-08-13-15-52-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:03,786] [django.server::log_message::213] [INFO] "GET /data/upload/1/2e860cec-z275748353_test_project-1-at-2025-08-13-11-43-20f67367-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:03,809] [django.server::log_message::213] [INFO] "GET /data/upload/1/e0cd8eab-z275748353_test_project-1-at-2025-08-13-11-43-20f67367.json HTTP/1.1" 200 1401
+[2025-08-14 14:36:03,899] [django.server::log_message::213] [INFO] "GET /data/upload/1/42c87182-z275748353_test_project-1-at-2025-08-13-15-39-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:04,012] [django.server::log_message::213] [INFO] "GET /data/upload/1/7c358a99-z275748353_test_project-1-at-2025-08-13-15-39-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:04,085] [django.server::log_message::213] [INFO] "GET /data/upload/1/605a9b59-z275748353_test_project-1-at-2025-08-13-15-51-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:04,251] [django.server::log_message::213] [INFO] "GET /data/upload/1/af129f41-z275748353_test_project-1-at-2025-08-13-15-51-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:04,329] [django.server::log_message::213] [INFO] "GET /data/upload/1/610121f7-z275748353_test_.msc HTTP/1.1" 200 913
+[2025-08-14 14:36:04,465] [django.server::log_message::213] [INFO] "GET /data/upload/1/5ff2cf50-z275748353_test_.gitattributes HTTP/1.1" 200 2353
+[2025-08-14 14:36:04,484] [django.server::log_message::213] [INFO] "GET /data/upload/1/9dccca8b-z275748353_test_project-3-at-2025-08-13-17-10-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:04,482] [django.server::log_message::213] [INFO] "GET /data/upload/1/1ff318b2-z275748353_test_.mdl HTTP/1.1" 200 38
+[2025-08-14 14:36:04,653] [django.server::log_message::213] [INFO] "GET /data/upload/1/ff2690c3-z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json HTTP/1.1" 200 390
+[2025-08-14 14:36:04,504] [django.server::log_message::213] [INFO] "GET /data/upload/1/c5c224b2-z275748353_test_project-3-at-2025-08-13-17-10-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:04,794] [django.server::log_message::213] [INFO] "GET /data/upload/1/f737ecc7-z275748353_test_project-44-at-2025-08-12-21-52-c3180152.json HTTP/1.1" 200 43439
+[2025-08-14 14:36:05,101] [django.server::log_message::213] [INFO] "GET /data/upload/1/af129f41-z275748353_test_project-1-at-2025-08-13-15-51-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:05,106] [django.server::log_message::213] [INFO] "GET /data/upload/1/73ec03ae-z275748353_test_project-1-at-2025-08-13-15-52-cc80338d-info.json HTTP/1.1" 200 387
+[2025-08-14 14:36:05,318] [django.server::log_message::213] [INFO] "GET /data/upload/1/dc4e6120-z275748353_test_project-1-at-2025-08-13-15-52-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:05,412] [django.server::log_message::213] [INFO] "GET /data/upload/1/e0351678-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:05,457] [django.server::log_message::213] [INFO] "GET /data/upload/1/605a9b59-z275748353_test_project-1-at-2025-08-13-15-51-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:05,477] [django.server::log_message::213] [INFO] "GET /data/upload/1/9dccca8b-z275748353_test_project-3-at-2025-08-13-17-10-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:05,458] [django.server::log_message::213] [INFO] "GET /data/upload/1/5f3ddb7b-z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json HTTP/1.1" 200 2
+[2025-08-14 14:36:05,496] [django.server::log_message::213] [INFO] "GET /data/upload/1/c5c224b2-z275748353_test_project-3-at-2025-08-13-17-10-cc80338d-info.json HTTP/1.1" 200 388
+[2025-08-14 14:36:08,102] [django.server::log_message::213] [INFO] "GET /api/projects/1/export/files HTTP/1.1" 200 19
+[2025-08-14 14:36:08,155] [django.server::log_message::213] [INFO] "GET /api/projects/1/export/formats HTTP/1.1" 200 4388
+[2025-08-14 14:36:08,222] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1988
+[2025-08-14 14:36:19,712] [django.server::log_message::213] [INFO] "GET /api/projects/1/export?exportType=JSON HTTP/1.1" 200 71
+[2025-08-14 17:55:37,200] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-14 17:58:28,777] [django.utils.autoreload::run_with_reloader::667] [INFO] Watching for file changes with StatReloader
+[2025-08-14 17:58:59,269] [django.server::log_message::213] [INFO] "GET /user/login1/?email=z275748353@qq.com HTTP/1.1" 302 0
+[2025-08-14 17:59:11,262] [django.server::log_message::213] [INFO] "GET /projects/ HTTP/1.1" 200 34277
+[2025-08-14 17:59:11,869] [django.server::log_message::213] [INFO] "GET /static/fonts/Figtree-Regular.ttf HTTP/1.1" 200 40584
+[2025-08-14 17:59:11,982] [django.server::log_message::213] [INFO] "GET /static/fonts/Figtree-SemiBold.ttf HTTP/1.1" 200 40852
+[2025-08-14 17:59:12,112] [django.server::log_message::213] [INFO] "GET /react-app/main.css?v=none HTTP/1.1" 200 180212
+[2025-08-14 17:59:12,176] [django.server::log_message::213] [INFO] "GET /react-app/runtime.js?v=none HTTP/1.1" 200 6175
+[2025-08-14 17:59:12,335] [django.server::log_message::213] [INFO] "GET /react-app/vendor.js?v=1 HTTP/1.1" 200 280822
+[2025-08-14 17:59:12,499] [django.server::log_message::213] [INFO] "GET /static/js/jquery.min.e6c2415c0ace.js HTTP/1.1" 200 87462
+[2025-08-14 17:59:12,686] [django.server::log_message::213] [INFO] "GET /react-app/main.js?v=none HTTP/1.1" 200 1925288
+[2025-08-14 17:59:15,691] [django.server::log_message::213] [INFO] "GET /api/version HTTP/1.1" 200 424
+[2025-08-14 17:59:15,691] [django.server::log_message::213] [INFO] "GET /api/current-user/whoami HTTP/1.1" 200 385
+[2025-08-14 17:59:15,733] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-14 17:59:15,996] [django.server::log_message::213] [INFO] "GET /projects/ HTTP/1.1" 200 34277
+[2025-08-14 17:59:16,104] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 898
+[2025-08-14 17:59:25,287] [django.server::log_message::213] [INFO] "GET /react-app/960.css HTTP/1.1" 200 21839
+[2025-08-14 17:59:25,314] [django.server::log_message::213] [INFO] "GET /react-app/503.js HTTP/1.1" 200 132744
+[2025-08-14 17:59:25,290] [django.server::log_message::213] [INFO] "GET /react-app/972.css HTTP/1.1" 200 47440
+[2025-08-14 17:59:25,602] [django.server::log_message::213] [INFO] "GET /react-app/44.css HTTP/1.1" 200 2020188
+[2025-08-14 17:59:25,664] [django.server::log_message::213] [INFO] "GET /api/projects/1 HTTP/1.1" 200 1988
+[2025-08-14 17:59:25,819] [django.server::log_message::213] [INFO] "GET /react-app/960.js HTTP/1.1" 200 217466
+[2025-08-14 17:59:25,940] [django.server::log_message::213] [INFO] "GET /react-app/972.js HTTP/1.1" 200 337232
+[2025-08-14 17:59:25,954] [django.server::log_message::213] [INFO] "GET /react-app/171.js HTTP/1.1" 200 1435507
+[2025-08-14 17:59:25,961] [django.server::log_message::213] [INFO] "GET /react-app/44.js HTTP/1.1" 200 1001721
+[2025-08-14 17:59:27,904] [django.server::log_message::213] [INFO] "GET /api/ml?project=1 HTTP/1.1" 200 2
+[2025-08-14 17:59:28,026] [django.server::log_message::213] [INFO] "GET /api/projects?page=1&page_size=30&include=id%2Ctitle%2Ccreated_by%2Ccreated_at%2Ccolor%2Cis_published%2Cassignment_settings HTTP/1.1" 200 895
+[2025-08-14 17:59:28,577] [django.server::log_message::213] [INFO] "GET /projects HTTP/1.1" 200 34277
+[2025-08-14 17:59:29,034] [django.server::log_message::213] [INFO] "GET /api/projects?ids=4%2C3%2C2%2C1&include=id%2Cdescription%2Cnum_tasks_with_annotations%2Ctask_number%2Cskipped_annotations_number%2Ctotal_annotations_number%2Ctotal_predictions_number%2Cground_truth_number%2Cfinished_task_number&page_size=30 HTTP/1.1" 200 898
+[2025-08-14 17:59:30,090] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1261
+[2025-08-14 17:59:30,317] [django.server::log_message::213] [INFO] "GET /api/ml?project=4 HTTP/1.1" 200 2
+[2025-08-14 17:59:30,580] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=4 HTTP/1.1" 200 4073
+[2025-08-14 17:59:31,093] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=4 HTTP/1.1" 200 1445
+[2025-08-14 17:59:31,120] [django.server::log_message::213] [INFO] "GET /api/users?project=4 HTTP/1.1" 200 387
+[2025-08-14 17:59:31,139] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=4 HTTP/1.1" 200 2043
+[2025-08-14 17:59:31,229] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=4 HTTP/1.1" 200 1004
+[2025-08-14 17:59:31,525] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=6&project=4 HTTP/1.1" 200 66
+[2025-08-14 17:59:33,631] [django.server::log_message::213] [INFO] "GET /api/projects/4/file-uploads HTTP/1.1" 200 2
+[2025-08-14 17:59:33,826] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1261
+[2025-08-14 17:59:34,065] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1261
+[2025-08-14 17:59:34,788] [django.server::log_message::213] [INFO] "GET /api/import/public-list HTTP/1.1" 200 66
+[2025-08-14 17:59:36,632] [django.server::log_message::213] [INFO] "GET /api/import/dataset-branches?repo_id=z275748353%2Ftest HTTP/1.1" 200 93
+[2025-08-14 17:59:45,697] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.gitattributes' to 'z275748353_test_.gitattributes'
+[2025-08-14 17:59:45,913] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.mdl' to 'z275748353_test_.mdl'
+[2025-08-14 17:59:46,057] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.msc' to 'z275748353_test_.msc'
+[2025-08-14 17:59:46,217] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\.mv' to 'z275748353_test_.mv'
+[2025-08-14 17:59:46,353] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\AI3588-BOX_V1.5.pdf' to 'z275748353_test_AI3588-BOX_V1.5.pdf'
+[2025-08-14 17:59:46,451] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-11-43-20f67367-info.json' to 'z275748353_test_project-1-at-2025-08-13-11-43-20f67367-info.json'
+[2025-08-14 17:59:46,743] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-11-43-20f67367.json' to 'z275748353_test_project-1-at-2025-08-13-11-43-20f67367.json'
+[2025-08-14 17:59:47,650] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-39-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-13-15-39-cc80338d-info.json'
+[2025-08-14 17:59:47,827] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-39-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-13-15-39-cc80338d.json'
+[2025-08-14 17:59:48,087] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-51-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-13-15-51-cc80338d-info.json'
+[2025-08-14 17:59:48,193] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-51-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-13-15-51-cc80338d.json'
+[2025-08-14 17:59:48,390] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-52-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-13-15-52-cc80338d-info.json'
+[2025-08-14 17:59:48,510] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-13-15-52-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-13-15-52-cc80338d.json'
+[2025-08-14 17:59:48,675] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-14-14-36-cc80338d-info.json' to 'z275748353_test_project-1-at-2025-08-14-14-36-cc80338d-info.json'
+[2025-08-14 17:59:48,757] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-1-at-2025-08-14-14-36-cc80338d.json' to 'z275748353_test_project-1-at-2025-08-14-14-36-cc80338d.json'
+[2025-08-14 17:59:48,969] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-2-at-2025-08-13-11-45-cc80338d-info.json' to 'z275748353_test_project-2-at-2025-08-13-11-45-cc80338d-info.json'
+[2025-08-14 17:59:49,039] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-2-at-2025-08-13-11-45-cc80338d.json' to 'z275748353_test_project-2-at-2025-08-13-11-45-cc80338d.json'
+[2025-08-14 17:59:49,142] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-3-at-2025-08-13-17-10-cc80338d-info.json' to 'z275748353_test_project-3-at-2025-08-13-17-10-cc80338d-info.json'
+[2025-08-14 17:59:49,226] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-3-at-2025-08-13-17-10-cc80338d.json' to 'z275748353_test_project-3-at-2025-08-13-17-10-cc80338d.json'
+[2025-08-14 17:59:49,275] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-44-at-2025-08-12-21-52-c3180152-info.json' to 'z275748353_test_project-44-at-2025-08-12-21-52-c3180152-info.json'
+[2025-08-14 17:59:49,340] [data_import.uploader::tasks_from_url::252] [WARNING] Sanitized invalid filename from 'z275748353\test\project-44-at-2025-08-12-21-52-c3180152.json' to 'z275748353_test_project-44-at-2025-08-12-21-52-c3180152.json'
+[2025-08-14 17:59:49,446] [django.server::log_message::213] [INFO] "POST /api/projects/4/import?commit_to_project=false HTTP/1.1" 200 340
+[2025-08-14 17:59:49,619] [django.server::log_message::213] [INFO] "GET /api/projects/4/file-uploads?ids=%5B456%2C457%2C458%2C459%2C460%2C461%2C462%2C463%2C464%2C465%2C466%2C467%2C468%2C469%2C470%2C471%2C472%2C473%2C474%2C475%2C476%5D HTTP/1.1" 200 1930
+[2025-08-14 17:59:53,564] [django.server::log_message::213] [INFO] "POST /api/projects/4/reimport HTTP/1.1" 201 307
+[2025-08-14 17:59:54,166] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1263
+[2025-08-14 17:59:54,216] [django.server::log_message::213] [INFO] "GET /api/projects?page_size=10 HTTP/1.1" 200 7786
+[2025-08-14 17:59:54,368] [django.server::log_message::213] [INFO] "GET /api/ml?project=4 HTTP/1.1" 200 2
+[2025-08-14 17:59:54,588] [django.server::log_message::213] [INFO] "GET /api/dm/columns?project=4 HTTP/1.1" 200 4250
+[2025-08-14 17:59:54,968] [django.server::log_message::213] [INFO] "GET /api/dm/views?project=4 HTTP/1.1" 200 1004
+[2025-08-14 17:59:54,970] [django.server::log_message::213] [INFO] "GET /api/dm/project?project=4 HTTP/1.1" 200 1447
+[2025-08-14 17:59:54,974] [django.server::log_message::213] [INFO] "GET /api/dm/actions?project=4 HTTP/1.1" 200 2043
+[2025-08-14 17:59:55,631] [django.server::log_message::213] [INFO] "GET /api/tasks?page=1&page_size=30&view=6&project=4 HTTP/1.1" 200 13620
+[2025-08-14 17:59:59,619] [django.server::log_message::213] [INFO] "GET /api/projects/4/export/formats HTTP/1.1" 200 4452
+[2025-08-14 17:59:59,641] [django.server::log_message::213] [INFO] "GET /api/projects/4/export/files HTTP/1.1" 200 19
+[2025-08-14 17:59:59,835] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1263
+[2025-08-14 18:00:29,967] [django.server::log_message::213] [INFO] "GET /api/projects/4/export?exportType=JSON HTTP/1.1" 200 71
+[2025-08-14 18:00:54,677] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1263
+[2025-08-14 18:00:58,919] [django.server::log_message::213] [INFO] "GET /api/projects/4/export/files HTTP/1.1" 200 19
+[2025-08-14 18:00:58,980] [django.server::log_message::213] [INFO] "GET /api/projects/4/export/formats HTTP/1.1" 200 4452
+[2025-08-14 18:00:59,323] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1263
+[2025-08-14 18:01:00,888] [django.server::log_message::213] [INFO] "GET /api/projects/4 HTTP/1.1" 200 1263

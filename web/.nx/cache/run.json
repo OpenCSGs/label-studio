@@ -1,8 +1,8 @@
 {
   "run": {
     "command": "nx run labelstudio:build:production",
-    "startTime": "2025-08-13T06:02:26.953Z",
-    "endTime": "2025-08-13T06:10:03.687Z",
+    "startTime": "2025-08-15T11:52:37.675Z",
+    "endTime": "2025-08-15T11:58:13.059Z",
     "inner": false
   },
   "tasks": [
@@ -10,9 +10,9 @@
       "taskId": "labelstudio:build:production",
       "target": "build",
       "projectName": "labelstudio",
-      "hash": "2122203864213635232",
-      "startTime": "2025-08-13T06:02:26.988Z",
-      "endTime": "2025-08-13T06:10:03.642Z",
+      "hash": "10847316091260912484",
+      "startTime": "2025-08-15T11:52:37.728Z",
+      "endTime": "2025-08-15T11:58:13.001Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0

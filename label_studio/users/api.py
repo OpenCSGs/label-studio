@@ -18,6 +18,10 @@ from users.functions import check_avatar
 from users.models import User
 from users.serializers import HotkeysSerializer, UserSerializer, UserSerializerUpdate
 
+
+from django.middleware.csrf import get_token
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 logger = logging.getLogger(__name__)
 
 _user_schema = {
@@ -61,6 +65,8 @@ _user_schema = {
         },
     },
 }
+
+
 
 
 @method_decorator(

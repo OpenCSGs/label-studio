@@ -31,7 +31,7 @@ def upload_without_cache_check(request,project,local_folder = r"D:\admin\flow",)
           # 本地待上传文件夹路径
         # token = get_data(user_name)['user_token']  # 用户认证令牌
         token = request.user.user_token
-        endpoint = os.environ['CSG_HUB_ENDPOINT']  
+        endpoint = os.environ['CSG_HUB_ENDPOINT']
         # revision = get_data(user_name)['datasetBranches'][0]
         # ========== 缓存目录处理部分 ==========
         # 构建缓存目录路径（位于上传目录下的.cache文件夹）
@@ -51,7 +51,8 @@ def upload_without_cache_check(request,project,local_folder = r"D:\admin\flow",)
             repo_id=repo_id,  # 数据集
             local_path=local_folder,  # 本地源文件路径
             repo_type="dataset",  # 仓库类型（数据集）
-            revision=project.datasetBranches,  # 目标分支名称
+            revision=str(project.datasetBranches)+'_label',  # 目标分支名称
+            # revision=project.datasetBranches,  # 目标分支名称
             endpoint=endpoint,  # API服务地址
             token=token,  # 认证令牌
             num_workers=1,  # 工作线程数（设为1禁用并行处理）

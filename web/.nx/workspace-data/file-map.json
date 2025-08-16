@@ -40,92 +40,84 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "tsconfig.base.json",
-        "hash": "3936495852862079863"
-      },
-      {
-        "file": "tools/extract-antd-no-reset/extract-antd-no-reset.mjs",
-        "hash": "365551918717885838"
-      },
-      {
-        "file": "components.json",
-        "hash": "12833110733017625146"
-      },
-      {
         "file": ".editorconfig",
         "hash": "5443105041930014821"
       },
       {
-        "file": "yarn.lock",
-        "hash": "14911562400085434148"
-      },
-      {
-        "file": "tools/version/version.mjs",
-        "hash": "6355876600730956288"
-      },
-      {
-        "file": "tools/design-tokens-converter/README.md",
-        "hash": "11035573079973817367"
-      },
-      {
-        "file": "tools/extract-antd-no-reset/extract-antd-no-reset",
-        "hash": "12036351741827593918"
-      },
-      {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": "biome.json",
-        "hash": "7133891275495743799"
-      },
-      {
-        "file": "babel.config.json",
-        "hash": "10877978476512763196"
-      },
-      {
-        "file": "webpack.config.js",
-        "hash": "6652208943952261319"
-      },
-      {
-        "file": "design-tokens.json",
-        "hash": "5658025128409062409"
+        "file": ".gitignore",
+        "hash": "12407229201431211218"
       },
       {
         "file": ".stylelintignore",
         "hash": "5471205737858821997"
       },
       {
-        "file": "nx.json",
-        "hash": "14542945952929047009"
+        "file": ".stylelintrc.json",
+        "hash": "10548151428546070416"
       },
       {
-        "file": "package.json",
-        "hash": "11247770128384656684"
-      },
-      {
-        "file": "tools/extract-antd-no-reset/README.md",
-        "hash": "2079483222749845855"
-      },
-      {
-        "file": "tools/version/yarn.lock",
-        "hash": "6403994625853450743"
+        "file": "README.md",
+        "hash": "12416580396873698554"
       },
       {
         "file": "apps/.gitkeep",
         "hash": "3244421341483603138"
       },
       {
+        "file": "babel.config.json",
+        "hash": "10877978476512763196"
+      },
+      {
+        "file": "biome.json",
+        "hash": "7133891275495743799"
+      },
+      {
+        "file": "components.json",
+        "hash": "12833110733017625146"
+      },
+      {
+        "file": "design-tokens.json",
+        "hash": "5658025128409062409"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "16764392864864077244"
+      },
+      {
         "file": "jest.preset.js",
         "hash": "18446300858373577836"
       },
       {
-        "file": "tools/extract-antd-no-reset/package.json",
-        "hash": "5890641458746303164"
+        "file": "nx.json",
+        "hash": "14542945952929047009"
       },
       {
-        "file": "tools/version/version",
-        "hash": "6565043209336147817"
+        "file": "package-lock.json",
+        "hash": "13067383720989114506"
+      },
+      {
+        "file": "package.json",
+        "hash": "11247770128384656684"
+      },
+      {
+        "file": "postcss.config.js",
+        "hash": "10599387362891289109"
+      },
+      {
+        "file": "release.js",
+        "hash": "5587047516753575140"
+      },
+      {
+        "file": "tailwind.config.js",
+        "hash": "616730854540686602"
+      },
+      {
+        "file": "tools/design-tokens-converter/README.md",
+        "hash": "11035573079973817367"
+      },
+      {
+        "file": "tools/design-tokens-converter/design-tokens-converter",
+        "hash": "1238243334073611079"
       },
       {
         "file": "tools/design-tokens-converter/design-tokens-converter.mjs",
@@ -136,517 +128,59 @@
         "hash": "276237420695089803"
       },
       {
-        "file": "tools/design-tokens-converter/design-tokens-converter",
-        "hash": "1238243334073611079"
+        "file": "tools/extract-antd-no-reset/README.md",
+        "hash": "2079483222749845855"
       },
       {
-        "file": ".stylelintrc.json",
-        "hash": "10548151428546070416"
+        "file": "tools/extract-antd-no-reset/extract-antd-no-reset",
+        "hash": "12036351741827593918"
+      },
+      {
+        "file": "tools/extract-antd-no-reset/extract-antd-no-reset.mjs",
+        "hash": "365551918717885838"
+      },
+      {
+        "file": "tools/extract-antd-no-reset/package.json",
+        "hash": "5890641458746303164"
+      },
+      {
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
       },
       {
         "file": "tools/version/package.json",
         "hash": "3424201517731507905"
       },
       {
-        "file": "README.md",
-        "hash": "12416580396873698554"
+        "file": "tools/version/version",
+        "hash": "6565043209336147817"
       },
       {
-        "file": "package-lock.json",
-        "hash": "13067383720989114506"
+        "file": "tools/version/version.mjs",
+        "hash": "6355876600730956288"
+      },
+      {
+        "file": "tools/version/yarn.lock",
+        "hash": "6403994625853450743"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "3936495852862079863"
       },
       {
         "file": "tsconfig.json",
         "hash": "3999473556742372045"
       },
       {
-        "file": "tailwind.config.js",
-        "hash": "616730854540686602"
+        "file": "webpack.config.js",
+        "hash": "6652208943952261319"
       },
       {
-        "file": "jest.config.ts",
-        "hash": "16764392864864077244"
-      },
-      {
-        "file": "release.js",
-        "hash": "5587047516753575140"
-      },
-      {
-        "file": "postcss.config.js",
-        "hash": "10599387362891289109"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12407229201431211218"
+        "file": "yarn.lock",
+        "hash": "14911562400085434148"
       }
     ],
     "projectFileMap": {
-      "labelstudio-e2e": [
-        {
-          "file": "apps/labelstudio-e2e/cypress.config.ts",
-          "hash": "9333357230613925379",
-          "deps": [
-            "npm:cypress",
-            "npm:@nx/cypress"
-          ]
-        },
-        {
-          "file": "apps/labelstudio-e2e/project.json",
-          "hash": "371110122431775071"
-        },
-        {
-          "file": "apps/labelstudio-e2e/src/e2e/app.cy.ts",
-          "hash": "4055606894390288348"
-        },
-        {
-          "file": "apps/labelstudio-e2e/src/support/commands.ts",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/labelstudio-e2e/src/support/e2e.ts",
-          "hash": "3666078656922506009"
-        },
-        {
-          "file": "apps/labelstudio-e2e/tsconfig.json",
-          "hash": "1788248097864730386"
-        }
-      ],
-      "playground": [
-        {
-          "file": "apps/playground/.babelrc",
-          "hash": "13020124393823981135"
-        },
-        {
-          "file": "apps/playground/README.mdc",
-          "hash": "8582056915243697925"
-        },
-        {
-          "file": "apps/playground/jest.config.ts",
-          "hash": "9965354517331133681"
-        },
-        {
-          "file": "apps/playground/project.json",
-          "hash": "17496634093589488891"
-        },
-        {
-          "file": "apps/playground/src/atoms/configAtoms.ts",
-          "hash": "5658743986347797612",
-          "deps": [
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/BottomPanel/BottomPanel.tsx",
-          "hash": "9804699641592858517",
-          "deps": [
-            "npm:react",
-            "npm:jotai",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/BottomPanel/index.ts",
-          "hash": "18699214462675680"
-        },
-        {
-          "file": "apps/playground/src/components/EditorPanel/EditorPanel.tsx",
-          "hash": "4777069222285453952",
-          "deps": [
-            "npm:react",
-            "npm:jotai",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/EditorPanel/index.ts",
-          "hash": "10746387504261749693"
-        },
-        {
-          "file": "apps/playground/src/components/PlaygroundApp/PlaygroundApp.module.scss",
-          "hash": "17110053591030319285"
-        },
-        {
-          "file": "apps/playground/src/components/PlaygroundApp/PlaygroundApp.tsx",
-          "hash": "13650043887091336770",
-          "deps": [
-            "npm:react",
-            "npm:jotai",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/PlaygroundApp/TopBar.tsx",
-          "hash": "8850875591580687348",
-          "deps": [
-            "npm:react",
-            "ui",
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/PlaygroundApp/__tests__/PlaygroundApp.test.tsx",
-          "hash": "2823395181699792879",
-          "deps": [
-            "npm:@testing-library/react",
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/PlaygroundApp/index.ts",
-          "hash": "5138425617626964856"
-        },
-        {
-          "file": "apps/playground/src/components/PreviewPanel/PreviewPanel.tsx",
-          "hash": "8394586870895233093",
-          "deps": [
-            "npm:react",
-            "npm:jotai",
-            "npm:mobx-state-tree",
-            [
-              "editor",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "apps/playground/src/components/PreviewPanel/index.ts",
-          "hash": "7154375855857532759"
-        },
-        {
-          "file": "apps/playground/src/hooks/useCopyText.ts",
-          "hash": "12883359484300719444",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/playground/src/index.html",
-          "hash": "14132177418177227141"
-        },
-        {
-          "file": "apps/playground/src/main.tsx",
-          "hash": "9444602326673399566",
-          "deps": [
-            "npm:react-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/playground/src/utils/__tests__/generateSampleTask.test.ts",
-          "hash": "9669266756362896088"
-        },
-        {
-          "file": "apps/playground/src/utils/codeEditor.ts",
-          "hash": "13902967899359367671",
-          "deps": [
-            "npm:codemirror",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/playground/src/utils/date.ts",
-          "hash": "54513804162886039",
-          "deps": [
-            "npm:date-fns"
-          ]
-        },
-        {
-          "file": "apps/playground/src/utils/embedFeatureFlags.ts",
-          "hash": "15658085493471684648"
-        },
-        {
-          "file": "apps/playground/src/utils/generateSampleTask.ts",
-          "hash": "16791312168523553583"
-        },
-        {
-          "file": "apps/playground/src/utils/query.ts",
-          "hash": "9117397897851093380"
-        },
-        {
-          "file": "apps/playground/src/utils/url.ts",
-          "hash": "2909700385476322423"
-        },
-        {
-          "file": "apps/playground/tsconfig.app.json",
-          "hash": "17190776767862500632"
-        },
-        {
-          "file": "apps/playground/tsconfig.json",
-          "hash": "14772403161501097210"
-        },
-        {
-          "file": "apps/playground/tsconfig.spec.json",
-          "hash": "6298633881193702183"
-        }
-      ],
-      "frontend-test": [
-        {
-          "file": "libs/frontend-test/README.md",
-          "hash": "14270188933704498848"
-        },
-        {
-          "file": "libs/frontend-test/package.json",
-          "hash": "8434711933578207555"
-        },
-        {
-          "file": "libs/frontend-test/project.json",
-          "hash": "5788564706478431498"
-        },
-        {
-          "file": "libs/frontend-test/src/bin/assets/cypress.config.js",
-          "hash": "9407140785144899314"
-        },
-        {
-          "file": "libs/frontend-test/src/bin/assets/e2e.ts",
-          "hash": "9183615643336478206"
-        },
-        {
-          "file": "libs/frontend-test/src/bin/assets/package.json",
-          "hash": "10240246029401386037"
-        },
-        {
-          "file": "libs/frontend-test/src/bin/assets/spec.cy.ts",
-          "hash": "10611028812257918079",
-          "deps": [
-            "npm:chai"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/bin/assets/tsconfig.json",
-          "hash": "12722027459609056532"
-        },
-        {
-          "file": "libs/frontend-test/src/bin/cli.js",
-          "hash": "14978676568636884794",
-          "deps": [
-            "npm:yargs"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/configure.ts",
-          "hash": "15965431963516193957",
-          "deps": [
-            "npm:cypress",
-            "npm:cypress-terminal-report",
-            "npm:cypress-image-snapshot",
-            "npm:@nx/cypress"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/cypress/fixtures/example.json",
-          "hash": "11785586596216172004"
-        },
-        {
-          "file": "libs/frontend-test/src/cypress/support/commands.ts",
-          "hash": "5467080725393066100",
-          "deps": [
-            "npm:cypress-image-snapshot"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/cypress/support/e2e.ts",
-          "hash": "8432270492717250999",
-          "deps": [
-            "npm:@cypress/code-coverage",
-            "npm:cypress-terminal-report"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/feature-flags.ts",
-          "hash": "12401389598041239088"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/AudioView.ts",
-          "hash": "14855640311197082734",
-          "deps": [
-            "editor"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Choices.ts",
-          "hash": "6064410541275223446"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Collapse.ts",
-          "hash": "13556290072249346816"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/DateTime.ts",
-          "hash": "17260672916341025312"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Hotkeys.ts",
-          "hash": "9819620960538906717"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/ImageView.ts",
-          "hash": "4957003704837915593"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/LabelStudio.ts",
-          "hash": "11782004688569046757",
-          "deps": [
-            "npm:chai"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Labels.ts",
-          "hash": "7718386715943081952"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Modals.ts",
-          "hash": "3436836474130641531"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Number.ts",
-          "hash": "10564164812040408027"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Paragraphs.ts",
-          "hash": "17067445360850597266"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Ranker.ts",
-          "hash": "3998295659954580638"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Rating.ts",
-          "hash": "16850077235459025479"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Relations.ts",
-          "hash": "9537498942905411268"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/RichText.ts",
-          "hash": "1079348494967727706"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Sidebar.ts",
-          "hash": "1897873031117362048"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Table.ts",
-          "hash": "2287866694725058794"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Taxonomy.ts",
-          "hash": "2141248980354157489"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Textarea.ts",
-          "hash": "8723062727905314544"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/TimeSeries.ts",
-          "hash": "3789462841025514001",
-          "deps": [
-            "editor"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/ToolBar.ts",
-          "hash": "7330006809123783219",
-          "deps": [
-            "editor"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/Tooltip.ts",
-          "hash": "11262032776930271631"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/VideoView.ts",
-          "hash": "6575312620277836972"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/LSF/index.ts",
-          "hash": "18344019751181652383"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/common/Generator.ts",
-          "hash": "8744744183621057259"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/index.ts",
-          "hash": "6139985436714934182"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/utils/BoundingBoxUtils.ts",
-          "hash": "13169541358353168046"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/utils/SVGPathUtils.ts",
-          "hash": "8145435485620837892"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/utils/SVGTransformUtils.ts",
-          "hash": "11225911002031306624"
-        },
-        {
-          "file": "libs/frontend-test/src/helpers/utils/fixLSParams.ts",
-          "hash": "4577825830605764546"
-        },
-        {
-          "file": "libs/frontend-test/src/plugins/coverage_parallel.js",
-          "hash": "748867265711510192",
-          "deps": [
-            "npm:@cypress/code-coverage",
-            "npm:proper-lockfile"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/plugins/disable_gpu.js",
-          "hash": "8372008230315940442"
-        },
-        {
-          "file": "libs/frontend-test/src/plugins/typescript.js",
-          "hash": "15751366259361972125",
-          "deps": [
-            "npm:@cypress/webpack-preprocessor"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/scripts/chrome.js",
-          "hash": "9893724217705029752",
-          "deps": [
-            "npm:cypress"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/tasks/compareScreenshots.js",
-          "hash": "11245986950338632835",
-          "deps": [
-            "npm:pngjs",
-            "npm:pixelmatch"
-          ]
-        },
-        {
-          "file": "libs/frontend-test/src/tasks/index.js",
-          "hash": "16874283927617821131"
-        },
-        {
-          "file": "libs/frontend-test/src/tasks/index.ts",
-          "hash": "16874283927617821131"
-        },
-        {
-          "file": "libs/frontend-test/src/types/Cypress.d.ts",
-          "hash": "7562318021612359474"
-        },
-        {
-          "file": "libs/frontend-test/src/types/Global.d.ts",
-          "hash": "7699426499634140877"
-        },
-        {
-          "file": "libs/frontend-test/tsconfig.json",
-          "hash": "12950789319971686082"
-        },
-        {
-          "file": "libs/frontend-test/tsconfig.lib.json",
-          "hash": "7381923416685843236"
-        }
-      ],
       "editor": [
         {
           "file": "libs/editor/.babelrc",
@@ -9395,1342 +8929,516 @@
           "hash": "9877693811502968150"
         }
       ],
-      "labelstudio": [
+      "app-common": [
         {
-          "file": "apps/labelstudio/.babelrc",
-          "hash": "13020124393823981135"
+          "file": "libs/app-common/.babelrc",
+          "hash": "2946678488919325452"
         },
         {
-          "file": "apps/labelstudio/README.md",
-          "hash": "18445104073398701992"
+          "file": "libs/ui/src/assets/icons/models.svg",
+          "hash": "839913756782341199"
         },
         {
-          "file": "apps/labelstudio/jest.config.ts",
-          "hash": "17298427892303080422"
+          "file": "libs/ui/src/assets/icons/move-tool.svg",
+          "hash": "818149512755886352"
         },
         {
-          "file": "apps/labelstudio/project.json",
-          "hash": "7685924623996146112"
+          "file": "libs/ui/src/assets/icons/next-step.svg",
+          "hash": "12344416142881133886"
         },
         {
-          "file": "apps/labelstudio/src/app/App.jsx",
-          "hash": "8240092090335348191",
+          "file": "libs/ui/src/assets/icons/ocr.svg",
+          "hash": "7950434924080843564"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/openai.svg",
+          "hash": "16576962471513492044"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/outliner-collapse.svg",
+          "hash": "13160246533693232124"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/outliner-drag.svg",
+          "hash": "9255338398414117204"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/outliner-expand.svg",
+          "hash": "2503132271494301580"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/outliner-eye-closed.svg",
+          "hash": "12386821257819718209"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/outliner-eye-opened.svg",
+          "hash": "10391240606882608006"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/outliner-info.svg",
+          "hash": "17829694483155816043"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/parent-link.svg",
+          "hash": "3855899481726408001"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/pause.svg",
+          "hash": "13461218861051311276"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/pencil.svg",
+          "hash": "10797154599785373836"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/person-circle.svg",
+          "hash": "16996116635567030240"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/pin.svg",
+          "hash": "14313735583361185499"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/play.svg",
+          "hash": "329484301111762719"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/playlist-star-full-color.svg",
+          "hash": "15423646405247310788"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/plus-circle.svg",
+          "hash": "10891317422203177467"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/plus.svg",
+          "hash": "13789886217484695817"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/polygon-tool-smart.svg",
+          "hash": "13575121498981547637"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/polygon-tool.svg",
+          "hash": "2879218633611338797"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/predictions.svg",
+          "hash": "246501538311025528"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/prev-step.svg",
+          "hash": "14993192451250083865"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/property-angle.svg",
+          "hash": "936188937892947555"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/question-outline.svg",
+          "hash": "3933325792975411"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rectangle-3point-tool-smart.svg",
+          "hash": "10029678413355214198"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rectangle-3point-tool.svg",
+          "hash": "13540746902569581547"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rectangle-tool-smart.svg",
+          "hash": "10168312543108125181"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rectangle-tool.svg",
+          "hash": "2229000503976615387"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/redo.svg",
+          "hash": "12915311367539141310"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/refresh.svg",
+          "hash": "53865770749128862"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/relation-bi.svg",
+          "hash": "14179267992366327753"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/relation-left.svg",
+          "hash": "3916011325851872752"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/relation-right.svg",
+          "hash": "6864564815786622163"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/reload.svg",
+          "hash": "13622966929093965603"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/remove.svg",
+          "hash": "1172318129193684703"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/replay.svg",
+          "hash": "14340658177073506704"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rewind.svg",
+          "hash": "5057611822356652830"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rotate-left-tool.svg",
+          "hash": "11761678907924442145"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rotate-right-tool.svg",
+          "hash": "8802825692600641585"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/rotate.svg",
+          "hash": "6996889109791383978"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/search.svg",
+          "hash": "3122502693661260439"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/send.svg",
+          "hash": "17823423044380258922"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/settings-alt.svg",
+          "hash": "12631068936882714255"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/settings.svg",
+          "hash": "4866726207700814382"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/slack.svg",
+          "hash": "5422425393998540292"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/slow.svg",
+          "hash": "8146429500760870824"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sort-down.svg",
+          "hash": "3891715206675910591"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sort-up.svg",
+          "hash": "14970016144365673498"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sound-bars.svg",
+          "hash": "11858157957695006099"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sound-config.svg",
+          "hash": "60488238324019424"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sound-muted-config.svg",
+          "hash": "7107590868334880733"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/spark-gradient.svg",
+          "hash": "14176123039028194456"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/spark-square.svg",
+          "hash": "18172469962013197126"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/spark.svg",
+          "hash": "14176123039028194456"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sparkle.svg",
+          "hash": "4857342601570069456"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sparks-3.svg",
+          "hash": "6438532035277886138"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sparks-stop.svg",
+          "hash": "12091267090550842938"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sparks.svg",
+          "hash": "13781031086452373193"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/speed.svg",
+          "hash": "15967332290070317380"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/star-outline.svg",
+          "hash": "6316177092443220952"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/star-rectangle.svg",
+          "hash": "10944470294146926083"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/star-square.svg",
+          "hash": "10944470294146926083"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/star.svg",
+          "hash": "10825167658739430088"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/star_square.svg",
+          "hash": "10944470294146926083"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/svg.d.ts",
+          "hash": "2419241673346146667"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sync-disabled.svg",
+          "hash": "16900930286615729488"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/sync.svg",
+          "hash": "9184450521828825772"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/tag-alt.svg",
+          "hash": "2873233285886012411"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/tag.svg",
+          "hash": "790274407034222064"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/terminal.svg",
+          "hash": "17325367760909118808"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/text.svg",
+          "hash": "7252037873397220631"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/thumbs-down-fill.svg",
+          "hash": "11530630507041924669"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/thumbs-down-outline.svg",
+          "hash": "779860030547402858"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/thumbs-down.svg",
+          "hash": "2540775195159721112"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/thumbs-up-fill.svg",
+          "hash": "14530556565770092241"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/thumbs-up-outline.svg",
+          "hash": "1617939397494145430"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/thumbs-up.svg",
+          "hash": "5348376686721931966"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/timeline-pause.svg",
+          "hash": "16518964511705091665"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/timeline-play.svg",
+          "hash": "12068525763047478339"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/timeline-region.svg",
+          "hash": "888979545836943515"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/trash-alt.svg",
+          "hash": "8593772837827719628"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/trash-rect.svg",
+          "hash": "7405708676718050347"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/trash.svg",
+          "hash": "15081471477484384183"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/undo.svg",
+          "hash": "17014941334103106902"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/unlocked.svg",
+          "hash": "4344137328446605624"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/upload.svg",
+          "hash": "12822964659326522514"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/upright-pin.svg",
+          "hash": "7420377063066879102"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/user-add.svg",
+          "hash": "1246250152503775231"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/vertexai.svg",
+          "hash": "2313761645591852794"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/view-all.svg",
+          "hash": "8963463444621437947"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/visa.svg",
+          "hash": "7379993445953022127"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/volume-full.svg",
+          "hash": "2771172459812228173"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/volume-half.svg",
+          "hash": "13623700652178868653"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/volume-mute.svg",
+          "hash": "6701381633378753611"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/warning-circle-filled.svg",
+          "hash": "7036871107222842995"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/warning-circle.svg",
+          "hash": "12183387677999694596"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/warning.svg",
+          "hash": "12116666428148007821"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/zoom-in.svg",
+          "hash": "16050733928033678965"
+        },
+        {
+          "file": "libs/ui/src/assets/icons/zoom-out.svg",
+          "hash": "11254667067239995492"
+        },
+        {
+          "file": "libs/ui/src/fonts/Figtree-Regular.ttf",
+          "hash": "17276217709528305577"
+        },
+        {
+          "file": "libs/ui/src/fonts/Figtree-SemiBold.ttf",
+          "hash": "11166813793580966584"
+        },
+        {
+          "file": "libs/ui/src/fonts/Hellix-Regular.woff",
+          "hash": "10608487013590520999"
+        },
+        {
+          "file": "libs/ui/src/fonts/Hellix-SemiBold.woff",
+          "hash": "3534743302694818257"
+        },
+        {
+          "file": "libs/ui/src/index.ts",
+          "hash": "13860013535433322831"
+        },
+        {
+          "file": "libs/ui/src/lib/Card/Card.module.scss",
+          "hash": "157176565174947729"
+        },
+        {
+          "file": "libs/ui/src/lib/Card/Card.tsx",
+          "hash": "12680159483867939690"
+        },
+        {
+          "file": "libs/ui/src/lib/InputFile/InputFile.module.scss",
+          "hash": "10563762248562317596"
+        },
+        {
+          "file": "libs/ui/src/lib/InputFile/InputFile.tsx",
+          "hash": "16828335947628546180",
           "deps": [
-            "npm:history",
+            "npm:clsx",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/MultiStateToggle/MultiStateToggle.module.scss",
+          "hash": "3907006812702885434"
+        },
+        {
+          "file": "libs/ui/src/lib/MultiStateToggle/MultiStateToggle.tsx",
+          "hash": "3849414616104139178",
+          "deps": [
+            "npm:clsx",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/ThemeToggle/ThemeToggle.module.scss",
+          "hash": "587746583434237962"
+        },
+        {
+          "file": "libs/ui/src/lib/ThemeToggle/ThemeToggle.tsx",
+          "hash": "14476287343830946917",
+          "deps": [
+            "npm:clsx",
+            "npm:react",
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/ThemeToggle/icons/moon.svg",
+          "hash": "3226219541192690741"
+        },
+        {
+          "file": "libs/ui/src/lib/ThemeToggle/icons/sun.svg",
+          "hash": "13689183895163458866"
+        },
+        {
+          "file": "libs/ui/src/lib/Tooltip/Tooltip.module.scss",
+          "hash": "17341562446905052154"
+        },
+        {
+          "file": "libs/ui/src/lib/Tooltip/Tooltip.tsx",
+          "hash": "1644225567611823705",
+          "deps": [
+            "npm:react",
             "npm:react-dom",
-            "npm:react-router-dom",
             "core",
-            "ui",
-            "npm:@tanstack/react-query"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/app/App.scss",
-          "hash": "10208103588849097040"
-        },
-        {
-          "file": "apps/labelstudio/src/app/AsyncPage/AsyncPage.jsx",
-          "hash": "650251269152011188",
-          "deps": [
-            "npm:react",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/app/ErrorBoundary.jsx",
-          "hash": "6929550357531773366",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/app/RootPage.jsx",
-          "hash": "10111353085188341861"
-        },
-        {
-          "file": "apps/labelstudio/src/app/StaticContent/StaticContent.jsx",
-          "hash": "12270783096634477811",
-          "deps": [
-            "npm:html-react-parser",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/assets/images/heidi-ai.svg",
-          "hash": "15640051807613200685"
-        },
-        {
-          "file": "apps/labelstudio/src/assets/images/heidi-speaking.svg",
-          "hash": "3969103282540951767"
-        },
-        {
-          "file": "apps/labelstudio/src/assets/images/index.js",
-          "hash": "12486633674802287315"
-        },
-        {
-          "file": "apps/labelstudio/src/assets/images/logo.svg",
-          "hash": "4066073355288650249"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Breadcrumbs/Breadcrumbs.jsx",
-          "hash": "12139563349937292752",
-          "deps": [
-            "npm:react",
-            "npm:react-router-dom"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Breadcrumbs/Breadcrumbs.scss",
-          "hash": "13552765224653597236"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Card/Card.jsx",
-          "hash": "9019796255076692037"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Card/Card.scss",
-          "hash": "14264411637202518536"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Columns/Columns.jsx",
-          "hash": "14861254823434846467",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Columns/Columns.scss",
-          "hash": "17520461618237896430"
-        },
-        {
-          "file": "apps/labelstudio/src/components/CopyableTooltip/CopyableTooltip.jsx",
-          "hash": "7541822031978757869",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/DescriptionList/DescriptionList.jsx",
-          "hash": "6825801054795825686",
-          "deps": [
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/DescriptionList/DescriptionList.scss",
-          "hash": "10714899740725891498"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Divider/Divider.jsx",
-          "hash": "6175182389942978015"
-        },
-        {
-          "file": "apps/labelstudio/src/components/DraftGuard/DraftGuard.jsx",
-          "hash": "108171100697801597",
-          "deps": [
-            "npm:react",
-            "npm:react-router-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Dropdown/Dropdown.js",
-          "hash": "1602288191126648650"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Dropdown/Dropdown.scss",
-          "hash": "7801469993775656916"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Dropdown/DropdownComponent.jsx",
-          "hash": "6519898004187485803",
-          "deps": [
-            "npm:react",
-            "npm:react-dom",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Dropdown/DropdownContext.js",
-          "hash": "4242926498067794891",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Dropdown/DropdownTrigger.jsx",
-          "hash": "6765536031173527597",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/EmptyState/EmptyState.jsx",
-          "hash": "6694523005198781887"
-        },
-        {
-          "file": "apps/labelstudio/src/components/EmptyState/EmptyState.scss",
-          "hash": "644857933279743571"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Error/Error.jsx",
-          "hash": "6755148221573102329",
-          "deps": [
-            "npm:react",
-            "npm:sanitize-html",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Error/Error.scss",
-          "hash": "8694871742944933636"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Error/InlineError.jsx",
-          "hash": "15520539973517663614",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Error/PauseError",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Counter/Counter.jsx",
-          "hash": "13126108547523531663",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Counter/Counter.scss",
-          "hash": "17443210549927941974"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Input/Input.jsx",
-          "hash": "243794401360679940"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Input/Input.scss",
-          "hash": "151299734354486713"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Label/Label.jsx",
-          "hash": "12537855554845207829",
-          "deps": [
-            "npm:react",
-            "ui",
             "npm:clsx"
           ]
         },
         {
-          "file": "apps/labelstudio/src/components/Form/Elements/Label/Label.scss",
-          "hash": "1091722526245597074"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/RadioGroup/RadioGroup.jsx",
-          "hash": "14438158853427575459",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/RadioGroup/RadioGroup.scss",
-          "hash": "3457906494235662362"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Select/Select.jsx",
-          "hash": "3739175183695076644",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/TextArea/TextArea.jsx",
-          "hash": "4558059049665848859"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/Toggle/Toggle.jsx",
-          "hash": "13692824074310274986",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Elements/index.ts",
-          "hash": "4439403398072475199"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Form.jsx",
-          "hash": "387902774747335874",
-          "deps": [
-            "npm:react",
-            "npm:shallow-equal",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Form.scss",
-          "hash": "18385899491485549560"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/FormContext.js",
-          "hash": "14284136374852777299",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/FormField.js",
-          "hash": "885309577984235040",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Utils.ts",
-          "hash": "11801887921264396305",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Validation/Validation.scss",
-          "hash": "10411344284309849322"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/Validation/Validators.js",
-          "hash": "6103661044301603771"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Form/index.js",
-          "hash": "13146553314283343588"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Hamburger/Hamburger.jsx",
-          "hash": "4275003930269448604"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Hamburger/Hamburger.scss",
-          "hash": "17609170817002090247"
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/HeidiTip.scss",
-          "hash": "16061389930057975610"
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/HeidiTip.tsx",
-          "hash": "5048323807137232026",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/HeidiTips.tsx",
-          "hash": "13187555673241688256",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/content.ts",
-          "hash": "10402769240409856579"
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/hooks.ts",
-          "hash": "6041029975245421944",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/liveContent.json",
-          "hash": "15340769151554326039"
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/types.ts",
-          "hash": "14115789822355239049"
-        },
-        {
-          "file": "apps/labelstudio/src/components/HeidiTips/utils.ts",
-          "hash": "15563499183425828733"
-        },
-        {
-          "file": "apps/labelstudio/src/components/LeaveBlocker/LeaveBlocker.tsx",
-          "hash": "1207411376402110341",
-          "deps": [
-            "npm:react",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menu/Menu.jsx",
-          "hash": "16148488807195793558",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menu/Menu.scss",
-          "hash": "12040119223810925846"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menu/MenuContext.js",
-          "hash": "3815110111737172683",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menu/MenuItem.jsx",
-          "hash": "6008910926868822976",
-          "deps": [
-            "npm:react-router-dom"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menubar/MenuContent.scss",
-          "hash": "15845744032258228309"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menubar/MenuSidebar.scss",
-          "hash": "2930679529971915189"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menubar/Menubar.jsx",
-          "hash": "13564994908993092675",
-          "deps": [
-            "npm:react",
-            "ui",
-            "app-common",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Menubar/Menubar.scss",
-          "hash": "15324857543312776850"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Modal/Modal.jsx",
-          "hash": "11895790830954967614",
-          "deps": [
-            "npm:react",
-            "npm:react-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Modal/Modal.scss",
-          "hash": "4187554701000751470"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Modal/ModalPopup.jsx",
-          "hash": "7723359276686015806",
-          "deps": [
-            "npm:react",
-            "npm:react-dom",
-            "ui",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Oneof/Oneof.js",
-          "hash": "9724079050581853618",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/Pagination/Pagination.scss",
-          "hash": "11783606898527505983"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Pagination/Pagination.tsx",
-          "hash": "2934177393997032077",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/SidebarMenu/SidebarMenu.jsx",
-          "hash": "7203621867380337536"
-        },
-        {
-          "file": "apps/labelstudio/src/components/SidebarMenu/SidebarMenu.scss",
-          "hash": "10896857914527691991"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Space/Space.jsx",
-          "hash": "1586962236960303011"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Space/Space.scss",
-          "hash": "11263954920970450320"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Spinner/Spinner.jsx",
-          "hash": "17046513174581920753"
-        },
-        {
-          "file": "apps/labelstudio/src/components/Spinner/Spinner.scss",
-          "hash": "13927653215195411982"
-        },
-        {
-          "file": "apps/labelstudio/src/components/ToggleItems/ToggleItems.scss",
-          "hash": "17814021264095365520"
-        },
-        {
-          "file": "apps/labelstudio/src/components/ToggleItems/ToggleItems.tsx",
-          "hash": "12048889599872978830",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/VersionNotifier/VersionNotifier.jsx",
-          "hash": "548587952560946124",
-          "deps": [
-            "npm:date-fns",
-            "npm:react",
-            "npm:react-router-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/components/VersionNotifier/VersionNotifier.scss",
-          "hash": "4227026427004391163"
-        },
-        {
-          "file": "apps/labelstudio/src/components/index.js",
-          "hash": "9212855882145772815"
-        },
-        {
-          "file": "apps/labelstudio/src/config/ApiConfig.example.js",
-          "hash": "6430324760376609878"
-        },
-        {
-          "file": "apps/labelstudio/src/config/ApiConfig.js",
-          "hash": "14552131833401469119"
-        },
-        {
-          "file": "apps/labelstudio/src/config/Sentry.test.ts",
-          "hash": "8584595701711334072",
-          "deps": [
-            [
-              "npm:@sentry/browser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/config/Sentry.ts",
-          "hash": "989897229684526718",
-          "deps": [
-            "npm:@sentry/browser",
-            "npm:@sentry/react",
-            "npm:react-router-dom"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/favicon.ico",
-          "hash": "6343206690449962429"
-        },
-        {
-          "file": "apps/labelstudio/src/hooks/useCopyText.ts",
-          "hash": "364642338245382886",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/hooks/useOrgValidation.tsx",
-          "hash": "8704837658541551588",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/index.html",
-          "hash": "2950225942531917374"
-        },
-        {
-          "file": "apps/labelstudio/src/main.tsx",
-          "hash": "6879135611492610807",
-          "deps": [
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/Config.jsx",
-          "hash": "12567997818679789000",
-          "deps": [
-            "npm:react",
-            "npm:codemirror",
-            "ui",
-            "core",
-            "npm:strman"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/Config.scss",
-          "hash": "16600495722375759521"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/Preview.jsx",
-          "hash": "5128595787676751513",
-          "deps": [
-            "npm:react",
-            [
-              "editor",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/Template.js",
-          "hash": "3754219631432825288"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/TemplatesList.jsx",
-          "hash": "15124316900631337700",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/UnsavedChanges.tsx",
-          "hash": "3621058629826615421",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/colors.js",
-          "hash": "8504469985897505118"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/recipes.js",
-          "hash": "5559586985638334476"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Config/tags.js",
-          "hash": "1444862270468548557"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/CreateProject.jsx",
-          "hash": "5880524000250700741",
-          "deps": [
-            "ui",
-            "npm:react",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/CreateProject.scss",
-          "hash": "260264850855272656"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Import/Import.jsx",
-          "hash": "3041106445203956014",
-          "deps": [
-            "core",
-            "app-common",
-            "ui",
-            "npm:jotai",
-            "datamanager",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Import/Import.scss",
-          "hash": "10175317223548901707"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Import/ImportModal.jsx",
-          "hash": "11974094692449262820",
-          "deps": [
-            "npm:react",
-            "npm:react-router",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Import/samples.json",
-          "hash": "948549985218546555"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Import/useImportPage.js",
-          "hash": "968719857139566906",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/Import/utils.ts",
-          "hash": "1795864818978708921"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/utils/atoms.ts",
-          "hash": "15210822500614455802",
-          "deps": [
-            "core",
-            "npm:jotai-tanstack-query"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/CreateProject/utils/useDraftProject.js",
-          "hash": "3490448438343824888",
-          "deps": [
-            "npm:jotai",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/DataManager/DataManager.jsx",
-          "hash": "9118060643611096148",
-          "deps": [
-            "npm:react",
-            "npm:react-router",
-            "npm:react-router-dom",
-            "ui",
-            [
-              "datamanager",
-              "dynamic"
-            ],
-            [
-              "editor",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/DataManager/DataManager.scss",
-          "hash": "7029443376795365345"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/DataManager/api-config.example.js",
-          "hash": "11116690340793552972"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/DataManager/api-config.js",
-          "hash": "12000100581705262580"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/DataManager/index.js",
-          "hash": "17266321720961808594"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/ExportPage/ExportPage.jsx",
-          "hash": "14990210606637782070",
-          "deps": [
-            "npm:react",
-            "npm:react-router",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/ExportPage/ExportPage.scss",
-          "hash": "7988202861510230512"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Home/HomePage.tsx",
-          "hash": "4083133361306730686",
-          "deps": [
-            "ui",
-            "npm:@tanstack/react-query",
-            "npm:react",
-            "npm:react-router-dom"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/Models/@components/EmptyList.scss",
-          "hash": "1394464914597903885"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/Models/@components/EmptyList.tsx",
-          "hash": "3273017266140253310",
-          "deps": [
-            "ui",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/Models/ModelsPage.tsx",
-          "hash": "13549970383333159396",
-          "deps": [
-            "ui",
-            "npm:react-router-dom"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/InviteLink.tsx",
-          "hash": "12218039489101354425",
-          "deps": [
-            "npm:react",
-            "ui",
-            "npm:jotai-tanstack-query",
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeopleInvitation.scss",
-          "hash": "16046864837953914603"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeopleList.jsx",
-          "hash": "13691261975671578587",
-          "deps": [
-            "npm:date-fns",
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeopleList.scss",
-          "hash": "6994806817152525502"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeoplePage.jsx",
-          "hash": "11138855845786734672",
-          "deps": [
-            "npm:react",
-            "ui",
-            "app-common"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeoplePage.scss",
-          "hash": "6303292527393840043"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/SelectedUser.jsx",
-          "hash": "2257965246729699989",
-          "deps": [
-            "npm:date-fns",
-            "npm:react-router-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/SelectedUser.scss",
-          "hash": "13343416379528382037"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Organization/index.jsx",
-          "hash": "7673852293649412927"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Projects/Projects.jsx",
-          "hash": "6921142154173916215",
-          "deps": [
-            "npm:react",
-            "npm:react-router",
-            "npm:react-router-dom",
-            "ui",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Projects/Projects.scss",
-          "hash": "17643405088660042232"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Projects/ProjectsList.jsx",
-          "hash": "15849341155939665980",
-          "deps": [
-            "npm:chroma-js",
-            "npm:date-fns",
-            "npm:react",
-            "npm:react-router-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/AnnotationSettings.jsx",
-          "hash": "17602031257280386189",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/AnnotationSettings/ModelVersionSelector.jsx",
-          "hash": "13732182696588258733",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/DangerZone.jsx",
-          "hash": "3262365555309124839",
-          "deps": [
-            "npm:react",
-            "npm:react-router",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/GeneralSettings.jsx",
-          "hash": "4109222895759335757",
-          "deps": [
-            "ui",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/LabelingSettings.jsx",
-          "hash": "9985527372516114849",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/Forms.jsx",
-          "hash": "6858249416933728571",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningList.jsx",
-          "hash": "18394941027493248888",
-          "deps": [
-            "npm:date-fns",
-            "npm:react",
-            "npm:truncate-middle",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningList.scss",
-          "hash": "8443223769762091274"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningSettings.jsx",
-          "hash": "13269650115919181279",
-          "deps": [
-            "npm:react",
-            "npm:react-router-dom",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningSettings.scss",
-          "hash": "2745421333930171306"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/StartModelTraining.jsx",
-          "hash": "14322421144803555064",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/TestRequest.jsx",
-          "hash": "2759562564208938149",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/PredictionsSettings/PredictionsList.jsx",
-          "hash": "8449090163909505633",
-          "deps": [
-            "npm:react",
-            "npm:date-fns",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/PredictionsSettings/PredictionsList.scss",
-          "hash": "14703439190845647035"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/PredictionsSettings/PredictionsSettings.jsx",
-          "hash": "6255196493778700074",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageCard.jsx",
-          "hash": "11197897549858215580",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageForm.jsx",
-          "hash": "1479438047786619264",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageSet.jsx",
-          "hash": "3010671201761448309",
-          "deps": [
-            "npm:react",
-            "ui",
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageSettings.jsx",
-          "hash": "2831060757541215837",
-          "deps": [
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageSummary.jsx",
-          "hash": "4288936013718490205",
-          "deps": [
-            "npm:date-fns",
-            "ui",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/hooks/useStorageCard.tsx",
-          "hash": "11370944964572334850",
-          "deps": [
-            "npm:@tanstack/react-query",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/index.jsx",
-          "hash": "13451658603389888073"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/Settings/settings.scss",
-          "hash": "1345899308558752379"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookDeleteModal.jsx",
-          "hash": "12232941102242742545",
-          "deps": [
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookDetail.jsx",
-          "hash": "3482084740034923250",
-          "deps": [
-            "npm:react",
-            "ui",
-            "npm:lodash"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookList.jsx",
-          "hash": "4775857803764665733",
-          "deps": [
-            "npm:react",
-            "ui",
-            "npm:date-fns"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookPage.jsx",
-          "hash": "14517035378071817668",
-          "deps": [
-            "npm:react",
-            "ui",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookPage.scss",
-          "hash": "2243542309225199740"
-        },
-        {
-          "file": "apps/labelstudio/src/pages/index.js",
-          "hash": "14217025997172754078",
-          "deps": [
-            "app-common",
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/pages/types/Page.ts",
-          "hash": "14363875956266958259",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/ApiProvider.tsx",
-          "hash": "12861218252929901784",
-          "deps": [
-            "npm:react",
-            "core",
-            "ui"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/AppStoreProvider.jsx",
-          "hash": "11053796472161618364",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/AppStoreProvider.tsx",
-          "hash": "15855807426035061051",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/ConfigProvider.jsx",
-          "hash": "11008203273699901879",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/CurrentUser.d.ts",
-          "hash": "12362079206036476727"
-        },
-        {
-          "file": "apps/labelstudio/src/providers/CurrentUser.jsx",
-          "hash": "12279069879407859629",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/MultiProvider.js",
-          "hash": "6236673295702560702",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/ProjectProvider.tsx",
-          "hash": "14192257824346937082",
-          "deps": [
-            "npm:react",
-            "npm:shallow-equal",
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/providers/RoutesProvider.d.ts",
-          "hash": "4104821928982036871"
-        },
-        {
-          "file": "apps/labelstudio/src/providers/RoutesProvider.jsx",
-          "hash": "1656728088154974450",
-          "deps": [
-            "npm:react",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/routes/ProjectRoutes.jsx",
-          "hash": "2328269631125187658"
-        },
-        {
-          "file": "apps/labelstudio/src/routes/RouteWithStaticFallback.jsx",
-          "hash": "2185061206888271562",
-          "deps": [
-            "npm:react",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/services/breadrumbs.js",
-          "hash": "6406187264774985194",
-          "deps": [
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/themes/default/colors.scss",
-          "hash": "18190760069949074655"
-        },
-        {
-          "file": "apps/labelstudio/src/themes/default/tokens.scss",
-          "hash": "7420844050257215977"
-        },
-        {
-          "file": "apps/labelstudio/src/themes/default/typography.scss",
-          "hash": "17357203671465173104"
-        },
-        {
-          "file": "apps/labelstudio/src/themes/default/variables.scss",
-          "hash": "14694381837513154368"
-        },
-        {
-          "file": "apps/labelstudio/src/types/Global.d.ts",
-          "hash": "15537460223674333112"
-        },
-        {
-          "file": "apps/labelstudio/src/types/Project.d.ts",
-          "hash": "221314118958290479"
-        },
-        {
-          "file": "apps/labelstudio/src/types/router/pages.d.ts",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/labelstudio/src/types/shallow-equal.d.ts",
-          "hash": "11076908927223349500"
-        },
-        {
-          "file": "apps/labelstudio/src/utils/bem.tsx",
-          "hash": "16871734503133779850",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/colors.js",
-          "hash": "17528171681799778807"
-        },
-        {
-          "file": "apps/labelstudio/src/utils/debounce.js",
-          "hash": "3801228082671015793"
-        },
-        {
-          "file": "apps/labelstudio/src/utils/feature-flags.ts",
-          "hash": "15800705877359307812",
-          "deps": [
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/helpers.ts",
-          "hash": "12793145833541343918"
-        },
-        {
-          "file": "apps/labelstudio/src/utils/hooks.ts",
-          "hash": "16648057819726225528",
-          "deps": [
-            "npm:react",
-            "npm:react-router"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/jotai-store.ts",
-          "hash": "14609218979677739757",
-          "deps": [
-            "npm:jotai"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/license-flags.ts",
-          "hash": "1808867839114692725",
-          "deps": [
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/query-client.ts",
-          "hash": "7989411051938178015",
-          "deps": [
-            "core"
-          ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/routeHelpers.jsx",
-          "hash": "10070702539576600009",
+          "file": "libs/ui/src/lib/Tooltip/tooltip.stories.tsx",
+          "hash": "2805794375977124179",
           "deps": [
-            "npm:react"
+            "npm:@storybook/react"
           ]
-        },
-        {
-          "file": "apps/labelstudio/src/utils/scripts.js",
-          "hash": "16070433978531357127"
-        },
-        {
-          "file": "apps/labelstudio/src/utils/selectors.js",
-          "hash": "15348377316944286342"
-        },
-        {
-          "file": "apps/labelstudio/src/utils/service-worker.js",
-          "hash": "3144941291336220931"
-        },
-        {
-          "file": "apps/labelstudio/tsconfig.app.json",
-          "hash": "17190776767862500632"
-        },
-        {
-          "file": "apps/labelstudio/tsconfig.json",
-          "hash": "6661430078687049149"
-        },
-        {
-          "file": "apps/labelstudio/tsconfig.spec.json",
-          "hash": "6298633881193702183"
-        }
-      ],
-      "datamanager": [
-        {
-          "file": "libs/datamanager/.babelrc",
-          "hash": "2946678488919325452"
-        },
-        {
-          "file": "libs/datamanager/.env.example",
-          "hash": "10313535049915039464"
-        },
-        {
-          "file": "libs/datamanager/CODE_OF_CONDUCT.md",
-          "hash": "3886098548686509780"
-        },
-        {
-          "file": "libs/datamanager/LICENSE",
-          "hash": "16328114522062607895"
-        },
-        {
-          "file": "libs/datamanager/README.md",
-          "hash": "3694032095867995074"
-        },
-        {
-          "file": "libs/datamanager/__mocks__/fileMock.ts",
-          "hash": "5758727748458123297"
-        },
-        {
-          "file": "libs/datamanager/bin/publish.sh",
-          "hash": "6364578194347758335"
-        },
-        {
-          "file": "libs/datamanager/docs/api_reference.md",
-          "hash": "3103915771402861202"
-        },
-        {
-          "file": "libs/datamanager/docs/dm_architecture_diagram.pdf",
-          "hash": "1601937444295668232"
-        },
-        {
-          "file": "libs/datamanager/docs/image.png",
-          "hash": "16716015809696566387"
         },
         {
-          "file": "libs/datamanager/jest.config.ts",
-          "hash": "8375246038146216162"
+          "file": "libs/ui/src/lib/Userpic/Userpic.module.scss",
+          "hash": "16214096675506432738"
         },
         {
-          "file": "libs/datamanager/package.json",
-          "hash": "17407942541986386475",
+          "file": "libs/ui/src/lib/Userpic/Userpic.tsx",
+          "hash": "21453840811953605",
           "deps": [
             "npm:chroma-js",
             "npm:date-fns",
@@ -10803,12 +9511,13 @@
           "deps": [
             "npm:mobx-react",
             "npm:react",
+            "core",
             "npm:clsx"
           ]
         },
         {
-          "file": "libs/datamanager/src/components/CellViews/Agreement/Agreement.jsx",
-          "hash": "14674381211491279469",
+          "file": "libs/ui/src/lib/auto-sizer-table/auto-sizer-table.tsx",
+          "hash": "3603254435905366319",
           "deps": [
             "npm:react",
             "ui",
@@ -11686,357 +10395,432 @@
             "npm:mobx-react",
             "npm:react",
             "npm:react-virtualized-auto-sizer",
-            "npm:react-window",
             "npm:react-window-infinite-loader",
-            "ui"
+            "npm:react-window",
+            "npm:clsx"
           ]
         },
         {
-          "file": "libs/datamanager/src/components/MainView/GridView/GridView.scss",
-          "hash": "1349977712240484002"
+          "file": "libs/ui/src/lib/badge/badge.tsx",
+          "hash": "13526318269635579279"
         },
         {
-          "file": "libs/datamanager/src/components/MainView/GridView/ImagePreview.tsx",
-          "hash": "6552570847490721954",
+          "file": "libs/ui/src/lib/button/button.module.scss",
+          "hash": "5268849623173136464"
+        },
+        {
+          "file": "libs/ui/src/lib/button/button.stories.tsx",
+          "hash": "272147848620020692",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/button/button.tsx",
+          "hash": "8723417111511571979",
           "deps": [
             "npm:react",
-            "npm:mobx-react",
-            "ui"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/components/MainView/GridView/__tests__/GridView.test.tsx",
-          "hash": "12515208039369972116",
-          "deps": [
-            "npm:@testing-library/react",
-            "npm:mobx",
-            "npm:@testing-library/jest-dom",
-            "npm:react"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/components/MainView/index.js",
-          "hash": "5489654530755941408"
-        },
-        {
-          "file": "libs/datamanager/src/dev.jsx",
-          "hash": "165194479328041592"
-        },
-        {
-          "file": "libs/datamanager/src/hooks/useFirstMountState.ts",
-          "hash": "10387130808766823240",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/hooks/useUpdateEffect.ts",
-          "hash": "16044385656371192816",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/index.js",
-          "hash": "14217918101286443220"
-        },
-        {
-          "file": "libs/datamanager/src/mixins/DataStore/DataStore.js",
-          "hash": "13647049213031722372",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/mixins/DataStore/DataStoreItem.js",
-          "hash": "12630292780093341673",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/mixins/DataStore/index.js",
-          "hash": "18193454240606431566"
-        },
-        {
-          "file": "libs/datamanager/src/providers/MultiProvider.js",
-          "hash": "6236673295702560702",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/providers/SDKProvider.jsx",
-          "hash": "15360621736049019863",
-          "deps": [
-            "npm:react"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/sdk/api-config.js",
-          "hash": "1829723156655489752"
-        },
-        {
-          "file": "libs/datamanager/src/sdk/app-create.jsx",
-          "hash": "2967969805706374999",
-          "deps": [
-            "npm:react-dom"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/sdk/comments-sdk.js",
-          "hash": "1739315702585751991"
-        },
-        {
-          "file": "libs/datamanager/src/sdk/dm-sdk.js",
-          "hash": "10296145898332666705",
-          "deps": [
-            "npm:mobx-react",
-            "npm:mobx-state-tree",
-            "npm:react-dom",
-            "npm:strman",
             "core"
           ]
         },
         {
-          "file": "libs/datamanager/src/sdk/hotkeys.ts",
-          "hash": "4570725391702006118",
+          "file": "libs/ui/src/lib/callout/callout.module.scss",
+          "hash": "5709140095969045987"
+        },
+        {
+          "file": "libs/ui/src/lib/callout/callout.tsx",
+          "hash": "11258872317199913117",
           "deps": [
-            "npm:react-hotkeys-hook",
-            "npm:strman"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/sdk/index.js",
-          "hash": "1876463684652328571"
-        },
-        {
-          "file": "libs/datamanager/src/sdk/keymap.ts",
-          "hash": "9094697036193009430"
-        },
-        {
-          "file": "libs/datamanager/src/sdk/lsf-history.ts",
-          "hash": "13601226773012498882"
-        },
-        {
-          "file": "libs/datamanager/src/sdk/lsf-sdk.js",
-          "hash": "6195224669221958378",
-          "deps": [
-            "npm:mobx"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/sdk/lsf-utils.ts",
-          "hash": "11863338963486322073"
-        },
-        {
-          "file": "libs/datamanager/src/stores/Action.js",
-          "hash": "15973746522993394974",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/AppStore.js",
-          "hash": "9573975993227045441",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Assignee.js",
-          "hash": "176716681122509495",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/DataStores/annotations.js",
-          "hash": "16449772648567632011",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/DataStores/index.js",
-          "hash": "1554739709013867405"
-        },
-        {
-          "file": "libs/datamanager/src/stores/DataStores/tasks.js",
-          "hash": "8576778446201723544",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/DynamicModel.js",
-          "hash": "6428781912749964441",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/filter_utils.ts",
-          "hash": "12487737715717030982"
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/index.js",
-          "hash": "18067196735615496704"
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/store.js",
-          "hash": "8276593091374948143",
-          "deps": [
-            "npm:mobx-state-tree",
-            "core"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/tab.js",
-          "hash": "1835933875162290251",
-          "deps": [
-            "npm:deep-equal",
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/tab_column.jsx",
-          "hash": "8230849789162362676",
-          "deps": [
-            "npm:mobx-state-tree",
-            "ui"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/tab_filter.js",
-          "hash": "7765828107363475238",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/tab_filter_type.js",
-          "hash": "18082221791598611205",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/tab_hidden_columns.js",
-          "hash": "16587792371562768463",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Tabs/tab_selected_items.js",
-          "hash": "14501685781982225631",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/Users.js",
-          "hash": "14197175838150823638",
-          "deps": [
-            "npm:mobx-state-tree"
-          ]
-        },
-        {
-          "file": "libs/datamanager/src/stores/types.js",
-          "hash": "11283761717660953605",
-          "deps": [
-            "npm:mobx-state-tree",
+            "npm:clsx",
             "npm:react"
           ]
         },
         {
-          "file": "libs/datamanager/src/styles/waiting.scss",
-          "hash": "8463434735974911748"
+          "file": "libs/ui/src/lib/card-new/card.module.scss",
+          "hash": "11288656233299305602"
         },
         {
-          "file": "libs/datamanager/src/types/Global.d.ts",
-          "hash": "7063594287948484539"
-        },
-        {
-          "file": "libs/datamanager/src/types/Task.ts",
-          "hash": "1031172368828948908"
-        },
-        {
-          "file": "libs/datamanager/src/utils/ActivityObserver.ts",
-          "hash": "13938001943001393016"
-        },
-        {
-          "file": "libs/datamanager/src/utils/__tests__/helpers.test.ts",
-          "hash": "6441404754468059824"
-        },
-        {
-          "file": "libs/datamanager/src/utils/api-proxy/index.js",
-          "hash": "11611125477304568111",
+          "file": "libs/ui/src/lib/card-new/card.tsx",
+          "hash": "16382557976249320049",
           "deps": [
-            "core"
+            "npm:clsx",
+            "npm:react"
           ]
         },
         {
-          "file": "libs/datamanager/src/utils/api-proxy/status-codes.json",
-          "hash": "88747259853864935"
+          "file": "libs/ui/src/lib/checkbox/checkbox.module.scss",
+          "hash": "2040376695137143887"
         },
         {
-          "file": "libs/datamanager/src/utils/bem.tsx",
-          "hash": "13412159206999594495",
+          "file": "libs/ui/src/lib/checkbox/checkbox.spec.tsx",
+          "hash": "4702640993578402082",
+          "deps": [
+            "npm:@testing-library/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/checkbox/checkbox.stories.tsx",
+          "hash": "1218171550693905049",
+          "deps": [
+            "npm:@storybook/react",
+            "npm:storybook"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/checkbox/checkbox.tsx",
+          "hash": "18240318256333538955",
           "deps": [
             "npm:react",
             "npm:clsx"
           ]
         },
         {
-          "file": "libs/datamanager/src/utils/colors.js",
-          "hash": "18049898544705753349"
+          "file": "libs/ui/src/lib/code-block/code-block.tsx",
+          "hash": "1534737596075869261"
         },
         {
-          "file": "libs/datamanager/src/utils/debounce.js",
-          "hash": "16304364790745889156"
+          "file": "libs/ui/src/lib/code-editor/code-editor.module.scss",
+          "hash": "12306006136760566181"
         },
         {
-          "file": "libs/datamanager/src/utils/feature-flags.js",
-          "hash": "15879490350981324273"
-        },
-        {
-          "file": "libs/datamanager/src/utils/helpers.ts",
-          "hash": "11075392893831376170",
+          "file": "libs/ui/src/lib/code-editor/code-editor.spec.tsx",
+          "hash": "68645420484802263",
           "deps": [
-            "npm:strman"
+            "npm:@testing-library/react"
           ]
         },
         {
-          "file": "libs/datamanager/src/utils/history.js",
-          "hash": "971584171895574324"
-        },
-        {
-          "file": "libs/datamanager/src/utils/random.js",
-          "hash": "14810963658780948326",
+          "file": "libs/ui/src/lib/code-editor/code-editor.tsx",
+          "hash": "6466856603995214130",
           "deps": [
-            "npm:nanoid"
+            "npm:react-codemirror2",
+            "npm:codemirror",
+            "npm:react"
           ]
         },
         {
-          "file": "libs/datamanager/src/utils/types.js",
-          "hash": "752976362828106579"
+          "file": "libs/ui/src/lib/code-editor/config-hint.ts",
+          "hash": "8179474043375623603",
+          "deps": [
+            "npm:codemirror"
+          ]
         },
         {
-          "file": "libs/datamanager/src/utils/utils.ts",
-          "hash": "16255245808076073866"
+          "file": "libs/ui/src/lib/enterprise-badge/enterprise-badge.module.scss",
+          "hash": "16355196777294355739"
         },
         {
-          "file": "libs/datamanager/tsconfig.json",
-          "hash": "3001970823662143987"
+          "file": "libs/ui/src/lib/enterprise-badge/enterprise-badge.stories.tsx",
+          "hash": "17647489797279012489",
+          "deps": [
+            "npm:@storybook/react"
+          ]
         },
         {
-          "file": "libs/datamanager/tsconfig.lib.json",
-          "hash": "17190776767862500632"
+          "file": "libs/ui/src/lib/enterprise-badge/enterprise-badge.tsx",
+          "hash": "1507230896851093124",
+          "deps": [
+            "npm:clsx",
+            "npm:react"
+          ]
         },
         {
-          "file": "libs/datamanager/tsconfig.spec.json",
+          "file": "libs/ui/src/lib/label/label.module.scss",
+          "hash": "3763174075135146918"
+        },
+        {
+          "file": "libs/ui/src/lib/label/label.tsx",
+          "hash": "11594796449883172811",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/popover/index.ts",
+          "hash": "3296342276845419461"
+        },
+        {
+          "file": "libs/ui/src/lib/popover/popover.module.scss",
+          "hash": "15594673041960758385"
+        },
+        {
+          "file": "libs/ui/src/lib/popover/popover.stories.tsx",
+          "hash": "13681044593235240280",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/popover/popover.tsx",
+          "hash": "3283680409185788097",
+          "deps": [
+            "npm:react",
+            "npm:tailwind-merge",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/select/select.module.scss",
+          "hash": "17243041654780207683"
+        },
+        {
+          "file": "libs/ui/src/lib/select/select.tsx",
+          "hash": "16262187921469242611",
+          "deps": [
+            "npm:react",
+            "core",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/select/types.ts",
+          "hash": "4586270864585360604",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/simple-card/index.tsx",
+          "hash": "17026692301435378101",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/skeleton/skeleton.tsx",
+          "hash": "3408408288114743149"
+        },
+        {
+          "file": "libs/ui/src/lib/space/space.module.scss",
+          "hash": "9415943562126981858"
+        },
+        {
+          "file": "libs/ui/src/lib/space/space.tsx",
+          "hash": "12377511061587965771",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/index.ts",
+          "hash": "12458857204012520608"
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/sparkles.module.scss",
+          "hash": "15548710676713306770"
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/sparkles.spec.tsx",
+          "hash": "10032792965388901421",
+          "deps": [
+            "npm:@testing-library/jest-dom",
+            "npm:@testing-library/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/sparkles.stories.tsx",
+          "hash": "13871657075842305021",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/sparkles.tsx",
+          "hash": "8394341743024749817",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/types.ts",
+          "hash": "5737766855990952305"
+        },
+        {
+          "file": "libs/ui/src/lib/sparkles/utils.ts",
+          "hash": "17923386867310852414"
+        },
+        {
+          "file": "libs/ui/src/lib/spinner/spinner.module.scss",
+          "hash": "10556074786411760788"
+        },
+        {
+          "file": "libs/ui/src/lib/spinner/spinner.tsx",
+          "hash": "1972693269299064042",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/toast/toast.module.scss",
+          "hash": "17857035415312989142"
+        },
+        {
+          "file": "libs/ui/src/lib/toast/toast.stories.tsx",
+          "hash": "15371254820183922028",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/toast/toast.tsx",
+          "hash": "10375413974109396930",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-toast",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/toggle/toggle.module.scss",
+          "hash": "14566724243101348631"
+        },
+        {
+          "file": "libs/ui/src/lib/toggle/toggle.tsx",
+          "hash": "8305783435022013492",
+          "deps": [
+            "npm:react",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/typography/typography.module.scss",
+          "hash": "16850408416779799823"
+        },
+        {
+          "file": "libs/ui/src/lib/typography/typography.stories.tsx",
+          "hash": "10201966818632862104",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/lib/typography/typography.tsx",
+          "hash": "5573887703379784271",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/alert.tsx",
+          "hash": "15959302219582955204",
+          "deps": [
+            "npm:react",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/badge.tsx",
+          "hash": "4939667086039331990",
+          "deps": [
+            "npm:react",
+            "npm:class-variance-authority"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/card.tsx",
+          "hash": "7834303218436698055",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/command.tsx",
+          "hash": "982471317636406289",
+          "deps": [
+            "npm:react",
+            "npm:cmdk"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/dialog.tsx",
+          "hash": "4696186310613064537",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dialog"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/popover.tsx",
+          "hash": "11319617828238688136",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-popover"
+          ]
+        },
+        {
+          "file": "libs/ui/src/shad/components/ui/skeleton.tsx",
+          "hash": "14608057972537028245"
+        },
+        {
+          "file": "libs/ui/src/shad/utils/index.ts",
+          "hash": "11100371978720805709"
+        },
+        {
+          "file": "libs/ui/src/shadcn.ts",
+          "hash": "814982587752164368"
+        },
+        {
+          "file": "libs/ui/src/styles.scss",
+          "hash": "16553354235215829258"
+        },
+        {
+          "file": "libs/ui/src/tailwind.config.js",
+          "hash": "12608969364227663992",
+          "deps": [
+            "npm:tailwind-scrollbar"
+          ]
+        },
+        {
+          "file": "libs/ui/src/tailwind.css",
+          "hash": "3710993362949165660"
+        },
+        {
+          "file": "libs/ui/src/tokens/colors.scss",
+          "hash": "587839507463806397"
+        },
+        {
+          "file": "libs/ui/src/tokens/tokens.js",
+          "hash": "15318348931494432849"
+        },
+        {
+          "file": "libs/ui/src/tokens/tokens.scss",
+          "hash": "6808577564958243704"
+        },
+        {
+          "file": "libs/ui/src/tokens/tokens.stories.tsx",
+          "hash": "14980459030800694427",
+          "deps": [
+            "npm:react",
+            "npm:@storybook/addon-links",
+            "npm:@storybook/react",
+            "npm:jotai",
+            "storybook"
+          ]
+        },
+        {
+          "file": "libs/ui/src/tokens/typography.scss",
+          "hash": "5558792435146168290"
+        },
+        {
+          "file": "libs/ui/src/utils/utils.ts",
+          "hash": "10248605957096426200",
+          "deps": [
+            "npm:clsx",
+            "npm:tailwind-merge"
+          ]
+        },
+        {
+          "file": "libs/ui/tsconfig.json",
+          "hash": "12629615759319729721"
+        },
+        {
+          "file": "libs/ui/tsconfig.lib.json",
+          "hash": "4580231268695066544"
+        },
+        {
+          "file": "libs/ui/tsconfig.spec.json",
           "hash": "6514620907549802163"
         }
       ],
@@ -12218,250 +11002,1728 @@
           "hash": "6514620907549802163"
         }
       ],
-      "app-common": [
+      "frontend-test": [
         {
-          "file": "libs/app-common/.babelrc",
-          "hash": "2946678488919325452"
+          "file": "libs/frontend-test/README.md",
+          "hash": "14270188933704498848"
         },
         {
-          "file": "libs/app-common/README.md",
-          "hash": "4997485180610651293"
+          "file": "libs/frontend-test/package.json",
+          "hash": "8434711933578207555"
         },
         {
-          "file": "libs/app-common/jest.config.ts",
-          "hash": "18308323073569846592"
+          "file": "libs/frontend-test/project.json",
+          "hash": "5788564706478431498"
         },
         {
-          "file": "libs/app-common/package.json",
-          "hash": "8719547699892112224"
+          "file": "libs/frontend-test/src/bin/assets/cypress.config.js",
+          "hash": "9407140785144899314"
         },
         {
-          "file": "libs/app-common/project.json",
-          "hash": "16260188685218294142"
+          "file": "libs/frontend-test/src/bin/assets/e2e.ts",
+          "hash": "9183615643336478206"
         },
         {
-          "file": "libs/app-common/src/blocks/SampleDatasetSelect/SampleDatasetSelect.tsx",
-          "hash": "13964211895479890972",
+          "file": "libs/frontend-test/src/bin/assets/package.json",
+          "hash": "10240246029401386037"
+        },
+        {
+          "file": "libs/frontend-test/src/bin/assets/spec.cy.ts",
+          "hash": "10611028812257918079",
           "deps": [
+            "npm:chai"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/bin/assets/tsconfig.json",
+          "hash": "12722027459609056532"
+        },
+        {
+          "file": "libs/frontend-test/src/bin/cli.js",
+          "hash": "14978676568636884794",
+          "deps": [
+            "npm:yargs"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/configure.ts",
+          "hash": "15965431963516193957",
+          "deps": [
+            "npm:cypress",
+            "npm:cypress-terminal-report",
+            "npm:cypress-image-snapshot",
+            "npm:@nx/cypress"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/cypress/fixtures/example.json",
+          "hash": "11785586596216172004"
+        },
+        {
+          "file": "libs/frontend-test/src/cypress/support/commands.ts",
+          "hash": "5467080725393066100",
+          "deps": [
+            "npm:cypress-image-snapshot"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/cypress/support/e2e.ts",
+          "hash": "8432270492717250999",
+          "deps": [
+            "npm:@cypress/code-coverage",
+            "npm:cypress-terminal-report"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/feature-flags.ts",
+          "hash": "12401389598041239088"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/AudioView.ts",
+          "hash": "14855640311197082734",
+          "deps": [
+            "editor"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Choices.ts",
+          "hash": "6064410541275223446"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Collapse.ts",
+          "hash": "13556290072249346816"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/DateTime.ts",
+          "hash": "17260672916341025312"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Hotkeys.ts",
+          "hash": "9819620960538906717"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/ImageView.ts",
+          "hash": "4957003704837915593"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/LabelStudio.ts",
+          "hash": "11782004688569046757",
+          "deps": [
+            "npm:chai"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Labels.ts",
+          "hash": "7718386715943081952"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Modals.ts",
+          "hash": "3436836474130641531"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Number.ts",
+          "hash": "10564164812040408027"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Paragraphs.ts",
+          "hash": "17067445360850597266"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Ranker.ts",
+          "hash": "3998295659954580638"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Rating.ts",
+          "hash": "16850077235459025479"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Relations.ts",
+          "hash": "9537498942905411268"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/RichText.ts",
+          "hash": "1079348494967727706"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Sidebar.ts",
+          "hash": "1897873031117362048"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Table.ts",
+          "hash": "2287866694725058794"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Taxonomy.ts",
+          "hash": "2141248980354157489"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Textarea.ts",
+          "hash": "8723062727905314544"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/TimeSeries.ts",
+          "hash": "3789462841025514001",
+          "deps": [
+            "editor"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/ToolBar.ts",
+          "hash": "7330006809123783219",
+          "deps": [
+            "editor"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/Tooltip.ts",
+          "hash": "11262032776930271631"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/VideoView.ts",
+          "hash": "6575312620277836972"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/LSF/index.ts",
+          "hash": "18344019751181652383"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/common/Generator.ts",
+          "hash": "8744744183621057259"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/index.ts",
+          "hash": "6139985436714934182"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/utils/BoundingBoxUtils.ts",
+          "hash": "13169541358353168046"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/utils/SVGPathUtils.ts",
+          "hash": "8145435485620837892"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/utils/SVGTransformUtils.ts",
+          "hash": "11225911002031306624"
+        },
+        {
+          "file": "libs/frontend-test/src/helpers/utils/fixLSParams.ts",
+          "hash": "4577825830605764546"
+        },
+        {
+          "file": "libs/frontend-test/src/plugins/coverage_parallel.js",
+          "hash": "748867265711510192",
+          "deps": [
+            "npm:@cypress/code-coverage",
+            "npm:proper-lockfile"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/plugins/disable_gpu.js",
+          "hash": "8372008230315940442"
+        },
+        {
+          "file": "libs/frontend-test/src/plugins/typescript.js",
+          "hash": "15751366259361972125",
+          "deps": [
+            "npm:@cypress/webpack-preprocessor"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/scripts/chrome.js",
+          "hash": "9893724217705029752",
+          "deps": [
+            "npm:cypress"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/tasks/compareScreenshots.js",
+          "hash": "11245986950338632835",
+          "deps": [
+            "npm:pngjs",
+            "npm:pixelmatch"
+          ]
+        },
+        {
+          "file": "libs/frontend-test/src/tasks/index.js",
+          "hash": "16874283927617821131"
+        },
+        {
+          "file": "libs/frontend-test/src/tasks/index.ts",
+          "hash": "16874283927617821131"
+        },
+        {
+          "file": "libs/frontend-test/src/types/Cypress.d.ts",
+          "hash": "7562318021612359474"
+        },
+        {
+          "file": "libs/frontend-test/src/types/Global.d.ts",
+          "hash": "7699426499634140877"
+        },
+        {
+          "file": "libs/frontend-test/tsconfig.json",
+          "hash": "12950789319971686082"
+        },
+        {
+          "file": "libs/frontend-test/tsconfig.lib.json",
+          "hash": "7381923416685843236"
+        }
+      ],
+      "labelstudio": [
+        {
+          "file": "apps/labelstudio/.babelrc",
+          "hash": "13020124393823981135"
+        },
+        {
+          "file": "apps/labelstudio/README.md",
+          "hash": "18445104073398701992"
+        },
+        {
+          "file": "apps/labelstudio/jest.config.ts",
+          "hash": "17298427892303080422"
+        },
+        {
+          "file": "apps/labelstudio/project.json",
+          "hash": "7685924623996146112"
+        },
+        {
+          "file": "apps/labelstudio/src/app/App.jsx",
+          "hash": "8240092090335348191",
+          "deps": [
+            "npm:history",
+            "npm:react-dom",
+            "npm:react-router-dom",
+            "core",
             "ui",
+            "npm:@tanstack/react-query"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/app/App.scss",
+          "hash": "10208103588849097040"
+        },
+        {
+          "file": "apps/labelstudio/src/app/AsyncPage/AsyncPage.jsx",
+          "hash": "650251269152011188",
+          "deps": [
+            "npm:react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/app/ErrorBoundary.jsx",
+          "hash": "6929550357531773366",
+          "deps": [
             "npm:react"
           ]
         },
         {
-          "file": "libs/app-common/src/blocks/TokenSettingsModal/index.tsx",
-          "hash": "4874740210515513751",
+          "file": "apps/labelstudio/src/app/RootPage.jsx",
+          "hash": "10111353085188341861"
+        },
+        {
+          "file": "apps/labelstudio/src/app/StaticContent/StaticContent.jsx",
+          "hash": "12270783096634477811",
           "deps": [
-            "npm:jotai",
-            "npm:jotai-tanstack-query",
-            "ui",
-            "npm:react",
-            "labelstudio"
+            "npm:html-react-parser",
+            "npm:react"
           ]
         },
         {
-          "file": "libs/app-common/src/blocks/TokenSettingsModal/styles.module.scss",
-          "hash": "16022964268115230406"
+          "file": "apps/labelstudio/src/assets/images/heidi-ai.svg",
+          "hash": "15640051807613200685"
         },
         {
-          "file": "libs/app-common/src/index.ts",
-          "hash": "8395171822700137945"
+          "file": "apps/labelstudio/src/assets/images/heidi-speaking.svg",
+          "hash": "3969103282540951767"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/AccountSettings.module.scss",
-          "hash": "8927597995659992028"
+          "file": "apps/labelstudio/src/assets/images/index.js",
+          "hash": "12486633674802287315"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/AccountSettings.tsx",
-          "hash": "4441896261059236167",
-          "deps": [
-            "ui",
-            "npm:react",
-            "npm:react-router-dom",
-            "npm:clsx",
-            "npm:jotai",
-            "labelstudio"
-          ]
+          "file": "apps/labelstudio/src/assets/images/logo.svg",
+          "hash": "4066073355288650249"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/atoms/index.ts",
-          "hash": "5090100267856154997",
-          "deps": [
-            "labelstudio",
-            "npm:jotai-tanstack-query"
-          ]
-        },
-        {
-          "file": "libs/app-common/src/pages/AccountSettings/hooks/useHotkeys.ts",
-          "hash": "797293615540913396",
+          "file": "apps/labelstudio/src/components/Breadcrumbs/Breadcrumbs.jsx",
+          "hash": "12139563349937292752",
           "deps": [
             "npm:react",
-            "ui",
-            "labelstudio"
+            "npm:react-router-dom"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/EmailPreferences.tsx",
-          "hash": "10631976700244231521",
+          "file": "apps/labelstudio/src/components/Breadcrumbs/Breadcrumbs.scss",
+          "hash": "13552765224653597236"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Card/Card.jsx",
+          "hash": "9019796255076692037"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Card/Card.scss",
+          "hash": "14264411637202518536"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Columns/Columns.jsx",
+          "hash": "14861254823434846467",
           "deps": [
-            "npm:react",
-            "ui",
-            "labelstudio",
-            "core"
+            "npm:react"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys.tsx",
-          "hash": "1530675557579071372",
+          "file": "apps/labelstudio/src/components/Columns/Columns.scss",
+          "hash": "17520461618237896430"
+        },
+        {
+          "file": "apps/labelstudio/src/components/CopyableTooltip/CopyableTooltip.jsx",
+          "hash": "7541822031978757869",
           "deps": [
             "npm:react",
             "ui"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/Help.tsx",
-          "hash": "18255079863735833415",
+          "file": "apps/labelstudio/src/components/DescriptionList/DescriptionList.jsx",
+          "hash": "6825801054795825686",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/DescriptionList/DescriptionList.scss",
+          "hash": "10714899740725891498"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Divider/Divider.jsx",
+          "hash": "6175182389942978015"
+        },
+        {
+          "file": "apps/labelstudio/src/components/DraftGuard/DraftGuard.jsx",
+          "hash": "108171100697801597",
           "deps": [
             "npm:react",
-            "labelstudio",
+            "npm:react-router-dom",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Dropdown/Dropdown.js",
+          "hash": "1602288191126648650"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Dropdown/Dropdown.scss",
+          "hash": "7801469993775656916"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Dropdown/DropdownComponent.jsx",
+          "hash": "6519898004187485803",
+          "deps": [
+            "npm:react",
+            "npm:react-dom",
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Dropdown/DropdownContext.js",
+          "hash": "4242926498067794891",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Dropdown/DropdownTrigger.jsx",
+          "hash": "6765536031173527597",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/EmptyState/EmptyState.jsx",
+          "hash": "6694523005198781887"
+        },
+        {
+          "file": "apps/labelstudio/src/components/EmptyState/EmptyState.scss",
+          "hash": "644857933279743571"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Error/Error.jsx",
+          "hash": "6755148221573102329",
+          "deps": [
+            "npm:react",
+            "npm:sanitize-html",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Error/Error.scss",
+          "hash": "8694871742944933636"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Error/InlineError.jsx",
+          "hash": "15520539973517663614",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Error/PauseError",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/Counter/Counter.jsx",
+          "hash": "13126108547523531663",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/Counter/Counter.scss",
+          "hash": "17443210549927941974"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/Input/Input.jsx",
+          "hash": "243794401360679940"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/Input/Input.scss",
+          "hash": "151299734354486713"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/Label/Label.jsx",
+          "hash": "12537855554845207829",
+          "deps": [
+            "npm:react",
+            "ui",
             "npm:clsx"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/Import.tsx",
-          "hash": "10038304929838148378",
-          "deps": [
-            "npm:react",
-            "ui"
-          ]
+          "file": "apps/labelstudio/src/components/Form/Elements/Label/Label.scss",
+          "hash": "1091722526245597074"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/Item.tsx",
-          "hash": "11889515955193015161",
-          "deps": [
-            "npm:react",
-            "npm:clsx",
-            "ui"
-          ]
-        },
-        {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/Key.module.scss",
-          "hash": "16871537853951420544"
-        },
-        {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/Key.tsx",
-          "hash": "6971136324215251407",
+          "file": "apps/labelstudio/src/components/Form/Elements/RadioGroup/RadioGroup.jsx",
+          "hash": "14438158853427575459",
           "deps": [
             "npm:react"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/Section.tsx",
-          "hash": "15347754255839263276",
+          "file": "apps/labelstudio/src/components/Form/Elements/RadioGroup/RadioGroup.scss",
+          "hash": "3457906494235662362"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/Select/Select.jsx",
+          "hash": "3739175183695076644",
           "deps": [
-            "npm:clsx",
+            "npm:react",
             "ui"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/defaults.js",
-          "hash": "12265368943776874003"
+          "file": "apps/labelstudio/src/components/Form/Elements/TextArea/TextArea.jsx",
+          "hash": "4558059049665848859"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/Hotkeys/utils.ts",
-          "hash": "619969718978754020"
-        },
-        {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/MembershipInfo.module.scss",
-          "hash": "13677036837067652878"
-        },
-        {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/MembershipInfo.tsx",
-          "hash": "14665604446322483596",
+          "file": "apps/labelstudio/src/components/Form/Elements/Toggle/Toggle.jsx",
+          "hash": "13692824074310274986",
           "deps": [
-            "npm:date-fns",
-            "npm:@tanstack/react-query",
-            "labelstudio",
             "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Elements/index.ts",
+          "hash": "4439403398072475199"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Form.jsx",
+          "hash": "387902774747335874",
+          "deps": [
+            "npm:react",
+            "npm:shallow-equal",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Form.scss",
+          "hash": "18385899491485549560"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/FormContext.js",
+          "hash": "14284136374852777299",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/FormField.js",
+          "hash": "885309577984235040",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Utils.ts",
+          "hash": "11801887921264396305",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Validation/Validation.scss",
+          "hash": "10411344284309849322"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/Validation/Validators.js",
+          "hash": "6103661044301603771"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Form/index.js",
+          "hash": "13146553314283343588"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Hamburger/Hamburger.jsx",
+          "hash": "4275003930269448604"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Hamburger/Hamburger.scss",
+          "hash": "17609170817002090247"
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/HeidiTip.scss",
+          "hash": "16061389930057975610"
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/HeidiTip.tsx",
+          "hash": "5048323807137232026",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/HeidiTips.tsx",
+          "hash": "13187555673241688256",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/content.ts",
+          "hash": "10402769240409856579"
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/hooks.ts",
+          "hash": "6041029975245421944",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/liveContent.json",
+          "hash": "15340769151554326039"
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/types.ts",
+          "hash": "14115789822355239049"
+        },
+        {
+          "file": "apps/labelstudio/src/components/HeidiTips/utils.ts",
+          "hash": "15563499183425828733"
+        },
+        {
+          "file": "apps/labelstudio/src/components/LeaveBlocker/LeaveBlocker.tsx",
+          "hash": "1207411376402110341",
+          "deps": [
+            "npm:react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menu/Menu.jsx",
+          "hash": "16148488807195793558",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menu/Menu.scss",
+          "hash": "12040119223810925846"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menu/MenuContext.js",
+          "hash": "3815110111737172683",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menu/MenuItem.jsx",
+          "hash": "6008910926868822976",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menubar/MenuContent.scss",
+          "hash": "15845744032258228309"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menubar/MenuSidebar.scss",
+          "hash": "2930679529971915189"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Menubar/Menubar.jsx",
+          "hash": "13564994908993092675",
+          "deps": [
+            "npm:react",
+            "ui",
+            "app-common",
             "core"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/PersonalAccessToken.module.scss",
-          "hash": "8562718721474230810"
+          "file": "apps/labelstudio/src/components/Menubar/Menubar.scss",
+          "hash": "15324857543312776850"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/PersonalAccessToken.tsx",
-          "hash": "14806635976564563953",
+          "file": "apps/labelstudio/src/components/Modal/Modal.jsx",
+          "hash": "11895790830954967614",
           "deps": [
-            "ui",
-            "npm:jotai-tanstack-query",
-            "npm:jotai",
-            "core",
-            "labelstudio"
+            "npm:react",
+            "npm:react-dom",
+            "ui"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/PersonalInfo.tsx",
-          "hash": "16920019954169356181",
+          "file": "apps/labelstudio/src/components/Modal/Modal.scss",
+          "hash": "4187554701000751470"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Modal/ModalPopup.jsx",
+          "hash": "7723359276686015806",
           "deps": [
             "npm:react",
-            "npm:clsx",
+            "npm:react-dom",
             "ui",
-            "labelstudio",
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Oneof/Oneof.js",
+          "hash": "9724079050581853618",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/Pagination/Pagination.scss",
+          "hash": "11783606898527505983"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Pagination/Pagination.tsx",
+          "hash": "2934177393997032077",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/SidebarMenu/SidebarMenu.jsx",
+          "hash": "7203621867380337536"
+        },
+        {
+          "file": "apps/labelstudio/src/components/SidebarMenu/SidebarMenu.scss",
+          "hash": "10896857914527691991"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Space/Space.jsx",
+          "hash": "1586962236960303011"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Space/Space.scss",
+          "hash": "11263954920970450320"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Spinner/Spinner.jsx",
+          "hash": "17046513174581920753"
+        },
+        {
+          "file": "apps/labelstudio/src/components/Spinner/Spinner.scss",
+          "hash": "13927653215195411982"
+        },
+        {
+          "file": "apps/labelstudio/src/components/ToggleItems/ToggleItems.scss",
+          "hash": "17814021264095365520"
+        },
+        {
+          "file": "apps/labelstudio/src/components/ToggleItems/ToggleItems.tsx",
+          "hash": "12048889599872978830",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/VersionNotifier/VersionNotifier.jsx",
+          "hash": "548587952560946124",
+          "deps": [
+            "npm:date-fns",
+            "npm:react",
+            "npm:react-router-dom",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/components/VersionNotifier/VersionNotifier.scss",
+          "hash": "4227026427004391163"
+        },
+        {
+          "file": "apps/labelstudio/src/components/index.js",
+          "hash": "9212855882145772815"
+        },
+        {
+          "file": "apps/labelstudio/src/config/ApiConfig.example.js",
+          "hash": "6430324760376609878"
+        },
+        {
+          "file": "apps/labelstudio/src/config/ApiConfig.js",
+          "hash": "14552131833401469119"
+        },
+        {
+          "file": "apps/labelstudio/src/config/Sentry.test.ts",
+          "hash": "8584595701711334072",
+          "deps": [
+            [
+              "npm:@sentry/browser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/config/Sentry.ts",
+          "hash": "989897229684526718",
+          "deps": [
+            "npm:@sentry/browser",
+            "npm:@sentry/react",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/favicon.ico",
+          "hash": "6343206690449962429"
+        },
+        {
+          "file": "apps/labelstudio/src/hooks/useCopyText.ts",
+          "hash": "364642338245382886",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/hooks/useOrgValidation.tsx",
+          "hash": "8704837658541551588",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/index.html",
+          "hash": "2950225942531917374"
+        },
+        {
+          "file": "apps/labelstudio/src/main.tsx",
+          "hash": "6879135611492610807",
+          "deps": [
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/Config.jsx",
+          "hash": "12567997818679789000",
+          "deps": [
+            "npm:react",
+            "npm:codemirror",
+            "ui",
             "core",
+            "npm:strman"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/Config.scss",
+          "hash": "16600495722375759521"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/Preview.jsx",
+          "hash": "5128595787676751513",
+          "deps": [
+            "npm:react",
+            [
+              "editor",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/Template.js",
+          "hash": "3754219631432825288"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/TemplatesList.jsx",
+          "hash": "15124316900631337700",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/UnsavedChanges.tsx",
+          "hash": "3621058629826615421",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/colors.js",
+          "hash": "8504469985897505118"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/recipes.js",
+          "hash": "5559586985638334476"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Config/tags.js",
+          "hash": "1444862270468548557"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/CreateProject.jsx",
+          "hash": "5880524000250700741",
+          "deps": [
+            "ui",
+            "npm:react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/CreateProject.scss",
+          "hash": "260264850855272656"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Import/Import.jsx",
+          "hash": "3041106445203956014",
+          "deps": [
+            "core",
+            "app-common",
+            "ui",
+            "npm:jotai",
+            "datamanager",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Import/Import.scss",
+          "hash": "10175317223548901707"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Import/ImportModal.jsx",
+          "hash": "11974094692449262820",
+          "deps": [
+            "npm:react",
+            "npm:react-router",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Import/samples.json",
+          "hash": "948549985218546555"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Import/useImportPage.js",
+          "hash": "968719857139566906",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/Import/utils.ts",
+          "hash": "1795864818978708921"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/utils/atoms.ts",
+          "hash": "15210822500614455802",
+          "deps": [
+            "core",
+            "npm:jotai-tanstack-query"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/CreateProject/utils/useDraftProject.js",
+          "hash": "3490448438343824888",
+          "deps": [
+            "npm:jotai",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/DataManager/DataManager.jsx",
+          "hash": "9118060643611096148",
+          "deps": [
+            "npm:react",
+            "npm:react-router",
+            "npm:react-router-dom",
+            "ui",
+            [
+              "datamanager",
+              "dynamic"
+            ],
+            [
+              "editor",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/DataManager/DataManager.scss",
+          "hash": "7029443376795365345"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/DataManager/api-config.example.js",
+          "hash": "11116690340793552972"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/DataManager/api-config.js",
+          "hash": "12000100581705262580"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/DataManager/index.js",
+          "hash": "17266321720961808594"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/ExportPage/ExportPage.jsx",
+          "hash": "2745860117983770875",
+          "deps": [
+            "npm:react",
+            "npm:react-router",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/ExportPage/ExportPage.scss",
+          "hash": "7988202861510230512"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Home/HomePage.tsx",
+          "hash": "4083133361306730686",
+          "deps": [
+            "ui",
+            "npm:@tanstack/react-query",
+            "npm:react",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/Models/@components/EmptyList.scss",
+          "hash": "1394464914597903885"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/Models/@components/EmptyList.tsx",
+          "hash": "3273017266140253310",
+          "deps": [
+            "ui",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/Models/ModelsPage.tsx",
+          "hash": "13549970383333159396",
+          "deps": [
+            "ui",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/InviteLink.tsx",
+          "hash": "12218039489101354425",
+          "deps": [
+            "npm:react",
+            "ui",
             "npm:jotai-tanstack-query",
             "npm:jotai"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/PersonalJWTToken.module.scss",
-          "hash": "10433104220178656584"
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeopleInvitation.scss",
+          "hash": "16046864837953914603"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/PersonalJWTToken.tsx",
-          "hash": "12569463772505862111",
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeopleList.jsx",
+          "hash": "13691261975671578587",
           "deps": [
-            "ui",
-            "npm:jotai-tanstack-query",
-            "npm:jotai",
-            "npm:clsx",
-            "npm:react",
             "npm:date-fns",
-            "core",
-            "labelstudio"
+            "npm:react",
+            "ui"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/index.raw.css",
-          "hash": "15444092644382625417"
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeopleList.scss",
+          "hash": "6994806817152525502"
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/sections/index.tsx",
-          "hash": "19594405333736696",
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeoplePage.jsx",
+          "hash": "11138855845786734672",
           "deps": [
             "npm:react",
+            "ui",
+            "app-common"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/PeoplePage.scss",
+          "hash": "6303292527393840043"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/SelectedUser.jsx",
+          "hash": "2257965246729699989",
+          "deps": [
+            "npm:date-fns",
+            "npm:react-router-dom",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/PeoplePage/SelectedUser.scss",
+          "hash": "13343416379528382037"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Organization/index.jsx",
+          "hash": "7673852293649412927"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Projects/Projects.jsx",
+          "hash": "6921142154173916215",
+          "deps": [
+            "npm:react",
+            "npm:react-router",
+            "npm:react-router-dom",
+            "ui",
             "core"
           ]
         },
         {
-          "file": "libs/app-common/src/pages/AccountSettings/types/index.ts",
-          "hash": "8525319934837953561"
+          "file": "apps/labelstudio/src/pages/Projects/Projects.scss",
+          "hash": "17643405088660042232"
         },
         {
-          "file": "libs/app-common/src/pages/index.ts",
-          "hash": "13391695785679841114"
+          "file": "apps/labelstudio/src/pages/Projects/ProjectsList.jsx",
+          "hash": "15849341155939665980",
+          "deps": [
+            "npm:chroma-js",
+            "npm:date-fns",
+            "npm:react",
+            "npm:react-router-dom",
+            "ui"
+          ]
         },
         {
-          "file": "libs/app-common/tsconfig.json",
-          "hash": "12937361759397702261"
+          "file": "apps/labelstudio/src/pages/Settings/AnnotationSettings.jsx",
+          "hash": "17602031257280386189",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
         },
         {
-          "file": "libs/app-common/tsconfig.lib.json",
-          "hash": "15147195313780277677"
+          "file": "apps/labelstudio/src/pages/Settings/AnnotationSettings/ModelVersionSelector.jsx",
+          "hash": "13732182696588258733",
+          "deps": [
+            "npm:react"
+          ]
         },
         {
-          "file": "libs/app-common/tsconfig.spec.json",
-          "hash": "6514620907549802163"
+          "file": "apps/labelstudio/src/pages/Settings/DangerZone.jsx",
+          "hash": "3262365555309124839",
+          "deps": [
+            "npm:react",
+            "npm:react-router",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/GeneralSettings.jsx",
+          "hash": "4109222895759335757",
+          "deps": [
+            "ui",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/LabelingSettings.jsx",
+          "hash": "9985527372516114849",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/Forms.jsx",
+          "hash": "6858249416933728571",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningList.jsx",
+          "hash": "18394941027493248888",
+          "deps": [
+            "npm:date-fns",
+            "npm:react",
+            "npm:truncate-middle",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningList.scss",
+          "hash": "8443223769762091274"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningSettings.jsx",
+          "hash": "13269650115919181279",
+          "deps": [
+            "npm:react",
+            "npm:react-router-dom",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/MachineLearningSettings.scss",
+          "hash": "2745421333930171306"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/StartModelTraining.jsx",
+          "hash": "14322421144803555064",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/MachineLearningSettings/TestRequest.jsx",
+          "hash": "2759562564208938149",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/PredictionsSettings/PredictionsList.jsx",
+          "hash": "8449090163909505633",
+          "deps": [
+            "npm:react",
+            "npm:date-fns",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/PredictionsSettings/PredictionsList.scss",
+          "hash": "14703439190845647035"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/PredictionsSettings/PredictionsSettings.jsx",
+          "hash": "6255196493778700074",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageCard.jsx",
+          "hash": "11197897549858215580",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageForm.jsx",
+          "hash": "1479438047786619264",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageSet.jsx",
+          "hash": "3010671201761448309",
+          "deps": [
+            "npm:react",
+            "ui",
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageSettings.jsx",
+          "hash": "2831060757541215837",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/StorageSummary.jsx",
+          "hash": "4288936013718490205",
+          "deps": [
+            "npm:date-fns",
+            "ui",
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/StorageSettings/hooks/useStorageCard.tsx",
+          "hash": "11370944964572334850",
+          "deps": [
+            "npm:@tanstack/react-query",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/index.jsx",
+          "hash": "13451658603389888073"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/Settings/settings.scss",
+          "hash": "1345899308558752379"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookDeleteModal.jsx",
+          "hash": "12232941102242742545",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookDetail.jsx",
+          "hash": "3482084740034923250",
+          "deps": [
+            "npm:react",
+            "ui",
+            "npm:lodash"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookList.jsx",
+          "hash": "4775857803764665733",
+          "deps": [
+            "npm:react",
+            "ui",
+            "npm:date-fns"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookPage.jsx",
+          "hash": "14517035378071817668",
+          "deps": [
+            "npm:react",
+            "ui",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/WebhookPage/WebhookPage.scss",
+          "hash": "2243542309225199740"
+        },
+        {
+          "file": "apps/labelstudio/src/pages/index.js",
+          "hash": "14217025997172754078",
+          "deps": [
+            "app-common",
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/pages/types/Page.ts",
+          "hash": "14363875956266958259",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/ApiProvider.tsx",
+          "hash": "12861218252929901784",
+          "deps": [
+            "npm:react",
+            "core",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/AppStoreProvider.jsx",
+          "hash": "11053796472161618364",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/AppStoreProvider.tsx",
+          "hash": "15855807426035061051",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/ConfigProvider.jsx",
+          "hash": "11008203273699901879",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/CurrentUser.d.ts",
+          "hash": "12362079206036476727"
+        },
+        {
+          "file": "apps/labelstudio/src/providers/CurrentUser.jsx",
+          "hash": "12279069879407859629",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/MultiProvider.js",
+          "hash": "6236673295702560702",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/ProjectProvider.tsx",
+          "hash": "14192257824346937082",
+          "deps": [
+            "npm:react",
+            "npm:shallow-equal",
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/providers/RoutesProvider.d.ts",
+          "hash": "4104821928982036871"
+        },
+        {
+          "file": "apps/labelstudio/src/providers/RoutesProvider.jsx",
+          "hash": "1656728088154974450",
+          "deps": [
+            "npm:react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/routes/ProjectRoutes.jsx",
+          "hash": "2328269631125187658"
+        },
+        {
+          "file": "apps/labelstudio/src/routes/RouteWithStaticFallback.jsx",
+          "hash": "2185061206888271562",
+          "deps": [
+            "npm:react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/services/breadrumbs.js",
+          "hash": "6406187264774985194",
+          "deps": [
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/themes/default/colors.scss",
+          "hash": "18190760069949074655"
+        },
+        {
+          "file": "apps/labelstudio/src/themes/default/tokens.scss",
+          "hash": "7420844050257215977"
+        },
+        {
+          "file": "apps/labelstudio/src/themes/default/typography.scss",
+          "hash": "17357203671465173104"
+        },
+        {
+          "file": "apps/labelstudio/src/themes/default/variables.scss",
+          "hash": "14694381837513154368"
+        },
+        {
+          "file": "apps/labelstudio/src/types/Global.d.ts",
+          "hash": "15537460223674333112"
+        },
+        {
+          "file": "apps/labelstudio/src/types/Project.d.ts",
+          "hash": "221314118958290479"
+        },
+        {
+          "file": "apps/labelstudio/src/types/router/pages.d.ts",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/labelstudio/src/types/shallow-equal.d.ts",
+          "hash": "11076908927223349500"
+        },
+        {
+          "file": "apps/labelstudio/src/utils/bem.tsx",
+          "hash": "16871734503133779850",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/colors.js",
+          "hash": "17528171681799778807"
+        },
+        {
+          "file": "apps/labelstudio/src/utils/debounce.js",
+          "hash": "3801228082671015793"
+        },
+        {
+          "file": "apps/labelstudio/src/utils/feature-flags.ts",
+          "hash": "15800705877359307812",
+          "deps": [
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/helpers.ts",
+          "hash": "12793145833541343918"
+        },
+        {
+          "file": "apps/labelstudio/src/utils/hooks.ts",
+          "hash": "16648057819726225528",
+          "deps": [
+            "npm:react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/jotai-store.ts",
+          "hash": "14609218979677739757",
+          "deps": [
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/license-flags.ts",
+          "hash": "1808867839114692725",
+          "deps": [
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/query-client.ts",
+          "hash": "7989411051938178015",
+          "deps": [
+            "core"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/routeHelpers.jsx",
+          "hash": "10070702539576600009",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "apps/labelstudio/src/utils/scripts.js",
+          "hash": "16070433978531357127"
+        },
+        {
+          "file": "apps/labelstudio/src/utils/selectors.js",
+          "hash": "15348377316944286342"
+        },
+        {
+          "file": "apps/labelstudio/src/utils/service-worker.js",
+          "hash": "3144941291336220931"
+        },
+        {
+          "file": "apps/labelstudio/tsconfig.app.json",
+          "hash": "17190776767862500632"
+        },
+        {
+          "file": "apps/labelstudio/tsconfig.json",
+          "hash": "6661430078687049149"
+        },
+        {
+          "file": "apps/labelstudio/tsconfig.spec.json",
+          "hash": "6298633881193702183"
+        }
+      ],
+      "playground": [
+        {
+          "file": "apps/playground/.babelrc",
+          "hash": "13020124393823981135"
+        },
+        {
+          "file": "apps/playground/README.mdc",
+          "hash": "8582056915243697925"
+        },
+        {
+          "file": "apps/playground/jest.config.ts",
+          "hash": "9965354517331133681"
+        },
+        {
+          "file": "apps/playground/project.json",
+          "hash": "17496634093589488891"
+        },
+        {
+          "file": "apps/playground/src/atoms/configAtoms.ts",
+          "hash": "5658743986347797612",
+          "deps": [
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/BottomPanel/BottomPanel.tsx",
+          "hash": "9804699641592858517",
+          "deps": [
+            "npm:react",
+            "npm:jotai",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/BottomPanel/index.ts",
+          "hash": "18699214462675680"
+        },
+        {
+          "file": "apps/playground/src/components/EditorPanel/EditorPanel.tsx",
+          "hash": "4777069222285453952",
+          "deps": [
+            "npm:react",
+            "npm:jotai",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/EditorPanel/index.ts",
+          "hash": "10746387504261749693"
+        },
+        {
+          "file": "apps/playground/src/components/PlaygroundApp/PlaygroundApp.module.scss",
+          "hash": "17110053591030319285"
+        },
+        {
+          "file": "apps/playground/src/components/PlaygroundApp/PlaygroundApp.tsx",
+          "hash": "13650043887091336770",
+          "deps": [
+            "npm:react",
+            "npm:jotai",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/PlaygroundApp/TopBar.tsx",
+          "hash": "8850875591580687348",
+          "deps": [
+            "npm:react",
+            "ui",
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/PlaygroundApp/__tests__/PlaygroundApp.test.tsx",
+          "hash": "2823395181699792879",
+          "deps": [
+            "npm:@testing-library/react",
+            "npm:jotai"
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/PlaygroundApp/index.ts",
+          "hash": "5138425617626964856"
+        },
+        {
+          "file": "apps/playground/src/components/PreviewPanel/PreviewPanel.tsx",
+          "hash": "8394586870895233093",
+          "deps": [
+            "npm:react",
+            "npm:jotai",
+            "npm:mobx-state-tree",
+            [
+              "editor",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "apps/playground/src/components/PreviewPanel/index.ts",
+          "hash": "7154375855857532759"
+        },
+        {
+          "file": "apps/playground/src/hooks/useCopyText.ts",
+          "hash": "12883359484300719444",
+          "deps": [
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/playground/src/index.html",
+          "hash": "14132177418177227141"
+        },
+        {
+          "file": "apps/playground/src/main.tsx",
+          "hash": "9444602326673399566",
+          "deps": [
+            "npm:react-dom",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/playground/src/utils/__tests__/generateSampleTask.test.ts",
+          "hash": "9669266756362896088"
+        },
+        {
+          "file": "apps/playground/src/utils/codeEditor.ts",
+          "hash": "13902967899359367671",
+          "deps": [
+            "npm:codemirror",
+            "core"
+          ]
+        },
+        {
+          "file": "apps/playground/src/utils/date.ts",
+          "hash": "54513804162886039",
+          "deps": [
+            "npm:date-fns"
+          ]
+        },
+        {
+          "file": "apps/playground/src/utils/embedFeatureFlags.ts",
+          "hash": "15658085493471684648"
+        },
+        {
+          "file": "apps/playground/src/utils/generateSampleTask.ts",
+          "hash": "16791312168523553583"
+        },
+        {
+          "file": "apps/playground/src/utils/query.ts",
+          "hash": "9117397897851093380"
+        },
+        {
+          "file": "apps/playground/src/utils/url.ts",
+          "hash": "2909700385476322423"
+        },
+        {
+          "file": "apps/playground/tsconfig.app.json",
+          "hash": "17190776767862500632"
+        },
+        {
+          "file": "apps/playground/tsconfig.json",
+          "hash": "14772403161501097210"
+        },
+        {
+          "file": "apps/playground/tsconfig.spec.json",
+          "hash": "6298633881193702183"
         }
       ],
       "storybook": [
@@ -12572,6 +12834,36 @@
         {
           "file": "libs/storybook/tsconfig.storybook.json",
           "hash": "9877693811502968150"
+        }
+      ],
+      "labelstudio-e2e": [
+        {
+          "file": "apps/labelstudio-e2e/cypress.config.ts",
+          "hash": "9333357230613925379",
+          "deps": [
+            "npm:cypress",
+            "npm:@nx/cypress"
+          ]
+        },
+        {
+          "file": "apps/labelstudio-e2e/project.json",
+          "hash": "371110122431775071"
+        },
+        {
+          "file": "apps/labelstudio-e2e/src/e2e/app.cy.ts",
+          "hash": "4055606894390288348"
+        },
+        {
+          "file": "apps/labelstudio-e2e/src/support/commands.ts",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/labelstudio-e2e/src/support/e2e.ts",
+          "hash": "3666078656922506009"
+        },
+        {
+          "file": "apps/labelstudio-e2e/tsconfig.json",
+          "hash": "1788248097864730386"
         }
       ]
     }

@@ -28,8 +28,17 @@ ENV BUILD_NO_SERVER=true \
 WORKDIR /label-studio/web
 
 # Fix Docker Arm64 Build
-RUN yarn config set registry https://registry.npmjs.org/
+RUN yarn config set registry https://registry.npmmirror.com/ \
+    && yarn config set disturl https://npmmirror.com/dist \
+    && yarn config set electron_mirror https://npmmirror.com/mirrors/electron/ \
+    && yarn config set puppeteer_download_host https://npmmirror.com/mirrors/ \
+    && yarn config set chromedriver_cdnurl https://npmmirror.com/mirrors/chromedriver/ \
+    && yarn config set operadriver_cdnurl https://npmmirror.com/mirrors/operadriver/ \
+    && yarn config set phantomjs_cdnurl https://npmmirror.com/mirrors/phantomjs/ \
+    && yarn config set sass_binary_site https://npmmirror.com/mirrors/node-sass/ \
+    && yarn config set python_mirror https://npmmirror.com/mirrors/python/
 RUN yarn config set network-timeout 1200000 # HTTP timeout used when downloading packages, set to 20 minutes
+
 
 COPY web/package.json .
 COPY web/yarn.lock .
@@ -69,7 +78,9 @@ ENV PYTHONUNBUFFERED=1 \
 ADD https://install.python-poetry.org /tmp/install-poetry.py
 RUN python /tmp/install-poetry.py
 
-RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
+
+RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
+    --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
     apt-get update; \
@@ -89,6 +100,8 @@ COPY pyproject.toml poetry.lock README.md ./
 
 # Set a default build argument for including dev dependencies
 ARG INCLUDE_DEV=false
+ENV PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/ \
+    PIP_TRUSTED_HOST=mirrors.aliyun.com
 
 # Install dependencies without dev packages
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR,sharing=locked \
@@ -108,7 +121,7 @@ RUN --mount=type=cache,target=$POETRY_CACHE_DIR,sharing=locked \
 
 ################################ Stage: py-version-generator
 FROM venv-builder AS py-version-generator
-ARG VERSION_OVERRIDE
+ARG VERSION_OVERRIDERUN --mount=type=cache,target="/var/cache/apt",sharing=locked     --mount=type=cache,ta
 ARG BRANCH_OVERRIDE
 
 # Create version_.py and ls-version_.py
@@ -128,19 +141,43 @@ ENV LS_DIR=/label-studio \
     PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR $LS_DIR
+FROM python:${PYTHON_VERSION}-slim AS production
+
+# 新增：替换 Debian 源为国内镜像（解决网络问题）
+RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" > /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list
+
+# 原有的安装步骤（保持不变）
+ENV LS_DIR=/label-studio \
+    HOME=/label-studio \
+    LABEL_STUDIO_BASE_DATA_DIR=/label-studio/data \
+    OPT_DIR=/opt/heartex/instance-data/etc \
+    PATH="/label-studio/.venv/bin:$PATH" \
+    DJANGO_SETTINGS_MODULE=core.settings.label_studio \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR $LS_DIR
+
 
 # install prerequisites for app
-RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
+RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
+    --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
     apt-get update; \
-    apt-get upgrade -y; \
+#    apt-get upgrade -y; \
     apt-get install --no-install-recommends -y libexpat1 libgl1-mesa-glx libglib2.0-0 \
         gnupg2 curl; \
     apt-get autoremove -y
 
 # install nginx
-RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
+RUN sed -i 's#http://deb.debian.org/debian#https://mirrors.tuna.tsinghua.edu.cn/debian#' && \
+    --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
     curl -sSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /etc/apt/keyrings/nginx-archive-keyring.gpg >/dev/null; \
@@ -164,6 +201,8 @@ COPY --chown=1001:0 README.md .
 COPY --chown=1001:0 LICENSE LICENSE
 COPY --chown=1001:0 licenses licenses
 COPY --chown=1001:0 deploy deploy
+
+RUN chmod +x ./deploy/docker-entrypoint.sh
 
 # Copy files from build stages
 COPY --chown=1001:0 --from=venv-builder               $LS_DIR                                           $LS_DIR

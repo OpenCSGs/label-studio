@@ -23,9 +23,6 @@ from django.http import JsonResponse
 logger = logging.getLogger()
 
 
-# http://127.0.0.1:8080/user/login1/?email=2184329322@qq.com
-# http://127.0.0.1:8080/user/login1/?email=21843293212@qq.com
-# http://127.0.0.1:8080/user/login1/?email=21843293211112@qq.com
 @login_required
 def logout(request):
     auth.logout(request)
@@ -244,18 +241,24 @@ class LabelStudioUserManager:
         except requests.RequestException as e:
             return False
 
+
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @csrf_exempt
 def user_login1(request):
     """Login page with GET parameter support"""
-    # print(request.POST.get('email'))
+
+    print(request,100*'=')
+    print(dict(request.GET),100*'=')
+    print(request.headers)
+    print("POST:", dict(request.POST))
+    # request.session.flush()
+
     user = request.user
     next_page = request.GET.get('next')
     email = request.GET.get('email')
 
-    password = request.GET.get('password')
-    print(email,100*'*')
+
     # 处理POST数据（如果有）
 
     token_data = request.POST.dict()
@@ -298,11 +301,15 @@ def user_login1(request):
         next_page = reverse('projects:project-index')
 
     # 如果用户已认证且邮箱匹配，直接重定向
-    if user.is_authenticated:
-        if email and user.email != email:
-            auth.logout(request)
-            return user_login1(request)  # 递归调用
-        return redirect(next_page)
+
+    # 验证 next_page 安全性
+    if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
+        next_page = reverse('projects:project-index')
+
+    login_form = load_func(settings.USER_LOGIN_FORM)
+    form = login_form(initial={'email': email}) if email else login_form()
+
+    # 如果用户已认证且 email 匹配，直接跳转
 
     # 获取服务器URL
     server_url = request.build_absolute_uri('/')[:-1]
@@ -345,7 +352,6 @@ def user_login1(request):
             'next': quote(next_page),
             'error_message': "登录过程中发生错误"
         }, status=500)
-
     # 默认返回登录页面
     form = load_func(settings.USER_LOGIN_FORM)(initial={'email': email}) if email else load_func(
         settings.USER_LOGIN_FORM)()
@@ -359,99 +365,3 @@ def user_login1(request):
         return render(request, 'users/new-ui/user_login.html', context)
     return render(request, 'users/user_login.html', context)
 
-# def user_login1(request):
-#
-#
-#     """Login page with GET parameter support"""
-#     # request.session.flush()
-#     user = request.user
-#     next_page = request.GET.get('next')
-#     email = request.GET.get('email')
-#     password = request.GET.get('password')
-#     # print(request.headers)
-#     # print(request.POST.dict())
-#     try:
-#         token_data=request.POST.dict()
-#         # print(len(token_data))
-#         # print(set_data(token_data['user_name'], token_data))
-#     except KeyError as e:
-#         if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
-#             next_page = reverse('projects:project-index')
-#
-#         login_form = load_func(settings.USER_LOGIN_FORM)
-#         form = login_form(initial={'email': email}) if email else login_form()
-#
-#         if user.is_authenticated:
-#             if email and user.email != email:
-#                 auth.logout(request)
-#                 return user_login1(request)
-#             return redirect(next_page)
-#
-#         # if request.method == 'GET' and email:
-#         server_url = request.build_absolute_uri('/')[:-1]  # 获取根地址并去除末尾斜杠
-#         # print(f"[SERVER] 当前服务器根地址: {server_url}")
-#         try:
-#
-#             User = get_user_model()
-#             try:
-#                 user = User.objects.get(email=email)
-#                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#                 user.save(update_fields=['active_organization'])
-#             except User.DoesNotExist:
-#                 LABEL_STUDIO_URL = server_url
-#                 test_users = {"email": email}
-#                 # print(LABEL_STUDIO_URL,test_users)
-#                 manager = LabelStudioUserManager(LABEL_STUDIO_URL)
-#                 result = manager._create_user(**test_users)
-#                 if result:
-#                     print("账号已创建********************************************")
-#                     user = User.objects.get(email=email)
-#                     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#                     user.save(update_fields=['active_organization'])
-#                     return redirect(next_page)
-#                 else:
-#                     print("账号创建失败********************************************")
-#                     return None, "账号创建失败"
-#
-#
-#
-#                 print("账号不存在********************************************")
-#                 return None, "账号不存在"
-#
-#
-#             # # 直接获取或创建用户
-#             # user, created = User.objects.get_or_create(
-#             #     email=email,
-#             #     defaults={'password': 'han3035572473'}  # 设置默认密码
-#             # )
-#             # print("__________________________________________________")
-#             # print(user,email,created)
-#             # # 直接登录，不验证密码
-#             # login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-#
-#         #     # 关联组织
-#         #     org_pk= Organization.find_by_user(user)
-#         #     if not org_pk:
-#         #         # 自动分配默认组织（或抛异常提示）
-#         #         org_pk= Organization.objects.first()  # 假设取第一个组织
-#         #         if not org_pk:
-#         #             raise Exception("无可用组织")
-#         #     user.active_organization_id = org_pk
-#         #     user.save(update_fields=['active_organization'])
-#             return redirect(next_page)
-#
-#         except Exception as e:
-#             logger.error({str(e)})
-#             return redirect(next_page)
-#
-#
-#
-#         context = {
-#             'form': form,
-#             'next': quote(next_page),
-#             'error_message': None  # 不显示错误信息
-#         }
-#
-#         if flag_set('fflag_feat_front_lsdv_e_297_increase_oss_to_enterprise_adoption_short'):
-#             return render(request, 'users/new-ui/user_login.html', context)
-#         return render(request, 'users/user_login.html', context)
