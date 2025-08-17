@@ -16,7 +16,8 @@ urlpatterns = [
     re_path(r'^api/', include(router.urls)),
     # Authentication
     path('user/login/', views.user_login, name='user-login'),
-    path('user/login1/', views.user_login1, name='user-login1'),
+    path('user/login_verfy/', views.login_verfy, name='user_login_verfy'),
+    path('user/login_reques/', views.login_reques, name='user_login_request'),
     path('user/signup/', views.user_signup, name='user-signup'),
     path('user/account/', views.user_account, name='user-account'),
     path('user/account/<sub_path>', views.user_account, name='user-account-anything'),

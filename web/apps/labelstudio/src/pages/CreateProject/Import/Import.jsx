@@ -159,6 +159,8 @@ export const ImportPage = ({
   const [selectedBranch, setSelectedBranch] = useState('');
   const [loadingDatasets, setLoadingDatasets] = useState(false);
   const [loadingBranches, setLoadingBranches] = useState(false);
+  // 新增状态：标记是否已经尝试获取数据集
+  const [datasetsFetched, setDatasetsFetched] = useState(false);
 
   const processFiles = (state, action) => {
     if (action.sending) {
@@ -275,24 +277,24 @@ export const ImportPage = ({
 
   // 修改fetchDatasets函数
   const fetchDatasets = useCallback(async () => {
+    // 如果已经尝试过获取，则不再调用
+    if (datasetsFetched) return;
+
     setLoadingDatasets(true);
     try {
-      // 替换为api.callApi调用
       const data = await api.callApi("publicList");
       const formattedDatasets = Array.isArray(data)
-        ? data.map(item => ({
-            value: item,
-            label: item
-          }))
+        ? data.map(item => ({ value: item, label: item }))
         : [];
       setDatasets(formattedDatasets);
     } catch (err) {
       console.error('Failed to fetch datasets:', err);
-      setError(new Error('Failed to load datasets'));
     } finally {
       setLoadingDatasets(false);
+      // 无论成功失败，标记为已尝试
+      setDatasetsFetched(true);
     }
-  }, [api]); // 添加api依赖
+  }, [api, datasetsFetched]); // 添加依赖
 
   // 修改fetchBranches函数
   const fetchBranches = useCallback(async (repoId) => {
@@ -321,8 +323,11 @@ export const ImportPage = ({
 
   // 页面加载时获取数据集
   useEffect(() => {
-    fetchDatasets();
-  }, [fetchDatasets]);
+    // 只在未尝试过时获取数据
+    if (!datasetsFetched) {
+      fetchDatasets();
+    }
+  }, [fetchDatasets, datasetsFetched]); // 添加依赖
 
   // 当选中数据集变化时获取对应的分支
   useEffect(() => {

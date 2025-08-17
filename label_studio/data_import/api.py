@@ -6,6 +6,7 @@ import mimetypes
 import time
 from urllib.parse import unquote, urlparse
 
+import os
 import requests
 from core.decorators import override_report_only_csp
 from core.feature_flags import flag_set
@@ -183,7 +184,8 @@ class PublicListAPI(APIView):
         # print(user_name)
         # print(user_data['authorization'])
         # 调用外部API（使用当前用户的authorization）
-        url = f"http://net-power.9free.com.cn:18120/api/v1/user/{user_name}/datasets?per=50&page=1"
+        # os.environ['CSG_HUB_ENDPOINT']
+        url = f"{os.environ['CSG_HUB_ENDPOINT']}/api/v1/user/{user_name}/datasets?per=50&page=1"
         headers = {
             "Authorization": authorization
         }
@@ -198,6 +200,10 @@ class PublicListAPI(APIView):
             for i in data['data']:
                 list.append(i['path'])
             return Response(list)
+            # return Response(
+            #     {"error": "当前用户未设置用户名"},
+            #     status=status.HTTP_400_BAD_REQUEST
+            # )
         except requests.exceptions.RequestException as e:
             return Response(
                 {"error": f"调用外部API失败: {str(e)}"},
@@ -212,12 +218,12 @@ class DatasetBranchesAPI(APIView):
         user_token1 = request.user.user_token
         authorization = request.user.authorization
         user_name = request.user.user_name
-        base_url = "http://net-power.9free.com.cn:18120"
+        # base_url = "http://net-power.9free.com.cn:18120"
 
         repo_id = request.query_params.get('repo_id')
 
         endpoint = f"/api/v1/datasets/{repo_id}/branches"
-        url = f"{base_url}{endpoint}"
+        url = f"{os.environ['CSG_HUB_ENDPOINT']}{endpoint}"
 
         headers = {
             "Authorization": authorization

@@ -100,10 +100,11 @@ class DataExport(object):
 
 
     @staticmethod
-    def save_export_files(project, now, get_args, data, md5, name):
+    def save_export_files(request,project, now, get_args, data, md5, name):
         # print(name)
         username = project.created_by.username if project.created_by else 'anonymous'
         # print(username)
+
         def clear_folder(folder_path):
             """清空文件夹下的所有文件和子文件夹，但保留文件夹本身"""
             if not os.path.exists(folder_path):
@@ -160,7 +161,10 @@ class DataExport(object):
         with open(filename_info, 'w', encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
 
+        # print(project_dir,100*'*')
         upload_without_cache_check(request,local_folder=project_dir,project=project)
+        # clear_folder(project_dir)
+
         return filename_results
 
     @staticmethod
