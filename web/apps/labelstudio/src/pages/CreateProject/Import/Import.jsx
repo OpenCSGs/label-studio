@@ -14,6 +14,7 @@ import "./Import.scss";
 import samples from "./samples.json";
 import { importFiles } from "./utils";
 import { Button, CodeBlock, SimpleCard, Spinner, Tooltip } from "@humansignal/ui";
+import { Select } from "@humansignal/ui";
 
 const importClass = cn("upload_page");
 const dropzoneClass = cn("dropzone");
@@ -80,9 +81,10 @@ function getFiles(files) {
   });
 }
 
-const Upload = ({ children, sendFiles }) => {
+const Upload = ({ children, sendFiles, disabled }) => {
   const [hovered, setHovered] = useState(false);
   const onHover = (e) => {
+    if (disabled) return;
     e.preventDefault();
     setHovered(true);
   };
@@ -91,22 +93,24 @@ const Upload = ({ children, sendFiles }) => {
 
   const onDrop = useCallback(
     (e) => {
+      if (disabled) return;
       e.preventDefault();
       onLeave();
       getFiles(e.dataTransfer.items).then((files) => sendFiles(files));
     },
-    [onLeave, sendFiles],
+    [onLeave, sendFiles, disabled],
   );
 
   return (
     <div
       id="holder"
-      className={dropzoneClass.mod({ hovered })}
+      className={dropzoneClass.mod({ hovered, disabled })}
       ref={dropzoneRef}
-      onDragStart={onHover}
-      onDragOver={onHover}
+      onDragStart={disabled ? undefined : onHover}
+      onDragOver={disabled ? undefined : onHover}
       onDragLeave={onLeave}
-      onDrop={onDrop}
+      onDrop={disabled ? undefined : onDrop}
+      style={disabled ? { pointerEvents: 'none', opacity: 0.5 } : {}}
     >
       {children}
     </div>
@@ -161,6 +165,8 @@ export const ImportPage = ({
   const [loadingBranches, setLoadingBranches] = useState(false);
   // 新增状态：标记是否已经尝试获取数据集
   const [datasetsFetched, setDatasetsFetched] = useState(false);
+  // 计算上传是否禁用
+  const isUploadDisabled = !selectedDataset || !selectedBranch;
 
   const processFiles = (state, action) => {
     if (action.sending) {
@@ -250,10 +256,20 @@ export const ImportPage = ({
 
   const sendFiles = useCallback(
     (files) => {
+      // 添加验证
+      if (!selectedDataset || !selectedBranch) {
+        setError(new Error('Please select both dataset and branch before uploading files'));
+        return;
+      }
+
       setError(null);
       onWaiting?.(true);
       files = [...files]; // they can be array-like object
       const fd = new FormData();
+
+      // 将数据集和分支添加到 FormData
+      fd.append('dataset', selectedDataset);
+      fd.append('datasetBranches', selectedBranch);
 
       for (const f of files) {
         if (!allSupportedExtensions.includes(getFileExtension(f.name))) {
@@ -264,15 +280,21 @@ export const ImportPage = ({
       }
       return importFilesImmediately(files, fd);
     },
-    [importFilesImmediately],
+    [importFilesImmediately, selectedDataset, selectedBranch] // 添加依赖
   );
 
   const onUpload = useCallback(
     (e) => {
+      // 添加验证逻辑
+      if (!selectedDataset || !selectedBranch) {
+        setError(new Error('Please select both dataset and branch before uploading files'));
+        return;
+      }
+
       sendFiles(e.target.files);
       e.target.value = "";
     },
-    [sendFiles],
+    [sendFiles, selectedDataset, selectedBranch] // 添加依赖
   );
 
   // 修改fetchDatasets函数
@@ -406,18 +428,18 @@ export const ImportPage = ({
           method="POST"
           onSubmit={onLoadURL}
         >
-          <select
-          value={selectedDataset}
-          onChange={(e) => setSelectedDataset(e.target.value)}
-          disabled={loadingDatasets}
-        >
-          <option value="">Select a dataset</option>
-          {datasets.map(dataset => (
-            <option key={dataset.value} value={dataset.value}>
-              {dataset.label}
-            </option>
-          ))}
-        </select>
+          {/* <select
+            value={selectedDataset}
+            onChange={(e) => setSelectedDataset(e.target.value)}
+            disabled={loadingDatasets}
+          >
+            <option value="">Select a dataset</option>
+            {datasets.map(dataset => (
+              <option key={dataset.value} value={dataset.value}>
+                {dataset.label}
+              </option>
+            ))}
+          </select>
 
           <select
             className="h-[40px] px-2 border rounded"
@@ -431,7 +453,22 @@ export const ImportPage = ({
                 {branch.label}
               </option>
             ))}
-          </select>
+          </select> */}
+
+          <Select
+            placeholder={'Select a dataset'}
+            options={datasets}
+            value={selectedDataset}
+            onChange={setSelectedDataset}
+          />
+
+          <Select
+            placeholder={'Select Branch'}
+            options={branches}
+            value={selectedBranch}
+            disabled={!selectedDataset || loadingBranches}
+            onChange={setSelectedBranch}
+          />
 
           <Button type="submit" aria-label="Add Dataset" disabled={files.uploaded.length > 0}>
               Add Dataset
@@ -443,6 +480,7 @@ export const ImportPage = ({
           onClick={() => document.getElementById("file-input").click()}
           leading={<IconUpload />}
           aria-label="Upload file"
+          disabled={!selectedDataset || !selectedBranch}
         >
           Upload {files.uploaded.length ? "More " : ""}Files
         </Button>
@@ -468,19 +506,27 @@ export const ImportPage = ({
       <ErrorMessage error={error} />
 
       <main>
-        <Upload sendFiles={sendFiles} project={project}>
+        <Upload sendFiles={sendFiles} project={project} disabled={isUploadDisabled}>
           <div className={scn("flex gap-4 w-full min-h-full", { "justify-center": !showList })}>
             {!showList && (
               <div className="flex gap-4 justify-center items-start w-full h-full">
                 <label htmlFor="file-input" className="w-full h-full">
                   <div className={`${dropzoneClass.elem("content")} w-full`}>
                     <IconFileUpload height="64" className={dropzoneClass.elem("icon")} />
-                    <header>
-                      Drag & drop files here
-                      <br />
-                      or click to browse
-                    </header>
-
+                    {(!selectedDataset || !selectedBranch) && (
+                      <header>
+                        Upload Disabled
+                        <br />
+                        Please select a dataset and branch to enable file upload
+                      </header>
+                    )}
+                    {(selectedDataset && selectedBranch) && (
+                      <header>
+                        Drag & drop files here
+                        <br />
+                        or click to browse
+                      </header>
+                    )}
                     <dl>
                       <dt>Images</dt>
                       <dd>{supportedExtensions.image.join(", ")}</dd>

@@ -4512,3 +4512,67 @@
 [NX v21.2.2 Daemon Server] - 2025-08-13T06:10:03.858Z - Closed a connection. Number of open connections: 0
 [NX v21.2.2 Daemon Server] - 2025-08-13T09:10:03.870Z - [WATCHER]: Stopping the watcher for E:\label-studio-develop (2)\web (sources)
 [NX v21.2.2 Daemon Server] - 2025-08-13T09:10:03.877Z - [WATCHER]: Stopping the watcher for E:\label-studio-develop (2)\web (outputs)
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:01.575Z - Started listening on: \\.\pipe\nx\C:\Users\Administrator\AppData\Local\Temp\ed6fd32266f80774b862\d.sock
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:01.630Z - [WATCHER]: Subscribed to changes within: E:\label-studio-develop (2)\web (native)
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:01.636Z - Established a connection. Number of open connections: 1
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:01.637Z - Established a connection. Number of open connections: 2
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:01.643Z - Closed a connection. Number of open connections: 1
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:01.649Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:02.477Z - Time taken for 'loadSpecifiedNxPlugins' 7.966100000000097ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:03.343Z - Time taken for 'Load Nx Plugin: E:\label-studio-develop (2)\web\node_modules\nx\src\plugins\package-json' 1685.6074999999998ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:03.379Z - Time taken for 'Load Nx Plugin: E:\label-studio-develop (2)\web\node_modules\nx\src\plugins\project-json\build-nodes\project-json' 1719.6940999999997ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:03.817Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:03.817Z - [REQUEST]: 
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:03.817Z - [REQUEST]: 
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:03.841Z - Time taken for 'loadDefaultNxPlugins' 2141.4584ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.449Z - Time taken for 'build-project-configs' 506.6940999999997ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.689Z - [SYNC]: collect registered sync generators
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.692Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.695Z - Time taken for 'total for creating and serializing project graph' 3043.5957ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.699Z - Done responding to the client project-graph
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.699Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3044. Response time: 7.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.733Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.734Z - Time taken for 'preTasksExecution' 2.1842999999998938ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.735Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:04.735Z - Handled PRE_TASKS_EXECUTION. Handling time: 2. Response time: 2.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:05.500Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:05.501Z - Done responding to the client handleHashTasks
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:05.501Z - Handled HASH_TASKS. Handling time: 47. Response time: 1.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:05.552Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:05.552Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:05.553Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 21. Response time: 1.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:14.630Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:14.683Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:14.734Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:14.787Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:14:14.923Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.053Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.124Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.218Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.275Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.330Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.409Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.456Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.518Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.572Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.672Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.771Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.839Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:05.935Z - [WATCHER]: Processing file changes in outputs
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.217Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.218Z - Done responding to the client recordOutputsHash
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.218Z - Handled RECORD_OUTPUTS_HASH. Handling time: 48. Response time: 1.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.247Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.248Z - Done responding to the client handleRecordTaskRuns
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.248Z - Handled RECORD_TASK_RUNS. Handling time: 3. Response time: 1.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.253Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.254Z - Done responding to the client handleGetFlakyTasks
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.254Z - Handled GET_FLAKY_TASKS. Handling time: 1. Response time: 1.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.362Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.364Z - Time taken for 'postTasksExecution' 1.3609000000287779ms
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.364Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.365Z - Handled POST_TASKS_EXECUTION. Handling time: 2. Response time: 3.
+[NX v21.2.2 Daemon Server] - 2025-08-18T03:20:11.378Z - Closed a connection. Number of open connections: 0
+[NX v21.2.2 Daemon Server] - 2025-08-18T06:20:12.157Z - [WATCHER]: Stopping the watcher for E:\label-studio-develop (2)\web (sources)
+[NX v21.2.2 Daemon Server] - 2025-08-18T06:20:12.159Z - [WATCHER]: Stopping the watcher for E:\label-studio-develop (2)\web (outputs)
+[NX v21.2.2 Daemon Server] - 2025-08-18T06:20:12.174Z - Server stopped because: "10800000ms of inactivity"

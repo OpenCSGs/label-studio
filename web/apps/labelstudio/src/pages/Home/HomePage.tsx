@@ -77,16 +77,16 @@ export const HomePage: Page = () => {
 
   return (
     <main className="p-6">
-      <div className="grid grid-cols-[minmax(0,1fr)_450px] gap-6">
+      <div className="grid">
         <section className="flex flex-col gap-6">
-          <div className="flex flex-col gap-1">
+          {/* <div className="flex flex-col gap-1">
             <Typography variant="headline" size="small">
               Welcome 👋
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler">
               Let's get you started.
             </Typography>
-          </div>
+          </div> */}
           <div className="flex justify-start gap-4">
             {actions.map((action) => {
               return (
@@ -150,7 +150,7 @@ export const HomePage: Page = () => {
             ) : null}
           </SimpleCard>
         </section>
-        <section className="flex flex-col gap-6">
+        {/* <section className="flex flex-col gap-6">
           <HeidiTips collection="projectSettings" />
           <SimpleCard title="Resources" description="Learn, explore and get help" data-testid="resources-card">
             <ul>
@@ -175,7 +175,7 @@ export const HomePage: Page = () => {
             <IconHumanSignal />
             <span className="text-neutral-content-subtle">数据标注 Version: Community</span>
           </div>
-        </section>
+        </section> */}
       </div>
       {creationDialogOpen && <CreateProject onClose={() => setCreationDialogOpen(false)} />}
       <InviteLink opened={invitationOpen} onClosed={() => setInvitationOpen(false)} />

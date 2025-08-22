@@ -20,7 +20,7 @@ from rest_framework.exceptions import ValidationError
 from urllib.parse import unquote
 from .models import FileUpload
 from urllib.parse import urlparse,parse_qs, parse_qsl
-
+import re
 logger = logging.getLogger(__name__)
 csv.field_size_limit(131072 * 10)
 
@@ -405,7 +405,37 @@ def load_tasks(request, project):
 
     # take tasks from request FILES
     if len(request.FILES):
-        # print(100 * '-+')
+        # print(100 * '-+1')
+        raw_body = request.body
+        # 1. 将字节流解码为字符串（处理中文和特殊字符）
+        form_str = raw_body.decode('utf-8', errors='ignore')  # errors='ignore' 避免图片二进制解码报错
+
+        # 正则表达式匹配规则
+        # 匹配 pattern: name="字段名"\r\n\r\n字段值\r\n------
+        pattern = r'(dataset|datasetBranches)"\r\n\r\n(.*?)\r\n------'
+
+        # 查找所有匹配项（非贪婪模式）
+        matches = re.findall(pattern, form_str, re.DOTALL)
+
+        # 提取结果
+        result = {}
+        for name, value in matches:
+            result[name] = value
+
+        # # 输出结果
+        # print(f"dataset: {result.get('dataset')}")
+        # print(f"datasetBranches: {result.get('datasetBranches')}")
+        project.dataset = result.get('dataset')
+        project.datasetBranches = result.get('datasetBranches')
+        project.save(update_fields=['dataset', 'datasetBranches'])
+        # # 输出结果
+        # print(f"dataset: {dataset}")
+        # print(f"datasetBranches: {dataset_branches}")
+        #
+        # # 输出结果
+        # print(f"dataset: {dataset}")
+        # print(f"datasetBranches: {dataset_branches}")
+        # print(100 * '-+1')
         check_request_files_size(request.FILES)
         check_extensions(request.FILES)
         for filename, file in request.FILES.items():
@@ -449,7 +479,7 @@ def load_tasks(request, project):
     elif 'application/json' in request.content_type and isinstance(request.data, dict):
         raw_body = request.body  # 原始字节数据
 
-        print(raw_body, 'raw_body', 100 * '*')
+        # print(raw_body, 'raw_body', 100 * '*')
 
         (
             data_keys,
@@ -462,12 +492,12 @@ def load_tasks(request, project):
 
     # take many tasks from request DATA
     elif 'application/json' in request.content_type and isinstance(request.data, list):
-        # print(100 * '-+')
+        # print(100 * '-+2')
         tasks = request.data
 
     # incorrect data source
     else:
-        # print(100 * '-+')
+        # print(100 * '-+3')
         raise ValidationError('load_tasks: No data found in DATA or in FILES')
 
     # check is data root is list
@@ -477,7 +507,7 @@ def load_tasks(request, project):
     # empty tasks error
     if not tasks:
         raise ValidationError('load_tasks: No tasks added')
-
+    # print(100 * '-+4')
     check_max_task_number(tasks)
     # print(tasks, file_upload_ids, could_be_tasks_list, found_formats, list(data_keys),"load_tasks123")
     return tasks, file_upload_ids, could_be_tasks_list, found_formats, list(data_keys)

@@ -289,10 +289,10 @@ def login_verfy(request):
         # from django.contrib.auth import get_user_model
         """检查用户是否存在"""
         # User = get_user_model()
-        print("创建用户是否存在:用户已认证且邮箱匹配", email, User.objects.filter(email=email).exists())
+        # print("创建用户是否存在:用户已认证且邮箱匹配", email, User.objects.filter(email=email).exists())
         if user.is_authenticated and email and user.email != email:
             auth.logout(request)
-            return user_login1(request)  # 递归调用
+            return login_verfy(request)  # 递归调用
         token_data = request.POST.dict()
         print(token_data)
         if token_data:
@@ -304,7 +304,7 @@ def login_verfy(request):
             user.save()
             logger.info(f"保持数据成功: {token_data}")
         # return redirect(next_page)
-        return JsonResponse({
+            return JsonResponse({
                                         'status': 'success',
                                         'message': '用户认证成功',
                                         'next_page': next_page,
@@ -313,7 +313,11 @@ def login_verfy(request):
                                             'id': user.id
                                         }
                                             }, status=200)
-
+        return JsonResponse({
+            'status': 'error',
+            'message': '用户认证失败',
+            'next_page': next_page,
+        }, status=400)
 
     # 获取服务器URL
     server_url = request.build_absolute_uri('/')[:-1]
@@ -337,7 +341,7 @@ def login_verfy(request):
                 user.save()
                 logger.info(f"保持数据成功: {token_data}")
             # return redirect(next_page)
-            return JsonResponse({
+                return JsonResponse({
                                         'status': 'success',
                                         'message': '用户获取成功',
                                         'next_page': next_page,
@@ -346,6 +350,11 @@ def login_verfy(request):
                                             'id': user.id
                                         }
                                             }, status=200)
+            return JsonResponse({
+                'status': 'error',
+                'message': '用户获取失败',
+                'next_page': next_page,
+            }, status=400)
         except User.DoesNotExist:
             # 用户不存在，尝试创建
             print("创建用户不存在", email, User.objects.filter(email=email).exists())
@@ -369,7 +378,7 @@ def login_verfy(request):
                     user.user_name = token_data.get('user_name', {})
                     user.save()
                     logger.info(f"保持数据成功: {token_data}")
-                return JsonResponse({
+                    return JsonResponse({
                                         'status': 'success',
                                         'message': '用户创建并登录成功',
                                         'next_page': next_page,
@@ -378,6 +387,11 @@ def login_verfy(request):
                                             'id': user.id
                                         }
                                             }, status=200)
+                return JsonResponse({
+                                        'status': 'error',
+                                        'message': '用户创建失败',
+                                        'next_page': next_page,
+                                            }, status=400)
             else:
                 # 创建失败，返回错误页面
                 return render(request, 'users/user_login.html', {
@@ -387,7 +401,7 @@ def login_verfy(request):
                 }, status=400)
 
     except Exception as e:
-        print("创建用户4")
+        # print("创建用户4")
         logger.error(str(e))
         # 返回错误页面
         return render(request, 'users/user_login.html', {
@@ -439,16 +453,6 @@ def login_reques(request):
         if user.is_authenticated and email and user.email != email:
             auth.logout(request)
             return login_reques(request)  # 递归调用
-        token_data = request.POST.dict()
-        print(token_data)
-        if token_data:
-            User = get_user_model()
-            user = User.objects.get(email=email)
-            user.user_token = token_data.get('user_token', {})
-            user.authorization = token_data.get('authorization', {})
-            user.user_name = token_data.get('user_name', {})
-            user.save()
-            logger.info(f"保持数据成功: {token_data}")
         return redirect(next_page)
 
 
@@ -458,27 +462,15 @@ def login_reques(request):
 
     try:
         User = get_user_model()
-        print("创建用户1")
         # 尝试获取用户
         try:
-            print("创建用户2")
             user = User.objects.get(email=email)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             user.save(update_fields=['active_organization'])
-            token_data = request.POST.dict()
-            print(token_data)
-            if token_data:
-
-                user.user_token = token_data.get('user_token', {})
-                user.authorization = token_data.get('authorization', {})
-                user.user_name = token_data.get('user_name', {})
-                user.save()
-                logger.info(f"保持数据成功: {token_data}")
             return redirect(next_page)
         except User.DoesNotExist:
             # 用户不存在，尝试创建
-            print("创建用户不存在", email, User.objects.filter(email=email).exists())
-            print("创建用户3")
+            print("用户不存在，开始创建", email, User.objects.filter(email=email).exists())
             manager = LabelStudioUserManager(server_url)
             test_users = {"email": email}
             result = manager._create_user(**test_users)
@@ -488,18 +480,7 @@ def login_reques(request):
                 user = User.objects.get(email=email)
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 user.save(update_fields=['active_organization'])
-                token_data = request.POST.dict()
-                print(token_data)
-                if token_data:
-                    User = get_user_model()
-                    user = User.objects.get(email=email)
-                    user.user_token = token_data.get('user_token', {})
-                    user.authorization = token_data.get('authorization', {})
-                    user.user_name = token_data.get('user_name', {})
-                    user.save()
-                    logger.info(f"保持数据成功: {token_data}")
                 return redirect(next_page)
-
             else:
                 # 创建失败，返回错误页面
                 return render(request, 'users/user_login.html', {
@@ -509,7 +490,7 @@ def login_reques(request):
                 }, status=400)
 
     except Exception as e:
-        print("创建用户4")
+        # print("创建用户4")
         logger.error(str(e))
         # 返回错误页面
         return render(request, 'users/user_login.html', {
