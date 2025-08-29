@@ -130,9 +130,10 @@ const ErrorMessage = ({ error }) => {
   return (
     <div className={importClass.elem("error")}>
       <IconErrorAlt width="24" height="24" />
-      {error.id && `[${error.id}] `}
+      {/* {error.id && `[${error.id}] `}
       {error.detail || error.message}
-      {extra && ` (${extra})`}
+      {extra && ` (${extra})`} */}
+      {extra}
     </div>
   );
 };

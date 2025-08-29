@@ -506,7 +506,7 @@ def load_tasks(request, project):
 
     # empty tasks error
     if not tasks:
-        raise ValidationError('load_tasks: No tasks added')
+        raise ValidationError(f"抱歉，您所需的文件不存在.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp', '.tiff','.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac','.mp4', '.avi', '.mov', '.mkv', '.webm'")
     # print(100 * '-+4')
     check_max_task_number(tasks)
     # print(tasks, file_upload_ids, could_be_tasks_list, found_formats, list(data_keys),"load_tasks123")

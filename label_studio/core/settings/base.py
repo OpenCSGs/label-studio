@@ -523,16 +523,16 @@ TEST_DATA_ROOT = os.path.join(BASE_DATA_DIR, 'test_data')
 os.makedirs(TEST_DATA_ROOT, exist_ok=True)
 
 # project exports
-RAIL_EXPORT_DIR = r'D:\rail_user_data'
+# RAIL_EXPORT_DIR = r'D:\rail_user_data'
 
 
-EXPORT_DIR = RAIL_EXPORT_DIR
+EXPORT_DIR = os.path.join(BASE_DATA_DIR, 'export')
 EXPORT_URL_ROOT = '/export/'
 EXPORT_MIXIN = 'data_export.mixins.ExportMixin'
 # old export dir
-os.makedirs(RAIL_EXPORT_DIR, exist_ok=True)
+os.makedirs(EXPORT_DIR, exist_ok=True)
 # dir for delayed export
-DELAYED_EXPORT_DIR = os.path.join(RAIL_EXPORT_DIR)
+DELAYED_EXPORT_DIR = os.path.join('export')
 os.makedirs(os.path.join(BASE_DATA_DIR, MEDIA_ROOT, DELAYED_EXPORT_DIR), exist_ok=True)
 
 # file / task size limits
