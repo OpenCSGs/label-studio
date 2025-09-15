@@ -8,7 +8,9 @@ import { useAPI } from "../../providers/ApiProvider";
 import { useFixedLocation, useParams } from "../../providers/RoutesProvider";
 import { BemWithSpecifiContext } from "../../utils/bem";
 import { isDefined } from "../../utils/helpers";
+import * as Toast from "@radix-ui/react-toast";
 import "./ExportPage.scss";
+import { message } from 'antd';
 
 // const formats = {
 //   json: 'JSON',
@@ -25,8 +27,6 @@ const downloadFile = (blob, filename) => {
 
 const { Block, Elem } = BemWithSpecifiContext();
 
-const wait = () => new Promise((resolve) => setTimeout(resolve, 5000));
-
 export const ExportPage = () => {
   const history = useHistory();
   const location = useFixedLocation();
@@ -38,41 +38,69 @@ export const ExportPage = () => {
   const [downloadingMessage, setDownloadingMessage] = useState(false);
   const [availableFormats, setAvailableFormats] = useState([]);
   const [currentFormat, setCurrentFormat] = useState("JSON");
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastTitle, setToastTitle] = useState("");
 
   /** @type {import('react').RefObject<Form>} */
   const form = useRef();
 
+  const closeModal = () => {
+    const path = location.pathname.replace(ExportPage.path, "");
+    const search = location.search;
+    history.replace(`${path}${search !== "?" ? search : ""}`);
+  };
+
+  const showToast = (title, message) => {
+    setToastTitle(title);
+    setToastMessage(message);
+    setToastOpen(true);
+  };
+
   const proceedExport = async () => {
     setDownloading(true);
 
-    const message = setTimeout(() => {
-      setDownloadingMessage(true);
-    }, 1000);
+    // const message = setTimeout(() => {
+    //   setDownloadingMessage(true);
+    // }, 1000);
 
-    const params = form.current.assembleFormData({
-      asJSON: true,
-      full: true,
-      booleansAsNumbers: true,
-    });
+    try {
+      const params = form.current.assembleFormData({
+        asJSON: true,
+        full: true,
+        booleansAsNumbers: true,
+      });
 
-    const response = await api.callApi("exportRaw", {
-      params: {
-        pk: pageParams.id,
-        ...params,
-      },
-    });
+      const response = await api.callApi("exportRaw", {
+        params: {
+          pk: pageParams.id,
+          ...params,
+        },
+      });
 
-    if (response.ok) {
-      const blob = await response.blob();
+      console.log(response,'responseresponseresponseresponse');
+      
 
-//       downloadFile(blob, response.headers.get("filename"));
-    } else {
-      api.handleError(response);
+      if (response.status == 200) {
+        // const blob = await response.blob();
+        // downloadFile(blob, response.headers.get("filename"));
+        
+        // 立即关闭导出弹框
+        closeModal();
+        
+        message.success('Export completed successfully');
+      } else {
+        api.handleError(response);
+        // 显示错误提示
+        message.error('export error');
+      }
+    } catch (error) {
+      console.error("Export failed:", error);
+    } finally {
+      setDownloading(false);
+      setDownloadingMessage(false);
+      clearTimeout(message);
     }
-
-    setDownloading(false);
-    setDownloadingMessage(false);
-    clearTimeout(message);
   };
 
   useEffect(() => {
@@ -101,46 +129,61 @@ export const ExportPage = () => {
   }, [pageParams]);
 
   return (
-    <Modal
-      onHide={() => {
-        const path = location.pathname.replace(ExportPage.path, "");
-        const search = location.search;
+    <>
+      <Modal
+        onHide={closeModal}
+        title="Export data"
+        style={{ width: 720 }}
+        closeOnClickOutside={false}
+        allowClose={!downloading}
+        visible
+      >
+        <Block name="export-page">
+          <FormatInfo
+            availableFormats={availableFormats}
+            selected={currentFormat}
+            onClick={(format) => setCurrentFormat(format.name)}
+          />
 
-        history.replace(`${path}${search !== "?" ? search : ""}`);
-      }}
-      title="Export data"
-      style={{ width: 720 }}
-      closeOnClickOutside={false}
-      allowClose={!downloading}
-      // footer="Read more about supported export formats in the Documentation."
-      visible
-    >
-      <Block name="export-page">
-        <FormatInfo
-          availableFormats={availableFormats}
-          selected={currentFormat}
-          onClick={(format) => setCurrentFormat(format.name)}
-        />
+          <Form ref={form}>
+            <Input type="hidden" name="exportType" value={currentFormat} />
+          </Form>
 
-        <Form ref={form}>
-          <Input type="hidden" name="exportType" value={currentFormat} />
-        </Form>
+          <Elem name="footer">
+            <Space style={{ width: "100%" }} spread>
+              <Elem name="recent">{/* {exportHistory} */}</Elem>
+              <Elem name="actions">
+                <Space>
+                  {downloadingMessage && "Files are being prepared. It might take some time."}
+                  <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label="Export data">
+                    Export
+                  </Button>
+                </Space>
+              </Elem>
+            </Space>
+          </Elem>
+        </Block>
+      </Modal>
 
-        <Elem name="footer">
-          <Space style={{ width: "100%" }} spread>
-            <Elem name="recent">{/* {exportHistory} */}</Elem>
-            <Elem name="actions">
-              <Space>
-                {downloadingMessage && "Files are being prepared. It might take some time."}
-                <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label="Export data">
-                  Export
-                </Button>
-              </Space>
-            </Elem>
-          </Space>
-        </Elem>
-      </Block>
-    </Modal>
+      {/* Toast 通知 */}
+      <Toast.Provider swipeDirection="right">
+        <Toast.Root
+          className="ToastRoot"
+          open={toastOpen}
+          onOpenChange={setToastOpen}
+          duration={3000}
+        >
+          <Toast.Title className="ToastTitle">{toastTitle}</Toast.Title>
+          <Toast.Description className="ToastDescription">
+            {toastMessage}
+          </Toast.Description>
+          <Toast.Action className="ToastAction" asChild altText="Close">
+            <button className="Button small green">关闭</button>
+          </Toast.Action>
+        </Toast.Root>
+        <Toast.Viewport className="ToastViewport" />
+      </Toast.Provider>
+    </>
   );
 };
 

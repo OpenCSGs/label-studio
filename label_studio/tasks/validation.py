@@ -69,9 +69,15 @@ class TaskValidator:
                 try:
                     data_item = reduce(getitem, keys, data)
                 except KeyError:
+                    # For mixed imports, allow missing keys if task has other valid data keys
+                    if len(data) > 0 and any(key in data for key in ['image', 'audio', 'video', 'text']):
+                        continue  # Skip validation for this key
                     raise ValidationError('"{data_key}" key is expected in task data'.format(data_key=data_key))
             else:
                 if data_key not in data:
+                    # For mixed imports, allow missing keys if task has other valid data keys
+                    if len(data) > 0 and any(key in data for key in ['image', 'audio', 'video', 'text']):
+                        continue  # Skip validation for this key
                     raise ValidationError('"{data_key}" key is expected in task data'.format(data_key=data_key))
                 data_item = data[data_key]
 

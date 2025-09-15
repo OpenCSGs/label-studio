@@ -297,7 +297,8 @@ class BaseTaskSerializerBulk(serializers.ListSerializer):
             # in any other cases - import validation error
             else:
                 raise ValidationError(
-                    f"Import data contains completed_by={completed_by} which is not a valid annotator's email or ID"
+                    # f"Import data contains completed_by={completed_by} which is not a valid annotator's email or ID"
+                    f"导入数据包含 completed_by={completed_by}，这并非有效的标注员电子邮件或 ID。"
                 )
             annotation.pop('completed_by', None)
 

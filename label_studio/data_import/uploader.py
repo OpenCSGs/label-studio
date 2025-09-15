@@ -233,6 +233,12 @@ def tasks_from_url(file_upload_ids,project, user, body, could_be_tasks_list):
 
                 file_path = os.path.join(root, filename)
                 if os.path.isfile(file_path):
+                    # 检查文件扩展名
+                    _, ext = os.path.splitext(filename)
+                    if ext.lower() not in settings.SUPPORTED_EXTENSIONS:
+                        logger.warning(f'Skipping unsupported file extension: {filename} (extension: {ext})')
+                        continue
+                    
                     # 读取文件内容并创建上传记录
                     with open(file_path, 'rb') as f:
                         file_content = f.read()

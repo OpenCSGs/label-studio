@@ -37,10 +37,10 @@ export const ProjectsList = ({ projects, currentPage, totalItems, loadNextPage, 
 export const EmptyProjectsList = ({ openModal }) => {
   return (
     <Block name="empty-projects-page">
-      <Elem name="heidi" tag="img" src={absoluteURL("/static/images/opossum_looking.png")} />
-      <Elem name="header" tag="h1">
-        Heidi doesn’t see any projects here!
-      </Elem>
+{/*       <Elem name="heidi" tag="img" src={absoluteURL("/static/images/opossum_looking.png")} /> */}
+{/*       <Elem name="header" tag="h1"> */}
+{/*         Heidi doesn’t see any projects here! */}
+{/*       </Elem> */}
       <p>Create one and start labeling your data.</p>
       <Button onClick={openModal} className="my-8" aria-label="Create new project">
         Create Project

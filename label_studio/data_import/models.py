@@ -88,14 +88,21 @@ class FileUpload(models.Model):
         # Prefer mapping TXT lines to an explicit data key when possible to keep keys consistent across files
         project_keys = list(getattr(self.project, 'data_types', {}).keys()) if hasattr(self, 'project') else []
         # Prefer 'text' over 'question' to match common NLP templates
+        # Only use project keys that are semantically appropriate for text content
         if 'text' in project_keys:
             key = 'text'
         elif 'question' in project_keys:
             key = 'question'
         elif len(project_keys) == 1:
-            key = project_keys[0]
+            sole_key = project_keys[0]
+            # Only use the sole key if it's semantically appropriate for text content
+            if sole_key in ['text', 'question', 'content', 'document']:
+                key = sole_key
+            else:
+                # Use 'text' as default for text files, even if project has other keys
+                key = 'text'
         else:
-            key = settings.DATA_UNDEFINED_NAME
+            key = 'text'  # Default to 'text' for text files
         tasks = [{'data': {key: line}} for line in lines]
         return tasks
 
@@ -141,17 +148,32 @@ class FileUpload(models.Model):
         image_exts = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp', '.tiff'}
         audio_exts = {'.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac'}
         video_exts = {'.mp4', '.avi', '.mov', '.mkv', '.webm'}
+        text_exts = {'.txt', '.md', '.csv', '.tsv'}
 
+        # First, try to map based on file extension and project keys
         if ext in image_exts and 'image' in project_keys:
             return [{'data': {'image': value}}]
         if ext in audio_exts and 'audio' in project_keys:
             return [{'data': {'audio': value}}]
         if ext in video_exts and 'video' in project_keys:
             return [{'data': {'video': value}}]
-
-        if 'text' in project_keys:
+        if ext in text_exts and 'text' in project_keys:
             return [{'data': {'text': value}}]
-        elif len(project_keys) == 1:
+
+        # For text files, always use 'text' key regardless of project configuration
+        if ext in text_exts:
+            return [{'data': {'text': value}}]
+
+        # For media files, always use appropriate key regardless of project configuration
+        if ext in image_exts:
+            return [{'data': {'image': value}}]
+        if ext in audio_exts:
+            return [{'data': {'audio': value}}]
+        if ext in video_exts:
+            return [{'data': {'video': value}}]
+
+        # Fallback to project configuration
+        if len(project_keys) == 1:
             sole_key = list(project_keys)[0]
             return [{'data': {sole_key: value}}]
         else:
@@ -171,12 +193,40 @@ class FileUpload(models.Model):
         ext = (os.path.splitext(self.filepath)[-1] or '').lower()
         project_keys = set(getattr(self.project, 'data_types', {}).keys()) if hasattr(self, 'project') else set()
 
+        # Try to map to specific data type based on file extension and project config
         if ext in image_exts and 'image' in project_keys:
             return [{'data': {'image': value}}]
         if ext in audio_exts and 'audio' in project_keys:
             return [{'data': {'audio': value}}]
         if ext in video_exts and 'video' in project_keys:
             return [{'data': {'video': value}}]
+
+        # For media files, always use appropriate key regardless of project configuration
+        if ext in image_exts:
+            return [{'data': {'image': value}}]
+        if ext in audio_exts:
+            return [{'data': {'audio': value}}]
+        if ext in video_exts:
+            return [{'data': {'video': value}}]
+
+        # If project has multiple data types but this asset doesn't match any specific type,
+        # try to use the most appropriate key based on file extension
+        if len(project_keys) > 1:
+            if ext in image_exts:
+                # Try to find an image-related key
+                for key in project_keys:
+                    if 'image' in key.lower() or 'img' in key.lower():
+                        return [{'data': {key: value}}]
+            elif ext in audio_exts:
+                # Try to find an audio-related key
+                for key in project_keys:
+                    if 'audio' in key.lower() or 'sound' in key.lower():
+                        return [{'data': {key: value}}]
+            elif ext in video_exts:
+                # Try to find a video-related key
+                for key in project_keys:
+                    if 'video' in key.lower() or 'movie' in key.lower():
+                        return [{'data': {key: value}}]
 
         # Fallback to undefined key
         return self.read_task_from_uploaded_file()
@@ -286,9 +336,10 @@ class FileUpload(models.Model):
                     if len(project_keys) == 1:
                         sole_key = project_keys[0]
                         if sole_key not in data:
-                            # Prefer common aliases
+                            # Only map if the sole key matches the data type semantically
+                            # This prevents text content from being mapped to image keys
                             for alias in ('question', 'text', 'image', 'audio', 'video'):
-                                if alias in data:
+                                if alias in data and alias == sole_key:
                                     data[sole_key] = data[alias]
                                     break
 
@@ -321,11 +372,12 @@ class FileUpload(models.Model):
             if not common_data_fields:
                 common_data_fields = new_data_fields
             elif not common_data_fields.intersection(new_data_fields):
-                raise ValidationError(
-                    _old_vs_new_data_keys_inconsistency_message(
-                        new_data_fields, common_data_fields, file_upload.file.name
-                    )
-                )
+                # Allow mixed imports: structured data files + single asset files
+                # This is a common use case where users import both structured data (JSON/CSV) and raw assets (images/audio/video)
+                logger.info(f'Allowing mixed import: {file_upload.file.name} with data keys {new_data_fields} alongside existing keys {common_data_fields}')
+                # Keep both sets separate to allow mixed imports
+                # Note: This allows importing both structured data files and raw asset files in the same batch
+                pass
             else:
                 common_data_fields &= new_data_fields
 

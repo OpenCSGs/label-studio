@@ -25,6 +25,8 @@ from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from tasks.models import Task
+import json
+from django.http import JsonResponse
 
 from .models import ConvertedFormat, DataExport, Export
 from .serializers import (
@@ -170,55 +172,67 @@ class ExportAPI(generics.RetrieveAPIView):
         return queryset.select_related('project').prefetch_related('annotations', 'predictions')
 
     def get(self, request, *args, **kwargs):
-        project = self.get_object()
-        query_serializer = ExportParamSerializer(data=request.GET)
-        query_serializer.is_valid(raise_exception=True)
+        try:
+            project = self.get_object()
+            query_serializer = ExportParamSerializer(data=request.GET)
+            query_serializer.is_valid(raise_exception=True)
 
-        export_type = (
-            query_serializer.validated_data.get('exportType') or query_serializer.validated_data['export_type']
-        )
-        only_finished = not query_serializer.validated_data['download_all_tasks']
-        download_resources = query_serializer.validated_data['download_resources']
-        interpolate_key_frames = query_serializer.validated_data['interpolate_key_frames']
+            export_type = (
+                query_serializer.validated_data.get('exportType') or query_serializer.validated_data['export_type']
+            )
+            only_finished = not query_serializer.validated_data['download_all_tasks']
+            download_resources = query_serializer.validated_data['download_resources']
+            interpolate_key_frames = query_serializer.validated_data['interpolate_key_frames']
 
-        tasks_ids = request.GET.getlist('ids[]')
+            tasks_ids = request.GET.getlist('ids[]')
 
-        logger.debug('Get tasks')
-        query = Task.objects.filter(project=project)
-        if tasks_ids and len(tasks_ids) > 0:
-            logger.debug(f'Select only subset of {len(tasks_ids)} tasks')
-            query = query.filter(id__in=tasks_ids)
-        if only_finished:
-            query = query.filter(annotations__isnull=False).distinct()
+            logger.debug('Get tasks')
+            query = Task.objects.filter(project=project)
+            if tasks_ids and len(tasks_ids) > 0:
+                logger.debug(f'Select only subset of {len(tasks_ids)} tasks')
+                query = query.filter(id__in=tasks_ids)
+            if only_finished:
+                query = query.filter(annotations__isnull=False).distinct()
 
-        task_ids = query.values_list('id', flat=True)
+            task_ids = query.values_list('id', flat=True)
 
-        logger.debug('Serialize tasks for export')
-        tasks = []
-        for _task_ids in batch(task_ids, 1000):
-            tasks += ExportDataSerializer(
-                self.get_task_queryset(query.filter(id__in=_task_ids)),
-                many=True,
-                expand=['drafts'],
-                context={'interpolate_key_frames': interpolate_key_frames},
-            ).data
-        logger.debug('Prepare export files')
-        # DataExport.generate_export_file(
-        #     project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
-        # )
-        export_file, content_type, filename = DataExport.generate_export_file(
-            request,project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
-        )
+            logger.debug('Serialize tasks for export')
+            tasks = []
+            for _task_ids in batch(task_ids, 1000):
+                tasks += ExportDataSerializer(
+                    self.get_task_queryset(query.filter(id__in=_task_ids)),
+                    many=True,
+                    expand=['drafts'],
+                    context={'interpolate_key_frames': interpolate_key_frames},
+                ).data
+            logger.debug('Prepare export files')
+            # DataExport.generate_export_file(
+            #     project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
+            # )
+            export_file, content_type, filename = DataExport.generate_export_file(
+                request,project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
+            )
 
-        # r = FileResponse(export_file, as_attachment=False, content_type=content_type, filename=filename)
-        # r['filename'] = filename
+            # r = FileResponse(export_file, as_attachment=False, content_type=content_type, filename=filename)
+            # r['filename'] = filename
+            # return Response(
+            #     {'detail': f'Error in exporting file'},
+            #     status=status.HTTP_400_BAD_REQUEST
+            # )
+            return Response(
+                {"detail": "Export completed successfully"},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            # return Response(
+            #     {"detail": "Export completed successfully"},
+            #     status=status.HTTP_200_OK
+            # )
+            return Response(
+                {'detail': f'Error in exporting file{e}'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        return Response(
-            {"message": "Export completed successfully"},
-            status=status.HTTP_200_OK
-        )
-        # return r
-        # return Response(status=status.HTTP_200_OK)
 
 # @method_decorator(
 #     name='get',
