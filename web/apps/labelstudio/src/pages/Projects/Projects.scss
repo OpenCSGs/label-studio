@@ -1,5 +1,8 @@
 .projects-page {
   min-height: calc(100vh - var(--header-height));
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &__loading {
     width: 100%;

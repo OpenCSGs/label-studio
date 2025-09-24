@@ -184,8 +184,8 @@ class PublicListAPI(APIView):
         # print(user_name)
         # print(user_data['authorization'])
         # 调用外部API（使用当前用户的authorization）
-        # os.environ['CSG_HUB_ENDPOINT']
-        url = f"{os.environ['CSG_HUB_ENDPOINT']}/api/v1/user/{user_name}/datasets?per=50&page=1"
+        # os.environ['CSGHUB_ENDPOINT']
+        url = f"{os.environ['CSGHUB_ENDPOINT']}/api/v1/user/{user_name}/datasets?per=50&page=1"
         headers = {
             "Authorization": authorization
         }
@@ -223,7 +223,7 @@ class DatasetBranchesAPI(APIView):
         repo_id = request.query_params.get('repo_id')
 
         endpoint = f"/api/v1/datasets/{repo_id}/branches"
-        url = f"{os.environ['CSG_HUB_ENDPOINT']}{endpoint}"
+        url = f"{os.environ['CSGHUB_ENDPOINT']}{endpoint}"
 
         headers = {
             "Authorization": authorization

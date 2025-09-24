@@ -31,7 +31,7 @@ export const unique = <T>(list: T[] | undefined, expression: Uniqueness<T>): T[]
 };
 
 export const isDefined = <T>(value: T | undefined | null): value is T => {
-  return value !== null && value !== undefined;
+  return value !== null && value !== undefined && value !== '';
 };
 
 export const isEmptyString = (value: any) => {

@@ -13,6 +13,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from organizations.models import Organization, OrganizationMember
 
+
+
 def hash_upload(instance, filename):
     filename = str(uuid.uuid4())[0:8] + '-' + filename
     return settings.AVATAR_PATH + '/' + filename
@@ -53,6 +55,50 @@ def check_avatar(files):
 
     return avatar
 
+def save_user_db(user_form):
+    """Save user instance to DB and create专属组织"""
+   # user = auth.authenticate(email=user_form['email'], password=user_form['email'],username = user_form['email'].split('@')[0])
+    print(type(user_form))
+    from users.models import User
+    user = User.objects.create_user(email=user_form['email'],  password=user_form['email'], allow_newsletters=False)
+    user.username = user.email.split('@')[0]
+    print("创建用户成功",user.username)
+    # user.save()
+    # print(user)
+
+    # --------------------------
+    # 1. 处理用户组（保持之前的专属组逻辑）
+    # --------------------------
+    user.groups.clear()  # 清除默认组
+    group_name = f"user_{user.id}_group"
+    user_group, _ = Group.objects.get_or_create(name=group_name)
+    user.groups.add(user_group)
+
+    # --------------------------
+    # 2. 为新用户创建专属组织（关键修改）
+    # --------------------------
+    # 组织名称：包含用户名和ID，确保唯一
+    org_title = f"Organization_{user.username}_{user.id}"
+    # 强制创建新组织，不检查现有组织
+    org = Organization.create_organization(
+        created_by=user,
+        title=org_title
+    )
+
+    # --------------------------
+    # 3. 将用户关联到自己的专属组织
+    # --------------------------
+    # 创建组织成员关系（用户是该组织的创建者/成员）
+    OrganizationMember.objects.get_or_create(
+        organization=org,
+        user=user,
+        defaults={'role': 'member'}  # 仅在新创建时设置role
+    )
+    # 设置用户的活跃组织为自己的专属组织
+    user.active_organization = org
+    # user.save(update_fields=['active_organization'])
+    user.save()
+    return user
 
 def save_user(request, next_page, user_form):
     """Save user instance to DB and create专属组织"""

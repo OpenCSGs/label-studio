@@ -8,6 +8,7 @@ const SENTRY_DSN = APP_SETTINGS.sentry_dsn;
 const SENTRY_ENV = APP_SETTINGS.sentry_environment ?? process.env.NODE_ENV;
 const SENTRY_RATE = APP_SETTINGS.sentry_rate ? Number.parseFloat(APP_SETTINGS.sentry_rate) : 0.25;
 const SENTRY_ENABLED = APP_SETTINGS.debug === false && isDefined(SENTRY_DSN);
+// const SENTRY_ENABLED =  false ;
 
 // Production app any endpoints matching the explicit fetch will be considered for tracing
 // This is to ensure we catch the API Proxy requests which will make fetch requests with a full URL without the inclusion of presign in the URL

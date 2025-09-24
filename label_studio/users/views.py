@@ -16,7 +16,7 @@ from organizations.forms import OrganizationSignupForm
 from organizations.models import Organization
 from rest_framework.authtoken.models import Token
 from users import forms
-from users.functions import login, proceed_registration
+from users.functions import login, proceed_registration,save_user_db
 from django.contrib.auth import get_user_model
 # from models import User
 from django.http import JsonResponse
@@ -208,6 +208,7 @@ class LabelStudioUserManager:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         })
 
+
     def _get_csrf_token(self, url_path='/user/login/'):
         url = urljoin(self.base_url, url_path)
         try:
@@ -220,7 +221,7 @@ class LabelStudioUserManager:
     def _create_user(self, email, ):
         signup_url = urljoin(self.base_url, '/user/signup/')
         csrf_token = self._get_csrf_token('/user/signup/')
-
+        print("csrf_token:",csrf_token)
         if not csrf_token:
             return False
 
@@ -241,11 +242,26 @@ class LabelStudioUserManager:
                 allow_redirects=False,
                 timeout=5
             )
-            print(response)
+            print(response.text)
             if response.status_code == 302:
                 return True
             return False
         except requests.RequestException as e:
+            return False
+    def _create_user_db(self, email ):
+        try:
+            form_data = {
+                'email': email,
+                'password': self.fixed_password,
+                'password_confirm': self.fixed_password,
+                'first_name': '',
+                'last_name': ''
+            }
+
+            save_user_db = load_func(settings.SAVE_USER_DB)
+            response = save_user_db(form_data)
+            return response
+        except Exception as e:
             return False
 
 
@@ -260,31 +276,13 @@ def login_verfy(request):
     print(request.headers)
     print("POST:", dict(request.POST))
     # request.session.flush()
-
-
     next_page = request.GET.get('next')
     email = request.GET.get('email')
-    # User = get_user_model()
-    # print("创建用户是否存在", email, User.objects.filter(email=email).exists())
-    # user = User.objects.get(email=email)
-    # print("创建用户是否存在", email,user.get_username() )
-    # username = User.objects.filter(email=email).values_list('username', flat=True).first()
-    # print("创建用户是否存在", email,username)
-    # print(email,100*'*')
-    # 处理POST数据（如果有）
-
-
-    # 可以在这里处理token_data
-    # print(set_data(token_data['user_name'], token_data))
-    from .models import User
-    # token_data=eval(token_data)
     user = request.user
     # 设置默认重定向页面
     if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
         next_page = reverse('projects:project-index')
 
-    # 如果用户已认证且邮箱匹配，直接重定向
-    User = get_user_model()
     if user.is_authenticated:
         # from django.contrib.auth import get_user_model
         """检查用户是否存在"""
@@ -292,7 +290,7 @@ def login_verfy(request):
         # print("创建用户是否存在:用户已认证且邮箱匹配", email, User.objects.filter(email=email).exists())
         if user.is_authenticated and email and user.email != email:
             auth.logout(request)
-            return login_verfy(request)  # 递归调用
+            return login_verfy(request)
         token_data = request.POST.dict()
         print(token_data)
         if token_data:
@@ -321,7 +319,7 @@ def login_verfy(request):
 
     # 获取服务器URL
     server_url = request.build_absolute_uri('/')[:-1]
-
+    # server_url ="http://39.102.214.107:8002"
     try:
         User = get_user_model()
         print("创建用户1")
@@ -358,13 +356,14 @@ def login_verfy(request):
         except User.DoesNotExist:
             # 用户不存在，尝试创建
             print("创建用户不存在", email, User.objects.filter(email=email).exists())
-            print("创建用户3")
+            print("创建用户3",server_url)
             manager = LabelStudioUserManager(server_url)
             test_users = {"email": email}
-            result = manager._create_user(**test_users)
+            result = manager._create_user_db(**test_users)
 
             if result:
                 # 创建成功，登录用户
+                print('创建成功，登录用户')
                 user = User.objects.get(email=email)
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 user.save(update_fields=['active_organization'])
@@ -424,20 +423,6 @@ def login_reques(request):
 
     next_page = request.GET.get('next')
     email = request.GET.get('email')
-    # User = get_user_model()
-    # print("创建用户是否存在", email, User.objects.filter(email=email).exists())
-    # user = User.objects.get(email=email)
-    # print("创建用户是否存在", email,user.get_username() )
-    # username = User.objects.filter(email=email).values_list('username', flat=True).first()
-    # print("创建用户是否存在", email,username)
-    # print(email,100*'*')
-    # 处理POST数据（如果有）
-
-
-    # 可以在这里处理token_data
-    # print(set_data(token_data['user_name'], token_data))
-    from .models import User
-    # token_data=eval(token_data)
     user = request.user
     # 设置默认重定向页面
     if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
@@ -455,11 +440,9 @@ def login_reques(request):
             return login_reques(request)  # 递归调用
         return redirect(next_page)
 
-
-
     # 获取服务器URL
     server_url = request.build_absolute_uri('/')[:-1]
-
+    # server_url = "https://192.168.2.9:8080"
     try:
         User = get_user_model()
         # 尝试获取用户
@@ -469,25 +452,12 @@ def login_reques(request):
             user.save(update_fields=['active_organization'])
             return redirect(next_page)
         except User.DoesNotExist:
-            # 用户不存在，尝试创建
-            print("用户不存在，开始创建", email, User.objects.filter(email=email).exists())
-            manager = LabelStudioUserManager(server_url)
-            test_users = {"email": email}
-            result = manager._create_user(**test_users)
-
-            if result:
-                # 创建成功，登录用户
-                user = User.objects.get(email=email)
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-                user.save(update_fields=['active_organization'])
-                return redirect(next_page)
-            else:
-                # 创建失败，返回错误页面
-                return render(request, 'users/user_login.html', {
-                    'form': load_func(settings.USER_LOGIN_FORM)(),
-                    'next': quote(next_page),
-                    'error_message': "账号创建失败"
-                }, status=400)
+            # 获取用户失败，返回错误页面
+            return render(request, 'users/user_login.html', {
+                'form': load_func(settings.USER_LOGIN_FORM)(),
+                'next': quote(next_page),
+                'error_message': "账号获取失败，用户不存在"
+            }, status=400)
 
     except Exception as e:
         # print("创建用户4")

@@ -40,7 +40,9 @@ services:
       - POSTGRE_HOST=db
       - LABEL_STUDIO_HOST=${LABEL_STUDIO_HOST:-}
       - JSON_LOG=1
-      - CSG_HUB_ENDPOINT= http://opencsg.com
+      - CSGHUB_ENDPOINT= http://opencsg.com
+      - FRONTEND_SENTRY_DSN=""
+      - LATEST_VERSION_CHECK=False
     #      - LOG_LEVEL=DEBUG
     volumes:
       - ./mydata:/label-studio/data:rw

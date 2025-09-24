@@ -202,7 +202,7 @@ def tasks_from_url(file_upload_ids,project, user, body, could_be_tasks_list):
 
 
 
-        endpoint =  os.environ['CSG_HUB_ENDPOINT']
+        endpoint =  os.environ['CSGHUB_ENDPOINT']
         repo_id = project.dataset
         repo_type = "dataset"
         revision = project.datasetBranches
