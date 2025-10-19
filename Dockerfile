@@ -79,7 +79,6 @@ ENV PYTHONUNBUFFERED=1 \
 ADD https://install.python-poetry.org /tmp/install-poetry.py
 RUN python /tmp/install-poetry.py
 
-
 RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
     --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
@@ -130,22 +129,10 @@ ARG BRANCH_OVERRIDE
 RUN --mount=type=bind,source=.git,target=./.git \
     VERSION_OVERRIDE=${VERSION_OVERRIDE} BRANCH_OVERRIDE=${BRANCH_OVERRIDE} poetry run python label_studio/core/version.py
 
-################################### Stage: prod
 FROM python:${PYTHON_VERSION}-slim AS production
 
-ENV LS_DIR=/label-studio \
-    HOME=/label-studio \
-    LABEL_STUDIO_BASE_DATA_DIR=/label-studio/data \
-    OPT_DIR=/opt/heartex/instance-data/etc \
-    PATH="/label-studio/.venv/bin:$PATH" \
-    DJANGO_SETTINGS_MODULE=core.settings.label_studio \
-    PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
-
-WORKDIR $LS_DIR
-FROM python:${PYTHON_VERSION}-slim AS production
-
-# 新增：替换 Debian 源为国内镜像（解决网络问题）
+# update sources list to use Aliyun mirrors
+RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
 RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" > /etc/apt/sources.list && \
     echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" >> /etc/apt/sources.list && \
     echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list && \
@@ -153,7 +140,6 @@ RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" 
     echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list && \
     echo "deb-src http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list
 
-# 原有的安装步骤（保持不变）
 ENV LS_DIR=/label-studio \
     HOME=/label-studio \
     LABEL_STUDIO_BASE_DATA_DIR=/label-studio/data \
