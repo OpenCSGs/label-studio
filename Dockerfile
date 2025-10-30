@@ -1,10 +1,10 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.6
 ARG NODE_VERSION=22
 ARG PYTHON_VERSION=3.12
 ARG POETRY_VERSION=2.1.3
 ARG VERSION_OVERRIDE
 ARG BRANCH_OVERRIDE
-ARG BUILDPLATFORM=linux/amd64
+ARG BUILD_CN=false
 
 ################################ Overview
 
@@ -17,7 +17,8 @@ ARG BUILDPLATFORM=linux/amd64
 # 5. "prod" - Creates the final production image with the Label Studio, Nginx, and other dependencies.
 
 ################################ Stage: frontend-builder (build frontend assets)
-FROM --platform=${BUILDPLATFORM} node:${NODE_VERSION} AS frontend-builder
+FROM node:${NODE_VERSION} AS frontend-builder
+
 ENV BUILD_NO_SERVER=true \
     BUILD_NO_HASH=true \
     BUILD_NO_CHUNKS=true \
@@ -29,24 +30,30 @@ ENV BUILD_NO_SERVER=true \
 WORKDIR /label-studio/web
 
 # Fix Docker Arm64 Build
-RUN yarn config set registry https://registry.npmmirror.com/ \
-    && yarn config set disturl https://npmmirror.com/dist \
-    && yarn config set electron_mirror https://npmmirror.com/mirrors/electron/ \
-    && yarn config set puppeteer_download_host https://npmmirror.com/mirrors/ \
-    && yarn config set chromedriver_cdnurl https://npmmirror.com/mirrors/chromedriver/ \
-    && yarn config set operadriver_cdnurl https://npmmirror.com/mirrors/operadriver/ \
-    && yarn config set phantomjs_cdnurl https://npmmirror.com/mirrors/phantomjs/ \
-    && yarn config set sass_binary_site https://npmmirror.com/mirrors/node-sass/ \
-    && yarn config set python_mirror https://npmmirror.com/mirrors/python/
-RUN yarn config set network-timeout 1200000 # HTTP timeout used when downloading packages, set to 20 minutes
-
+RUN yarn config set registry https://registry.npmmirror.com/; \
+    yarn config set disturl https://npmmirror.com/dist; \
+    yarn config set electron_mirror https://npmmirror.com/mirrors/electron/; \
+    yarn config set puppeteer_download_host https://npmmirror.com/mirrors/; \
+    yarn config set chromedriver_cdnurl https://npmmirror.com/mirrors/chromedriver/; \
+    yarn config set operadriver_cdnurl https://npmmirror.com/mirrors/operadriver/; \
+    yarn config set phantomjs_cdnurl https://npmmirror.com/mirrors/phantomjs/; \
+    yarn config set sass_binary_site https://npmmirror.com/mirrors/node-sass/; \
+    yarn config set python_mirror https://npmmirror.com/mirrors/python/; \
+    yarn config set network-timeout 1200000
 
 COPY web/package.json .
 COPY web/yarn.lock .
 COPY web/tools tools
 RUN --mount=type=cache,target=${YARN_CACHE_FOLDER},sharing=locked \
     --mount=type=cache,target=${NX_CACHE_DIRECTORY},sharing=locked \
-    yarn install --prefer-offline --no-progress --pure-lockfile --frozen-lockfile --ignore-engines --non-interactive --production=false
+    --mount=type=cache,target=/root/.cache/yarn,sharing=locked \
+    yarn install \
+      --prefer-offline \
+      --no-progress \
+      --frozen-lockfile \
+      --ignore-engines \
+      --non-interactive \
+      --production=false
 
 COPY web .
 COPY pyproject.toml ../pyproject.toml
@@ -56,9 +63,10 @@ RUN --mount=type=cache,target=${YARN_CACHE_FOLDER},sharing=locked \
 
 ################################ Stage: frontend-version-generator
 FROM frontend-builder AS frontend-version-generator
+
 RUN --mount=type=cache,target=${YARN_CACHE_FOLDER},sharing=locked \
     --mount=type=cache,target=${NX_CACHE_DIRECTORY},sharing=locked \
-    --mount=type=bind,source=.git,target=../.git \
+    --mount=type=bind,source=.git,target=/label-studio/.git \
     yarn version:libs
 
 ################################ Stage: venv-builder (prepare the virtualenv)
@@ -79,14 +87,16 @@ ENV PYTHONUNBUFFERED=1 \
 ADD https://install.python-poetry.org /tmp/install-poetry.py
 RUN python /tmp/install-poetry.py
 
-RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
-    --mount=type=cache,target="/var/cache/apt",sharing=locked \
+ARG BUILD_CN=false
+RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
+    if [ "$BUILD_CN" = "true" ]; then \
+      sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; \
+    fi; \
     apt-get update; \
-    apt-get install --no-install-recommends -y \
-            build-essential git; \
-    apt-get autoremove -y
+    apt-get install --no-install-recommends -y build-essential git; \
+    apt-get clean; rm -rf /var/lib/apt/lists/*
 
 WORKDIR /label-studio
 
@@ -105,39 +115,39 @@ ENV PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/ \
 
 # Install dependencies without dev packages
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR,sharing=locked \
-    poetry lock && \
-    poetry check --lock && \
+    poetry lock; \
+    poetry check --lock; \
     if [ "$INCLUDE_DEV" = "true" ]; then \
-        poetry install --no-root --extras uwsgi --with test; \
+        poetry install --no-interaction --no-ansi --no-root --extras uwsgi --with test; \
     else \
-        poetry install --no-root --without test --extras uwsgi; \
+        poetry install --no-interaction --no-ansi --no-root --without test --extras uwsgi; \
     fi
 
 # Install LS
 COPY label_studio label_studio
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR,sharing=locked \
     # `--extras uwsgi` is mandatory here due to poetry bug: https://github.com/python-poetry/poetry/issues/7302
-    poetry install --only-root --extras uwsgi && \
+    poetry install --only-root --extras uwsgi; \
     python3 label_studio/manage.py collectstatic --no-input
 
 ################################ Stage: py-version-generator
 FROM venv-builder AS py-version-generator
-ARG VERSION_OVERRIDERUN --mount=type=cache,target="/var/cache/apt",sharing=locked     --mount=type=cache,ta
+ARG VERSION_OVERRIDE
 ARG BRANCH_OVERRIDE
 
 # Create version_.py and ls-version_.py
-RUN --mount=type=bind,source=.git,target=./.git \
+RUN --mount=type=bind,source=.git,target=/label-studio/.git \
     VERSION_OVERRIDE=${VERSION_OVERRIDE} BRANCH_OVERRIDE=${BRANCH_OVERRIDE} poetry run python label_studio/core/version.py
 
 FROM python:${PYTHON_VERSION}-slim AS production
 
 # update sources list to use Aliyun mirrors
-RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
-RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" > /etc/apt/sources.list && \
-    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" >> /etc/apt/sources.list && \
-    echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list && \
-    echo "deb-src http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list && \
-    echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list && \
+RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; \
+    echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" > /etc/apt/sources.list; \
+    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" >> /etc/apt/sources.list; \
+    echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list; \
+    echo "deb-src http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list; \
+    echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list; \
     echo "deb-src http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list
 
 ENV LS_DIR=/label-studio \
@@ -151,33 +161,40 @@ ENV LS_DIR=/label-studio \
 
 WORKDIR $LS_DIR
 
-
 # install prerequisites for app
-RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list && \
-    --mount=type=cache,target="/var/cache/apt",sharing=locked \
+ARG BUILD_CN=false
+RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
+    if [ "$BUILD_CN" = "true" ]; then \
+      sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; \
+    fi; \
     apt-get update; \
-#    apt-get upgrade -y; \
-    apt-get install --no-install-recommends -y libexpat1 libgl1-mesa-glx libglib2.0-0 \
-        gnupg2 curl; \
-    apt-get autoremove -y
+    apt-get install --no-install-recommends -y \
+      libexpat1 \
+      libgl1-mesa-glx \
+      libglib2.0-0 \
+      gnupg2 \
+      curl; \
+    apt-get clean; rm -rf /var/lib/apt/lists/*
 
 # install nginx
-RUN sed -i 's#http://deb.debian.org/debian#https://mirrors.tuna.tsinghua.edu.cn/debian#' && \
-    --mount=type=cache,target="/var/cache/apt",sharing=locked \
+RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
+    mkdir -p /etc/apt/keyrings; \
+    if [ "$BUILD_CN" = "true" ]; then \
+      sed -i 's#http://deb.debian.org/debian#https://mirrors.tuna.tsinghua.edu.cn/debian#' /etc/apt/sources.list; \
+    fi; \
     curl -sSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /etc/apt/keyrings/nginx-archive-keyring.gpg >/dev/null; \
-    DEBIAN_VERSION=$(awk -F '=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release); \
-    printf "deb [signed-by=/etc/apt/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian ${DEBIAN_VERSION} nginx\n" > /etc/apt/sources.list.d/nginx.list; \
+    echo "deb [signed-by=/etc/apt/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian $(. /etc/os-release && echo $VERSION_CODENAME) nginx" > /etc/apt/sources.list.d/nginx.list; \
     printf "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" > /etc/apt/preferences.d/99nginx; \
     apt-get update; \
-    apt-get install --no-install-recommends -y nginx; \
-    apt-get autoremove -y
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y nginx; \
+    apt-get clean; rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
-    mkdir -p $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR $OPT_DIR && \
+    mkdir -p $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR $OPT_DIR; \
     chown -R 1001:0 $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR $OPT_DIR /var/log/nginx /etc/nginx
 
 COPY --chown=1001:0 deploy/default.conf /etc/nginx/nginx.conf
@@ -204,5 +221,5 @@ USER 1001
 
 EXPOSE 8080
 
-ENTRYPOINT ["./deploy/docker-entrypoint.sh"]
+ENTRYPOINT ["/label-studio/deploy/docker-entrypoint.sh"]
 CMD ["label-studio"]
