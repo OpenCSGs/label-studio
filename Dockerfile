@@ -30,15 +30,20 @@ ENV BUILD_NO_SERVER=true \
 WORKDIR /label-studio/web
 
 # Fix Docker Arm64 Build
-RUN yarn config set registry https://registry.npmmirror.com/; \
-    yarn config set disturl https://npmmirror.com/dist; \
-    yarn config set electron_mirror https://npmmirror.com/mirrors/electron/; \
-    yarn config set puppeteer_download_host https://npmmirror.com/mirrors/; \
-    yarn config set chromedriver_cdnurl https://npmmirror.com/mirrors/chromedriver/; \
-    yarn config set operadriver_cdnurl https://npmmirror.com/mirrors/operadriver/; \
-    yarn config set phantomjs_cdnurl https://npmmirror.com/mirrors/phantomjs/; \
-    yarn config set sass_binary_site https://npmmirror.com/mirrors/node-sass/; \
-    yarn config set python_mirror https://npmmirror.com/mirrors/python/; \
+RUN set -eux; \ 
+    if [ "${BUILD_CN:-false}" = "true" ]; then \
+      yarn config set registry https://registry.npmmirror.com/ && \
+      yarn config set disturl https://npmmirror.com/dist && \
+      yarn config set electron_mirror https://npmmirror.com/mirrors/electron/ && \
+      yarn config set puppeteer_download_host https://npmmirror.com/mirrors/ && \
+      yarn config set chromedriver_cdnurl https://npmmirror.com/mirrors/chromedriver/ && \
+      yarn config set operadriver_cdnurl https://npmmirror.com/mirrors/operadriver/ && \
+      yarn config set phantomjs_cdnurl https://npmmirror.com/mirrors/phantomjs/ && \
+      yarn config set sass_binary_site https://npmmirror.com/mirrors/node-sass/ && \
+      yarn config set python_mirror https://npmmirror.com/mirrors/python/; \
+    else \
+      yarn config set registry https://registry.npmjs.org/; \
+    fi; \
     yarn config set network-timeout 1200000
 
 COPY web/package.json .
@@ -47,13 +52,7 @@ COPY web/tools tools
 RUN --mount=type=cache,target=${YARN_CACHE_FOLDER},sharing=locked \
     --mount=type=cache,target=${NX_CACHE_DIRECTORY},sharing=locked \
     --mount=type=cache,target=/root/.cache/yarn,sharing=locked \
-    yarn install \
-      --prefer-offline \
-      --no-progress \
-      --frozen-lockfile \
-      --ignore-engines \
-      --non-interactive \
-      --production=false
+    yarn install --prefer-offline --no-progress --frozen-lockfile --ignore-engines --non-interactive --production=false
 
 COPY web .
 COPY pyproject.toml ../pyproject.toml
@@ -92,7 +91,7 @@ RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
     if [ "$BUILD_CN" = "true" ]; then \
-      sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; \
+      sed -i 's#http://deb.debian.org/#https://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list.d/debian.sources; \
     fi; \
     apt-get update; \
     apt-get install --no-install-recommends -y build-essential git; \
@@ -110,13 +109,16 @@ COPY pyproject.toml poetry.lock README.md ./
 
 # Set a default build argument for including dev dependencies
 ARG INCLUDE_DEV=false
-ENV PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/ \
-    PIP_TRUSTED_HOST=mirrors.aliyun.com
 
 # Install dependencies without dev packages
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR,sharing=locked \
-    poetry lock; \
-    poetry check --lock; \
+    if [ "$BUILD_CN" = "true" ]; then \
+      poetry config repositories.tuna https://pypi.tuna.tsinghua.edu.cn/simple/ && \
+      poetry config pypi-token.pypi --unset && \
+      poetry source add --priority=primary tuna https://pypi.tuna.tsinghua.edu.cn/simple/; \
+    fi && \
+    poetry lock && \
+    poetry check --lock && \
     if [ "$INCLUDE_DEV" = "true" ]; then \
         poetry install --no-interaction --no-ansi --no-root --extras uwsgi --with test; \
     else \
@@ -141,15 +143,6 @@ RUN --mount=type=bind,source=.git,target=/label-studio/.git \
 
 FROM python:${PYTHON_VERSION}-slim AS production
 
-# update sources list to use Aliyun mirrors
-RUN sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; \
-    echo "deb http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" > /etc/apt/sources.list; \
-    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main non-free contrib" >> /etc/apt/sources.list; \
-    echo "deb http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list; \
-    echo "deb-src http://mirrors.aliyun.com/debian-security/ bookworm-security main" >> /etc/apt/sources.list; \
-    echo "deb http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list; \
-    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list
-
 ENV LS_DIR=/label-studio \
     HOME=/label-studio \
     LABEL_STUDIO_BASE_DATA_DIR=/label-studio/data \
@@ -165,32 +158,11 @@ WORKDIR $LS_DIR
 ARG BUILD_CN=false
 RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
-    set -eux; \
     if [ "$BUILD_CN" = "true" ]; then \
-      sed -i 's#http://.*archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list; \
+      sed -i 's#http://deb.debian.org/#https://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list.d/debian.sources; \
     fi; \
     apt-get update; \
-    apt-get install --no-install-recommends -y \
-      libexpat1 \
-      libgl1-mesa-glx \
-      libglib2.0-0 \
-      gnupg2 \
-      curl; \
-    apt-get clean; rm -rf /var/lib/apt/lists/*
-
-# install nginx
-RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
-    --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
-    set -eux; \
-    mkdir -p /etc/apt/keyrings; \
-    if [ "$BUILD_CN" = "true" ]; then \
-      sed -i 's#http://deb.debian.org/debian#https://mirrors.tuna.tsinghua.edu.cn/debian#' /etc/apt/sources.list; \
-    fi; \
-    curl -sSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /etc/apt/keyrings/nginx-archive-keyring.gpg >/dev/null; \
-    echo "deb [signed-by=/etc/apt/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian $(. /etc/os-release && echo $VERSION_CODENAME) nginx" > /etc/apt/sources.list.d/nginx.list; \
-    printf "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" > /etc/apt/preferences.d/99nginx; \
-    apt-get update; \
-    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y nginx; \
+    apt-get install --no-install-recommends -y libexpat1 libgl1 libglx-mesa0 libglib2.0-0t64 gnupg2 curl nginx; \
     apt-get clean; rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
