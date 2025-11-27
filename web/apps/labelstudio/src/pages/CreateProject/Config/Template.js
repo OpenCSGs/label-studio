@@ -1,4 +1,4 @@
-import { CONTROLS, OBJECTS } from "./tags";
+import { CONTROLS, OBJECTS, getCONTROLS, getOBJECTS } from "./tags";
 import { Palette } from "../../../utils/colors";
 
 export const EMPTY_CONFIG = "<View></View>";
@@ -10,10 +10,12 @@ export class Template {
   controls = [];
   details = false;
   palette = Palette();
+  t = null;
 
-  constructor(tpl) {
+  constructor(tpl, t) {
     this.tpl = tpl;
     this.config = tpl.config;
+    this.t = t;
 
     const parser = new DOMParser();
     this.$root = parser.parseFromString(this.config, "application/xml");
@@ -43,14 +45,18 @@ export class Template {
 
   initRoot() {
     const tags = this.flatten(this.$root);
+    // Use translated versions if translation function is provided
+    const OBJECTS_TO_USE = this.t ? getOBJECTS(this.t) : OBJECTS;
+    const CONTROLS_TO_USE = this.t ? getCONTROLS(this.t) : CONTROLS;
+    
     this.objects = tags.filter(
-      ($tag) => $tag.tagName in OBJECTS && ($tag.getAttribute("value") || $tag.getAttribute("valueList")),
+      ($tag) => $tag.tagName in OBJECTS_TO_USE && ($tag.getAttribute("value") || $tag.getAttribute("valueList")),
     );
     const names = this.objects.map(($tag) => $tag.getAttribute("name"));
     this.controls = tags.filter(($tag) => names.includes($tag.getAttribute("toName")));
 
     for (const $object of this.objects) {
-      const object = OBJECTS[$object.tagName];
+      const object = OBJECTS_TO_USE[$object.tagName];
       $object.$controls = this.controls.filter(($tag) => $tag.getAttribute("toName") === $object.getAttribute("name"));
       $object.$controls.forEach(($control) => ($control.$object = $object));
 
@@ -60,7 +66,7 @@ export class Template {
 
       let settings = { ...object.settings };
       $object.$controls.forEach(($control) => {
-        const control = CONTROLS[$control.tagName];
+        const control = CONTROLS_TO_USE[$control.tagName];
 
         if (control) {
           for (const item in control.settings) {

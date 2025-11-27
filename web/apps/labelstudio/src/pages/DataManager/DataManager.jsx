@@ -15,13 +15,14 @@ import { ImportModal } from "../CreateProject/Import/ImportModal";
 import { ExportPage } from "../ExportPage/ExportPage";
 import { APIConfig } from "./api-config";
 import { ToastContext, ToastType } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
 
 import "./DataManager.scss";
 
 const loadDependencies = () => [import("@humansignal/datamanager"), import("@humansignal/editor")];
 
-const initializeDataManager = async (root, props, params) => {
-  if (!window.LabelStudio) throw Error("Label Studio Frontend doesn't exist on the page");
+const initializeDataManager = async (root, props, params, t) => {
+  if (!window.LabelStudio) throw Error(t ? t("dataManager.labelStudioFrontendNotExist") : "Label Studio Frontend doesn't exist on the page");
   if (!root && root.dataset.dmInitialized) return;
 
   root.dataset.dmInitialized = true;
@@ -59,6 +60,7 @@ const buildLink = (path, params) => {
 };
 
 export const DataManagerPage = ({ ...props }) => {
+  const { t } = useTranslation();
   const dependencies = useMemo(loadDependencies, []);
   const toast = useContext(ToastContext);
   const root = useRef();
@@ -91,7 +93,7 @@ export const DataManagerPage = ({ ...props }) => {
         ...params,
         project,
         autoAnnotation: isDefined(interactiveBacked),
-      })));
+      }, t)));
 
     Object.assign(window, { dataManager });
 
@@ -101,9 +103,9 @@ export const DataManagerPage = ({ ...props }) => {
       const isMissingProjectError = error?.startsWith("Project ID:");
 
       if (isMissingTaskError || isMissingProjectError) {
-        const message = `The ${
-          isMissingTaskError ? "task" : "project"
-        } you are trying to access does not exist or is no longer available.`;
+        const message = isMissingTaskError
+          ? t("dataManager.taskDoesNotExist")
+          : t("dataManager.projectDoesNotExist");
 
         toast.show({
           message,
@@ -184,7 +186,7 @@ export const DataManagerPage = ({ ...props }) => {
     }
 
     setContextProps({ dmRef: dataManager });
-  }, [projectId]);
+  }, [projectId, t, toast, history, params, api]);
 
   const destroyDM = useCallback(() => {
     if (dataManagerRef.current) {
@@ -206,10 +208,10 @@ export const DataManagerPage = ({ ...props }) => {
 
   return crashed ? (
     <Block name="crash">
-      <Elem name="info">Project was deleted or not yet created</Elem>
+      <Elem name="info">{t("dataManager.projectDeletedOrNotCreated")}</Elem>
 
-      <Button to="/projects" aria-label="Back to projects">
-        Back to projects
+      <Button to="/projects" aria-label={t("dataManager.backToProjects")}>
+        {t("dataManager.backToProjects")}
       </Button>
     </Block>
   ) : (
@@ -231,11 +233,12 @@ DataManagerPage.pages = {
   ImportModal,
 };
 DataManagerPage.context = ({ dmRef }) => {
+  const { t } = useTranslation();
   const { project } = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
 
   const links = {
-    "/settings": "Settings",
+    "/settings": t("settings.title"),
   };
 
   const updateCrumbs = (currentMode) => {
@@ -246,7 +249,7 @@ DataManagerPage.context = ({ dmRef }) => {
     } else {
       addCrumb({
         key: "dm-crumb",
-        title: "Labeling",
+        title: t("annotation.labeling"),
       });
     }
   };
@@ -257,7 +260,7 @@ DataManagerPage.context = ({ dmRef }) => {
 
     if (isLabelStream && show_instruction && expert_instruction) {
       modal({
-        title: "Labeling Instructions",
+        title: t("settings.labelingInstructions"),
         body: <div dangerouslySetInnerHTML={{ __html: expert_instruction }} />,
         style: { width: 680 },
       });
@@ -288,12 +291,12 @@ DataManagerPage.context = ({ dmRef }) => {
           look="outlined"
           onClick={() => {
             modal({
-              title: "Instructions",
+              title: t("settings.labelingInstructions"),
               body: () => <div dangerouslySetInnerHTML={{ __html: project.expert_instruction }} />,
             });
           }}
         >
-          Instructions
+          {t("settings.labelingInstructions")}
         </Button>
       )}
 

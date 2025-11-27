@@ -74,6 +74,9 @@ export const API_CONFIG = {
     // Version
     version: "/version",
 
+    // System Config
+    systemConfig: "/system-config/",
+
     // Webhook
     webhooks: "/webhooks",
     webhook: "/webhooks/:pk",

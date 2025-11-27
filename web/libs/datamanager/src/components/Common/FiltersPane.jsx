@@ -1,5 +1,6 @@
 import { inject, observer } from "mobx-react";
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { IconChevronDown } from "@humansignal/icons";
 import { Filters } from "../Filters/Filters";
 import { Badge } from "./Badge/Badge";
@@ -20,6 +21,7 @@ const buttonInjector = inject(({ store }) => {
 export const FiltersButton = buttonInjector(
   observer(
     React.forwardRef(({ activeFiltersNumber, size, sidebarEnabled, viewsStore, ...rest }, ref) => {
+      const { t } = useTranslation();
       const hasFilters = activeFiltersNumber > 0;
 
       return (
@@ -30,10 +32,10 @@ export const FiltersButton = buttonInjector(
           look="outlined"
           onClick={() => sidebarEnabled && viewsStore.toggleSidebar()}
           trailing={<Icon icon={IconChevronDown} />}
-          aria-label="Filters"
+          aria-label={t("dataManager.filters")}
           {...rest}
         >
-          Filters{" "}
+          {t("dataManager.filters")}{" "}
           {hasFilters && (
             <Badge size="small" style={{ marginLeft: 5 }}>
               {activeFiltersNumber}

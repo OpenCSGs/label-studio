@@ -9,10 +9,12 @@ import "./WebhookPage.scss";
 import { Space } from "../../components/Space/Space";
 import { useProject } from "../../providers/ProjectProvider";
 import { WebhookDeleteModal } from "./WebhookDeleteModal";
+import { useTranslation } from "react-i18next";
 
 const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectActive }) => {
   // if webhook === null - create mod
   // else update
+  const { t } = useTranslation();
   const rootClass = cn("webhook-detail");
 
   const api = useAPI();
@@ -122,11 +124,11 @@ const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectA
             }}
           >
             <Form.Row columnCount={1}>
-              <Label text="Payload URL" large />
+              <Label text={t("webhooks.payloadUrl")} large />
               <Space className={rootClass.elem("url-space")}>
-                <Input name="url" className={rootClass.elem("url-input")} placeholder="URL" />
+                <Input name="url" className={rootClass.elem("url-input")} placeholder={t("webhooks.url")} />
                 <Space align="end" className={rootClass.elem("activator")}>
-                  <span className={rootClass.elem("black-text")}>Is Active</span>
+                  <span className={rootClass.elem("black-text")}>{t("webhooks.isActive")}</span>
                   <Toggle
                     skip
                     checked={isActive}

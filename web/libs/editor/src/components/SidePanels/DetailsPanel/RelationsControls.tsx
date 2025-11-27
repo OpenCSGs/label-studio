@@ -1,4 +1,5 @@
 import { type FC, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react";
 import { Block, Elem } from "../../../utils/bem";
 import { Button } from "@humansignal/ui";
@@ -19,6 +20,7 @@ interface ToggleRelationsVisibilityButtonProps {
 }
 
 const ToggleRelationsVisibilityButton = observer<FC<ToggleRelationsVisibilityButtonProps>>(({ relationStore }) => {
+  const { t } = useTranslation();
   const toggleRelationsVisibility = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -39,7 +41,7 @@ const ToggleRelationsVisibilityButton = observer<FC<ToggleRelationsVisibilityBut
       disabled={isDisabled}
       onClick={toggleRelationsVisibility}
       mod={{ hidden: isAllHidden }}
-      aria-label={isAllHidden ? "Show all" : "Hide all"}
+      aria-label={isAllHidden ? t("annotation.showAll") : t("annotation.hideAll")}
       icon={
         isAllHidden ? (
           <IconOutlinerEyeClosed width={16} height={16} />
@@ -47,7 +49,7 @@ const ToggleRelationsVisibilityButton = observer<FC<ToggleRelationsVisibilityBut
           <IconOutlinerEyeOpened width={16} height={16} />
         )
       }
-      tooltip={isAllHidden ? "Show all" : "Hide all"}
+      tooltip={isAllHidden ? t("annotation.showAll") : t("annotation.hideAll")}
       tooltipTheme="dark"
     />
   );
@@ -58,6 +60,7 @@ interface ToggleRelationsOrderButtonProps {
 }
 
 const ToggleRelationsOrderButton = observer<FC<ToggleRelationsOrderButtonProps>>(({ relationStore }) => {
+  const { t } = useTranslation();
   const toggleRelationsOrder = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -78,9 +81,9 @@ const ToggleRelationsOrderButton = observer<FC<ToggleRelationsOrderButtonProps>>
       onClick={toggleRelationsOrder}
       disabled={isDisabled}
       mod={{ order: relationStore.order }}
-      aria-label={isAsc ? "Order by oldest" : "Order by newest"}
+      aria-label={isAsc ? t("annotation.orderByOldest") : t("annotation.orderByNewest")}
       icon={isAsc ? <IconSortUp /> : <IconSortDown />}
-      tooltip={isAsc ? "Order by oldest" : "Order by newest"}
+      tooltip={isAsc ? t("annotation.orderByOldest") : t("annotation.orderByNewest")}
       tooltipTheme="dark"
     />
   );

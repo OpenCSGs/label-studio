@@ -46,7 +46,7 @@ class UserOrganizationMemberListSerializer(UserSerializer):
         return contributed_to_projects_map.get(user.id, [])
 
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ('created_projects', 'contributed_to_projects')
+        fields = UserSerializer.Meta.fields + ('created_projects', 'contributed_to_projects', 'user_name')
 
 
 class OrganizationMemberListSerializer(DynamicFieldsMixin, serializers.ModelSerializer):

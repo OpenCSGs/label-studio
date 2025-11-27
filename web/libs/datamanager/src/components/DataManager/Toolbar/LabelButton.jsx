@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IconChevronDown } from "@humansignal/icons";
 import { Dropdown } from "../../Common/Dropdown/DropdownComponent";
 import { Menu } from "../../Common/Menu/Menu";
+import { useTranslation } from "react-i18next";
 
 const injector = inject(({ store }) => {
   const { dataStore, currentView } = store;
@@ -112,6 +113,7 @@ const injector = inject(({ store }) => {
 //   ) : null;
 // });
 export const LabelButton = injector(({ store, canLabel, size, target, selectedCount }) => {
+  const { t } = useTranslation();
   const disabled = target === "annotations";
   const triggerRef = useRef();
 
@@ -123,6 +125,15 @@ export const LabelButton = injector(({ store, canLabel, size, target, selectedCo
   const onLabelVisible = () => {
     localStorage.setItem("dm:labelstream:mode", "filtered");
     store.startLabelStream();
+  };
+
+  const getLabelText = () => {
+    if (!selectedCount) {
+      return t("dataManager.labelAllTasks");
+    }
+    return selectedCount === 1
+      ? t("dataManager.labelTasks", { count: selectedCount })
+      : t("dataManager.labelTasksPlural", { count: selectedCount });
   };
 
   return canLabel ? (
@@ -137,7 +148,7 @@ export const LabelButton = injector(({ store, canLabel, size, target, selectedCo
             style={{ width: 160, padding: 0 }}
             onClick={onLabelAll}
           >
-            Label {selectedCount ? selectedCount : "All"} Task{!selectedCount || selectedCount > 1 ? "s" : ""}
+            {getLabelText()}
           </Button>
           
           <div ref={triggerRef} style={{ position: "relative" }}>
@@ -145,7 +156,7 @@ export const LabelButton = injector(({ store, canLabel, size, target, selectedCo
               align="right"
               content={
                 <Menu size="compact">
-                  <Menu.Item onClick={onLabelVisible}>Label Tasks As Displayed</Menu.Item>
+                  <Menu.Item onClick={onLabelVisible}>{t("dataManager.labelTasksAsDisplayed")}</Menu.Item>
                 </Menu>
               }
             >
@@ -153,7 +164,7 @@ export const LabelButton = injector(({ store, canLabel, size, target, selectedCo
                 size={size} 
                 look="outlined" 
                 variant="primary" 
-                aria-label="Toggle open"
+                aria-label={t("dataManager.toggleOpen")}
                 style={{ 
                   width: 24,
                   padding: 0,

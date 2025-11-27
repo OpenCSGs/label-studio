@@ -11,6 +11,7 @@ import { isDefined } from "../../utils/helpers";
 import * as Toast from "@radix-ui/react-toast";
 import "./ExportPage.scss";
 import { message } from 'antd';
+import { useTranslation } from "react-i18next";
 
 // const formats = {
 //   json: 'JSON',
@@ -28,6 +29,7 @@ const downloadFile = (blob, filename) => {
 const { Block, Elem } = BemWithSpecifiContext();
 
 export const ExportPage = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useFixedLocation();
   const pageParams = useParams();
@@ -88,11 +90,11 @@ export const ExportPage = () => {
         // 立即关闭导出弹框
         closeModal();
         
-        message.success('Export completed successfully');
+        message.success(t("export.exportCompletedSuccessfully"));
       } else {
         api.handleError(response);
         // 显示错误提示
-        message.error('export error');
+        message.error(t("export.exportError"));
       }
     } catch (error) {
       console.error("Export failed:", error);
@@ -122,17 +124,50 @@ export const ExportPage = () => {
           },
         })
         .then((formats) => {
-          setAvailableFormats(formats);
-          setCurrentFormat(formats[0]?.name);
+          // 国际化格式标题和描述
+          const translatedFormats = formats.map((format) => {
+            const formatKey = format.name?.toLowerCase() || '';
+            const translatedFormat = { ...format };
+            
+            // 翻译标题 - 如果翻译键存在则使用翻译，否则使用原始值
+            const titleKey = `export.formats.${formatKey}.title`;
+            const translatedTitle = t(titleKey);
+            if (translatedTitle !== titleKey && format.title) {
+              translatedFormat.title = translatedTitle;
+            }
+            
+            // 翻译描述 - 如果翻译键存在则使用翻译，否则使用原始值
+            const descKey = `export.formats.${formatKey}.description`;
+            const translatedDesc = t(descKey);
+            if (translatedDesc !== descKey && format.description) {
+              translatedFormat.description = translatedDesc;
+            }
+            
+            // 翻译标签 - 标签翻译是共享的，放在 export.formats.tags 下
+            if (format.tags && Array.isArray(format.tags)) {
+              translatedFormat.tags = format.tags.map((tag) => {
+                const tagKey = tag?.toLowerCase()?.replace(/\s+/g, '') || '';
+                const tagTranslationKey = `export.formats.tags.${tagKey}`;
+                const translatedTag = t(tagTranslationKey);
+                // 如果翻译键存在（返回值不等于键本身），则使用翻译，否则使用原始标签
+                return translatedTag !== tagTranslationKey ? translatedTag : tag;
+              });
+            }
+            
+            return translatedFormat;
+          });
+          
+          setAvailableFormats(translatedFormats);
+          setCurrentFormat(translatedFormats[0]?.name);
         });
     }
-  }, [pageParams]);
+  }, [pageParams, t]);
 
   return (
     <>
       <Modal
         onHide={closeModal}
-        title="Export data"
+        title={t("export.exportData")}
         style={{ width: 720 }}
         closeOnClickOutside={false}
         allowClose={!downloading}
@@ -154,9 +189,9 @@ export const ExportPage = () => {
               <Elem name="recent">{/* {exportHistory} */}</Elem>
               <Elem name="actions">
                 <Space>
-                  {downloadingMessage && "Files are being prepared. It might take some time."}
-                  <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label="Export data">
-                    Export
+                  {downloadingMessage && t("export.filesBeingPrepared")}
+                  <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label={t("export.exportData")}>
+                    {t("export.export")}
                   </Button>
                 </Space>
               </Elem>
@@ -177,8 +212,8 @@ export const ExportPage = () => {
           <Toast.Description className="ToastDescription">
             {toastMessage}
           </Toast.Description>
-          <Toast.Action className="ToastAction" asChild altText="Close">
-            <button className="Button small green">关闭</button>
+          <Toast.Action className="ToastAction" asChild altText={t("export.close")}>
+            <button className="Button small green">{t("export.close")}</button>
           </Toast.Action>
         </Toast.Root>
         <Toast.Viewport className="ToastViewport" />
@@ -188,9 +223,10 @@ export const ExportPage = () => {
 };
 
 const FormatInfo = ({ availableFormats, selected, onClick }) => {
+  const { t } = useTranslation();
   return (
     <Block name="formats">
-      <Elem name="info">You can export dataset in one of the following formats:</Elem>
+      <Elem name="info">{t("export.exportDatasetFormats")}</Elem>
       <Elem name="list">
         {availableFormats.map((format) => (
           <Elem
@@ -219,20 +255,20 @@ const FormatInfo = ({ availableFormats, selected, onClick }) => {
         ))}
       </Elem>
       <Elem name="feedback">
-        Can't find an export format?
+        {t("export.cantFindFormat")}
         <br />
-        Please let us know in{" "}
+        {t("export.pleaseLetUsKnow")}{" "}
         <a className="no-go" href="https://slack.labelstud.io/?source=product-export" target="_blank" rel="noreferrer">
-          Slack
+          {t("export.slack")}
         </a>{" "}
-        or submit an issue to the{" "}
+        {t("export.orSubmitIssue")}{" "}
         <a
           className="no-go"
           href="https://github.com/HumanSignal/label-studio-converter/issues"
           target="_blank"
           rel="noreferrer"
         >
-          Repository
+          {t("export.repository")}
         </a>
       </Elem>
     </Block>

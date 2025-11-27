@@ -17,6 +17,7 @@ import "./Table.scss";
 import { Button } from "@humansignal/ui";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const injector = inject(({ store }) => {
   const { dataStore, currentView } = store;
@@ -59,6 +60,7 @@ export const DataView = injector(
     isLocked,
     ...props
   }) => {
+    const { t } = useTranslation();
     const [datasetStatusID, setDatasetStatusID] = useState(store.SDK.dataset?.status?.id);
     const focusedItem = useMemo(() => {
       return props.focusedItem;
@@ -140,9 +142,9 @@ export const DataView = injector(
           return (
             <Block name="syncInProgress">
               <Elem name="title" tag="h3">
-                Failed to sync data
+                {t("dataManager.failedToSyncData")}
               </Elem>
-              <Elem name="text">Check your storage settings. You may need to recreate this dataset</Elem>
+              <Elem name="text">{t("dataManager.checkStorageSettings")}</Elem>
             </Block>
           );
         }
@@ -154,9 +156,9 @@ export const DataView = injector(
           return (
             <Block name="syncInProgress">
               <Elem name="title" tag="h3">
-                Nothing found
+                {t("dataManager.nothingFound")}
               </Elem>
-              <Elem name="text">Try adjusting the filter or similarity search parameters</Elem>
+              <Elem name="text">{t("dataManager.tryAdjustingFilter")}</Elem>
             </Block>
           );
         }
@@ -164,9 +166,9 @@ export const DataView = injector(
           return (
             <Block name="syncInProgress">
               <Elem name="title" tag="h3">
-                Hang tight! Records are syncing in the background
+                {t("dataManager.recordsSyncing")}
               </Elem>
-              <Elem name="text">Press the button below to see any synced records</Elem>
+              <Elem name="text">{t("dataManager.pressButtonToSeeSyncedRecords")}</Elem>
               <Button
                 size="small"
                 look="outlined"
@@ -175,7 +177,7 @@ export const DataView = injector(
                   await store.currentView?.reload();
                 }}
               >
-                Refresh
+                {t("dataManager.refresh")}
               </Button>
             </Block>
           );
@@ -186,17 +188,17 @@ export const DataView = injector(
               <Elem name="description">
                 {hasData ? (
                   <>
-                    <h3>Nothing found</h3>
-                    Try adjusting the filter
+                    <h3>{t("dataManager.nothingFound")}</h3>
+                    {t("dataManager.tryAdjustingFilterSimple")}
                   </>
                 ) : (
-                  "Looks like you have not imported any data yet"
+                  t("dataManager.noDataImported")
                 )}
               </Elem>
               {!hasData && !!store.interfaces.get("import") && (
                 <Elem name="navigation">
                   <ImportButton variant="primary" look="filled" href="./import">
-                    Go to import
+                    {t("dataManager.goToImport")}
                   </ImportButton>
                 </Elem>
               )}
@@ -206,7 +208,7 @@ export const DataView = injector(
 
         return content;
       },
-      [hasData, isLabeling, isLoading, total, datasetStatusID],
+      [hasData, isLabeling, isLoading, total, datasetStatusID, t],
     );
 
     const decorationContent = (col) => {

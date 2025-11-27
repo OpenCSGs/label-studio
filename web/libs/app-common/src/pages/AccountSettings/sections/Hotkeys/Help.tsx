@@ -2,11 +2,12 @@ import { useMemo, useCallback } from "react";
 // @ts-ignore
 import { modal } from "apps/labelstudio/src/components/Modal/Modal";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { KeyboardKey } from "./Key";
 // @ts-ignore
-import { HOTKEY_SECTIONS, URL_TO_SECTION_MAPPING } from "./defaults";
+import { URL_TO_SECTION_MAPPING } from "./defaults";
 import type { Hotkey, Section } from "./utils";
-import { getTypedDefaultHotkeys } from "./utils";
+import { getTypedDefaultHotkeys, getTranslatedSections } from "./utils";
 
 // Type definitions for imported constants
 interface UrlMapping {
@@ -27,15 +28,15 @@ interface HotkeyHelpModalProps {
 }
 
 // Type the imported constants
-const sections = HOTKEY_SECTIONS as Section[];
 const urlMappings = URL_TO_SECTION_MAPPING as UrlMapping[];
 
 /**
  * Hook to get current hotkeys with customizations
  */
 const useCurrentHotkeys = (): Hotkey[] => {
+  const { t } = useTranslation();
   return useMemo(() => {
-    const defaultHotkeys = getTypedDefaultHotkeys();
+    const defaultHotkeys = getTypedDefaultHotkeys(t);
     const customHotkeys = window.APP_SETTINGS?.user?.customHotkeys || {};
 
     return defaultHotkeys.map((hotkey: Hotkey) => {
@@ -51,7 +52,7 @@ const useCurrentHotkeys = (): Hotkey[] => {
       }
       return hotkey;
     });
-  }, []);
+  }, [t]);
 };
 
 /**
@@ -59,7 +60,9 @@ const useCurrentHotkeys = (): Hotkey[] => {
  * Renders shortcuts organized by sections and subgroups
  */
 const HotkeyHelpModal = ({ sectionsToShow }: HotkeyHelpModalProps) => {
+  const { t } = useTranslation();
   const hotkeys = useCurrentHotkeys();
+  const sections = useMemo(() => getTranslatedSections(t), [t]);
 
   /**
    * Navigates to hotkey customization page
@@ -148,7 +151,7 @@ const HotkeyHelpModal = ({ sectionsToShow }: HotkeyHelpModalProps) => {
         </div>
       );
     },
-    [hotkeys],
+    [hotkeys, sections],
   );
 
   const modalContent = useMemo(
@@ -156,16 +159,16 @@ const HotkeyHelpModal = ({ sectionsToShow }: HotkeyHelpModalProps) => {
       <div className="max-w-3xl max-h-[90vh] h-full overflow-hidden w-full mx-4 flex flex-col">
         <div className="px-wide py-base border-b border-neutral-border">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Keyboard Shortcuts</h2>
+            <h2 className="text-lg font-semibold">{t("hotkeys.keyboardShortcuts")}</h2>
           </div>
           <p className="text-sm text-neutral-content-subtler mt-1">
-            View all available keyboard shortcuts.&nbsp;
+            {t("hotkeys.viewAllShortcuts")}&nbsp;
             <a
               href="/user/account/hotkeys"
               onClick={handleCustomizeClick}
               className="text-primary-content hover:underline hover:text-primary-content-hover"
             >
-              Customize
+              {t("hotkeys.customize")}
             </a>
           </p>
         </div>
@@ -175,7 +178,7 @@ const HotkeyHelpModal = ({ sectionsToShow }: HotkeyHelpModalProps) => {
         </div>
       </div>
     ),
-    [sectionsToShow, renderSection, handleCustomizeClick],
+    [sectionsToShow, renderSection, handleCustomizeClick, t],
   );
 
   return modalContent;
@@ -222,8 +225,10 @@ const determineSectionsToShow = (sectionOrUrl?: string | string[]): string[] => 
   sectionsToShow = [...new Set(sectionsToShow)];
 
   // Show all sections if none were identified
+  // Note: We can't access translated sections here, so we'll use the default section IDs
   if (sectionsToShow.length === 0) {
-    sectionsToShow = sections.map((section: Section) => section.id);
+    // Use default section IDs from HOTKEY_SECTIONS
+    sectionsToShow = ["annotation", "data_manager", "regions", "tools", "audio", "video", "timeseries", "image_gallery"];
   }
 
   return sectionsToShow;
@@ -254,10 +259,24 @@ const determineSectionsToShow = (sectionOrUrl?: string | string[]): string[] => 
  * openHotkeyHelp('/projects/123/data/?task=456');
  */
 export const openHotkeyHelp = (sectionOrUrl?: string | string[]): ModalReturn => {
+  // We need to get the translation function here, but modal is called outside React context
+  // So we'll use a dynamic import or pass it through
+  // For now, use a fallback title
   const sectionsToShow = determineSectionsToShow(sectionOrUrl);
+  
+  // Try to get translation if available
+  let title = "Keyboard Shortcuts";
+  try {
+    // @ts-ignore - accessing i18n from window if available
+    if (window.i18n) {
+      title = window.i18n.t("hotkeys.keyboardShortcuts");
+    }
+  } catch (e) {
+    // Fallback to default
+  }
 
   const modalInstance = modal({
-    title: "Keyboard Shortcuts",
+    title,
     body: () => <HotkeyHelpModal sectionsToShow={sectionsToShow} />,
     bare: true,
     allowClose: true,

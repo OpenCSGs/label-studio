@@ -1,5 +1,6 @@
 import { inject, observer } from "mobx-react";
 import { useCallback, useRef, useEffect, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { IconChevronRight, IconChevronDown, IconTrash } from "@humansignal/icons";
 import { Block, Elem } from "../../../utils/bem";
 import { FF_LOPS_E_3, isFF } from "../../../utils/feature-flags";
@@ -53,7 +54,7 @@ const DialogContent = ({ text, form, formRef, store, action }) => {
   );
 };
 
-const ActionButton = ({ action, parentRef, store, formRef }) => {
+const ActionButton = ({ action, parentRef, store, formRef, t }) => {
   const isDeleteAction = action.id.includes("delete");
   const hasChildren = !!action.children?.length;
   const submenuRef = useRef();
@@ -64,10 +65,10 @@ const ActionButton = ({ action, parentRef, store, formRef }) => {
       if (action.disabled) return;
       action?.callback
         ? action?.callback(store.currentView?.selected?.snapshot, action)
-        : invokeAction(action, isDeleteAction, store, formRef);
+        : invokeAction(action, isDeleteAction, store, formRef, t);
       parentRef?.current?.close?.();
     },
-    [store.currentView?.selected, action, isDeleteAction, parentRef, store, formRef],
+    [store.currentView?.selected, action, isDeleteAction, parentRef, store, formRef, t],
   );
 
   const titleContainer = (
@@ -110,6 +111,7 @@ const ActionButton = ({ action, parentRef, store, formRef }) => {
                 parentRef={parentRef}
                 store={store}
                 formRef={formRef}
+                t={t}
               />
             ))}
           </Block>
@@ -142,13 +144,13 @@ const ActionButton = ({ action, parentRef, store, formRef }) => {
   );
 };
 
-const invokeAction = (action, destructive, store, formRef) => {
+const invokeAction = (action, destructive, store, formRef, t) => {
   if (action.dialog) {
     const { type: dialogType, text, form, title } = action.dialog;
     const dialog = Modal[dialogType] ?? Modal.confirm;
 
     dialog({
-      title: title ? title : destructive ? "Destructive action" : "Confirm action",
+      title: title ? title : destructive ? t("dataManager.destructiveAction") : t("dataManager.confirmAction"),
       body: <DialogContent text={text} form={form} formRef={formRef} store={store} action={action} />,
       buttonLook: destructive ? "destructive" : "primary",
       onOk() {
@@ -166,6 +168,7 @@ const invokeAction = (action, destructive, store, formRef) => {
 
 export const ActionsButton = injector(
   observer(({ store, size, hasSelected, ...rest }) => {
+    const { t } = useTranslation();
     const formRef = useRef();
     const selectedCount = store.currentView.selectedCount;
     const [isOpen, setIsOpen] = useState(false);
@@ -185,14 +188,14 @@ export const ActionsButton = injector(
     }, [isOpen, actions]);
 
     const actionButtons = actions.map((action) => (
-      <ActionButton key={action.id} action={action} parentRef={formRef} store={store} formRef={formRef} />
+      <ActionButton key={action.id} action={action} parentRef={formRef} store={store} formRef={formRef} t={t} />
     ));
-    const recordTypeLabel = isFFLOPSE3 && store.SDK.type === "DE" ? "Record" : "Task";
+    const recordTypeLabel = isFFLOPSE3 && store.SDK.type === "DE" ? t("dataManager.record") : t("dataManager.task");
 
     return (
       <Dropdown.Trigger
         content={
-          <Menu size="compact">{isLoading ? <Menu.Item disabled>Loading actions...</Menu.Item> : actionButtons}</Menu>
+          <Menu size="compact">{isLoading ? <Menu.Item disabled>{t("dataManager.loadingActions")}</Menu.Item> : actionButtons}</Menu>
         }
         openUpwardForShortViewport={false}
         disabled={!hasSelected}
@@ -204,10 +207,10 @@ export const ActionsButton = injector(
           look="outlined"
           disabled={!hasSelected}
           trailing={<IconChevronDown />}
-          aria-label="Tasks Actions"
+          aria-label={t("dataManager.tasksActions")}
           {...rest}
         >
-          {selectedCount > 0 ? `${selectedCount} ${recordTypeLabel}${selectedCount > 1 ? "s" : ""}` : "Actions"}
+          {selectedCount > 0 ? `${selectedCount} ${recordTypeLabel}${selectedCount > 1 ? "s" : ""}` : t("dataManager.actions")}
         </Button>
       </Dropdown.Trigger>
     );

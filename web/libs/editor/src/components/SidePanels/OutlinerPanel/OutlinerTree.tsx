@@ -13,6 +13,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { IconArrow, IconChevronLeft, IconEyeClosed, IconEyeOpened, IconWarning, IconSparks } from "@humansignal/icons";
 import { Tooltip } from "@humansignal/ui";
 import Registry from "../../../core/Registry";
@@ -387,6 +388,7 @@ const RootTitle: FC<any> = observer(
     isArea,
     ...props
   }) => {
+    const { t } = useTranslation();
     const hovered = item?.highlighted;
     const [collapsed, setCollapsed] = useState(false);
 
@@ -417,7 +419,7 @@ const RootTitle: FC<any> = observer(
             {item?.text && <Elem name="text">{item.text.replace(/\\n/g, "\n")}</Elem>}
             {item?.isDrawing && (
               <Elem tag="span" name="incomplete">
-                <Tooltip title={`Incomplete ${item.type?.replace("region", "") ?? "region"}`}>
+                <Tooltip title={t("annotation.incompleteRegion", { type: item.type?.replace("region", "") ?? "region" })}>
                   <IconWarning />
                 </Tooltip>
               </Elem>
@@ -470,6 +472,7 @@ const injector = inject(({ store }) => {
 
 const RegionControls: FC<RegionControlsProps> = injector(
   observer(({ hovered, item, entity, collapsed, regions, hasControls, type, toggleCollapsed, store }) => {
+    const { t } = useTranslation();
     const { regions: regionStore } = useContext(OutlinerContext);
 
     const hidden = useMemo(() => {
@@ -506,7 +509,7 @@ const RegionControls: FC<RegionControlsProps> = injector(
     return (
       <Elem name="controls" mod={{ withControls: hasControls, newUI: isFF(FF_DEV_3873) }}>
         {isFF(FF_DEV_3873) ? (
-          <Tooltip title={"Confidence Score"}>
+          <Tooltip title={t("annotation.confidenceScore")}>
             <Elem name="control-wrapper">
               <Elem name="control" mod={{ type: "predict" }}>
                 {item?.origin === "prediction" && <IconSparks style={{ width: 18, height: 18 }} />}

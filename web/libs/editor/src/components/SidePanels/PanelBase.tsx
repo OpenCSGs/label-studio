@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { Block, Elem } from "../../utils/bem";
 import { IconArrowLeft, IconArrowRight, IconOutlinerCollapse, IconOutlinerExpand } from "@humansignal/icons";
 
@@ -94,6 +95,7 @@ export const PanelBase: FC<PanelBaseProps> = ({
   onPositionChangeBegin,
   children,
 }) => {
+  const { t } = useTranslation();
   const headerRef = useRef<HTMLDivElement>();
   const panelRef = useRef<HTMLDivElement>();
   const resizerRef = useRef<HTMLDivElement>();
@@ -166,8 +168,8 @@ export const PanelBase: FC<PanelBaseProps> = ({
   }, [detached, visible, alignment]);
 
   const tooltipText = useMemo(() => {
-    return `${visible ? "Collapse" : "Expand"} ${tooltip}`;
-  }, [visible, tooltip]);
+    return `${visible ? t("annotation.collapse") : t("annotation.expand")} ${tooltip}`;
+  }, [visible, tooltip, t]);
 
   useEffect(() => {
     Object.assign(handlers.current, {

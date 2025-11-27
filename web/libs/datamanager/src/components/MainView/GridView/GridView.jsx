@@ -14,18 +14,20 @@ import { GridViewContext, GridViewProvider } from "./GridPreview";
 import "./GridView.scss";
 import { groupBy } from "../../../utils/utils";
 import { IMAGE_SIZE_COEFFICIENT } from "../../DataGroups/ImageDataGroup";
+import { useTranslation } from "react-i18next";
 
 const NO_IMAGE_CELL_HEIGHT = 250;
 const CELL_HEADER_HEIGHT = 32;
 
 export const GridHeader = observer(({ row, selected, onSelect }) => {
+  const { t } = useTranslation();
   const isSelected = selected.isSelected(row.id);
   return (
     <Elem name="cell-header">
       <Space>
         <Checkbox
           checked={isSelected}
-          ariaLabel={`${isSelected ? "Unselect" : "Select"} Task ${row.id}`}
+          ariaLabel={isSelected ? t("dataManager.unselectTask", { id: row.id }) : t("dataManager.selectTask", { id: row.id })}
           onChange={() => onSelect?.(row.id)}
         />
         <span>{row.id}</span>

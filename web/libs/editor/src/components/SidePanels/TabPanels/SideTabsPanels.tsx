@@ -1,6 +1,8 @@
 import { observer } from "mobx-react";
 import { type FC, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Block, Elem } from "../../../utils/bem";
+import { restoreComponentsToState } from "./utils";
 import { useMedia } from "../../../hooks/useMedia";
 import ResizeObserver from "../../../utils/resize-observer";
 import { clamp } from "../../../utils/utilities";
@@ -32,11 +34,11 @@ import {
   findZIndices,
   getAttachedPerSide,
   getLeftKeys,
+  getPartialEmptyBaseProps,
   getRightKeys,
   getSnappedHeights,
   joinPanelColumns,
   newPanelInState,
-  partialEmptyBaseProps,
   redistributeHeights,
   renameKeys,
   resizePanelColumns,
@@ -68,10 +70,16 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
   const [positioning, setPositioning] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const rootRef = useRef<HTMLDivElement>();
+  const { t, i18n } = useTranslation();
   const [snap, setSnap] = useState<DropSide | Side | undefined>();
-  const initialState = useMemo(() => restorePanel(showComments), [showComments]);
+  const initialState = useMemo(() => restorePanel(showComments, t), [showComments, t]);
   const [panelData, setPanelData] = useState<Record<string, PanelBBox>>(initialState.panelData);
   const [collapsedSide, setCollapsedSide] = useState(initialState.collapsedSide);
+
+  // Update panel titles when language changes
+  useEffect(() => {
+    setPanelData((currentData) => restoreComponentsToState(currentData, t));
+  }, [i18n.language, t]);
   const [breakPointActiveTab, setBreakPointActiveTab] = useState(0);
   const localSnap = useRef(snap);
   const collapsedSideRef = useRef(collapsedSide);
@@ -142,13 +150,13 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
         const height = viewportSize.current.height;
 
         setPanelData((state) => {
-          const newPanel = newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize);
+          const newPanel = newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize, t);
 
           return joinPanelColumns(newPanel, name, side, DEFAULT_PANEL_WIDTH, height, joinOrder);
         });
       } else {
         setPanelData((state) => {
-          return newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize);
+          return newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize, t);
         });
       }
       setSnap(undefined);
@@ -526,17 +534,17 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
     };
   }, []);
 
-  const getPartialEmptyBaseProps = useMemo(() => {
-    const updatedProps = { ...partialEmptyBaseProps };
+  const partialEmptyBasePropsWithTranslation = useMemo(() => {
+    const updatedProps = { ...getPartialEmptyBaseProps(t) };
 
-    updatedProps.panelViews = partialEmptyBaseProps.panelViews.filter(
+    updatedProps.panelViews = updatedProps.panelViews.filter(
       (view) => view.name !== "comments" || showComments,
     );
 
     return updatedProps;
-  }, [partialEmptyBaseProps, showComments]);
+  }, [t, showComments]);
 
-  const emptyBaseProps = { ...getPartialEmptyBaseProps, ...commonProps, breakPointActiveTab, setBreakPointActiveTab };
+  const emptyBaseProps = { ...partialEmptyBasePropsWithTranslation, ...commonProps, breakPointActiveTab, setBreakPointActiveTab };
 
   return (
     <SidePanelsContext.Provider value={contextValue}>

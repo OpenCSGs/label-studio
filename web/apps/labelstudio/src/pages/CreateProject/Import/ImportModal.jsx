@@ -10,8 +10,10 @@ import { Elem } from "../../../utils/bem";
 import { useRefresh } from "../../../utils/hooks";
 import { ImportPage } from "./Import";
 import { useImportPage } from "./useImportPage";
+import { useTranslation } from "react-i18next";
 
 export const Inner = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useFixedLocation();
   const modal = useRef();
@@ -63,7 +65,7 @@ export const Inner = () => {
 
   return (
     <Modal
-      title="Import data"
+      title={t("dataManager.importData")}
       ref={modal}
       onHide={() => backToDM()}
       closeOnClickOutside={false}
@@ -73,7 +75,7 @@ export const Inner = () => {
     >
       <Modal.Header divided>
         <Elem block="modal" name="title">
-          Import Data
+          {t("dataManager.importData")}
         </Elem>
 
         <Space>
@@ -83,18 +85,18 @@ export const Inner = () => {
             look="outlined"
             waiting={waiting}
             onClick={onCancel}
-            aria-label="Cancel import"
+            aria-label={t("dataManager.cancelImport")}
           >
-            Cancel
+            {t("createProject.cancel")}
           </Button>
           <Button
             size="small"
             onClick={onFinish}
             waiting={waiting || uploading}
             disabled={uploadDisabled}
-            aria-label="Finish import"
+            aria-label={t("dataManager.finishImport")}
           >
-            Import
+            {t("dataManager.import")}
           </Button>
         </Space>
       </Modal.Header>

@@ -162,6 +162,21 @@ module.exports = composePlugins(
               };
             }
           }
+          // 2. 添加 sass-loader 配置：缓存 + 屏蔽警告 + 全局注入
+        const sassLoader = loader.use.find((use) => use.loader && use.loader.includes("sass-loader"));
+        if (sassLoader) {
+          sassLoader.options = {
+            ...sassLoader.options, // 保留原有配置（如有）
+            sassOptions: {
+              ...(sassLoader.options?.sassOptions || {}), // 继承原有 sass 配置
+              cacheLocation: "./node_modules/.cache/sass", // 启用 Sass 编译缓存
+              quietDeps: true, // 屏蔽 @import 废弃警告（避免阻塞）
+              silenceDeprecations: ["import"], // 精准屏蔽 import 相关废弃警告
+            },
+            // 全局注入公共样式，无需手动 @import（替换重复导入）
+            //additionalData: "@use 'libs/editor/src/assets/styles/global.scss' as *;",
+          };
+        }
         });
       }
 

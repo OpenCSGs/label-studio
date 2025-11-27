@@ -3,6 +3,7 @@
 
 import { observer } from "mobx-react";
 import { type CSSProperties, type FC, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Block, Elem } from "../../utils/bem";
 import { DetailsPanel } from "./DetailsPanel/DetailsPanel";
 import { OutlinerPanel } from "./OutlinerPanel/OutlinerPanel";
@@ -74,24 +75,26 @@ const savePanel = (name: PanelType, panelData: PanelBBox) => {
   window.localStorage.setItem(`panel:${name}`, JSON.stringify(panelData));
 };
 
-const panelView: Record<PanelType, PanelView> = {
+const getPanelView = (t: (key: string) => string): Record<PanelType, PanelView> => ({
   outliner: {
-    title: "Outliner",
+    title: t("annotation.outliner"),
     component: OutlinerPanel as FC<PanelProps>,
     icon: IconHamburger,
   },
   details: {
-    title: "Details",
+    title: t("annotation.details"),
     component: DetailsPanel as FC<PanelProps>,
     icon: IconDetails,
   },
-};
+});
 
 const SidePanelsComponent: FC<SidePanelsProps> = ({ currentEntity, panelsHidden, children }) => {
+  const { t } = useTranslation();
   const snapTreshold = 5;
   const regions = currentEntity.regionStore;
   const viewportSize = useRef({ width: 0, height: 0 });
   const screenSizeMatch = useMedia(`screen and (max-width: ${maxWindowWidth}px)`);
+  const panelView = useMemo(() => getPanelView(t), [t]);
   const [panelMaxWidth, setPanelMaxWidth] = useState(DEFAULT_PANEL_MAX_WIDTH);
   const [viewportSizeMatch, setViewportSizeMatch] = useState(false);
   const [resizing, setResizing] = useState(false);

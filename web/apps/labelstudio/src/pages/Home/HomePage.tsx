@@ -8,6 +8,7 @@ import { useAPI } from "../../providers/ApiProvider";
 import { CreateProject } from "../CreateProject/CreateProject";
 import { InviteLink } from "../Organization/PeoplePage/InviteLink";
 import type { Page } from "../types/Page";
+import { useTranslation } from "react-i18next";
 
 const PROJECTS_TO_SHOW = 10;
 
@@ -34,14 +35,14 @@ const resources = [
   },
 ];
 
-const actions = [
+const getActions = (t) => [
   {
-    title: "Create Project",
+    title: t("home.createProject"),
     icon: IconFolderAdd,
     type: "createProject",
   },
   {
-    title: "Invite People",
+    title: t("home.invitePeople"),
     icon: IconUserAdd,
     type: "invitePeople",
   },
@@ -50,9 +51,11 @@ const actions = [
 type Action = (typeof actions)[number]["type"];
 
 export const HomePage: Page = () => {
+  const { t } = useTranslation();
   const api = useAPI();
   const [creationDialogOpen, setCreationDialogOpen] = useState(false);
   const [invitationOpen, setInvitationOpen] = useState(false);
+  const actions = getActions(t);
   const { data, isFetching, isSuccess, isError } = useQuery({
     queryKey: ["projects", { page_size: 10 }],
     async queryFn() {
@@ -108,9 +111,9 @@ export const HomePage: Page = () => {
             title={
               data && data?.count > 0 ? (
                 <>
-                  Recent Projects{" "}
+                  {t("home.recentProjects")}{" "}
                   <a href="/projects" className="text-lg font-normal hover:underline">
-                    View All
+                    {t("home.viewAll")}
                   </a>
                 </>
               ) : null
@@ -121,7 +124,7 @@ export const HomePage: Page = () => {
                 <Spinner />
               </div>
             ) : isError ? (
-              <div className="h-64 flex justify-center items-center">can't load projects</div>
+              <div className="h-64 flex justify-center items-center">{t("home.cantLoadProjects")}</div>
             ) : isSuccess && data && data.results.length === 0 ? (
               <div className="flex flex-col justify-center items-center border border-primary-border-subtle bg-primary-emphasis-subtle rounded-lg h-64">
                 <div
@@ -132,13 +135,13 @@ export const HomePage: Page = () => {
                   <IconFolderOpen />
                 </div>
                 <Typography variant="headline" size="small">
-                  Create your first project
+                  {t("home.createFirstProject")}
                 </Typography>
                 <Typography size="small" className="text-neutral-content-subtler">
-                  Import your data and set up the labeling interface to start annotating
+                  {t("home.createFirstProjectDescription")}
                 </Typography>
-                <Button className="mt-4" onClick={() => setCreationDialogOpen(true)} aria-label="Create new project">
-                  Create Project
+                <Button className="mt-4" onClick={() => setCreationDialogOpen(true)} aria-label={t("home.createProject")}>
+                  {t("home.createProject")}
                 </Button>
               </div>
             ) : isSuccess && data && data.results.length > 0 ? (
@@ -183,7 +186,7 @@ export const HomePage: Page = () => {
   );
 };
 
-HomePage.title = "Home";
+HomePage.title = "Home"; // This is used for routing, not displayed
 HomePage.path = "/";
 HomePage.exact = true;
 
@@ -192,6 +195,7 @@ function ProjectSimpleCard({
 }: {
   project: APIProject;
 }) {
+  const { t } = useTranslation();
   const finished = project.finished_task_number ?? 0;
   const total = project.task_number ?? 0;
   const progress = (total > 0 ? finished / total : 0) * 100;
@@ -211,7 +215,7 @@ function ProjectSimpleCard({
         <div className="flex flex-col gap-1">
           <span className="text-neutral-content">{project.title}</span>
           <div className="text-neutral-content-subtler text-sm">
-            {finished} of {total} Tasks ({total > 0 ? Math.round((finished / total) * 100) : 0}%)
+            {finished} {t("projects.of")} {total} {t("projects.tasks")} ({total > 0 ? Math.round((finished / total) * 100) : 0}%)
           </div>
         </div>
         <div className="bg-neutral-surface rounded-full overflow-hidden w-full h-2 shadow-neutral-border-subtle shadow-border-1">

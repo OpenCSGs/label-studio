@@ -1,0 +1,924 @@
+{
+  "login": {
+    "title": "登录",
+    "email": "邮箱地址",
+    "password": "密码",
+    "keepLoggedIn": "在此浏览器中保持登录状态",
+    "submit": "登录",
+    "noAccount": "没有账号？",
+    "signUp": "注册",
+    "errors": {
+      "authenticationFailed": "用户认证失败",
+      "userNotFound": "账号获取失败，用户不存在",
+      "accountCreationFailed": "账号创建失败",
+      "loginError": "登录过程中发生错误"
+    },
+    "messages": {
+      "authenticationSuccess": "用户认证成功",
+      "userRetrievedSuccess": "用户获取成功",
+      "userCreatedAndLoggedIn": "用户创建并登录成功",
+      "userCreatedFailed": "用户创建失败"
+    }
+  },
+  "menu": {
+    "language": "语言",
+    "switchLanguage": "切换语言",
+    "english": "English",
+    "chinese": "中文",
+    "home": "首页",
+    "projects": "项目",
+    "organization": "组织",
+    "keyboardShortcuts": "键盘快捷键",
+    "pinMenu": "固定菜单",
+    "unpinMenu": "取消固定菜单",
+    "settings": "设置",
+    "label": "标注",
+    "accountSettings": "账户与设置",
+    "logOut": "退出登录",
+    "newProject": "新项目"
+  },
+  "projects": {
+    "title": "项目",
+    "createProject": "创建项目",
+    "createProjectDescription": "创建一个项目并开始标注您的数据。",
+    "newProject": "新项目",
+    "settings": "设置",
+    "label": "标注",
+    "projectOptions": "项目选项",
+    "tasks": "任务",
+    "of": "共",
+    "viewAll": "查看全部",
+    "recentProjects": "最近项目",
+    "cantLoadProjects": "无法加载项目",
+    "createFirstProject": "创建您的第一个项目",
+    "createFirstProjectDescription": "导入您的数据并设置标注界面以开始标注"
+  },
+  "home": {
+    "title": "首页",
+    "createProject": "创建项目",
+    "invitePeople": "邀请人员",
+    "recentProjects": "最近项目",
+    "viewAll": "查看全部",
+    "cantLoadProjects": "无法加载项目",
+    "createFirstProject": "创建您的第一个项目",
+    "createFirstProjectDescription": "导入您的数据并设置标注界面以开始标注"
+  },
+  "organization": {
+    "title": "组织",
+    "people": "人员",
+    "addPeople": "添加人员",
+    "apiTokensSettings": "API令牌设置",
+    "showApiTokenSettings": "显示API令牌设置",
+    "inviteNewMember": "邀请新成员",
+    "email": "邮箱",
+    "name": "姓名",
+    "lastActivity": "最后活动",
+    "userId": "用户ID",
+    "invitePeople": "邀请人员",
+    "invitePeopleDescription": "邀请人员加入您的Label Studio实例。您邀请的人员可以完全访问您的所有项目。",
+    "learnMore": "了解更多",
+    "resetLink": "重置链接",
+    "refreshInviteLink": "刷新邀请链接",
+    "copyLink": "复制链接",
+    "copied": "已复制！",
+    "copyInviteLink": "复制邀请链接",
+    "closeUserDetails": "关闭用户详情",
+    "createdProjects": "创建的项目",
+    "contributedTo": "参与的项目",
+    "lastActivityOn": "最后活动时间"
+  },
+  "settings": {
+    "title": "设置",
+    "general": "常规",
+    "generalSettings": "常规设置",
+    "projectName": "项目名称",
+    "description": "描述",
+    "workspace": "工作区",
+    "simplifyProjectManagement": "通过将项目组织到工作区中来简化项目管理。",
+    "color": "颜色",
+    "taskSampling": "任务采样",
+    "sequential": "顺序",
+    "sequentialDescription": "任务按任务ID排序",
+    "random": "随机",
+    "randomDescription": "任务以均匀随机方式选择",
+    "uncertaintySampling": "不确定性采样",
+    "uncertaintySamplingDescription": "根据模型不确定性分数选择任务（主动学习模式）。",
+    "saved": "已保存！",
+    "save": "保存",
+    "saveGeneralSettings": "保存常规设置",
+    "labelingInterface": "标注界面",
+    "annotationSettings": "标注设置",
+    "labelingInstructions": "标注说明",
+    "labelingInstructionsDescription": "编写说明以帮助用户完成标注任务。",
+    "labelingInstructionsHtml": "说明字段支持HTML标记，并允许使用图像、iframe（pdf）。",
+    "showBeforeLabeling": "在标注前显示",
+    "cloudStorage": "云存储",
+    "predictions": "预测",
+    "webhooks": "Webhooks",
+    "dangerZone": "危险区域",
+    "dangerZoneDescription": "请自行承担风险执行这些操作。您在此页面上执行的操作无法撤销。请确保您的数据已备份。",
+    "actionConfirmation": "操作确认",
+    "deleteAllThings": "您即将删除所有内容。此操作无法撤销。",
+    "proceed": "继续",
+    "deletingStorage": "正在删除存储",
+    "storageSyncErrorLog": "存储同步错误日志",
+    "resetCache": "重置缓存",
+    "resetCacheHelp": "重置缓存可能有助于解决以下情况：如果您由于涉及现有标签的验证错误而无法修改标注配置，但您确信这些标签不存在。您可以使用此操作重置缓存并重试。",
+    "dropAllTabs": "删除所有标签页",
+    "dropAllTabsHelp": "如果数据管理器无法加载，删除所有数据管理器标签页可能会有所帮助。",
+    "deleteProject": "删除项目",
+    "deleteProjectHelp": "删除项目将从数据库中删除所有任务、标注和项目数据。",
+    "deleteAnnotations": "删除 {{count}} 个标注",
+    "deleteTasks": "删除 {{count}} 个任务",
+    "deletePredictions": "删除 {{count}} 个预测",
+    "prelabeling": "预标注",
+    "usePredictionsToPrelabel": "使用预测来预标注任务",
+    "usePredictionsToPrelabelDescription": "启用并选择要用于预标注的预测集。",
+    "saveAnnotationSettings": "保存标注设置",
+    "selectAnOption": "选择一个选项",
+    "importedFileTooBig": "导入的文件太大"
+  },
+  "webhooks": {
+    "title": "Webhooks",
+    "addWebhook": "添加Webhook",
+    "edit": "编辑",
+    "delete": "删除",
+    "editWebhook": "编辑webhook",
+    "addWebhookAria": "添加webhook",
+    "payloadUrl": "有效载荷URL",
+    "url": "URL",
+    "isActive": "是否激活",
+    "created": "创建于"
+  },
+  "storage": {
+    "edit": "编辑",
+    "delete": "删除",
+    "storageOptions": "存储选项",
+    "syncStorage": "同步存储",
+    "syncingMayTakeTime": "同步可能需要一些时间，请刷新页面以查看当前状态。",
+    "untitled": "未命名"
+  },
+  "machineLearning": {
+    "edit": "编辑",
+    "sendTestRequest": "发送测试请求",
+    "startTraining": "开始训练",
+    "delete": "删除",
+    "deleteMlBackend": "删除机器学习后端",
+    "deleteMlBackendConfirm": "此操作无法撤销。您确定吗？",
+    "disconnected": "已断开连接",
+    "connected": "已连接",
+    "error": "错误",
+    "training": "训练中",
+    "predicting": "预测中",
+    "created": "创建于",
+    "modelOptions": "机器学习模型选项",
+    "connectedModelDetected": "已检测到连接的模型！如果您希望从此模型获取预测，请按照以下步骤操作：",
+    "navigateToDataManager": "1. 导航到数据管理器。",
+    "selectDesiredTasks": "2. 选择所需的任务。",
+    "clickBatchPredictions": "3. 从操作菜单中点击批量预测。",
+    "useModelPredictionsForPrelabeling": "如果您想使用模型预测进行预标注，请在",
+    "annotationSettings": "标注设置"
+  },
+  "models": {
+    "createModel": "创建模型",
+    "createModelDescription": "使用LLM构建高质量模型以自动标注您的数据",
+    "createNewModel": "创建新模型"
+  },
+  "dataManager": {
+    "projectDeletedOrNotCreated": "项目已被删除或尚未创建",
+    "backToProjects": "返回项目",
+    "taskDoesNotExist": "您尝试访问的任务不存在或不再可用。",
+    "projectDoesNotExist": "您尝试访问的项目不存在或不再可用。",
+    "failedToSyncData": "数据同步失败",
+    "checkStorageSettings": "请检查您的存储设置。您可能需要重新创建此数据集",
+    "nothingFound": "未找到任何内容",
+    "tryAdjustingFilter": "尝试调整筛选条件或相似度搜索参数",
+    "tryAdjustingFilterSimple": "尝试调整筛选条件",
+    "recordsSyncing": "请稍候！记录正在后台同步",
+    "pressButtonToSeeSyncedRecords": "点击下面的按钮查看已同步的记录",
+    "refresh": "刷新",
+    "noDataImported": "看起来您还没有导入任何数据",
+    "goToImport": "前往导入",
+    "select": "选择",
+    "unselect": "取消选择",
+    "selectAllRows": "选择所有行",
+    "unselectAllRows": "取消选择所有行",
+    "selectTask": "选择任务 {{id}}",
+    "unselectTask": "取消选择任务 {{id}}",
+    "label": "标注",
+    "labelAllTasks": "标注所有任务",
+    "labelTasks": "标注 {{count}} 个任务",
+    "labelTasksPlural": "标注 {{count}} 个任务",
+    "refreshData": "刷新数据",
+    "task": "任务",
+    "previewTaskImage": "任务图像预览，可快速浏览任务并选择要处理的任务。",
+    "useArrowKeys": "使用[方向键]导航。",
+    "escapeToClose": "[Esc]关闭模态框。",
+    "spaceToSelect": "[空格]选择/取消选择任务。",
+    "scrollToZoom": "使用[滚动]缩放，缩放后[拖拽]平移图像。",
+    "labelTasksAsDisplayed": "标注显示的任务",
+    "toggleOpen": "切换打开",
+    "taskPreview": "任务预览",
+    "importData": "导入数据",
+    "import": "导入",
+    "cancelImport": "取消导入",
+    "finishImport": "完成导入",
+    "listView": "列表视图",
+    "gridView": "网格视图",
+    "switchToListView": "切换到列表视图",
+    "switchToGridView": "切换到网格视图",
+    "tasks": "任务",
+    "annotations": "标注",
+    "upgradeToImport": "您必须升级计划才能导入数据",
+    "columns": "列",
+    "export": "导出",
+    "labelStudioFrontendNotExist": "页面上不存在 Label Studio Frontend",
+    "noFiltersApplied": "未应用筛选条件",
+    "addFilter": "添加筛选条件",
+    "addAnotherFilter": "添加另一个筛选条件",
+    "pinToSidebar": "固定到侧边栏",
+    "pinFiltersToSidebar": "将筛选条件固定到侧边栏",
+    "where": "其中",
+    "column": "列",
+    "and": "且",
+    "or": "或",
+    "filters": "筛选条件",
+    "unpinFilters": "取消固定筛选条件",
+    "condition": "条件",
+    "min": "最小值",
+    "max": "最大值",
+    "selectValue": "选择值",
+    "includesAll": "包含全部",
+    "doesNotIncludeAll": "不包含全部",
+    "filterOperator": {
+      "contains": "包含",
+      "not_contains": "不包含",
+      "equal": "等于",
+      "not_equal": "不等于",
+      "in": "在...之间",
+      "not_in": "不在...之间",
+      "less": "小于",
+      "greater": "大于",
+      "less_or_equal": "小于等于",
+      "greater_or_equal": "大于等于",
+      "isBefore": "早于",
+      "isAfter": "晚于",
+      "regex": "正则表达式"
+    },
+    "orderBy": "排序",
+    "default": "默认",
+    "sortAscending": "升序排序",
+    "sortDescending": "降序排序",
+    "tasks": "任务",
+    "filteredTasks": "筛选后的任务",
+    "totalTasksInProject": "项目中的总任务数",
+    "submittedAnnotations": "已提交的标注",
+    "predictions": "预测",
+    "storageSync": "存储同步",
+    "actions": "操作",
+    "tasksActions": "任务操作",
+    "loadingActions": "加载操作中...",
+    "destructiveAction": "危险操作",
+    "confirmAction": "确认操作",
+    "record": "记录",
+    "task": "任务",
+    "rename": "重命名",
+    "duplicate": "复制",
+    "close": "关闭",
+    "defaultTab": "默认",
+    "newTab": "新标签页 {{number}}"
+  },
+  "createProject": {
+    "title": "创建项目",
+    "projectName": "项目名称",
+    "description": "描述",
+    "descriptionPlaceholder": "项目的可选描述",
+    "workspace": "工作区",
+    "simplifyProjectManagement": "通过将项目组织到工作区中来简化项目管理。",
+    "learnMore": "了解更多",
+    "cancel": "取消",
+    "save": "保存",
+    "cancelProjectCreation": "取消项目创建",
+    "projectNameStep": "项目名称",
+    "dataImportStep": "数据导入",
+    "labelingSetupStep": "标注设置",
+    "selectDataset": "选择数据集",
+    "selectBranch": "选择分支",
+    "addDataset": "添加数据集",
+    "uploadFile": "上传文件",
+    "uploadMoreFiles": "上传更多文件",
+    "or": "或",
+    "treatCsvAs": "将CSV/TSV视为",
+    "listOfTasks": "任务列表",
+    "timeSeriesOrWholeTextFile": "时间序列或整个文本文件",
+    "filesUploaded": "个文件已上传",
+    "uploadDisabled": "上传已禁用",
+    "selectDatasetAndBranch": "请选择数据集和分支以启用文件上传",
+    "dragDropFiles": "拖放文件到此处",
+    "orClickToBrowse": "或点击浏览",
+    "images": "图片",
+    "audio": "音频",
+    "video": "视频",
+    "htmlHypertext": "HTML / 超文本",
+    "text": "文本",
+    "structuredData": "结构化数据",
+    "pdf": "PDF",
+    "important": "重要提示：",
+    "recommendCloudStorage": "由于上传限制，我们建议使用云存储而不是直接上传。",
+    "forPdfs": "对于PDF文件，请使用多图像标注。JSONL或Parquet（仅限企业版）文件需要云存储。",
+    "checkDocumentation": "查看文档以导入预标注数据。",
+    "files": "文件",
+    "sample": "示例",
+    "expectedInputPreview": "预期输入预览",
+    "somethingWentWrong": "出现错误，无法加载示例数据。",
+    "viewJsonInputFormat": "查看JSON输入格式",
+    "setupLabelingConfiguration": "首先设置您的标注配置以预览预期的JSON数据格式。",
+    "labelingConfiguration": "标注配置",
+    "videoFormatSupport": "视频格式支持取决于您的浏览器。点击了解更多。",
+    "learnMoreVideoFormat": "了解更多关于视频格式支持的信息（在新标签页中打开）",
+    "cloudStorageDocumentation": "云存储文档（在新标签页中打开）",
+    "uploadLimitationsDocumentation": "上传限制文档（在新标签页中打开）",
+    "multiImageLabeling": "多图像标注",
+    "multiImageLabelingDocumentation": "多图像标注文档（在新标签页中打开）",
+    "importPreannotatedData": "导入预标注数据",
+    "pleaseSelectBothDatasetAndBranch": "上传文件前请选择数据集和分支",
+    "pleaseSelectBothDatasetAndBranchForUrl": "请选择数据集和分支",
+    "failedToLoadBranches": "加载分支失败"
+  },
+  "annotation": {
+    "title": "标注",
+    "dataManager": "数据管理",
+    "labeling": "标注",
+    "outliner": "大纲",
+    "labeledRegionsWillAppearHere": "标注的区域将显示在这里",
+    "startLabelingAndTrackResults": "开始标注并跟踪您的结果",
+    "usingThisPanel": "使用此面板",
+    "learnMore": "了解更多",
+    "allRegionsHidden": "所有区域已隐藏",
+    "adjustOrRemoveFiltersToView": "调整或移除筛选条件以查看",
+    "hiddenRegionSingular": "有 {{count}} 个隐藏的区域",
+    "hiddenRegionsPlural": "有 {{count}} 个隐藏的区域",
+    "groupManually": "手动分组",
+    "manual": "手动",
+    "manualGrouping": "手动分组",
+    "manuallyGrouped": "手动分组",
+    "groupByLabel": "按标签分组",
+    "byLabel": "按标签",
+    "groupedByLabel": "按标签分组",
+    "groupByTool": "按工具分组",
+    "byTool": "按工具",
+    "groupedByTool": "按工具分组",
+    "orderByTime": "按时间排序",
+    "byTime": "按时间",
+    "orderByScore": "按分数排序",
+    "byScore": "按分数",
+    "showAllRegions": "显示所有区域",
+    "hideAllRegions": "隐藏所有区域",
+    "incompleteRegion": "未完成的 {{type}}",
+    "confidenceScore": "置信度分数",
+    "collapse": "折叠",
+    "expand": "展开",
+    "noLabel": "无标签",
+    "regionLinkCopiedToClipboard": "区域链接已复制到剪贴板",
+    "copyRegionLink": "复制区域链接",
+    "regionOptions": "区域选项",
+    "details": "详情",
+    "relations": "关系 ({{count}})",
+    "createRelationsBetweenRegions": "创建区域之间的关系",
+    "linkRegionsToDefineRelationships": "链接区域以定义它们之间的关系",
+    "annotationHistory": "标注历史",
+    "viewRegionDetails": "查看区域详情",
+    "selectRegionToViewDetails": "选择一个区域以查看其属性、元数据和可用操作",
+    "comments": "评论",
+    "showAll": "显示全部",
+    "hideAll": "隐藏全部",
+    "orderByOldest": "按最旧排序",
+    "orderByNewest": "按最新排序",
+    "regions": "区域",
+    "history": "历史",
+    "relationsTitle": "关系",
+    "info": "信息",
+    "viewAnnotationActivity": "查看标注活动",
+    "seeLogOfUserActions": "查看此标注的用户操作日志",
+    "accepted": "已接受",
+    "rejected": "已拒绝",
+    "fixed": "已修复",
+    "updated": "已更新",
+    "submitted": "已提交",
+    "fromPrediction": "来自预测",
+    "imported": "已导入",
+    "skipped": "已跳过",
+    "draft": "草稿",
+    "reviewDeleted": "审查已删除",
+    "propagated": "已传播",
+    "showMore": "显示更多",
+    "showLess": "显示更少"
+  },
+  "labelingConfig": {
+    "labelingInterface": "标注界面",
+    "browseTemplates": "浏览模板",
+    "code": "代码",
+    "visual": "可视化",
+    "configureWithTags": "使用标签配置标注界面。",
+    "seeAllAvailableTags": "查看所有可用标签",
+    "saved": "已保存！",
+    "save": "保存",
+    "saving": "保存中...",
+    "saveConfiguration": "保存配置",
+    "emptyConfigTitle": "您的标注配置为空。标注数据需要配置。",
+    "emptyConfigDescription": "从我们预定义的模板之一开始，或在代码面板中创建您自己的配置。标注配置基于XML，您可以",
+    "readAboutTags": "在我们的文档中阅读有关可用标签的信息",
+    "addChoices": "添加选项",
+    "addLabelNames": "添加标签名称",
+    "useNewLineSeparator": "使用换行符作为分隔符来添加多个标签",
+    "add": "添加",
+    "addLabels": "添加标签",
+    "deleteLabel": "删除标签",
+    "widthOfRegionBorders": "区域边框宽度",
+    "allowImageZoom": "允许图片缩放 (ctrl+滚轮)",
+    "showControlsToZoomInAndOut": "显示缩放控件",
+    "showControlsToRotateImage": "显示图片旋转控件",
+    "selectTextByWords": "按单词选择文本",
+    "displayLabels": "显示标签:",
+    "addFilterForLongListOfLabels": "为长标签列表添加筛选",
+    "choices": "选项",
+    "labels": "标签",
+    "configureSettings": "配置设置",
+    "configureData": "配置数据",
+    "templateRequiresMoreData": "此模板需要的数据比您目前拥有的更多",
+    "uploadDataToSelectFields": "要选择要标注的字段，您需要上传数据。或者，您可以使用代码模式提供它。",
+    "useFrom": "使用 {tag} 从",
+    "useFromField": "使用 {tag} 为 {name} 从",
+    "field": "字段",
+    "setManually": "<手动设置>",
+    "importedFile": "<导入的文件>",
+    "customTemplate": "自定义模板",
+    "createCustomTemplate": "创建自定义模板",
+    "seeDocumentationToContribute": "查看文档以",
+    "contributeTemplate": "贡献模板",
+    "parserError": "解析错误",
+    "templateGroups": {
+      "Computer Vision": "计算机视觉",
+      "NLP": "自然语言处理",
+      "Natural Language Processing": "自然语言处理",
+      "Audio": "音频",
+      "Audio/Speech Processing": "音频/语音处理",
+      "Video": "视频",
+      "Videos": "视频",
+      "Time Series": "时间序列",
+      "Time Series Analysis": "时间序列分析",
+      "HTML": "HTML",
+      "PDF": "PDF",
+      "Conversational AI": "对话式AI",
+      "Ranking & Scoring": "排序与评分",
+      "Structured Data Parsing": "结构化数据解析",
+      "Generative AI": "生成式AI"
+    },
+    "templateTitles": {
+      "Bbox object detection": "边界框目标检测",
+      "Polygon labeling": "多边形标注",
+      "Named entity recognition": "命名实体识别",
+      "Simple object detection": "简单目标检测",
+      "Sample config to label with bboxes": "使用边界框标注的示例配置",
+      "You can configure labels and their colors": "您可以配置标签及其颜色",
+      "Select label and click on image to start": "选择标签并点击图像开始"
+    },
+    "uiPreview": "界面预览"
+  },
+  "export": {
+    "exportData": "导出数据",
+    "export": "导出",
+    "exportCompletedSuccessfully": "导出成功完成",
+    "exportError": "导出错误",
+    "filesBeingPrepared": "文件正在准备中，可能需要一些时间。",
+    "exportDatasetFormats": "您可以使用以下格式之一导出数据集：",
+    "cantFindFormat": "找不到导出格式？",
+    "pleaseLetUsKnow": "请在",
+    "slack": "Slack",
+    "orSubmitIssue": "告诉我们，或向",
+    "repository": "仓库",
+    "close": "关闭",
+    "formats": {
+      "json": {
+        "title": "JSON",
+        "description": "以原始 JSON 格式存储在一个 JSON 文件中的项目列表。用于导出数据集的数据和标注。这是 Label Studio 通用格式"
+      },
+      "json_min": {
+        "title": "JSON-MIN",
+        "description": "仅导出原始 JSON 格式中 \"from_name\"、\"to_name\" 值的项目列表。用于仅导出数据集的标注。"
+      },
+      "csv": {
+        "title": "CSV",
+        "description": "结果存储为逗号分隔值，列名由 \"from_name\" 和 \"to_name\" 字段的值指定。"
+      },
+      "tsv": {
+        "title": "TSV",
+        "description": "结果存储在制表符分隔的表格文件中，列名由 \"from_name\" \"to_name\" 值指定"
+      },
+      "coco": {
+        "title": "COCO",
+        "description": "COCO 数据集使用的流行机器学习格式，用于目标检测和图像分割任务（支持多边形和矩形）。"
+      },
+      "coco_with_images": {
+        "title": "COCO（含图像）",
+        "description": "包含下载图像的 COCO 格式。"
+      },
+      "yolo": {
+        "title": "YOLO",
+        "description": "为每个图像文件创建流行的 TXT 格式。每个 txt 文件包含对应图像文件的标注，即目标类别、目标坐标、高度和宽度。"
+      },
+      "yolo_with_images": {
+        "title": "YOLO（含图像）",
+        "description": "包含下载图像的 YOLO 格式。"
+      },
+      "yolo_obb": {
+        "title": "YOLOv8 OBB",
+        "description": "为每个图像文件创建流行的 TXT 格式。每个 txt 文件包含对应图像文件的标注。YOLO OBB 格式通过四个角点坐标（归一化在 0 到 1 之间）来指定边界框，因此可以导出旋转的目标。"
+      },
+      "yolo_obb_with_images": {
+        "title": "YOLOv8 OBB（含图像）",
+        "description": "包含下载图像的 YOLOv8 OBB 格式。"
+      },
+      "conll2003": {
+        "title": "CONLL2003",
+        "description": "用于 CoNLL-2003 命名实体识别挑战的流行格式。"
+      },
+      "voc": {
+        "title": "Pascal VOC XML",
+        "description": "用于目标检测和多边形图像分割任务的流行 XML 格式。"
+      },
+      "brush_to_numpy": {
+        "title": "画笔标签转 NumPy",
+        "description": "将画笔标签导出为 NumPy 二维数组。每个标签输出为一个图像。"
+      },
+      "brush_to_png": {
+        "title": "画笔标签转 PNG",
+        "description": "将画笔标签导出为 PNG 图像。每个标签输出为一个图像。"
+      },
+      "brush_to_coco": {
+        "title": "画笔标签转 COCO",
+        "description": "将画笔标签导出为 COCO 格式用于分割任务。将 RLE 编码的掩码转换为 COCO 多边形。"
+      },
+      "asr_manifest": {
+        "title": "ASR Manifest",
+        "description": "将音频转录标签导出为 NVIDIA NeMo 模型期望的 JSON manifest 格式，用于自动语音识别。"
+      },
+      "tags": {
+        "imagesegmentation": "图像分割",
+        "objectdetection": "目标检测",
+        "keypoints": "关键点",
+        "sequencelabeling": "序列标注",
+        "texttagging": "文本标注",
+        "namedentityrecognition": "命名实体识别",
+        "speechrecognition": "语音识别"
+      }
+    }
+  },
+  "hotkeys": {
+    "keyboardShortcuts": "键盘快捷键",
+    "viewAllShortcuts": "查看所有可用的键盘快捷键。",
+    "customize": "自定义",
+    "import": "导入",
+    "export": "导出",
+    "resetToDefaults": "重置为默认值",
+    "save": "保存",
+    "apply": "应用",
+    "cancel": "取消",
+    "allowDuplicate": "允许重复",
+    "clickToRecord": "点击录制键盘快捷键",
+    "pressKeysNow": "请按键盘...",
+    "clickToSetShortcut": "点击设置快捷键",
+    "clickToEdit": "点击编辑快捷键",
+    "noHotkeysInSection": "此部分没有快捷键",
+    "duplicateHotkeyTitle": "警告：检测到重复的快捷键",
+    "duplicateHotkeyDescription": "快捷键组合 \"{{key}}\" 已被以下功能使用：",
+    "duplicateHotkeyWarning": "重复的快捷键可能会导致冲突和意外行为。您确定要继续吗？",
+    "settings": "设置",
+    "saveSuccess": "{{section}} 快捷键保存成功",
+    "saveFailed": "保存失败：{{error}}",
+    "saveError": "保存时出错：{{error}}",
+    "importSuccess": "快捷键导入成功",
+    "importError": "导入快捷键时出错：{{error}}",
+    "exportSuccess": "快捷键导出成功",
+    "resetHotkeysTitle": "重置快捷键为默认值？",
+    "resetHotkeysBody": "您确定要将所有快捷键和设置重置为默认值吗？此操作无法撤销。",
+    "resetSuccess": "所有快捷键和设置已重置为默认值并保存",
+    "resetFailed": "保存重置的快捷键失败：{{error}}",
+    "resetError": "重置快捷键时出错：{{error}}",
+    "couldNotLoadHotkeys": "无法从服务器加载自定义快捷键，使用缓存的设置",
+    "unknownError": "未知错误",
+    "importHotkeys": "导入快捷键",
+    "importHotkeysDescription": "在下方粘贴您导出的快捷键 JSON。这将替换您当前的快捷键。请确保 JSON 包含具有必需字段的快捷键对象数组。",
+    "hotkeysJson": "快捷键 JSON",
+    "pleaseEnterJsonData": "请输入要导入的 JSON 数据",
+    "invalidFormatHotkeysArray": "格式无效：hotkeys 属性必须是数组",
+    "invalidFormatExpected": "格式无效：期望是快捷键数组或包含 hotkeys 属性的对象",
+    "noHotkeysFound": "导入的数据中未找到快捷键",
+    "invalidHotkeyObject": "无效的快捷键对象",
+    "missingRequiredFields": "缺少必需字段：{{fields}}",
+    "unknownValidationError": "未知的验证错误",
+    "hotkeyAtIndexError": "索引 {{index}} 处的快捷键：{{error}}",
+    "enableHotkey": "启用 {{label}}",
+    "disableHotkey": "禁用 {{label}}",
+    "sections": {
+      "annotation": {
+        "title": "标注操作",
+        "description": "用于常见标注任务的快捷键，如提交、跳过、撤销和重做"
+      },
+      "datamanager": {
+        "title": "数据管理器",
+        "description": "用于在项目数据管理器中导航和管理任务的快捷键"
+      },
+      "regions": {
+        "title": "区域管理",
+        "description": "用于创建、选择和操作标注区域的快捷键"
+      },
+      "tools": {
+        "title": "工具",
+        "description": "用于在标注图像时控制工具面板的快捷键"
+      },
+      "audio": {
+        "title": "音频控制",
+        "description": "用于控制音频播放和导航的快捷键"
+      },
+      "video": {
+        "title": "视频控制",
+        "description": "用于控制视频播放和导航的快捷键"
+      },
+      "timeseries": {
+        "title": "时间序列控制",
+        "description": "用于操作时间序列数据区域的快捷键"
+      },
+      "imagegallery": {
+        "title": "图像库导航",
+        "description": "用于在多图像任务中在图像之间导航的快捷键"
+      }
+    },
+    "hotkeys": {
+      "annotation.submit": {
+        "label": "提交标注",
+        "description": "提交当前标注"
+      },
+      "annotation.skip": {
+        "label": "跳过任务",
+        "description": "跳过当前任务"
+      },
+      "annotation.undo": {
+        "label": "撤销",
+        "description": "撤销上一个操作"
+      },
+      "annotation.redo": {
+        "label": "重做",
+        "description": "重做之前撤销的操作"
+      },
+      "dm.focus-previous": {
+        "label": "聚焦上一个任务",
+        "description": "将焦点移动到上一个任务"
+      },
+      "dm.focus-next": {
+        "label": "聚焦下一个任务",
+        "description": "将焦点移动到下一个任务"
+      },
+      "dm.close-labeling": {
+        "label": "聚焦已关闭任务",
+        "description": "聚焦到已关闭任务列"
+      },
+      "dm.open-labeling": {
+        "label": "聚焦已打开任务",
+        "description": "聚焦到已打开任务列"
+      },
+      "dm.toggle-bulk-sidebar-minimization": {
+        "label": "切换批量操作侧边栏",
+        "description": "最小化或展开批量操作侧边栏"
+      },
+      "region.delete-all": {
+        "label": "删除所有区域",
+        "description": "移除所有区域"
+      },
+      "region.focus": {
+        "label": "聚焦第一个区域",
+        "description": "将焦点移动到第一个可聚焦的区域"
+      },
+      "region.relation": {
+        "label": "创建区域关系",
+        "description": "在选定的区域之间创建关系"
+      },
+      "region.visibility": {
+        "label": "切换区域可见性",
+        "description": "显示或隐藏选定的区域"
+      },
+      "region.visibility-all": {
+        "label": "切换所有区域可见性",
+        "description": "显示或隐藏所有区域"
+      },
+      "region.lock": {
+        "label": "锁定区域",
+        "description": "锁定或解锁选定的区域"
+      },
+      "region.meta": {
+        "label": "编辑区域元数据",
+        "description": "编辑选定区域的元数据"
+      },
+      "region.unselect": {
+        "label": "取消选择区域",
+        "description": "取消选择当前选定的区域"
+      },
+      "region.exit": {
+        "label": "退出区域模式",
+        "description": "退出关系模式并取消选择区域"
+      },
+      "region.delete": {
+        "label": "删除选定区域",
+        "description": "删除当前选定的区域"
+      },
+      "region.cycle": {
+        "label": "循环区域",
+        "description": "循环遍历所有区域"
+      },
+      "region.duplicate": {
+        "label": "复制区域",
+        "description": "创建选定区域的副本"
+      },
+      "segment.delete": {
+        "label": "删除片段",
+        "description": "删除选定的片段"
+      },
+      "audio.back": {
+        "label": "后退 1 秒",
+        "description": "将音频后退 1 秒"
+      },
+      "audio.playpause": {
+        "label": "播放 / 暂停音频",
+        "description": "切换音频播放"
+      },
+      "audio.step-backward": {
+        "label": "后退一步",
+        "description": "后退一帧"
+      },
+      "audio.step-forward": {
+        "label": "前进一步",
+        "description": "前进一帧"
+      },
+      "media.playpause": {
+        "label": "播放 / 暂停视频",
+        "description": "切换视频播放"
+      },
+      "media.step-backward": {
+        "label": "后退一步",
+        "description": "后退一帧"
+      },
+      "media.step-forward": {
+        "label": "前进一步",
+        "description": "前进一帧"
+      },
+      "video.keyframe-backward": {
+        "label": "上一个关键帧",
+        "description": "跳转到上一个关键帧"
+      },
+      "video.keyframe-forward": {
+        "label": "下一个关键帧",
+        "description": "跳转到下一个关键帧"
+      },
+      "video.backward": {
+        "label": "向后搜索",
+        "description": "向后搜索视频"
+      },
+      "video.rewind": {
+        "label": "第一帧",
+        "description": "跳转到第一帧"
+      },
+      "video.forward": {
+        "label": "向前搜索",
+        "description": "向前搜索视频"
+      },
+      "video.fastforward": {
+        "label": "最后一帧",
+        "description": "跳转到最后一帧"
+      },
+      "video.hop-backward": {
+        "label": "快速后退",
+        "description": "快速向后跳转"
+      },
+      "video.hop-forward": {
+        "label": "快速前进",
+        "description": "快速向前跳转"
+      },
+      "ts.grow-left": {
+        "label": "向左扩展",
+        "description": "将区域向左扩展"
+      },
+      "ts.grow-right": {
+        "label": "向右扩展",
+        "description": "将区域向右扩展"
+      },
+      "ts.shrink-left": {
+        "label": "从左侧收缩",
+        "description": "从左侧收缩区域"
+      },
+      "ts.shrink-right": {
+        "label": "从右侧收缩",
+        "description": "从右侧收缩区域"
+      },
+      "ts.grow-left-large": {
+        "label": "向左扩展（大幅）",
+        "description": "大幅向左扩展区域"
+      },
+      "ts.grow-right-large": {
+        "label": "向右扩展（大幅）",
+        "description": "大幅向右扩展区域"
+      },
+      "ts.shrink-left-large": {
+        "label": "从左侧收缩（大幅）",
+        "description": "大幅从左侧收缩区域"
+      },
+      "ts.shrink-right-large": {
+        "label": "从右侧收缩（大幅）",
+        "description": "大幅从右侧收缩区域"
+      },
+      "image.prev": {
+        "label": "上一张图像",
+        "description": "查看上一张图像"
+      },
+      "image.next": {
+        "label": "下一张图像",
+        "description": "查看下一张图像"
+      },
+      "tool.zoom-in": {
+        "label": "放大",
+        "description": "放大图像"
+      },
+      "tool.pan-image": {
+        "label": "平移图像",
+        "description": "平移图像"
+      },
+      "tool.zoom-to-fit": {
+        "label": "适应窗口",
+        "description": "缩放以适应完整图像"
+      },
+      "tool.zoom-to-actual": {
+        "label": "缩放到 100%",
+        "description": "缩放到实际图像大小（100%）"
+      },
+      "tool.zoom-out": {
+        "label": "缩小",
+        "description": "缩小图像"
+      },
+      "tool.move": {
+        "label": "移动工具",
+        "description": "选择移动工具以重新定位标注"
+      },
+      "tool.brush": {
+        "label": "画笔工具",
+        "description": "选择画笔工具"
+      },
+      "tool.ellipse": {
+        "label": "椭圆工具",
+        "description": "选择椭圆工具"
+      },
+      "tool.eraser": {
+        "label": "橡皮擦工具",
+        "description": "选择橡皮擦工具"
+      },
+      "tool.auto-detect": {
+        "label": "自动检测",
+        "description": "使用自动检测工具自动建议区域"
+      },
+      "tool.key-point": {
+        "label": "关键点工具",
+        "description": "选择关键点标注工具"
+      },
+      "tool.magic-wand": {
+        "label": "魔术棒",
+        "description": "选择魔术棒工具进行智能区域选择"
+      },
+      "tool.polygon": {
+        "label": "多边形工具",
+        "description": "选择多边形标注工具"
+      },
+      "tool.rect": {
+        "label": "矩形工具",
+        "description": "选择矩形标注工具"
+      },
+      "tool.rect-3point": {
+        "label": "三点矩形",
+        "description": "使用三点选择绘制旋转矩形"
+      },
+      "tool.rotate-left": {
+        "label": "向左旋转",
+        "description": "将图像向左旋转 90°"
+      },
+      "tool.rotate-right": {
+        "label": "向右旋转",
+        "description": "将图像向右旋转 90°"
+      },
+      "tool.decrease-tool": {
+        "label": "减小工具大小",
+        "description": "减小工具大小"
+      },
+      "tool.increase-tool": {
+        "label": "增大工具大小",
+        "description": "增大工具大小"
+      }
+    }
+  }
+}

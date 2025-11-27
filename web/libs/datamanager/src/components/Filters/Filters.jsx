@@ -1,5 +1,6 @@
 import { inject } from "mobx-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Block, cn, Elem } from "../../utils/bem";
 import { Button } from "@humansignal/ui";
 import { FilterLine } from "./FilterLine/FilterLine";
@@ -14,6 +15,7 @@ const injector = inject(({ store }) => ({
 }));
 
 export const Filters = injector(({ views, currentView, filters }) => {
+  const { t } = useTranslation();
   const { sidebarEnabled } = views;
 
   const fields = React.useMemo(
@@ -64,7 +66,7 @@ export const Filters = injector(({ views, currentView, filters }) => {
             />
           ))
         ) : (
-          <Elem name="empty">No filters applied</Elem>
+          <Elem name="empty">{t("dataManager.noFiltersApplied")}</Elem>
         )}
       </Elem>
       <Elem name="actions">
@@ -74,7 +76,7 @@ export const Filters = injector(({ views, currentView, filters }) => {
           onClick={() => currentView.createFilter()}
           leading={<IconPlus className="!h-3 !w-3" />}
         >
-          Add {filters.length ? "Another Filter" : "Filter"}
+          {filters.length ? t("dataManager.addAnotherFilter") : t("dataManager.addFilter")}
         </Button>
 
         {!sidebarEnabled ? (
@@ -82,9 +84,9 @@ export const Filters = injector(({ views, currentView, filters }) => {
             look="string"
             type="link"
             size="small"
-            tooltip="Pin to sidebar"
+            tooltip={t("dataManager.pinToSidebar")}
             onClick={() => views.expandFilters()}
-            aria-label="Pin filters to sidebar"
+            aria-label={t("dataManager.pinFiltersToSidebar")}
           >
             <IconChevronRight className="!w-4 !h-4" />
           </Button>

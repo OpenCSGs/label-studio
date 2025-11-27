@@ -115,6 +115,10 @@ def user_login(request):
     # print(request,100*'*')
     user = request.user
     next_page = request.GET.get('next')
+    # 获取语言参数，支持从GET或POST中获取
+    language = request.GET.get('lang') or request.GET.get('language') or request.POST.get('lang') or request.POST.get('language') or request.session.get('language', 'en')
+    # 将语言保存到session中
+    request.session['language'] = language
 
     # checks if the URL is a safe redirection.
     if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
@@ -146,9 +150,9 @@ def user_login(request):
             return redirect(next_page)
 
     if flag_set('fflag_feat_front_lsdv_e_297_increase_oss_to_enterprise_adoption_short'):
-        return render(request, 'users/new-ui/user_login.html', {'form': form, 'next': quote(next_page)})
+        return render(request, 'users/new-ui/user_login.html', {'form': form, 'next': quote(next_page), 'language': language})
 
-    return render(request, 'users/user_login.html', {'form': form, 'next': quote(next_page)})
+    return render(request, 'users/user_login.html', {'form': form, 'next': quote(next_page), 'language': language})
 
 
 @login_required
@@ -278,6 +282,13 @@ def login_verfy(request):
     # request.session.flush()
     next_page = request.GET.get('next')
     email = request.GET.get('email')
+    # 获取语言参数，支持从GET或POST中获取
+    language = request.GET.get('lang') or request.GET.get('language') or request.POST.get('lang') or request.POST.get('language') or 'zh'
+    # 如果参数值不是英文，则默认使用中文
+    if language and language.lower() != 'en':
+        language = 'zh'
+    # 将语言保存到session中
+    request.session['language'] = language
     user = request.user
     # 设置默认重定向页面
     if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
@@ -322,10 +333,10 @@ def login_verfy(request):
     # server_url ="http://39.102.214.107:8002"
     try:
         User = get_user_model()
-        print("创建用户1")
+        print("获取用户1")
         # 尝试获取用户
         try:
-            print("创建用户2")
+            print("获取用户2")
             user = User.objects.get(email=email)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             user.save(update_fields=['active_organization'])
@@ -343,6 +354,7 @@ def login_verfy(request):
                                         'status': 'success',
                                         'message': '用户获取成功',
                                         'next_page': next_page,
+                                        'language': language,
                                         'user': {
                                             'email': user.email,
                                             'id': user.id
@@ -352,10 +364,11 @@ def login_verfy(request):
                 'status': 'error',
                 'message': '用户获取失败',
                 'next_page': next_page,
+                'language': language,
             }, status=400)
         except User.DoesNotExist:
             # 用户不存在，尝试创建
-            print("创建用户不存在", email, User.objects.filter(email=email).exists())
+            print("获取用户不存在", email, User.objects.filter(email=email).exists())
             print("创建用户3",server_url)
             manager = LabelStudioUserManager(server_url)
             test_users = {"email": email}
@@ -406,7 +419,8 @@ def login_verfy(request):
         return render(request, 'users/user_login.html', {
             'form': load_func(settings.USER_LOGIN_FORM)(),
             'next': quote(next_page),
-            'error_message': "登录过程中发生错误"
+            'error_message': "登录过程中发生错误",
+            'language': language,
         }, status=500)
 
 
@@ -423,10 +437,25 @@ def login_reques(request):
 
     next_page = request.GET.get('next')
     email = request.GET.get('email')
+    # 获取语言参数，支持从GET或POST中获取
+    language = request.GET.get('lang') or request.GET.get('language') or request.POST.get('lang') or request.POST.get('language') or 'zh'
+    # 如果参数值不是英文，则默认使用中文
+    if language and language.lower() != 'en':
+        language = 'zh'
+    # 将语言保存到session中
+    request.session['language'] = language
+    origin = request.GET.get('origin')  # 获取origin参数
     user = request.user
     # 设置默认重定向页面
     if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
         next_page = reverse('projects:project-index')
+
+    # 辅助函数：在重定向URL中添加origin参数
+    def add_origin_to_url(url):
+        if origin:
+            separator = '&' if '?' in url else '?'
+            return f"{url}{separator}origin={quote(origin)}"
+        return url
 
     # 如果用户已认证且邮箱匹配，直接重定向
     User = get_user_model()
@@ -438,7 +467,8 @@ def login_reques(request):
         if user.is_authenticated and email and user.email != email:
             auth.logout(request)
             return login_reques(request)  # 递归调用
-        return redirect(next_page)
+        redirect_url = add_origin_to_url(next_page)
+        return redirect(redirect_url)
 
     # 获取服务器URL
     server_url = request.build_absolute_uri('/')[:-1]
@@ -450,13 +480,16 @@ def login_reques(request):
             user = User.objects.get(email=email)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             user.save(update_fields=['active_organization'])
-            return redirect(next_page)
+            redirect_url = add_origin_to_url(next_page)
+            return redirect(redirect_url)
         except User.DoesNotExist:
             # 获取用户失败，返回错误页面
             return render(request, 'users/user_login.html', {
                 'form': load_func(settings.USER_LOGIN_FORM)(),
                 'next': quote(next_page),
-                'error_message': "账号获取失败，用户不存在"
+                'error_message': "账号获取失败，用户不存在",
+                'origin': origin,  # 传递origin到模板
+                'language': language,
             }, status=400)
 
     except Exception as e:
@@ -466,6 +499,8 @@ def login_reques(request):
         return render(request, 'users/user_login.html', {
             'form': load_func(settings.USER_LOGIN_FORM)(),
             'next': quote(next_page),
-            'error_message': "登录过程中发生错误"
+            'error_message': "登录过程中发生错误",
+            'language': language,
+            'origin': origin  # 传递origin到模板
         }, status=500)
 

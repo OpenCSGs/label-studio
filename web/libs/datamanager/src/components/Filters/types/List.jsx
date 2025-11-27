@@ -1,4 +1,5 @@
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import { FilterDropdown } from "../FilterDropdown";
 import { useMemo } from "react";
 // import { Common } from "./Common";
@@ -8,6 +9,7 @@ function defaultFilterItems(items) {
 }
 
 export const VariantSelect = observer(({ filter, schema, onChange, multiple, value, placeholder, disabled }) => {
+  const { t } = useTranslation();
   if (!schema) return <></>;
   const { items } = schema;
 
@@ -34,7 +36,7 @@ export const VariantSelect = observer(({ filter, schema, onChange, multiple, val
       }
       searchFilter={filter.cellView?.searchFilter}
       onChange={(value) => onChange(value)}
-      placeholder={placeholder ?? "Select value"}
+      placeholder={placeholder ?? t("dataManager.selectValue")}
       disabled={disabled}
     />
   );

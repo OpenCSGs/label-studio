@@ -7,10 +7,32 @@ import { absoluteURL } from "../../utils/helpers";
 import { Dropdown } from "../Dropdown/Dropdown";
 import { Menu } from "../Menu/Menu";
 import "./Breadcrumbs.scss";
+import { useTranslation } from "react-i18next";
 
 const { Block, Elem } = BemWithSpecifiContext();
 
+const translateTitle = (title, t) => {
+  const titleMap = {
+    "Home": t("menu.home"),
+    "Projects": t("menu.projects"),
+    "Organization": t("menu.organization"),
+    "People": t("organization.people"),
+    "Settings": t("settings.title"),
+    "General": t("settings.general"),
+    "Labeling Interface": t("settings.labelingInterface"),
+    "Annotation": t("settings.annotationSettings"),
+    "Cloud Storage": t("settings.cloudStorage"),
+    "Predictions": t("settings.predictions"),
+    "Webhooks": t("settings.webhooks"),
+    "Danger Zone": t("settings.dangerZone"),
+    "Data Manager": t("annotation.dataManager"),
+    "Labeling": t("annotation.labeling"),
+  };
+  return titleMap[title] || title;
+};
+
 export const Breadcrumbs = () => {
+  const { t } = useTranslation();
   const config = useConfig();
   const reactBreadcrumbs = useBreadcrumbs();
   const findComponent = useFindRouteComponent();
@@ -18,11 +40,25 @@ export const Breadcrumbs = () => {
 
   useEffect(() => {
     if (reactBreadcrumbs.length) {
-      setBreadcrumbs(reactBreadcrumbs);
+      setBreadcrumbs(reactBreadcrumbs.map(item => ({
+        ...item,
+        title: translateTitle(item.title, t),
+        submenu: item.submenu?.map(sub => ({
+          ...sub,
+          title: translateTitle(sub.title, t),
+        })),
+      })));
     } else if (config.breadcrumbs) {
-      setBreadcrumbs(config.breadcrumbs);
+      setBreadcrumbs(config.breadcrumbs.map(item => ({
+        ...item,
+        title: translateTitle(item.title, t),
+        submenu: item.submenu?.map(sub => ({
+          ...sub,
+          title: translateTitle(sub.title, t),
+        })),
+      })));
     }
-  }, [reactBreadcrumbs, config]);
+  }, [reactBreadcrumbs, config, t]);
 
   return (
     <Block name="breadcrumbs">

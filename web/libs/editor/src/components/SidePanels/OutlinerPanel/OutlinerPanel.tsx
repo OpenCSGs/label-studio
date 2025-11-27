@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 import { type FC, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Block, Elem } from "../../../utils/bem";
 import { PanelBase, type PanelProps } from "../PanelBase";
 import { OutlinerTree } from "./OutlinerTree";
@@ -60,8 +61,9 @@ const OutlinerPanelComponent: FC<OutlinerPanelProps> = ({ regions, ...props }) =
 
   regions.setGrouping(group);
 
+  const { t } = useTranslation();
   return (
-    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title="Outliner">
+    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title={t("annotation.outliner")}>
       <ViewControls
         ordering={regions.sort}
         regions={regions}
@@ -112,24 +114,28 @@ const OutlinerStandAlone: FC<OutlinerPanelProps> = ({ regions }) => {
   );
 };
 
-const OutlinerEmptyState = () => (
-  <EmptyState
-    icon={<IconLsLabeling width={24} height={24} />}
-    header="Labeled regions will appear here"
-    description={
-      <>
-        <span>
-          Start labeling and track your results
-          <br />
-          using this panel
-        </span>
-      </>
-    }
-    learnMore={{ href: getDocsUrl("guide/labeling"), text: "Learn more", testId: "regions-panel-learn-more" }}
-  />
-);
+const OutlinerEmptyState = () => {
+  const { t } = useTranslation();
+  return (
+    <EmptyState
+      icon={<IconLsLabeling width={24} height={24} />}
+      header={t("annotation.labeledRegionsWillAppearHere")}
+      description={
+        <>
+          <span>
+            {t("annotation.startLabelingAndTrackResults")}
+            <br />
+            {t("annotation.usingThisPanel")}
+          </span>
+        </>
+      }
+      learnMore={{ href: getDocsUrl("guide/labeling"), text: t("annotation.learnMore"), testId: "regions-panel-learn-more" }}
+    />
+  );
+};
 
 const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ regions }) => {
+  const { t } = useTranslation();
   const allRegionsHidden = regions?.regions?.length > 0 && regions?.filter?.length === 0;
 
   const hiddenRegions = useMemo(() => {
@@ -143,8 +149,8 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
       {allRegionsHidden ? (
         <Block name="filters-info">
           <IconInfo width={21} height={20} />
-          <Elem name="filters-title">All regions hidden</Elem>
-          <Elem name="filters-description">Adjust or remove the filters to view</Elem>
+          <Elem name="filters-title">{t("annotation.allRegionsHidden")}</Elem>
+          <Elem name="filters-description">{t("annotation.adjustOrRemoveFiltersToView")}</Elem>
         </Block>
       ) : regions?.regions?.length > 0 ? (
         <>
@@ -155,9 +161,11 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
                 <Block name="filters-info">
                   <IconInfo width={21} height={20} />
                   <Elem name="filters-title">
-                    There {hiddenRegions === 1 ? "is" : "are"} {hiddenRegions} hidden region{hiddenRegions > 1 && "s"}
+                    {hiddenRegions === 1 
+                      ? t("annotation.hiddenRegionSingular", { count: hiddenRegions })
+                      : t("annotation.hiddenRegionsPlural", { count: hiddenRegions })}
                   </Elem>
-                  <Elem name="filters-description">Adjust or remove filters to view</Elem>
+                  <Elem name="filters-description">{t("annotation.adjustOrRemoveFiltersToView")}</Elem>
                 </Block>
               )
             }

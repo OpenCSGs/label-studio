@@ -3,17 +3,19 @@ import { Block, Elem } from "apps/labelstudio/src/utils/bem";
 import type { FC } from "react";
 import "./EmptyList.scss";
 import { HeidiAi } from "apps/labelstudio/src/assets/images";
+import { useTranslation } from "react-i18next";
 
 export const EmptyList: FC = () => {
+  const { t } = useTranslation();
   return (
     <Block name="empty-models-list">
       <Elem name="content">
         <Elem name="heidy">
           <HeidiAi />
         </Elem>
-        <Elem name="title">Create a Model</Elem>
-        <Elem name="caption">Build a high quality model to auto-label your data using LLMs</Elem>
-        <Button aria-label="Create new model">Create a Model</Button>
+        <Elem name="title">{t("models.createModel")}</Elem>
+        <Elem name="caption">{t("models.createModelDescription")}</Elem>
+        <Button aria-label={t("models.createNewModel")}>{t("models.createModel")}</Button>
       </Elem>
     </Block>
   );

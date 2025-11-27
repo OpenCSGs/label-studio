@@ -7,6 +7,7 @@ import { atomWithQuery } from "jotai-tanstack-query";
 import { useAtomValue } from "jotai";
 import { Modal } from "apps/labelstudio/src/components/Modal/ModalPopup";
 import { Button, Typography } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
 
 const linkAtom = atomWithQuery(() => ({
   queryKey: ["invite-link"],
@@ -27,6 +28,7 @@ export function InviteLink({
   onOpened?: () => void;
   onClosed?: () => void;
 }) {
+  const { t } = useTranslation();
   const modalRef = useRef<Modal>();
   useEffect(() => {
     if (modalRef.current && opened) {
@@ -39,7 +41,7 @@ export function InviteLink({
   return (
     <Modal
       ref={modalRef}
-      title="Invite people"
+      title={t("organization.invitePeople")}
       opened={opened}
       bareFooter={true}
       body={<InvitationModal />}
@@ -52,13 +54,13 @@ export function InviteLink({
 }
 
 const InvitationModal = () => {
+  const { t } = useTranslation();
   const { data: link } = useAtomValue(linkAtom);
   return (
     <Block name="invite">
       <Input value={link} style={{ width: "100%" }} readOnly />
       <Typography size="small" className="text-neutral-content-subtler mt-base mb-wider">
-        Invite people to join your Label Studio instance. People that you invite have full access to all of your
-        projects.{" "}
+        {t("organization.invitePeopleDescription")}{" "}
         <a
           href="https://labelstud.io/guide/signup.html"
           target="_blank"
@@ -68,7 +70,7 @@ const InvitationModal = () => {
             __lsa("docs.organization.add_people.learn_more", { href: "https://labelstud.io/guide/signup.html" })
           }
         >
-          Learn more
+          {t("organization.learnMore")}
         </a>
         .
       </Typography>
@@ -77,14 +79,15 @@ const InvitationModal = () => {
 };
 
 const InvitationFooter = () => {
+  const { t } = useTranslation();
   const { copyText, copied } = useTextCopy();
   const { refetch, data: link } = useAtomValue(linkAtom);
 
   return (
     <Space spread>
       <Space>
-        <Button look="outlined" style={{ width: 170 }} onClick={() => refetch()} aria-label="Refresh invite link">
-          Reset Link
+        <Button look="outlined" style={{ width: 170 }} onClick={() => refetch()} aria-label={t("organization.refreshInviteLink")}>
+          {t("organization.resetLink")}
         </Button>
       </Space>
       <Space>
@@ -92,9 +95,9 @@ const InvitationFooter = () => {
           variant={copied ? "positive" : "primary"}
           className="w-[170px]"
           onClick={() => copyText(link!)}
-          aria-label="Copy invite link"
+          aria-label={t("organization.copyInviteLink")}
         >
-          {copied ? "Copied!" : "Copy link"}
+          {copied ? t("organization.copied") : t("organization.copyLink")}
         </Button>
       </Space>
     </Space>

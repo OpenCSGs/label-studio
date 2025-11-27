@@ -1,13 +1,15 @@
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import { Block, Elem } from "../../../utils/bem";
 
 export type RegionLabelProps = {
   item: any;
 };
 export const RegionLabel = observer(({ item }: RegionLabelProps) => {
+  const { t } = useTranslation();
   const { type } = item ?? {};
   if (!type) {
-    return "No Label";
+    return t("annotation.noLabel");
   }
   if (type.includes("label")) {
     return item.value;
@@ -25,7 +27,7 @@ export const RegionLabel = observer(({ item }: RegionLabelProps) => {
           return [
             index ? ", " : null,
             <Elem key={label.id} style={{ color }}>
-              {label.value || "No label"}
+              {label.value || t("annotation.noLabel")}
             </Elem>,
           ];
         })}

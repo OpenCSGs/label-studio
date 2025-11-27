@@ -13,8 +13,10 @@ import { TokenSettingsModal } from "@humansignal/app-common/blocks/TokenSettings
 import { IconPlus } from "@humansignal/icons";
 import { useToast } from "@humansignal/ui";
 import { InviteLink } from "./InviteLink";
+import { useTranslation } from "react-i18next";
 
 export const PeoplePage = () => {
+  const { t } = useTranslation();
   const apiSettingsModal = useRef();
   const toast = useToast();
   const [selectedUser, setSelectedUser] = useState(null);
@@ -31,18 +33,18 @@ export const PeoplePage = () => {
 
   const apiTokensSettingsModalProps = useMemo(
     () => ({
-      title: "API Token Settings",
+      title: t("organization.apiTokensSettings"),
       style: { width: 480 },
       body: () => (
         <TokenSettingsModal
           onSaved={() => {
-            toast.show({ message: "API Token settings saved" });
+            toast.show({ message: t("organization.apiTokensSettings") + " " + t("settings.saved") });
             apiSettingsModal.current?.close();
           }}
         />
       ),
     }),
-    [],
+    [t],
   );
 
   const showApiTokenSettingsModal = useCallback(() => {
@@ -62,16 +64,16 @@ export const PeoplePage = () => {
 
           <Space>
             {isFF(FF_AUTH_TOKENS) && (
-              <Button look="outlined" onClick={showApiTokenSettingsModal} aria-label="Show API token settings">
-                API Tokens Settings
+              <Button look="outlined" onClick={showApiTokenSettingsModal} aria-label={t("organization.showApiTokenSettings")}>
+                {t("organization.apiTokensSettings")}
               </Button>
             )}
             <Button
               leading={<IconPlus className="!h-4" />}
               onClick={() => setInvitationOpen(true)}
-              aria-label="Invite new member"
+              aria-label={t("organization.inviteNewMember")}
             >
-              Add People
+              {t("organization.addPeople")}
             </Button>
           </Space>
         </Space>
@@ -100,5 +102,5 @@ export const PeoplePage = () => {
   );
 };
 
-PeoplePage.title = "People";
+PeoplePage.title = "People"; // Will be translated in Breadcrumbs
 PeoplePage.path = "/";

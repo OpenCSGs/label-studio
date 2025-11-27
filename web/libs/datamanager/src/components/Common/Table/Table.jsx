@@ -16,6 +16,7 @@ import { prepareColumns } from "./utils";
 import { cn } from "../../../utils/bem";
 import { FieldsButton } from "../FieldsButton";
 import { FF_DEV_3873, FF_LOPS_E_3, isFF } from "../../../utils/feature-flags";
+import { useTranslation } from "react-i18next";
 
 const Decorator = (decoration) => {
   return {
@@ -49,6 +50,7 @@ export const Table = observer(
     headerExtra,
     ...props
   }) => {
+    const { t } = useTranslation();
     const colOrderKey = "dm:columnorder";
     const tableHead = useRef();
     const [colOrder, setColOrder] = useState(JSON.parse(localStorage.getItem(colOrderKey)) ?? {});
@@ -63,10 +65,10 @@ export const Table = observer(
           indeterminate={selectedItems.isIndeterminate}
           onChange={() => props.onSelectAll()}
           className="select-all"
-          ariaLabel={`${selectedItems.isAllSelected ? "Unselect" : "Select"} all rows`}
+          ariaLabel={selectedItems.isAllSelected ? t("dataManager.unselectAllRows") : t("dataManager.selectAllRows")}
         />
       );
-    }, [props.onSelectAll, selectedItems]);
+    }, [props.onSelectAll, selectedItems, t]);
 
     const rowCheckBoxCell = useCallback(
       ({ data }) => {
@@ -75,11 +77,11 @@ export const Table = observer(
           <TableCheckboxCell
             checked={isChecked}
             onChange={() => props.onSelectRow(data.id)}
-            ariaLabel={`${isChecked ? "Unselect" : "Select"} Task ${data.id}`}
+            ariaLabel={isChecked ? t("dataManager.unselectTask", { id: data.id }) : t("dataManager.selectTask", { id: data.id })}
           />
         );
       },
-      [props.onSelectRow, selectedItems],
+      [props.onSelectRow, selectedItems, t],
     );
 
     const columns = prepareColumns(props.columns, props.hiddenColumns);

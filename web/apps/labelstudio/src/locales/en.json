@@ -1,0 +1,924 @@
+{
+  "login": {
+    "title": "Log in",
+    "email": "Email Address",
+    "password": "Password",
+    "keepLoggedIn": "Keep me logged in this browser",
+    "submit": "Log in",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "errors": {
+      "authenticationFailed": "Authentication failed",
+      "userNotFound": "User not found",
+      "accountCreationFailed": "Account creation failed",
+      "loginError": "An error occurred during login"
+    },
+    "messages": {
+      "authenticationSuccess": "Authentication successful",
+      "userRetrievedSuccess": "User retrieved successfully",
+      "userCreatedAndLoggedIn": "User created and logged in successfully",
+      "userCreatedFailed": "User creation failed"
+    }
+  },
+  "menu": {
+    "language": "Language",
+    "switchLanguage": "Switch Language",
+    "english": "English",
+    "chinese": "中文",
+    "home": "Home",
+    "projects": "Projects",
+    "organization": "Organization",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "pinMenu": "Pin menu",
+    "unpinMenu": "Unpin menu",
+    "settings": "Settings",
+    "label": "Label",
+    "accountSettings": "Account & Settings",
+    "logOut": "Log Out",
+    "newProject": "New project"
+  },
+  "projects": {
+    "title": "Projects",
+    "createProject": "Create Project",
+    "createProjectDescription": "Create one and start labeling your data.",
+    "newProject": "New project",
+    "settings": "Settings",
+    "label": "Label",
+    "projectOptions": "Project options",
+    "tasks": "Tasks",
+    "of": "of",
+    "viewAll": "View All",
+    "recentProjects": "Recent Projects",
+    "cantLoadProjects": "can't load projects",
+    "createFirstProject": "Create your first project",
+    "createFirstProjectDescription": "Import your data and set up the labeling interface to start annotating"
+  },
+  "home": {
+    "title": "Home",
+    "createProject": "Create Project",
+    "invitePeople": "Invite People",
+    "recentProjects": "Recent Projects",
+    "viewAll": "View All",
+    "cantLoadProjects": "can't load projects",
+    "createFirstProject": "Create your first project",
+    "createFirstProjectDescription": "Import your data and set up the labeling interface to start annotating"
+  },
+  "organization": {
+    "title": "Organization",
+    "people": "People",
+    "addPeople": "Add People",
+    "apiTokensSettings": "API Tokens Settings",
+    "showApiTokenSettings": "Show API token settings",
+    "inviteNewMember": "Invite new member",
+    "email": "Email",
+    "name": "Name",
+    "lastActivity": "Last Activity",
+    "userId": "User ID",
+    "invitePeople": "Invite people",
+    "invitePeopleDescription": "Invite people to join your Label Studio instance. People that you invite have full access to all of your projects.",
+    "learnMore": "Learn more",
+    "resetLink": "Reset Link",
+    "refreshInviteLink": "Refresh invite link",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "copyInviteLink": "Copy invite link",
+    "closeUserDetails": "Close user details",
+    "createdProjects": "Created Projects",
+    "contributedTo": "Contributed to",
+    "lastActivityOn": "Last activity on"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "generalSettings": "General Settings",
+    "projectName": "Project Name",
+    "description": "Description",
+    "workspace": "Workspace",
+    "simplifyProjectManagement": "Simplify project management by organizing projects into workspaces.",
+    "color": "Color",
+    "taskSampling": "Task Sampling",
+    "sequential": "Sequential",
+    "sequentialDescription": "Tasks are ordered by Task ID",
+    "random": "Random",
+    "randomDescription": "Tasks are chosen with uniform random",
+    "uncertaintySampling": "Uncertainty sampling",
+    "uncertaintySamplingDescription": "Tasks are chosen according to model uncertainty score (active learning mode).",
+    "saved": "Saved!",
+    "save": "Save",
+    "saveGeneralSettings": "Save general settings",
+    "labelingInterface": "Labeling Interface",
+    "annotationSettings": "Annotation Settings",
+    "labelingInstructions": "Labeling Instructions",
+    "labelingInstructionsDescription": "Write instructions to help users complete labeling tasks.",
+    "labelingInstructionsHtml": "The instruction field supports HTML markup and it allows use of images, iframes (pdf).",
+    "showBeforeLabeling": "Show before labeling",
+    "cloudStorage": "Cloud Storage",
+    "predictions": "Predictions",
+    "webhooks": "Webhooks",
+    "dangerZone": "Danger Zone",
+    "dangerZoneDescription": "Perform these actions at your own risk. Actions you take on this page can't be reverted. Make sure your data is backed up.",
+    "actionConfirmation": "Action confirmation",
+    "deleteAllThings": "You're about to delete all things. This action cannot be undone.",
+    "proceed": "Proceed",
+    "deletingStorage": "Deleting storage",
+    "storageSyncErrorLog": "Storage Sync Error Log",
+    "resetCache": "Reset Cache",
+    "resetCacheHelp": "Reset Cache may help in cases like if you are unable to modify the labeling configuration due to validation errors concerning existing labels, but you are confident that the labels don't exist. You can use this action to reset the cache and try again.",
+    "dropAllTabs": "Drop All Tabs",
+    "dropAllTabsHelp": "If the Data Manager is not loading, dropping all Data Manager tabs can help.",
+    "deleteProject": "Delete Project",
+    "deleteProjectHelp": "Deleting a project removes all tasks, annotations, and project data from the database.",
+    "deleteAnnotations": "Delete {{count}} Annotations",
+    "deleteTasks": "Delete {{count}} Tasks",
+    "deletePredictions": "Delete {{count}} Predictions",
+    "prelabeling": "Prelabeling",
+    "usePredictionsToPrelabel": "Use predictions to prelabel tasks",
+    "usePredictionsToPrelabelDescription": "Enable and select which set of predictions to use for prelabeling.",
+    "saveAnnotationSettings": "Save annotation settings",
+    "selectAnOption": "Select an option",
+    "importedFileTooBig": "Imported file is too big"
+  },
+  "webhooks": {
+    "title": "Webhooks",
+    "addWebhook": "Add Webhook",
+    "edit": "Edit",
+    "delete": "Delete",
+    "editWebhook": "Edit webhook",
+    "addWebhookAria": "Add webhook",
+    "payloadUrl": "Payload URL",
+    "url": "URL",
+    "isActive": "Is Active",
+    "created": "Created"
+  },
+  "storage": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "storageOptions": "Storage options",
+    "syncStorage": "Sync Storage",
+    "syncingMayTakeTime": "Syncing may take some time, please refresh the page to see the current status.",
+    "untitled": "Untitled"
+  },
+  "machineLearning": {
+    "edit": "Edit",
+    "sendTestRequest": "Send Test Request",
+    "startTraining": "Start Training",
+    "delete": "Delete",
+    "deleteMlBackend": "Delete ML Backend",
+    "deleteMlBackendConfirm": "This action cannot be undone. Are you sure?",
+    "disconnected": "Disconnected",
+    "connected": "Connected",
+    "error": "Error",
+    "training": "Training",
+    "predicting": "Predicting",
+    "created": "Created",
+    "modelOptions": "Machine learning model options",
+    "connectedModelDetected": "A connected model has been detected! If you wish to fetch predictions from this model, please follow these steps:",
+    "navigateToDataManager": "1. Navigate to the Data Manager.",
+    "selectDesiredTasks": "2. Select the desired tasks.",
+    "clickBatchPredictions": "3. Click on Batch predictions from the Actions menu.",
+    "useModelPredictionsForPrelabeling": "If you want to use the model predictions for prelabeling, please configure this in the",
+    "annotationSettings": "Annotation settings"
+  },
+  "models": {
+    "createModel": "Create a Model",
+    "createModelDescription": "Build a high quality model to auto-label your data using LLMs",
+    "createNewModel": "Create new model"
+  },
+  "dataManager": {
+    "projectDeletedOrNotCreated": "Project was deleted or not yet created",
+    "backToProjects": "Back to projects",
+    "taskDoesNotExist": "The task you are trying to access does not exist or is no longer available.",
+    "projectDoesNotExist": "The project you are trying to access does not exist or is no longer available.",
+    "failedToSyncData": "Failed to sync data",
+    "checkStorageSettings": "Check your storage settings. You may need to recreate this dataset",
+    "nothingFound": "Nothing found",
+    "tryAdjustingFilter": "Try adjusting the filter or similarity search parameters",
+    "tryAdjustingFilterSimple": "Try adjusting the filter",
+    "recordsSyncing": "Hang tight! Records are syncing in the background",
+    "pressButtonToSeeSyncedRecords": "Press the button below to see any synced records",
+    "refresh": "Refresh",
+    "noDataImported": "Looks like you have not imported any data yet",
+    "goToImport": "Go to import",
+    "select": "Select",
+    "unselect": "Unselect",
+    "selectAllRows": "Select all rows",
+    "unselectAllRows": "Unselect all rows",
+    "selectTask": "Select Task {{id}}",
+    "unselectTask": "Unselect Task {{id}}",
+    "label": "Label",
+    "labelAllTasks": "Label All Tasks",
+    "labelTasks": "Label {{count}} Task",
+    "labelTasksPlural": "Label {{count}} Tasks",
+    "refreshData": "Refresh data",
+    "task": "Task",
+    "previewTaskImage": "Preview of the task image to quickly navigate through the tasks and select the ones you want to work on.",
+    "useArrowKeys": "Use [arrow keys] to navigate.",
+    "escapeToClose": "[Escape] to close the modal.",
+    "spaceToSelect": "[Space] to select/unselect the task.",
+    "scrollToZoom": "Use [scroll] to zoom in/out and [drag] to pan around while image is zoomed in.",
+    "labelTasksAsDisplayed": "Label Tasks As Displayed",
+    "toggleOpen": "Toggle open",
+    "taskPreview": "Task Preview",
+    "importData": "Import Data",
+    "import": "Import",
+    "cancelImport": "Cancel import",
+    "finishImport": "Finish import",
+    "listView": "List view",
+    "gridView": "Grid view",
+    "switchToListView": "Switch to list view",
+    "switchToGridView": "Switch to grid view",
+    "tasks": "Tasks",
+    "annotations": "Annotations",
+    "upgradeToImport": "You must upgrade your plan to import data",
+    "columns": "Columns",
+    "export": "Export",
+    "labelStudioFrontendNotExist": "Label Studio Frontend doesn't exist on the page",
+    "noFiltersApplied": "No filters applied",
+    "addFilter": "Add Filter",
+    "addAnotherFilter": "Add Another Filter",
+    "pinToSidebar": "Pin to sidebar",
+    "pinFiltersToSidebar": "Pin filters to sidebar",
+    "where": "Where",
+    "column": "Column",
+    "and": "And",
+    "or": "Or",
+    "filters": "Filters",
+    "unpinFilters": "Unpin filters",
+    "condition": "Condition",
+    "min": "Min",
+    "max": "Max",
+    "selectValue": "Select value",
+    "includesAll": "includes all",
+    "doesNotIncludeAll": "does not include all",
+    "filterOperator": {
+      "contains": "contains",
+      "not_contains": "not contains",
+      "equal": "equal",
+      "not_equal": "not equal",
+      "in": "is between",
+      "not_in": "not between",
+      "less": "less than",
+      "greater": "greater than",
+      "less_or_equal": "less than or equal",
+      "greater_or_equal": "greater than or equal",
+      "isBefore": "is before",
+      "isAfter": "is after",
+      "regex": "regex"
+    },
+    "orderBy": "Order by",
+    "default": "Default",
+    "sortAscending": "Sort ascending",
+    "sortDescending": "Sort descending",
+    "tasks": "Tasks",
+    "filteredTasks": "Filtered tasks",
+    "totalTasksInProject": "Total tasks in the project",
+    "submittedAnnotations": "Submitted annotations",
+    "predictions": "Predictions",
+    "storageSync": "Storage sync",
+    "actions": "Actions",
+    "tasksActions": "Tasks Actions",
+    "loadingActions": "Loading actions...",
+    "destructiveAction": "Destructive action",
+    "confirmAction": "Confirm action",
+    "record": "Record",
+    "task": "Task",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "close": "Close",
+    "defaultTab": "Default",
+    "newTab": "New Tab {{number}}"
+  },
+  "createProject": {
+    "title": "Create Project",
+    "projectName": "Project Name",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional description of your project",
+    "workspace": "Workspace",
+    "simplifyProjectManagement": "Simplify project management by organizing projects into workspaces.",
+    "learnMore": "Learn more",
+    "cancel": "Cancel",
+    "save": "Save",
+    "cancelProjectCreation": "Cancel project creation",
+    "projectNameStep": "Project Name",
+    "dataImportStep": "Data Import",
+    "labelingSetupStep": "Labeling Setup",
+    "selectDataset": "Select a dataset",
+    "selectBranch": "Select Branch",
+    "addDataset": "Add Dataset",
+    "uploadFile": "Upload file",
+    "uploadMoreFiles": "Upload More Files",
+    "or": "or",
+    "treatCsvAs": "Treat CSV/TSV as",
+    "listOfTasks": "List of tasks",
+    "timeSeriesOrWholeTextFile": "Time Series or Whole Text File",
+    "filesUploaded": "files uploaded",
+    "uploadDisabled": "Upload Disabled",
+    "selectDatasetAndBranch": "Please select a dataset and branch to enable file upload",
+    "dragDropFiles": "Drag & drop files here",
+    "orClickToBrowse": "or click to browse",
+    "images": "Images",
+    "audio": "Audio",
+    "video": "Video",
+    "htmlHypertext": "HTML / HyperText",
+    "text": "Text",
+    "structuredData": "Structured data",
+    "pdf": "PDF",
+    "important": "Important:",
+    "recommendCloudStorage": "We recommend Cloud Storage over direct uploads due to upload limitations.",
+    "forPdfs": "For PDFs, use multi-image labeling. JSONL or Parquet (Enterprise only) files require cloud storage.",
+    "checkDocumentation": "Check the documentation to import preannotated data.",
+    "files": "Files",
+    "sample": "Sample",
+    "expectedInputPreview": "Expected Input Preview",
+    "somethingWentWrong": "Something went wrong, the sample data could not be loaded.",
+    "viewJsonInputFormat": "View JSON input format",
+    "setupLabelingConfiguration": "Setup your labeling configuration first to preview the expected JSON data format.",
+    "labelingConfiguration": "labeling configuration",
+    "videoFormatSupport": "Video format support depends on your browser. Click to learn more.",
+    "learnMoreVideoFormat": "Learn more about video format support (opens in a new tab)",
+    "cloudStorageDocumentation": "Cloud Storage documentation (opens in a new tab)",
+    "uploadLimitationsDocumentation": "Upload limitations documentation (opens in a new tab)",
+    "multiImageLabeling": "multi-image labeling",
+    "multiImageLabelingDocumentation": "Multi-image labeling documentation (opens in a new tab)",
+    "importPreannotatedData": "import preannotated data",
+    "pleaseSelectBothDatasetAndBranch": "Please select both dataset and branch before uploading files",
+    "pleaseSelectBothDatasetAndBranchForUrl": "Please select both dataset and branch",
+    "failedToLoadBranches": "Failed to load branches"
+  },
+  "annotation": {
+    "title": "Annotation",
+    "dataManager": "Data Manager",
+    "labeling": "Labeling",
+    "outliner": "Outliner",
+    "labeledRegionsWillAppearHere": "Labeled regions will appear here",
+    "startLabelingAndTrackResults": "Start labeling and track your results",
+    "usingThisPanel": "using this panel",
+    "learnMore": "Learn more",
+    "allRegionsHidden": "All regions hidden",
+    "adjustOrRemoveFiltersToView": "Adjust or remove the filters to view",
+    "hiddenRegionSingular": "There is {{count}} hidden region",
+    "hiddenRegionsPlural": "There are {{count}} hidden regions",
+    "groupManually": "Group Manually",
+    "manual": "Manual",
+    "manualGrouping": "Manual Grouping",
+    "manuallyGrouped": "Manually Grouped",
+    "groupByLabel": "Group by Label",
+    "byLabel": "By Label",
+    "groupedByLabel": "Grouped by Label",
+    "groupByTool": "Group by Tool",
+    "byTool": "By Tool",
+    "groupedByTool": "Grouped by Tool",
+    "orderByTime": "Order by Time",
+    "byTime": "By Time",
+    "orderByScore": "Order by Score",
+    "byScore": "By Score",
+    "showAllRegions": "Show all regions",
+    "hideAllRegions": "Hide all regions",
+    "incompleteRegion": "Incomplete {{type}}",
+    "confidenceScore": "Confidence Score",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "noLabel": "No Label",
+    "regionLinkCopiedToClipboard": "Region link copied to clipboard",
+    "copyRegionLink": "Copy Region Link",
+    "regionOptions": "Region options",
+    "details": "Details",
+    "relations": "Relations ({{count}})",
+    "createRelationsBetweenRegions": "Create relations between regions",
+    "linkRegionsToDefineRelationships": "Link regions to define relationships between them",
+    "annotationHistory": "Annotation History",
+    "viewRegionDetails": "View region details",
+    "selectRegionToViewDetails": "Select a region to view its properties, metadata and available actions",
+    "comments": "Comments",
+    "showAll": "Show all",
+    "hideAll": "Hide all",
+    "orderByOldest": "Order by oldest",
+    "orderByNewest": "Order by newest",
+    "regions": "Regions",
+    "history": "History",
+    "relationsTitle": "Relations",
+    "info": "Info",
+    "viewAnnotationActivity": "View annotation activity",
+    "seeLogOfUserActions": "See a log of user actions for this annotation",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "fixed": "Fixed",
+    "updated": "Updated",
+    "submitted": "Submitted",
+    "fromPrediction": "From prediction",
+    "imported": "Imported",
+    "skipped": "Skipped",
+    "draft": "Draft",
+    "reviewDeleted": "Review deleted",
+    "propagated": "Propagated",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "labelingConfig": {
+    "labelingInterface": "Labeling Interface",
+    "browseTemplates": "Browse Templates",
+    "code": "Code",
+    "visual": "Visual",
+    "configureWithTags": "Configure the labeling interface with tags.",
+    "seeAllAvailableTags": "See all available tags",
+    "saved": "Saved!",
+    "save": "Save",
+    "saving": "Saving...",
+    "saveConfiguration": "Save configuration",
+    "emptyConfigTitle": "Your labeling configuration is empty. It is required to label your data.",
+    "emptyConfigDescription": "Start from one of our predefined templates or create your own config on the Code panel. The labeling config is XML-based and you can",
+    "readAboutTags": "read about the available tags in our documentation",
+    "addChoices": "Add choices",
+    "addLabelNames": "Add label names",
+    "useNewLineSeparator": "Use new line as a separator to add multiple labels",
+    "add": "Add",
+    "addLabels": "Add labels",
+    "deleteLabel": "delete label",
+    "widthOfRegionBorders": "Width of region borders",
+    "allowImageZoom": "Allow image zoom (ctrl+wheel)",
+    "showControlsToZoomInAndOut": "Show controls to zoom in and out",
+    "showControlsToRotateImage": "Show controls to rotate image",
+    "selectTextByWords": "Select text by words",
+    "displayLabels": "Display labels:",
+    "addFilterForLongListOfLabels": "Add filter for long list of labels",
+    "choices": "Choices",
+    "labels": "Labels",
+    "configureSettings": "Configure settings",
+    "configureData": "Configure data",
+    "templateRequiresMoreData": "This template requires more data then you have for now",
+    "uploadDataToSelectFields": "To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.",
+    "useFrom": "Use {tag} from",
+    "useFromField": "Use {tag} for {name} from",
+    "field": "field",
+    "setManually": "<set manually>",
+    "importedFile": "<imported file>",
+    "customTemplate": "Custom template",
+    "createCustomTemplate": "Create custom template",
+    "seeDocumentationToContribute": "See the documentation to",
+    "contributeTemplate": "contribute a template",
+    "parserError": "Parser error",
+    "templateGroups": {
+      "Computer Vision": "Computer Vision",
+      "NLP": "NLP",
+      "Natural Language Processing": "Natural Language Processing",
+      "Audio": "Audio",
+      "Audio/Speech Processing": "Audio/Speech Processing",
+      "Video": "Video",
+      "Videos": "Videos",
+      "Time Series": "Time Series",
+      "Time Series Analysis": "Time Series Analysis",
+      "HTML": "HTML",
+      "PDF": "PDF",
+      "Conversational AI": "Conversational AI",
+      "Ranking & Scoring": "Ranking & Scoring",
+      "Structured Data Parsing": "Structured Data Parsing",
+      "Generative AI": "Generative AI"
+    },
+    "templateTitles": {
+      "Bbox object detection": "Bbox object detection",
+      "Polygon labeling": "Polygon labeling",
+      "Named entity recognition": "Named entity recognition",
+      "Simple object detection": "Simple object detection",
+      "Sample config to label with bboxes": "Sample config to label with bboxes",
+      "You can configure labels and their colors": "You can configure labels and their colors",
+      "Select label and click on image to start": "Select label and click on image to start"
+    },
+    "uiPreview": "UI Preview"
+  },
+  "export": {
+    "exportData": "Export data",
+    "export": "Export",
+    "exportCompletedSuccessfully": "Export completed successfully",
+    "exportError": "Export error",
+    "filesBeingPrepared": "Files are being prepared. It might take some time.",
+    "exportDatasetFormats": "You can export dataset in one of the following formats:",
+    "cantFindFormat": "Can't find an export format?",
+    "pleaseLetUsKnow": "Please let us know in",
+    "slack": "Slack",
+    "orSubmitIssue": "or submit an issue to the",
+    "repository": "Repository",
+    "close": "Close",
+    "formats": {
+      "json": {
+        "title": "JSON",
+        "description": "List of items in raw JSON format stored in one JSON file. Use to export both the data and the annotations for a dataset. It's Label Studio Common Format"
+      },
+      "json_min": {
+        "title": "JSON-MIN",
+        "description": "List of items where only \"from_name\", \"to_name\" values from the raw JSON format are exported. Use to export only the annotations for a dataset."
+      },
+      "csv": {
+        "title": "CSV",
+        "description": "Results are stored as comma-separated values with the column names specified by the values of the \"from_name\" and \"to_name\" fields."
+      },
+      "tsv": {
+        "title": "TSV",
+        "description": "Results are stored in tab-separated tabular file with column names specified by \"from_name\" \"to_name\" values"
+      },
+      "coco": {
+        "title": "COCO",
+        "description": "Popular machine learning format used by the COCO dataset for object detection and image segmentation tasks with polygons and rectangles."
+      },
+      "coco_with_images": {
+        "title": "COCO with Images",
+        "description": "COCO format with images downloaded."
+      },
+      "yolo": {
+        "title": "YOLO",
+        "description": "Popular TXT format is created for each image file. Each txt file contains annotations for the corresponding image file, that is object class, object coordinates, height & width."
+      },
+      "yolo_with_images": {
+        "title": "YOLO with Images",
+        "description": "YOLO format with images downloaded."
+      },
+      "yolo_obb": {
+        "title": "YOLOv8 OBB",
+        "description": "Popular TXT format is created for each image file. Each txt file contains annotations for the corresponding image file. The YOLO OBB format designates bounding boxes by their four corner points with coordinates normalized between 0 and 1, so it is possible to export rotated objects."
+      },
+      "yolo_obb_with_images": {
+        "title": "YOLOv8 OBB with Images",
+        "description": "YOLOv8 OBB format with images downloaded."
+      },
+      "conll2003": {
+        "title": "CONLL2003",
+        "description": "Popular format used for the CoNLL-2003 named entity recognition challenge."
+      },
+      "voc": {
+        "title": "Pascal VOC XML",
+        "description": "Popular XML format used for object detection and polygon image segmentation tasks."
+      },
+      "brush_to_numpy": {
+        "title": "Brush labels to NumPy",
+        "description": "Export your brush labels as NumPy 2d arrays. Each label outputs as one image."
+      },
+      "brush_to_png": {
+        "title": "Brush labels to PNG",
+        "description": "Export your brush labels as PNG images. Each label outputs as one image."
+      },
+      "brush_to_coco": {
+        "title": "Brush labels to COCO",
+        "description": "Export your brush labels as COCO format for segmentation tasks. Converts RLE encoded masks to COCO polygons."
+      },
+      "asr_manifest": {
+        "title": "ASR Manifest",
+        "description": "Export audio transcription labels for automatic speech recognition as the JSON manifest format expected by NVIDIA NeMo models."
+      },
+      "tags": {
+        "imagesegmentation": "Image Segmentation",
+        "objectdetection": "Object Detection",
+        "keypoints": "Keypoints",
+        "sequencelabeling": "Sequence Labeling",
+        "texttagging": "Text Tagging",
+        "namedentityrecognition": "Named Entity Recognition",
+        "speechrecognition": "Speech Recognition"
+      }
+    }
+  },
+  "hotkeys": {
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "viewAllShortcuts": "View all available keyboard shortcuts.",
+    "customize": "Customize",
+    "import": "Import",
+    "export": "Export",
+    "resetToDefaults": "Reset to Defaults",
+    "save": "Save",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "allowDuplicate": "Allow Duplicate",
+    "clickToRecord": "Click to record keyboard shortcut",
+    "pressKeysNow": "Press keys now...",
+    "clickToSetShortcut": "Click to set shortcut",
+    "clickToEdit": "Click to edit hotkey",
+    "noHotkeysInSection": "No hotkeys in this section",
+    "duplicateHotkeyTitle": "Warning: Duplicate Hotkey Detected",
+    "duplicateHotkeyDescription": "The hotkey combination \"{{key}}\" is already being used by:",
+    "duplicateHotkeyWarning": "Having duplicate hotkeys may cause conflicts and unexpected behavior. Are you sure you want to proceed?",
+    "settings": "Settings",
+    "saveSuccess": "{{section}} hotkeys saved successfully",
+    "saveFailed": "Failed to save: {{error}}",
+    "saveError": "Error saving: {{error}}",
+    "importSuccess": "Hotkeys imported successfully",
+    "importError": "Error importing hotkeys: {{error}}",
+    "exportSuccess": "Hotkeys exported successfully",
+    "resetHotkeysTitle": "Reset Hotkeys to Defaults?",
+    "resetHotkeysBody": "Are you sure you want to reset all hotkeys and settings to their default values? This action cannot be undone.",
+    "resetSuccess": "All hotkeys and settings have been reset to defaults and saved",
+    "resetFailed": "Failed to save reset hotkeys: {{error}}",
+    "resetError": "Error resetting hotkeys: {{error}}",
+    "couldNotLoadHotkeys": "Could not load custom hotkeys from server, using cached settings",
+    "unknownError": "Unknown error",
+    "importHotkeys": "Import Hotkeys",
+    "importHotkeysDescription": "Paste your exported hotkeys JSON below. This will replace your current hotkeys. Make sure the JSON contains an array of hotkey objects with the required fields.",
+    "hotkeysJson": "Hotkeys JSON",
+    "pleaseEnterJsonData": "Please enter JSON data to import",
+    "invalidFormatHotkeysArray": "Invalid format: hotkeys property must be an array",
+    "invalidFormatExpected": "Invalid format: expected an array of hotkeys or an object with a hotkeys property",
+    "noHotkeysFound": "No hotkeys found in the imported data",
+    "invalidHotkeyObject": "Invalid hotkey object",
+    "missingRequiredFields": "Missing required fields: {{fields}}",
+    "unknownValidationError": "Unknown validation error",
+    "hotkeyAtIndexError": "Hotkey at index {{index}}: {{error}}",
+    "enableHotkey": "Enable {{label}}",
+    "disableHotkey": "Disable {{label}}",
+    "sections": {
+      "annotation": {
+        "title": "Annotation Actions",
+        "description": "Shortcuts for common annotation tasks like submit, skip, undo and redo"
+      },
+      "datamanager": {
+        "title": "Data Manager",
+        "description": "Shortcuts for navigating and managing tasks in Project's Data Manager"
+      },
+      "regions": {
+        "title": "Region Management",
+        "description": "Shortcuts for creating, selecting and manipulating annotation regions"
+      },
+      "tools": {
+        "title": "Tools",
+        "description": "Shortcuts for controlling tools panel when labeling images"
+      },
+      "audio": {
+        "title": "Audio Controls",
+        "description": "Shortcuts for controlling audio playback and navigation"
+      },
+      "video": {
+        "title": "Video Controls",
+        "description": "Shortcuts for controlling video playback and navigation"
+      },
+      "timeseries": {
+        "title": "Time Series Controls",
+        "description": "Shortcuts for manipulating time series data regions"
+      },
+      "imagegallery": {
+        "title": "Image Gallery Navigation",
+        "description": "Shortcuts for navigating between images in multi-image tasks"
+      }
+    },
+    "hotkeys": {
+      "annotation.submit": {
+        "label": "Submit Annotation",
+        "description": "Submit the current annotation"
+      },
+      "annotation.skip": {
+        "label": "Skip Task",
+        "description": "Skip the current task"
+      },
+      "annotation.undo": {
+        "label": "Undo",
+        "description": "Undo last action"
+      },
+      "annotation.redo": {
+        "label": "Redo",
+        "description": "Redo previously undone action"
+      },
+      "dm.focus-previous": {
+        "label": "Focus Previous Task",
+        "description": "Move focus to the previous task"
+      },
+      "dm.focus-next": {
+        "label": "Focus Next Task",
+        "description": "Move focus to the next task"
+      },
+      "dm.close-labeling": {
+        "label": "Focus Closed Task",
+        "description": "Focus on the closed task column"
+      },
+      "dm.open-labeling": {
+        "label": "Focus Open Task",
+        "description": "Focus on the open task column"
+      },
+      "dm.toggle-bulk-sidebar-minimization": {
+        "label": "Toggle Bulk Sidebar",
+        "description": "Minimize or expand bulk actions sidebar"
+      },
+      "region.delete-all": {
+        "label": "Delete All Regions",
+        "description": "Remove all regions"
+      },
+      "region.focus": {
+        "label": "Focus First Region",
+        "description": "Move focus to the first focusable region"
+      },
+      "region.relation": {
+        "label": "Create Region Relation",
+        "description": "Create a relation between selected regions"
+      },
+      "region.visibility": {
+        "label": "Toggle Region Visibility",
+        "description": "Show or hide the selected region"
+      },
+      "region.visibility-all": {
+        "label": "Toggle All Region Visibility",
+        "description": "Show or hide all regions"
+      },
+      "region.lock": {
+        "label": "Lock Region",
+        "description": "Lock or unlock the selected region"
+      },
+      "region.meta": {
+        "label": "Edit Region Metadata",
+        "description": "Edit metadata for selected region"
+      },
+      "region.unselect": {
+        "label": "Unselect Region",
+        "description": "Deselect the currently selected region"
+      },
+      "region.exit": {
+        "label": "Exit Region Mode",
+        "description": "Exit relation mode and unselect region"
+      },
+      "region.delete": {
+        "label": "Delete Selected Region",
+        "description": "Delete currently selected region"
+      },
+      "region.cycle": {
+        "label": "Cycle Regions",
+        "description": "Cycle through all regions"
+      },
+      "region.duplicate": {
+        "label": "Duplicate Region",
+        "description": "Create a copy of the selected region"
+      },
+      "segment.delete": {
+        "label": "Delete Segment",
+        "description": "Delete selected segment"
+      },
+      "audio.back": {
+        "label": "Rewind 1 Second",
+        "description": "Rewind the audio by 1 second"
+      },
+      "audio.playpause": {
+        "label": "Play / Pause Audio",
+        "description": "Toggle audio playback"
+      },
+      "audio.step-backward": {
+        "label": "Step Back",
+        "description": "Step back one frame"
+      },
+      "audio.step-forward": {
+        "label": "Step Forward",
+        "description": "Step forward one frame"
+      },
+      "media.playpause": {
+        "label": "Play / Pause Video",
+        "description": "Toggle video playback"
+      },
+      "media.step-backward": {
+        "label": "Step Back",
+        "description": "Step one frame backward"
+      },
+      "media.step-forward": {
+        "label": "Step Forward",
+        "description": "Step one frame forward"
+      },
+      "video.keyframe-backward": {
+        "label": "Previous Keyframe",
+        "description": "Jump to previous keyframe"
+      },
+      "video.keyframe-forward": {
+        "label": "Next Keyframe",
+        "description": "Jump to next keyframe"
+      },
+      "video.backward": {
+        "label": "Seek Backward",
+        "description": "Seek video backward"
+      },
+      "video.rewind": {
+        "label": "First Frame",
+        "description": "Jump to first frame"
+      },
+      "video.forward": {
+        "label": "Seek Forward",
+        "description": "Seek video forward"
+      },
+      "video.fastforward": {
+        "label": "Last Frame",
+        "description": "Jump to last frame"
+      },
+      "video.hop-backward": {
+        "label": "Hop Backward",
+        "description": "Hop backward quickly"
+      },
+      "video.hop-forward": {
+        "label": "Hop Forward",
+        "description": "Hop forward quickly"
+      },
+      "ts.grow-left": {
+        "label": "Extend Left",
+        "description": "Extend the region to the left"
+      },
+      "ts.grow-right": {
+        "label": "Extend Right",
+        "description": "Extend the region to the right"
+      },
+      "ts.shrink-left": {
+        "label": "Shrink Left",
+        "description": "Shrink the region from the left"
+      },
+      "ts.shrink-right": {
+        "label": "Shrink Right",
+        "description": "Shrink the region from the right"
+      },
+      "ts.grow-left-large": {
+        "label": "Extend Left (Large)",
+        "description": "Extend region left significantly"
+      },
+      "ts.grow-right-large": {
+        "label": "Extend Right (Large)",
+        "description": "Extend region right significantly"
+      },
+      "ts.shrink-left-large": {
+        "label": "Shrink Left (Large)",
+        "description": "Shrink region from left significantly"
+      },
+      "ts.shrink-right-large": {
+        "label": "Shrink Right (Large)",
+        "description": "Shrink region from right significantly"
+      },
+      "image.prev": {
+        "label": "Previous Image",
+        "description": "View previous image"
+      },
+      "image.next": {
+        "label": "Next Image",
+        "description": "View next image"
+      },
+      "tool.zoom-in": {
+        "label": "Zoom In",
+        "description": "Zoom in on the image"
+      },
+      "tool.pan-image": {
+        "label": "Pan Image",
+        "description": "Pan around the image"
+      },
+      "tool.zoom-to-fit": {
+        "label": "Zoom to Fit",
+        "description": "Zoom to fit the full image in view"
+      },
+      "tool.zoom-to-actual": {
+        "label": "Zoom to 100%",
+        "description": "Zoom to actual image size (100%)"
+      },
+      "tool.zoom-out": {
+        "label": "Zoom Out",
+        "description": "Zoom out of the image"
+      },
+      "tool.move": {
+        "label": "Move Tool",
+        "description": "Select the move tool to reposition annotations"
+      },
+      "tool.brush": {
+        "label": "Brush Tool",
+        "description": "Select the brush tool"
+      },
+      "tool.ellipse": {
+        "label": "Ellipse Tool",
+        "description": "Select the ellipse tool"
+      },
+      "tool.eraser": {
+        "label": "Eraser Tool",
+        "description": "Select the eraser tool"
+      },
+      "tool.auto-detect": {
+        "label": "Auto Detect",
+        "description": "Use the auto-detect tool to automatically suggest regions"
+      },
+      "tool.key-point": {
+        "label": "Key Point Tool",
+        "description": "Select the key point annotation tool"
+      },
+      "tool.magic-wand": {
+        "label": "Magic Wand",
+        "description": "Select the magic wand tool for smart region selection"
+      },
+      "tool.polygon": {
+        "label": "Polygon Tool",
+        "description": "Select the polygon annotation tool"
+      },
+      "tool.rect": {
+        "label": "Rectangle Tool",
+        "description": "Select the rectangle annotation tool"
+      },
+      "tool.rect-3point": {
+        "label": "3-Point Rectangle",
+        "description": "Draw a rotated rectangle using 3-point selection"
+      },
+      "tool.rotate-left": {
+        "label": "Rotate Left",
+        "description": "Rotate the image 90° to the left"
+      },
+      "tool.rotate-right": {
+        "label": "Rotate Right",
+        "description": "Rotate the image 90° to the right"
+      },
+      "tool.decrease-tool": {
+        "label": "Decrease Tool Size",
+        "description": "Decrease tool size"
+      },
+      "tool.increase-tool": {
+        "label": "Increase Tool Size",
+        "description": "Increase tool size"
+      }
+    }
+  }
+}

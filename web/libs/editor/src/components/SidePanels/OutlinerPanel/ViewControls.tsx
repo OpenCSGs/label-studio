@@ -1,4 +1,5 @@
 import { type FC, useCallback, useContext, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   IconCursor,
   IconClockTimeFourOutline,
@@ -40,6 +41,7 @@ interface ViewControlsProps {
 
 export const ViewControls: FC<ViewControlsProps> = observer(
   ({ ordering, regions, orderingDirection, onOrderingChange, onGroupingChange, onFilterChange }) => {
+    const { t } = useTranslation();
     const grouping = regions.group;
     const context = useContext(SidePanelsContext);
     const getGroupingLabels = useCallback((value: GroupingOptions): LabelInfo => {
@@ -48,37 +50,37 @@ export const ViewControls: FC<ViewControlsProps> = observer(
           return {
             label: (
               <>
-                <IconList /> Group Manually
+                <IconList /> {t("annotation.groupManually")}
               </>
             ),
-            selectedLabel: isFF(FF_DEV_3873) ? "Manual" : "Manual Grouping",
+            selectedLabel: isFF(FF_DEV_3873) ? t("annotation.manual") : t("annotation.manualGrouping"),
             icon: <IconList width={16} height={16} />,
-            tooltip: "Manually Grouped",
+            tooltip: t("annotation.manuallyGrouped"),
           };
         case "label":
           return {
             label: (
               <>
-                <IconBoundingBox /> Group by Label
+                <IconBoundingBox /> {t("annotation.groupByLabel")}
               </>
             ),
-            selectedLabel: isFF(FF_DEV_3873) ? "By Label" : "Grouped by Label",
+            selectedLabel: isFF(FF_DEV_3873) ? t("annotation.byLabel") : t("annotation.groupedByLabel"),
             icon: <IconBoundingBox width={16} height={16} />,
-            tooltip: "Grouped by Label",
+            tooltip: t("annotation.groupedByLabel"),
           };
         case "type":
           return {
             label: (
               <>
-                <IconCursor /> Group by Tool
+                <IconCursor /> {t("annotation.groupByTool")}
               </>
             ),
-            selectedLabel: isFF(FF_DEV_3873) ? "By Tool" : "Grouped by Tool",
+            selectedLabel: isFF(FF_DEV_3873) ? t("annotation.byTool") : t("annotation.groupedByTool"),
             icon: <IconCursor width={16} height={16} />,
-            tooltip: "Grouped by Tool",
+            tooltip: t("annotation.groupedByTool"),
           };
       }
-    }, []);
+    }, [t]);
 
     const getOrderingLabels = useCallback((value: OrderingOptions): LabelInfo => {
       switch (value) {
@@ -86,24 +88,24 @@ export const ViewControls: FC<ViewControlsProps> = observer(
           return {
             label: (
               <>
-                <IconClockTimeFourOutline /> Order by Time
+                <IconClockTimeFourOutline /> {t("annotation.orderByTime")}
               </>
             ),
-            selectedLabel: "By Time",
+            selectedLabel: t("annotation.byTime"),
             icon: <IconClockTimeFourOutline width={16} height={16} />,
           };
         case "score":
           return {
             label: (
               <>
-                <IconPredictions /> Order by Score
+                <IconPredictions /> {t("annotation.orderByScore")}
               </>
             ),
-            selectedLabel: "By Score",
+            selectedLabel: t("annotation.byScore"),
             icon: <IconPredictions width={16} height={16} />,
           };
       }
-    }, []);
+    }, [t]);
 
     const renderOrderingDirectionIcon = orderingDirection === "asc" ? <IconSortUp /> : <IconSortDown />;
 
@@ -258,6 +260,7 @@ interface ToggleRegionsVisibilityButton {
 }
 
 const ToggleRegionsVisibilityButton = observer<FC<ToggleRegionsVisibilityButton>>(({ regions }) => {
+  const { t } = useTranslation();
   const toggleRegionsVisibility = useCallback(
     (e) => {
       e.preventDefault();
@@ -277,8 +280,8 @@ const ToggleRegionsVisibilityButton = observer<FC<ToggleRegionsVisibilityButton>
       look="string"
       disabled={isDisabled}
       onClick={toggleRegionsVisibility}
-      aria-label={isAllHidden ? "Show all regions" : "Hide all regions"}
-      tooltip={isAllHidden ? "Show all regions" : "Hide all regions"}
+      aria-label={isAllHidden ? t("annotation.showAllRegions") : t("annotation.hideAllRegions")}
+      tooltip={isAllHidden ? t("annotation.showAllRegions") : t("annotation.hideAllRegions")}
     >
       {isAllHidden ? (
         <IconOutlinerEyeClosed width={16} height={16} />

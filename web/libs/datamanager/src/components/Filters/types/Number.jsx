@@ -1,4 +1,5 @@
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import { isDefined } from "../../../utils/utils";
 import { FilterInput } from "../FilterInput";
 
@@ -21,6 +22,7 @@ const NumberInput = observer(({ onChange, ...rest }) => {
 });
 
 const RangeInput = observer(({ schema, value, onChange }) => {
+  const { t } = useTranslation();
   const min = value?.min ?? null;
   const max = value?.max ?? null;
 
@@ -39,9 +41,9 @@ const RangeInput = observer(({ schema, value, onChange }) => {
 
   return (
     <>
-      <NumberInput placeholder="Min" value={min} onChange={onChangeMin} schema={schema} style={{ flex: 1 }} />
-      <span style={{ padding: "0 10px" }}>and</span>
-      <NumberInput placeholder="Max" value={max} onChange={onChangeMax} schema={schema} style={{ flex: 1 }} />
+      <NumberInput placeholder={t("dataManager.min")} value={min} onChange={onChangeMin} schema={schema} style={{ flex: 1 }} />
+      <span style={{ padding: "0 10px" }}>{t("dataManager.and")}</span>
+      <NumberInput placeholder={t("dataManager.max")} value={max} onChange={onChangeMax} schema={schema} style={{ flex: 1 }} />
     </>
   );
 });

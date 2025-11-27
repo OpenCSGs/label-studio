@@ -1,6 +1,7 @@
 import { when } from "mobx";
 import { inject, observer } from "mobx-react";
 import { type FC, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   IconAnnotationAccepted,
   IconAnnotationImported,
@@ -129,12 +130,13 @@ const AnnotationHistoryComponent: FC<any> = ({
   const hasHistory = history && history.length > 0;
   const shouldShowEmptyState = showEmptyState && !hasChanges && !hasDraft && !hasHistory;
 
+  const { t } = useTranslation();
   // Default empty state component
   const defaultEmptyState = (
     <EmptyState
       icon={<IconHistoryRewind width={24} height={24} />}
-      header="View annotation activity"
-      description={<>See a log of user actions for this annotation</>}
+      header={t("annotation.viewAnnotationActivity")}
+      description={<>{t("annotation.seeLogOfUserActions")}</>}
     />
   );
 
@@ -223,36 +225,37 @@ const HistoryItemComponent: FC<{
   hideInfo: infoIsHidden,
   onClick,
 }) => {
+  const { t } = useTranslation();
   const isPrediction = entity?.type === "prediction";
 
   const reason = useMemo(() => {
     switch (acceptedState) {
       case "accepted":
-        return "Accepted";
+        return t("annotation.accepted");
       case "rejected":
-        return "Rejected";
+        return t("annotation.rejected");
       case "fixed_and_accepted":
-        return "Fixed";
+        return t("annotation.fixed");
       case "updated":
-        return "Updated";
+        return t("annotation.updated");
       case "submitted":
-        return "Submitted";
+        return t("annotation.submitted");
       case "prediction":
-        return "From prediction";
+        return t("annotation.fromPrediction");
       case "imported":
-        return "Imported";
+        return t("annotation.imported");
       case "skipped":
-        return "Skipped";
+        return t("annotation.skipped");
       case "draft_created":
-        return "Draft";
+        return t("annotation.draft");
       case "deleted_review":
-        return "Review deleted";
+        return t("annotation.reviewDeleted");
       case "propagated_annotation":
-        return "Propagated";
+        return t("annotation.propagated");
       default:
         return null;
     }
-  }, []);
+  }, [t, acceptedState]);
 
   const handleClick = useCallback(
     (e) => {
@@ -309,6 +312,7 @@ const HistoryComment: FC<{
   reason: string | null;
   comment: string;
 }> = ({ reason, comment }) => {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [collapsible, setCollapsible] = useState(false);
   const commentRef = useRef();
@@ -339,7 +343,7 @@ const HistoryComment: FC<{
             setCollapsed((v) => !v);
           }}
         >
-          {collapsed ? "Show more" : "Show less"}
+          {collapsed ? t("annotation.showMore") : t("annotation.showLess")}
         </Elem>
       )}
     </Elem>

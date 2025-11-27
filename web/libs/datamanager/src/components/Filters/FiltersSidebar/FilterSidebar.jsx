@@ -1,4 +1,5 @@
 import { inject } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import { IconChevronLeft } from "@humansignal/icons";
 import { Block, Elem } from "../../../utils/bem";
 import { Button } from "@humansignal/ui";
@@ -16,6 +17,7 @@ const sidebarInjector = inject(({ store }) => {
 });
 
 export const FiltersSidebar = sidebarInjector(({ viewsStore, sidebarEnabled, sidebarVisible }) => {
+  const { t } = useTranslation();
   return sidebarEnabled && sidebarVisible ? (
     <Block name="filters-sidebar">
       <Elem name="header">
@@ -23,12 +25,12 @@ export const FiltersSidebar = sidebarInjector(({ viewsStore, sidebarEnabled, sid
           <Button
             look="string"
             onClick={() => viewsStore.collapseFilters()}
-            tooltip="Unpin filters"
-            aria-label="Unpin filters"
+            tooltip={t("dataManager.unpinFilters")}
+            aria-label={t("dataManager.unpinFilters")}
           >
             <IconChevronLeft width={24} height={24} />
           </Button>
-          <Elem name="title">Filters</Elem>
+          <Elem name="title">{t("dataManager.filters")}</Elem>
         </Elem>
         <Filters sidebar={true} />
       </Elem>

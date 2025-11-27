@@ -5,6 +5,7 @@ import "./Config.scss";
 import { EMPTY_CONFIG } from "./Template";
 import { API_CONFIG } from "../../../config/ApiConfig";
 import { useAPI } from "../../../providers/ApiProvider";
+import { useTranslation } from "react-i18next";
 
 const configClass = cn("configure");
 
@@ -133,9 +134,10 @@ export const Preview = ({ config, data, error, loading, project }) => {
     };
   }, []);
 
+  const { t } = useTranslation();
   return (
     <div className={configClass.elem("preview")}>
-      <h3>UI Preview</h3>
+      <h3>{t("labelingConfig.uiPreview")}</h3>
       {error && (
         <div className={configClass.elem("preview-error")}>
           <h2>

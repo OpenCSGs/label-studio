@@ -5,6 +5,7 @@ import { cn } from "../../../utils/bem";
 import "./Config.scss";
 import { IconInfo } from "@humansignal/icons";
 import { Button } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
 
 const listClass = cn("templates-list");
 
@@ -16,6 +17,15 @@ const Arrow = () => (
 );
 
 const TemplatesInGroup = ({ templates, group, onSelectRecipe }) => {
+  const { t } = useTranslation();
+  
+  const translateTitle = (title) => {
+    const translationKey = `labelingConfig.templateTitles.${title}`;
+    const translated = t(translationKey);
+    // If translation returns the key itself, it means translation doesn't exist, return original
+    return translated === translationKey ? title : translated;
+  };
+  
   const picked = templates
     .filter((recipe) => recipe.group === group)
     // templates without `order` go to the end of the list
@@ -26,7 +36,7 @@ const TemplatesInGroup = ({ templates, group, onSelectRecipe }) => {
       {picked.map((recipe) => (
         <li key={recipe.title} onClick={() => onSelectRecipe(recipe)} className={listClass.elem("template")}>
           <img src={recipe.image} alt={""} />
-          <h3>{recipe.title}</h3>
+          <h3>{translateTitle(recipe.title)}</h3>
         </li>
       ))}
     </ul>
@@ -34,9 +44,17 @@ const TemplatesInGroup = ({ templates, group, onSelectRecipe }) => {
 };
 
 export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate, onSelectGroup, onSelectRecipe }) => {
+  const { t } = useTranslation();
   const [groups, setGroups] = React.useState([]);
   const [templates, setTemplates] = React.useState();
   const api = useAPI();
+
+  const translateGroup = (groupName) => {
+    const translationKey = `labelingConfig.templateGroups.${groupName}`;
+    const translated = t(translationKey);
+    // If translation returns the key itself, it means translation doesn't exist, return original
+    return translated === translationKey ? groupName : translated;
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +84,7 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
                 selected: selectedRecipe?.group === group,
               })}
             >
-              {group}
+              {translateGroup(group)}
               <Arrow />
             </li>
           ))}
@@ -78,9 +96,9 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
           size="small"
           onClick={onCustomTemplate}
           className="w-full"
-          aria-label="Create custom template"
+          aria-label={t("labelingConfig.createCustomTemplate")}
         >
-          Custom template
+          {t("labelingConfig.customTemplate")}
         </Button>
       </aside>
       <main>
@@ -90,9 +108,9 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
       <footer className="flex items-center justify-center gap-1">
         <IconInfo className={listClass.elem("info-icon")} width="20" height="20" />
         <span>
-          See the documentation to{" "}
+          {t("labelingConfig.seeDocumentationToContribute")}{" "}
           <a href="https://labelstud.io/guide" target="_blank" rel="noreferrer">
-            contribute a template
+            {t("labelingConfig.contributeTemplate")}
           </a>
           .
         </span>

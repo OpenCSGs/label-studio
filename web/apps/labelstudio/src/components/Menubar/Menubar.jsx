@@ -19,6 +19,7 @@ import {
   IconGithub,
   IconSettings,
   IconSlack,
+  IconGlobe,
 } from "@humansignal/icons";
 import { LSLogo } from "../../assets/images";
 import { Button, Userpic, ThemeToggle } from "@humansignal/ui";
@@ -28,6 +29,7 @@ import {
   useFixedLocation,
 } from "../../providers/RoutesProvider";
 import { useCurrentUser } from "../../providers/CurrentUser";
+import { useAPI } from "../../providers/ApiProvider";
 import { cn } from "../../utils/bem";
 import { absoluteURL, isDefined } from "../../utils/helpers";
 import { Breadcrumbs } from "../Breadcrumbs/Breadcrumbs";
@@ -46,6 +48,7 @@ import { pages } from "@humansignal/app-common";
 import { isFF } from "../../utils/feature-flags";
 import { ff } from "@humansignal/core";
 import { openHotkeyHelp } from "@humansignal/app-common/pages/AccountSettings/sections/Hotkeys/Help";
+import { useTranslation } from "react-i18next";
 
 export const MenubarContext = createContext();
 
@@ -77,8 +80,11 @@ export const Menubar = ({
 }) => {
   const menuDropdownRef = useRef();
   const useMenuRef = useRef();
+  const langMenuRef = useRef();
   const { user, fetch, isInProgress } = useCurrentUser();
   const location = useFixedLocation();
+  const api = useAPI();
+  const { i18n, t } = useTranslation();
 
   const config = useConfig();
   const [sidebarOpened, setSidebarOpened] = useState(defaultOpened ?? false);
@@ -87,6 +93,8 @@ export const Menubar = ({
     Component: null,
     props: {},
   });
+  const [logoUrl, setLogoUrl] = useState(null);
+  const [useDefaultLogo, setUseDefaultLogo] = useState(false);
 
   const menubarClass = cn("menu-header");
   const menubarContext = menubarClass.elem("context");
@@ -94,6 +102,11 @@ export const Menubar = ({
   const contentClass = cn("content-wrapper");
   const contextItem = menubarClass.elem("context-item");
   const showNewsletterDot = !isDefined(user?.allow_newsletters);
+
+  const handleLanguageChange = useCallback((lang) => {
+    i18n.changeLanguage(lang);
+    langMenuRef.current?.close();
+  }, [i18n]);
 
   const sidebarPin = useCallback(
     (e) => {
@@ -153,6 +166,75 @@ export const Menubar = ({
     useMenuRef?.current?.close();
   }, [location]);
 
+  // 设置动态favicon
+  useEffect(() => {
+    const setFavicon = () => {
+      try {
+        // 从Local Storage读取origin
+        const origin = localStorage.getItem('origin');
+
+        if (origin) {
+          // 构建favicon URL
+          const faviconUrl = `${origin}/images/favicon.ico`;
+
+          // 查找现有的favicon link标签
+          let link = document.querySelector("link[rel*='icon']");
+
+          if (!link) {
+            // 如果不存在，创建新的link标签
+            link = document.createElement('link');
+            link.rel = 'shortcut icon';
+            document.head.appendChild(link);
+          }
+
+          // 更新favicon的href
+          link.href = faviconUrl;
+        }
+      } catch (error) {
+        console.error('Error setting favicon:', error);
+      }
+    };
+
+    setFavicon();
+  }, []);
+
+  // 获取动态logo
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        // 从Local Storage读取origin
+        const origin = localStorage.getItem('origin');
+
+        // 使用框架的API调用方式
+        const result = await api.callApi('systemConfig', {
+          suppressError: true,
+        });
+
+        if (result && !result.error) {
+          const data = result.response || result;
+          const logoPath = data?.system_configs?.general_configs?.logo;
+
+          if (logoPath) {
+            // 拼接origin和logo路径
+            const finalLogoUrl = origin ? `${origin}${logoPath}` : logoPath;
+            setLogoUrl(finalLogoUrl);
+            setUseDefaultLogo(false);
+          } else {
+            setUseDefaultLogo(true);
+          }
+        } else {
+          setUseDefaultLogo(true);
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error);
+        // 如果获取失败，使用默认logo
+        setUseDefaultLogo(true);
+      }
+    };
+
+    fetchLogo();
+  }, [api]);
+
   return (
     <div className={contentClass}>
       {enabled && (
@@ -164,10 +246,23 @@ export const Menubar = ({
             <div
               className={`${menubarClass.elem("trigger")} main-menu-trigger`}
             >
-              <LSLogo
-                className={`${menubarClass.elem("logo")}`}
-                alt="Label Studio Logo"
-              />
+              {logoUrl && !useDefaultLogo ? (
+                <img
+                  src={logoUrl}
+                  className={`${menubarClass.elem("logo")}`}
+                  alt="Label Studio Logo"
+                  onError={() => {
+                    // 如果动态logo加载失败，使用默认logo
+                    setUseDefaultLogo(true);
+                    setLogoUrl(null);
+                  }}
+                />
+              ) : (
+                <LSLogo
+                  className={`${menubarClass.elem("logo")}`}
+                  alt="Label Studio Logo"
+                />
+              )}
               {/* <span>数据标注</span> */}
               <Hamburger opened={sidebarOpened} />
             </div>
@@ -183,7 +278,7 @@ export const Menubar = ({
               <Button
                 variant="neutral"
                 look="outlined"
-                tooltip="Keyboard Shortcuts"
+                tooltip={t("menu.keyboardShortcuts")}
                 data-testid="hotkeys-button"
                 size="small"
                 onClick={() => {
@@ -201,6 +296,35 @@ export const Menubar = ({
                 icon={<IconHotkeys />}
               />
             </div>
+            <Dropdown.Trigger
+              ref={langMenuRef}
+              align="right"
+              content={
+                <Menu>
+                  <Menu.Item
+                    label={t("menu.english")}
+                    onClick={() => handleLanguageChange("en")}
+                    active={i18n.language === "en" || i18n.language.startsWith("en")}
+                  />
+                  <Menu.Item
+                    label={t("menu.chinese")}
+                    onClick={() => handleLanguageChange("zh")}
+                    active={i18n.language === "zh" || i18n.language.startsWith("zh")}
+                  />
+                </Menu>
+              }
+            >
+              <div className={menubarClass.elem("hotkeys-button")}>
+                <Button
+                  variant="neutral"
+                  look="outlined"
+                  tooltip={t("menu.switchLanguage")}
+                  data-testid="language-button"
+                  size="small"
+                  icon={<IconGlobe />}
+                />
+              </div>
+            </Dropdown.Trigger>
           </div>
 
           {/* {ff.isActive(ff.FF_THEME_TOGGLE) && <ThemeToggle />} */}
@@ -274,7 +398,7 @@ export const Menubar = ({
               <Menu>
                 {isFF(FF_HOMEPAGE) && (
                   <Menu.Item
-                    label="Home"
+                    label={t("menu.home")}
                     to="/"
                     icon={<IconHome />}
                     data-external
@@ -282,14 +406,14 @@ export const Menubar = ({
                   />
                 )}
                 <Menu.Item
-                  label="Projects"
+                  label={t("menu.projects")}
                   to="/projects"
                   icon={<IconFolder />}
                   data-external
                   exact
                 />
                 <Menu.Item
-                  label="Organization"
+                  label={t("menu.organization")}
                   to="/organization"
                   icon={<IconPersonInCircle />}
                   data-external
@@ -332,7 +456,7 @@ export const Menubar = ({
                   onClick={sidebarPin}
                   active={sidebarPinned}
                 >
-                  {sidebarPinned ? "Unpin menu" : "Pin menu"}
+                  {sidebarPinned ? t("menu.unpinMenu") : t("menu.pinMenu")}
                 </Menu.Item>
               </Menu>
             </Dropdown>

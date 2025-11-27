@@ -11,9 +11,11 @@ import { MachineLearningList } from "./MachineLearningList";
 import { CustomBackendForm } from "./Forms";
 import { TestRequest } from "./TestRequest";
 import { StartModelTraining } from "./StartModelTraining";
+import { useTranslation } from "react-i18next";
 import "./MachineLearningSettings.scss";
 
 export const MachineLearningSettings = () => {
+  const { t } = useTranslation();
   const api = useAPI();
   const { project, fetchProject } = useContext(ProjectContext);
   const [backends, setBackends] = useState([]);
@@ -132,22 +134,21 @@ export const MachineLearningSettings = () => {
         {backends.length > 0 && (
           <div className="my-wide">
             <Typography size="small" className="text-neutral-content-subtler">
-              A connected model has been detected! If you wish to fetch predictions from this model, please follow these
-              steps:
+              {t("machineLearning.connectedModelDetected")}
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler mt-base">
-              1. Navigate to the <i>Data Manager</i>.
+              {t("machineLearning.navigateToDataManager")}
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler mt-tighter">
-              2. Select the desired tasks.
+              {t("machineLearning.selectDesiredTasks")}
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler mt-tighter">
-              3. Click on <i>Batch predictions</i> from the <i>Actions</i> menu.
+              {t("machineLearning.clickBatchPredictions")}
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler mt-base">
-              If you want to use the model predictions for prelabeling, please configure this in the{" "}
+              {t("machineLearning.useModelPredictionsForPrelabeling")}{" "}
               <NavLink to="annotation" className="hover:underline">
-                Annotation settings
+                {t("machineLearning.annotationSettings")}
               </NavLink>
               .
             </Typography>

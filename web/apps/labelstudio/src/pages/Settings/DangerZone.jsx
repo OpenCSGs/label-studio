@@ -7,8 +7,10 @@ import { Spinner } from "../../components/Spinner/Spinner";
 import { useAPI } from "../../providers/ApiProvider";
 import { useProject } from "../../providers/ProjectProvider";
 import { cn } from "../../utils/bem";
+import { useTranslation } from "react-i18next";
 
 export const DangerZone = () => {
+  const { t } = useTranslation();
   const { project } = useProject();
   const api = useAPI();
   const history = useHistory();
@@ -16,9 +18,9 @@ export const DangerZone = () => {
 
   const handleOnClick = (type) => () => {
     confirm({
-      title: "Action confirmation",
-      body: "You're about to delete all things. This action cannot be undone.",
-      okText: "Proceed",
+      title: t("settings.actionConfirmation"),
+      body: t("settings.deleteAllThings"),
+      okText: t("settings.proceed"),
       buttonLook: "negative",
       onOk: async () => {
         setProcessing(type);
@@ -58,44 +60,41 @@ export const DangerZone = () => {
       {
         type: "annotations",
         disabled: true, //&& !project.total_annotations_number,
-        label: `Delete ${project.total_annotations_number} Annotations`,
+        label: t("settings.deleteAnnotations", { count: project.total_annotations_number }),
       },
       {
         type: "tasks",
         disabled: true, //&& !project.task_number,
-        label: `Delete ${project.task_number} Tasks`,
+        label: t("settings.deleteTasks", { count: project.task_number }),
       },
       {
         type: "predictions",
         disabled: true, //&& !project.total_predictions_number,
-        label: `Delete ${project.total_predictions_number} Predictions`,
+        label: t("settings.deletePredictions", { count: project.total_predictions_number }),
       },
       {
         type: "reset_cache",
-        help:
-          "Reset Cache may help in cases like if you are unable to modify the labeling configuration due " +
-          "to validation errors concerning existing labels, but you are confident that the labels don't exist. You can " +
-          "use this action to reset the cache and try again.",
-        label: "Reset Cache",
+        help: t("settings.resetCacheHelp"),
+        label: t("settings.resetCache"),
       },
       {
         type: "tabs",
-        help: "If the Data Manager is not loading, dropping all Data Manager tabs can help.",
-        label: "Drop All Tabs",
+        help: t("settings.dropAllTabsHelp"),
+        label: t("settings.dropAllTabs"),
       },
       {
         type: "project",
-        help: "Deleting a project removes all tasks, annotations, and project data from the database.",
-        label: "Delete Project",
+        help: t("settings.deleteProjectHelp"),
+        label: t("settings.deleteProject"),
       },
     ],
-    [project],
+    [project, t],
   );
 
   return (
     <div className={cn("simple-settings")}>
-      <h1>Danger Zone</h1>
-      <Label description="Perform these actions at your own risk. Actions you take on this page can't be reverted. Make sure your data is backed up." />
+      <h1>{t("settings.dangerZone")}</h1>
+      <Label description={t("settings.dangerZoneDescription")} />
 
       {project.id ? (
         <div style={{ marginTop: 16 }}>

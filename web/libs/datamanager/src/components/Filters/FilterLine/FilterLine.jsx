@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import { BemWithSpecifiContext } from "../../../utils/bem";
 import { Button } from "@humansignal/ui";
 import { IconClose } from "@humansignal/icons";
@@ -12,11 +13,12 @@ import { Icon } from "../../Common/Icon/Icon";
 const { Block, Elem } = BemWithSpecifiContext();
 
 const Conjunction = observer(({ index, view }) => {
+  const { t } = useTranslation();
   return (
     <FilterDropdown
       items={[
-        { value: "and", label: "And" },
-        { value: "or", label: "Or" },
+        { value: "and", label: t("dataManager.and") },
+        { value: "or", label: t("dataManager.or") },
       ]}
       disabled={index > 1}
       value={view.conjunction}
@@ -31,19 +33,20 @@ const GroupWrapper = ({ children, wrap = false }) => {
 };
 
 export const FilterLine = observer(({ filter, availableFilters, index, view, sidebar, dropdownClassName }) => {
+  const { t } = useTranslation();
   return (
     <Block name="filter-line" tag={Fragment}>
       <GroupWrapper wrap={sidebar}>
         <Elem name="column" mix="conjunction">
           {index === 0 ? (
-            <span style={{ fontSize: 12, paddingRight: 5 }}>Where</span>
+            <span style={{ fontSize: 12, paddingRight: 5 }}>{t("dataManager.where")}</span>
           ) : (
             <Conjunction index={index} view={view} />
           )}
         </Elem>
         <Elem name="column" mix="field">
           <FilterDropdown
-            placeholder="Column"
+            placeholder={t("dataManager.column")}
             defaultValue={filter.filter.id}
             items={availableFilters}
             width={80}

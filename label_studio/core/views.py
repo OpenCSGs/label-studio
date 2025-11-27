@@ -275,3 +275,30 @@ def feature_flags(request):
 def collect_metrics(request):
     """Lightweight endpoint to collect usage metrics from the frontend only when COLLECT_ANALYTICS is enabled"""
     return HttpResponse(status=204)
+
+
+@csrf_exempt
+@require_http_methods(['GET'])
+def system_config(request):
+    """Proxy endpoint to fetch system config from external API"""
+    try:
+        # 调用外部API
+        response = requests.get(
+            'https://opencsg-stg.com/internal_api/system_config'
+        )
+        response.raise_for_status()
+        
+        # 返回JSON响应
+        return JsonResponse(response.json(), safe=False)
+    except requests.exceptions.RequestException as e:
+        logger.error(f'Error fetching system config: {e}')
+        return JsonResponse(
+            {'error': 'Failed to fetch system config', 'detail': str(e)},
+            status=500
+        )
+    except Exception as e:
+        logger.error(f'Unexpected error in system_config: {e}')
+        return JsonResponse(
+            {'error': 'Internal server error', 'detail': str(e)},
+            status=500
+        )

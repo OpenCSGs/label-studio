@@ -5,6 +5,7 @@ import { render } from "react-dom";
 import { Router } from "react-router-dom";
 import { LEAVE_BLOCKER_KEY, leaveBlockerCallback } from "../components/LeaveBlocker/LeaveBlocker";
 import { initSentry } from "../config/Sentry";
+import "../config/i18n"; // 初始化i18n
 import { ApiProvider, useAPI } from "../providers/ApiProvider";
 import { AppStoreProvider } from "../providers/AppStoreProvider";
 import { ConfigProvider } from "../providers/ConfigProvider";

@@ -73,6 +73,7 @@ urlpatterns = [
     re_path(r'data/local-files/', views.localfiles_data, name='localfiles_data'),
     re_path(r'version/', views.version_page, name='version'),  # html page
     re_path(r'api/version/', views.version_page, name='api-version'),  # json response
+    re_path(r'api/system-config/', views.system_config, name='system-config'),  # system config proxy
     re_path(r'health/', views.health, name='health'),
     re_path(r'metrics/', views.metrics, name='metrics'),
     re_path(r'trigger500/', views.TriggerAPIError.as_view(), name='metrics'),

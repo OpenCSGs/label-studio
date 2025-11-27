@@ -7,6 +7,7 @@ import { modal } from "../../Common/Modal/Modal";
 import { Icon } from "../../Common/Icon/Icon";
 import { Tooltip } from "@humansignal/ui";
 import { ImagePreview } from "./ImagePreview";
+import { useTranslation } from "react-i18next";
 
 import styles from "./GridPreview.module.scss";
 
@@ -34,6 +35,7 @@ export const GridViewContext = createContext<GridViewContextType>({
 });
 
 const TaskModal = observer(({ view, tasks, imageField, currentTaskId, setCurrentTaskId }: TaskModalProps) => {
+  const { t } = useTranslation();
   const index = tasks.findIndex((task) => task.id === currentTaskId);
   const task = tasks[index];
 
@@ -89,11 +91,11 @@ const TaskModal = observer(({ view, tasks, imageField, currentTaskId, setCurrent
 
   const tooltip = (
     <div className={styles.tooltip}>
-      <p>Preview of the task image to quickly navigate through the tasks and select the ones you want to work on.</p>
-      <p>Use [arrow keys] to navigate.</p>
-      <p>[Escape] to close the modal.</p>
-      <p>[Space] to select/unselect the task.</p>
-      <p>Use [scroll] to zoom in/out and [drag] to pan around while image is zoomed in.</p>
+      <p>{t("dataManager.previewTaskImage")}</p>
+      <p>{t("dataManager.useArrowKeys")}</p>
+      <p>{t("dataManager.escapeToClose")}</p>
+      <p>{t("dataManager.spaceToSelect")}</p>
+      <p>{t("dataManager.scrollToZoom")}</p>
     </div>
   );
 
@@ -101,7 +103,7 @@ const TaskModal = observer(({ view, tasks, imageField, currentTaskId, setCurrent
     <div className={styles.modal}>
       <div className={styles.header}>
         <Checkbox checked={view.selected.isSelected(task.id)} onChange={onSelect}>
-          Task {task.id}
+          {t("dataManager.task")} {task.id}
         </Checkbox>
         <div className={styles.actions}>
           <Tooltip title={tooltip}>
@@ -144,6 +146,7 @@ type GridViewProviderProps = PropsWithChildren<{
 }>;
 
 export const GridViewProvider: React.FC<GridViewProviderProps> = ({ children, data, view, fields }) => {
+  const { t } = useTranslation();
   const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const modalRef = useRef<{ update: (props: object) => void; close: () => void } | null>(null);
   const imageField = fields.find((f) => f.currentType === "Image")?.alias;
@@ -176,7 +179,7 @@ export const GridViewProvider: React.FC<GridViewProviderProps> = ({ children, da
     if (!modalRef.current) {
       modalRef.current = modal({
         bare: true,
-        title: "Task Preview",
+        title: t("dataManager.taskPreview"),
         style: { width: 800 },
         children,
         onHidden: onClose,
@@ -184,7 +187,7 @@ export const GridViewProvider: React.FC<GridViewProviderProps> = ({ children, da
     } else {
       modalRef.current.update({ children });
     }
-  }, [currentTaskId, data, onClose]);
+  }, [currentTaskId, data, onClose, t, imageField, view, hasImage]);
 
   // close the modal when we leave the view (by browser controls or by hotkeys)
   useEffect(() => () => modalRef.current?.close(), []);

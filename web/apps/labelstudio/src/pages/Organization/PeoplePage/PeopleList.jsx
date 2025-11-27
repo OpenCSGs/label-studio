@@ -8,8 +8,10 @@ import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import "./PeopleList.scss";
 import { CopyableTooltip } from "../../../components/CopyableTooltip/CopyableTooltip";
+import { useTranslation } from "react-i18next";
 
 export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
+  const { t } = useTranslation();
   const api = useAPI();
   const [usersList, setUsersList] = useState();
   const [currentPage] = usePage("page", 1);
@@ -66,13 +68,13 @@ export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
               <Elem name="header">
                 <Elem name="column" mix="avatar" />
                 <Elem name="column" mix="email">
-                  Email
+                  {t("organization.email")}
                 </Elem>
                 <Elem name="column" mix="name">
-                  Name
+                  {t("organization.name")}
                 </Elem>
                 <Elem name="column" mix="last-activity">
-                  Last Activity
+                  {t("organization.lastActivity")}
                 </Elem>
               </Elem>
               <Elem name="body">
@@ -82,7 +84,7 @@ export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
                   return (
                     <Elem key={`user-${user.id}`} name="user" mod={{ active }} onClick={() => selectUser(user)}>
                       <Elem name="field" mix="avatar">
-                        <CopyableTooltip title={`User ID: ${user.id}`} textForCopy={user.id}>
+                        <CopyableTooltip title={`${t("organization.userId")}: ${user.id}`} textForCopy={user.id}>
                           <Userpic user={user} style={{ width: 28, height: 28 }} />
                         </CopyableTooltip>
                       </Elem>
@@ -90,7 +92,7 @@ export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
                         {user.email}
                       </Elem>
                       <Elem name="field" mix="name">
-                        {user.first_name} {user.last_name}
+                        {user.user_name}
                       </Elem>
                       <Elem name="field" mix="last-activity">
                         {formatDistance(new Date(user.last_activity), new Date(), { addSuffix: true })}

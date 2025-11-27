@@ -1,6 +1,47 @@
 {% extends 'users/user_base.html' %}
 
 {% block user_content %}
+  <script nonce="{{request.csp_nonce}}">
+    // 国际化支持
+    (function() {
+      const language = '{{ language|default:"en" }}';
+      const translations = {
+        en: {
+          email: "Email",
+          password: "Password",
+          keepLoggedIn: "Keep me logged in this browser",
+          submit: "Log in"
+        },
+        zh: {
+          email: "邮箱",
+          password: "密码",
+          keepLoggedIn: "在此浏览器中保持登录状态",
+          submit: "登录"
+        }
+      };
+      
+      const t = translations[language] || translations.en;
+      
+      // 更新页面文本
+      const emailInput = document.querySelector('input[name="email"]');
+      if (emailInput) emailInput.setAttribute('placeholder', t.email);
+      
+      const passwordInput = document.querySelector('input[name="password"]');
+      if (passwordInput) passwordInput.setAttribute('placeholder', t.password);
+      
+      const keepLoggedInLabel = document.querySelector('label[for="persist_session"]');
+      if (keepLoggedInLabel) keepLoggedInLabel.textContent = t.keepLoggedIn;
+      
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.textContent = t.submit;
+        submitButton.setAttribute('aria-label', t.submit);
+      }
+      
+      // 保存语言到sessionStorage
+      sessionStorage.setItem('language', language);
+    })();
+  </script>
   <form id="login-form" action="{% url 'user-login' %}?next={{ next }}" method="post">
     {% csrf_token %}
     <p><input type="text" class="lsf-input-ls" name="email" id="email" placeholder="Email" value="{{ form.data.email }}"></p>
@@ -18,5 +59,28 @@
     </p>
     <p><button type="submit" aria-label="Log In" class="lsf-button-ls lsf-button-ls_look_primary">Log in</button></p>
   </form>
+
+  {% if origin %}
+  <script nonce="{{request.csp_nonce}}">
+    // 将origin写入Local Storage
+    (function() {
+      if (typeof(Storage) !== "undefined") {
+        try {
+          localStorage.setItem('origin', '{{ origin }}');
+          console.log('Origin saved to Local Storage:', '{{ origin }}');
+          // 从URL中移除origin参数，避免在地址栏中显示，防止用户修改URL参数导致Local Storage被覆盖
+          var urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.has('origin')) {
+            urlParams.delete('origin');
+            var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '') + window.location.hash;
+            window.history.replaceState({}, '', newUrl);
+          }
+        } catch (e) {
+          console.error('Error saving origin to Local Storage:', e);
+        }
+      }
+    })();
+  </script>
+  {% endif %}
 
 {% endblock %}

@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 import { useCallback, useMemo, useState, type FC } from "react";
+import { useTranslation } from "react-i18next";
 import { useCopyText } from "@humansignal/core/lib/hooks/useCopyText";
 import { IconLink, IconEllipsis } from "@humansignal/icons";
 import { Button, ToastType, useToast } from "@humansignal/ui";
@@ -7,6 +8,7 @@ import { ContextMenu, type ContextMenuAction, ContextMenuTrigger, type MenuActio
 import { cn } from "../../../utils/bem";
 
 export const RegionContextMenu: FC<{ item: any }> = observer(({ item }: { item: any }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const regionLink = useMemo(() => {
     const url = new URL(window.location.href);
@@ -26,22 +28,22 @@ export const RegionContextMenu: FC<{ item: any }> = observer(({ item }: { item: 
       copyLink();
       ctx.dropdown?.close();
       toast.show({
-        message: "Region link copied to clipboard",
+        message: t("annotation.regionLinkCopiedToClipboard"),
         type: ToastType.info,
       });
     },
-    [copyLink],
+    [copyLink, t],
   );
 
   const actions = useMemo<ContextMenuAction[]>(
     () => [
       {
-        label: "Copy Region Link",
+        label: t("annotation.copyRegionLink"),
         onClick: onCopyLink,
         icon: <IconLink />,
       },
     ],
-    [onCopyLink],
+    [onCopyLink, t],
   );
 
   return (
@@ -54,7 +56,7 @@ export const RegionContextMenu: FC<{ item: any }> = observer(({ item }: { item: 
         look="string"
         size="smaller"
         style={{ ...(open ? { display: "flex !important" } : null) }}
-        aria-label="Region options"
+        aria-label={t("annotation.regionOptions")}
       >
         <IconEllipsis />
       </Button>

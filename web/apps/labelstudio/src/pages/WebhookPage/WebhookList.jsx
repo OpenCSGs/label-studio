@@ -6,8 +6,10 @@ import "./WebhookPage.scss";
 import { format } from "date-fns";
 import { useAPI } from "../../providers/ApiProvider";
 import { WebhookDeleteModal } from "./WebhookDeleteModal";
+import { useTranslation } from "react-i18next";
 
 const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) => {
+  const { t } = useTranslation();
   const api = useAPI();
 
   if (webhooks === null) return <></>;
@@ -28,10 +30,10 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
 
   return (
     <Block name="webhook">
-      <h1>Webhooks</h1>
+      <h1>{t("webhooks.title")}</h1>
       <Elem name="controls">
-        <Button onClick={onAddWebhook} aria-label="Add webhook">
-          Add Webhook
+        <Button onClick={onAddWebhook} aria-label={t("webhooks.addWebhookAria")}>
+          {t("webhooks.addWebhook")}
         </Button>
       </Elem>
       <Elem>
@@ -48,16 +50,16 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
                       {obj.url}
                     </Elem>
                   </Elem>
-                  <Elem name="item-date">Created {format(new Date(obj.created_at), "dd MMM yyyy, HH:mm")}</Elem>
+                  <Elem name="item-date">{t("webhooks.created")} {format(new Date(obj.created_at), "dd MMM yyyy, HH:mm")}</Elem>
                 </Elem>
                 <Elem name="item-control">
                   <Button
                     look="outlined"
                     onClick={() => onSelectActive(obj.id)}
                     icon={<IconPencil />}
-                    aria-label="Edit webhook"
+                    aria-label={t("webhooks.editWebhook")}
                   >
-                    Edit
+                    {t("webhooks.edit")}
                   </Button>
                   <Button
                     onClick={() =>
@@ -72,7 +74,7 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
                     look="outlined"
                     icon={<IconCross />}
                   >
-                    Delete
+                    {t("webhooks.delete")}
                   </Button>
                 </Elem>
               </Elem>

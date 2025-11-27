@@ -1,5 +1,6 @@
 import { inject, observer } from "mobx-react";
 import type { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Block, Elem } from "../../../utils/bem";
 import { Comments as CommentsComponent } from "../../Comments/Comments";
 import { AnnotationHistory } from "../../CurrentEntity/AnnotationHistory";
@@ -21,10 +22,11 @@ interface DetailsPanelProps extends PanelProps {
 }
 
 const DetailsPanelComponent: FC<DetailsPanelProps> = ({ currentEntity, regions, ...props }) => {
+  const { t } = useTranslation();
   const selectedRegions = regions.selection;
 
   return (
-    <PanelBase {...props} currentEntity={currentEntity} name="details" title="Details">
+    <PanelBase {...props} currentEntity={currentEntity} name="details" title={t("annotation.details")}>
       <Content selection={selectedRegions} currentEntity={currentEntity} />
     </PanelBase>
   );
@@ -68,6 +70,7 @@ const CommentsTab: FC<any> = inject("store")(
 
 const RelationsTab: FC<any> = inject("store")(
   observer(function RelationsTab({ currentEntity }: any): JSX.Element {
+    const { t } = useTranslation();
     const { relationStore } = currentEntity;
     const hasRelations = relationStore.size > 0;
 
@@ -78,7 +81,7 @@ const RelationsTab: FC<any> = inject("store")(
             {hasRelations ? (
               <>
                 <Elem name="view-control">
-                  <Elem name="section-head">Relations ({relationStore.size})</Elem>
+                  <Elem name="section-head">{t("annotation.relations", { count: relationStore.size })}</Elem>
                   <RelationsControls relationStore={relationStore} />
                 </Elem>
                 <Elem name="section-content">
@@ -88,11 +91,11 @@ const RelationsTab: FC<any> = inject("store")(
             ) : (
               <EmptyState
                 icon={<IconRelationLink width={24} height={24} />}
-                header="Create relations between regions"
-                description={<>Link regions to define relationships between them</>}
+                header={t("annotation.createRelationsBetweenRegions")}
+                description={<>{t("annotation.linkRegionsToDefineRelationships")}</>}
                 learnMore={{
                   href: getDocsUrl("guide/labeling#Add-relations-between-annotations"),
-                  text: "Learn more",
+                  text: t("annotation.learnMore"),
                   testId: "relations-panel-learn-more",
                 }}
               />
@@ -106,6 +109,7 @@ const RelationsTab: FC<any> = inject("store")(
 
 const HistoryTab: FC<any> = inject("store")(
   observer(function HistoryTab({ store, currentEntity }: any): JSX.Element {
+    const { t } = useTranslation();
     const showAnnotationHistory = store.hasInterface("annotations:history");
 
     return (
@@ -117,7 +121,7 @@ const HistoryTab: FC<any> = inject("store")(
               enabled={showAnnotationHistory}
               sectionHeader={
                 <>
-                  Annotation History
+                  {t("annotation.annotationHistory")}
                   <span>#{currentEntity.pk ?? currentEntity.id}</span>
                 </>
               }
@@ -131,6 +135,7 @@ const HistoryTab: FC<any> = inject("store")(
 
 const InfoTab: FC<any> = inject("store")(
   observer(function InfoTab({ selection }: any): JSX.Element {
+    const { t } = useTranslation();
     const nothingSelected = !selection || selection.size === 0;
     return (
       <>
@@ -139,8 +144,8 @@ const InfoTab: FC<any> = inject("store")(
             {nothingSelected ? (
               <EmptyState
                 icon={<IconCursor width={24} height={24} />}
-                header="View region details"
-                description={<>Select a region to view its properties, metadata and available actions</>}
+                header={t("annotation.viewRegionDetails")}
+                description={<>{t("annotation.selectRegionToViewDetails")}</>}
               />
             ) : (
               <>
@@ -156,6 +161,7 @@ const InfoTab: FC<any> = inject("store")(
 
 const GeneralPanel: FC<any> = inject("store")(
   observer(function GeneralPanel({ store, currentEntity }: any): JSX.Element {
+    const { t } = useTranslation();
     const { relationStore } = currentEntity;
     const showAnnotationHistory = store.hasInterface("annotations:history");
     return (
@@ -166,7 +172,7 @@ const GeneralPanel: FC<any> = inject("store")(
             enabled={showAnnotationHistory}
             sectionHeader={
               <>
-                Annotation History
+                {t("annotation.annotationHistory")}
                 <span>#{currentEntity.pk ?? currentEntity.id}</span>
               </>
             }
@@ -174,7 +180,7 @@ const GeneralPanel: FC<any> = inject("store")(
         </Elem>
         <Elem name="section">
           <Elem name="view-control">
-            <Elem name="section-head">Relations ({relationStore.size})</Elem>
+            <Elem name="section-head">{t("annotation.relations", { count: relationStore.size })}</Elem>
             <RelationsControls relationStore={relationStore} />
           </Elem>
           <Elem name="section-content">
@@ -183,7 +189,7 @@ const GeneralPanel: FC<any> = inject("store")(
         </Elem>
         {store.hasInterface("annotations:comments") && store.commentStore.isCommentable && (
           <Elem name="section">
-            <Elem name="section-head">Comments</Elem>
+            <Elem name="section-head">{t("annotation.comments")}</Elem>
             <Elem name="section-content">
               <CommentsComponent
                 annotationStore={store.annotationStore}

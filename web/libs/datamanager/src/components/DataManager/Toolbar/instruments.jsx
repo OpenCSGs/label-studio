@@ -16,6 +16,7 @@ import { LoadingPossum } from "./LoadingPossum";
 import { OrderButton } from "./OrderButton";
 import { RefreshButton } from "./RefreshButton";
 import { ViewToggle } from "./ViewToggle";
+import { useTranslation } from "react-i18next";
 
 const style = {
   minWidth: "80px",
@@ -27,6 +28,7 @@ const style = {
  * If expired it renders disabled Import button with a tooltip.
  */
 const ImportButtonWithChecks = ({ size }) => {
+  const { t } = useTranslation();
   const [showImportButton, setShowImportButton] = useState(true);
   const [isDelayed, setIsDelayed] = useState(true);
 
@@ -50,7 +52,7 @@ const ImportButtonWithChecks = ({ size }) => {
   // 如果条件不满足显示按钮，直接返回null
   if (!showImportButton) return null;
 
-  const simpleButton = <ImportButton size={size}>Import</ImportButton>;
+  const simpleButton = <ImportButton size={size}>{t("dataManager.import")}</ImportButton>;
   const isOpenSource = !window.APP_SETTINGS.billing;
   // Check if user is self-serve; Enterprise flag === false is the main condition
   const isSelfServe = isFF(FF_SELF_SERVE) && window.APP_SETTINGS.billing?.enterprise === false;
@@ -74,7 +76,7 @@ const ImportButtonWithChecks = ({ size }) => {
   // Disabled buttons ignore hover, so we use wrapper to properly handle a tooltip
   return (
     <Tooltip
-      title="You must upgrade your plan to import data"
+      title={t("dataManager.upgradeToImport")}
       style={{
         maxWidth: 200,
         textAlign: "center",
@@ -82,7 +84,7 @@ const ImportButtonWithChecks = ({ size }) => {
     >
       <Block name="button-wrapper">
         <ImportButton disabled size={size}>
-          Import
+          {t("dataManager.import")}
         </ImportButton>
       </Block>
     </Tooltip>
@@ -95,6 +97,7 @@ export const instruments = {
     return <ViewToggle size={size} style={style} />;
   },
   columns: ({ size }) => {
+    const { t } = useTranslation();
     const iconProps = {
       style: {
         marginRight: 4,
@@ -105,7 +108,7 @@ export const instruments = {
       <FieldsButton
         wrapper={FieldsButton.Checkbox}
         trailingIcon={<Icon {...iconProps} />}
-        title={"Columns"}
+        title={t("dataManager.columns")}
         size={size}
         style={style}
         openUpwardForShortViewport={false}
@@ -144,9 +147,10 @@ export const instruments = {
     );
   },
   "export-button": ({ size }) => {
+    const { t } = useTranslation();
     return (
       <Interface name="export">
-        <ExportButton size={size}>Export</ExportButton>
+        <ExportButton size={size}>{t("dataManager.export")}</ExportButton>
       </Interface>
     );
   },

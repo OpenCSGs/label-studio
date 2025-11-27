@@ -9,20 +9,75 @@
       const ls_gaclient_id = sessionStorage.getItem('ls_gaclient_id');
       __lsa('users.login.view', { ls_gaclient_id });
     }, 2000);
+    
+    // 国际化支持
+    (function() {
+      const language = '{{ language|default:"en" }}';
+      const translations = {
+        en: {
+          title: "Log in",
+          email: "Email Address",
+          password: "Password",
+          keepLoggedIn: "Keep me logged in this browser",
+          submit: "Log in",
+          noAccount: "Don't have an account?",
+          signUp: "Sign up"
+        },
+        zh: {
+          title: "登录",
+          email: "邮箱地址",
+          password: "密码",
+          keepLoggedIn: "在此浏览器中保持登录状态",
+          submit: "登录",
+          noAccount: "没有账号？",
+          signUp: "注册"
+        }
+      };
+      
+      const t = translations[language] || translations.en;
+      
+      // 更新页面文本
+      const titleEl = document.querySelector('.form-wrapper h2');
+      if (titleEl) titleEl.textContent = t.title;
+      
+      const emailLabel = document.querySelector('.input-wrapper label[for="email"], .input-wrapper:first-child label');
+      if (emailLabel) emailLabel.textContent = t.email;
+      
+      const passwordLabel = document.querySelector('.input-wrapper label[for="password"], .input-wrapper:nth-child(2) label');
+      if (passwordLabel) passwordLabel.textContent = t.password;
+      
+      const keepLoggedInLabel = document.querySelector('label[for="persist_session"]');
+      if (keepLoggedInLabel) keepLoggedInLabel.textContent = t.keepLoggedIn;
+      
+      const submitButton = document.querySelector('.login-button, button[type="submit"]');
+      if (submitButton) {
+        submitButton.textContent = t.submit;
+        submitButton.setAttribute('aria-label', t.submit);
+      }
+      
+      const noAccountText = document.querySelector('.text-wrapper p');
+      if (noAccountText) noAccountText.textContent = t.noAccount;
+      
+      const signUpLink = document.querySelector('.text-wrapper a');
+      if (signUpLink) signUpLink.textContent = t.signUp;
+      
+      // 保存语言到sessionStorage
+      sessionStorage.setItem('language', language);
+    })();
   </script>
 {% endblock %}
 
 {% block user_content %}
   <div class="form-wrapper">
-    <h2>Log in</h2>
+    <h2 data-i18n="login.title">Log in</h2>
     <form id="login-form" action="{% url 'user-login' %}?next={{ next }}" method="post">
       {% csrf_token %}
       <div class="input-wrapper">
-        <label>Email Address</label>
+        <label data-i18n="login.email">Email Address</label>
         <input type="text" class="lsf-input-ls" name="email" id="email" value="{{ form.data.email }}">
       </div>
       <div class="input-wrapper">
-        <label>Password</label>
+        <label data-i18n="login.password">Password</label>
         <input type="password" class="lsf-input-ls" name="password" id="password">
       </div>
       {% if form.non_field_errors %}
@@ -34,15 +89,15 @@
       {% endif %}
       <div class="form-group">
         <input type="checkbox" id="persist_session" name="persist_session" class="lsf-checkbox-ls" checked="checked" style="width: auto;" />
-        <label for="persist_session">Keep me logged in this browser</label>
+        <label for="persist_session" data-i18n="login.keepLoggedIn">Keep me logged in this browser</label>
       </div>
-      <button type="submit" aria-label="Log In" class="login-button">Log in</button>
+      <button type="submit" aria-label="Log In" class="login-button" data-i18n="login.submit">Log in</button>
     </form>
   </div>
   {% if not settings.DISABLE_SIGNUP_WITHOUT_LINK %}
   <div class="text-wrapper">
-    <p class="">Don't have an account?</p>
-    <a href="{% url 'user-signup' %}{% querystring %}">Sign up</a>
+    <p class="" data-i18n="login.noAccount">Don't have an account?</p>
+    <a href="{% url 'user-signup' %}{% querystring %}" data-i18n="login.signUp">Sign up</a>
   </div>
   {% endif %}
 {% endblock %}

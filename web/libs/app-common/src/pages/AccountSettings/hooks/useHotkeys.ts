@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { ToastType, useToast } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
 import { useAPI } from "apps/labelstudio/src/providers/ApiProvider";
 // @ts-ignore
 import { confirm } from "apps/labelstudio/src/components/Modal/Modal";
@@ -13,15 +14,19 @@ import {
   type ApiResponse,
 } from "../sections/Hotkeys/utils";
 
-// Type the imported defaults and convert numeric ids to strings
-const typedDefaultHotkeys: Hotkey[] = getTypedDefaultHotkeys();
+// Get default hotkeys - will be translated when hook is used
+const getDefaultHotkeys = (t?: (key: string) => string): Hotkey[] => getTypedDefaultHotkeys(t);
 
 export const useHotkeys = () => {
+  const { t } = useTranslation();
   const toast = useToast();
   const [hotkeys, setHotkeys] = useState<Hotkey[]>([]);
   const [hotkeySettings, setHotkeySettings] = useState<HotkeySettings>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const api = useAPI();
+  
+  // Get translated default hotkeys
+  const typedDefaultHotkeys = useMemo(() => getDefaultHotkeys(t), [t]);
 
   // Update hotkeys with custom settings
   const updateHotkeysWithCustomSettings = useCallback(
@@ -91,14 +96,14 @@ export const useHotkeys = () => {
       // Show non-blocking error notification
       if (toast) {
         toast.show({
-          message: "Could not load custom hotkeys from server, using cached settings",
+          message: t("hotkeys.couldNotLoadHotkeys"),
           type: ToastType.error,
         });
       }
     } finally {
       setIsLoading(false);
     }
-  }, [api, toast, updateHotkeysWithCustomSettings]);
+  }, [api, toast, updateHotkeysWithCustomSettings, typedDefaultHotkeys, t]);
 
   // Save hotkeys to API function (handles both save and reset operations)
   const saveHotkeysToAPI = useCallback(
@@ -175,9 +180,9 @@ export const useHotkeys = () => {
   // Handle resetting all hotkeys to defaults
   const handleResetToDefaults = useCallback(() => {
     confirm({
-      title: "Reset Hotkeys to Defaults?",
-      body: "Are you sure you want to reset all hotkeys and settings to their default values? This action cannot be undone.",
-      okText: "Reset to Defaults",
+      title: t("hotkeys.resetHotkeysTitle"),
+      body: t("hotkeys.resetHotkeysBody"),
+      okText: t("hotkeys.resetToDefaults"),
       buttonLook: "negative",
       style: { width: 500 },
       onOk: async () => {
@@ -190,7 +195,7 @@ export const useHotkeys = () => {
           if (result.ok) {
             if (toast) {
               toast.show({
-                message: "All hotkeys and settings have been reset to defaults and saved",
+                message: t("hotkeys.resetSuccess"),
                 type: ToastType.info,
               });
             }
@@ -199,16 +204,16 @@ export const useHotkeys = () => {
           } else {
             if (toast) {
               toast.show({
-                message: `Failed to save reset hotkeys: ${result.error || "Unknown error"}`,
+                message: t("hotkeys.resetFailed", { error: result.error || t("hotkeys.unknownError") }),
                 type: ToastType.error,
               });
             }
           }
         } catch (error: unknown) {
           if (toast) {
-            const errorMessage = error instanceof Error ? error.message : "Unknown error";
+            const errorMessage = error instanceof Error ? error.message : t("hotkeys.unknownError");
             toast.show({
-              message: `Error resetting hotkeys: ${errorMessage}`,
+              message: t("hotkeys.resetError", { error: errorMessage }),
               type: ToastType.error,
             });
           }
@@ -217,7 +222,7 @@ export const useHotkeys = () => {
         }
       },
     });
-  }, [saveHotkeysToAPI, toast]);
+  }, [saveHotkeysToAPI, toast, t, typedDefaultHotkeys]);
 
   // Handle exporting hotkeys
   const handleExportHotkeys = useCallback(() => {
@@ -248,9 +253,9 @@ export const useHotkeys = () => {
     URL.revokeObjectURL(url);
 
     if (toast) {
-      toast.show({ message: "Hotkeys exported successfully", type: ToastType.info });
+      toast.show({ message: t("hotkeys.exportSuccess"), type: ToastType.info });
     }
-  }, [hotkeys, hotkeySettings, toast]);
+  }, [hotkeys, hotkeySettings, toast, t]);
 
   // Handle importing hotkeys
   const handleImportHotkeys = useCallback(
@@ -273,27 +278,27 @@ export const useHotkeys = () => {
         setHotkeys(importedHotkeys);
 
         if (toast) {
-          toast.show({ message: "Hotkeys imported successfully", type: ToastType.info });
+          toast.show({ message: t("hotkeys.importSuccess"), type: ToastType.info });
         }
 
         // Reload from API to ensure consistency
         await loadHotkeysFromAPI();
       } catch (error: unknown) {
         if (toast) {
-          const errorMessage = error instanceof Error ? error.message : "Unknown error";
-          toast.show({ message: `Error importing hotkeys: ${errorMessage}`, type: ToastType.error });
+          const errorMessage = error instanceof Error ? error.message : t("hotkeys.unknownError");
+          toast.show({ message: t("hotkeys.importError", { error: errorMessage }), type: ToastType.error });
         }
       } finally {
         setIsLoading(false);
       }
     },
-    [saveHotkeysToAPI, loadHotkeysFromAPI, toast],
+    [saveHotkeysToAPI, loadHotkeysFromAPI, toast, t],
   );
 
-  // Load hotkeys on hook mount
+  // Load hotkeys on hook mount and when translation changes
   useEffect(() => {
     loadHotkeysFromAPI();
-  }, [loadHotkeysFromAPI]);
+  }, [loadHotkeysFromAPI, t]);
 
   return {
     hotkeys,

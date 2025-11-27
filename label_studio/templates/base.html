@@ -246,6 +246,26 @@
       });
     })();
 
+    // 从URL参数中读取origin并写入Local Storage
+    (function() {
+      if (typeof(Storage) !== "undefined") {
+        try {
+          var urlParams = new URLSearchParams(window.location.search);
+          var origin = urlParams.get('origin');
+          if (origin) {
+            localStorage.setItem('origin', origin);
+            console.log('Origin saved to Local Storage from URL:', origin);
+            // 从URL中移除origin参数，避免在地址栏中显示，防止用户修改URL参数导致Local Storage被覆盖
+            urlParams.delete('origin');
+            var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '') + window.location.hash;
+            window.history.replaceState({}, '', newUrl);
+          }
+        } catch (e) {
+          console.error('Error saving origin to Local Storage:', e);
+        }
+      }
+    })();
+
   </script>
 {% endblock %}
 
