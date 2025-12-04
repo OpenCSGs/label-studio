@@ -68,7 +68,13 @@ export const Userpic = forwardRef(
     }
 
     const displayName = useMemo(() => {
-      return userDisplayName(user ?? userRef.current);
+      const curUser = user ?? userRef.current;
+      // 优先使用 user_name 字段
+      if (curUser?.user_name) {
+        return curUser.user_name;
+      }
+      // 如果没有 user_name，使用 userDisplayName 作为后备
+      return userDisplayName(curUser);
     }, [user]);
 
     const background = useMemo(() => {

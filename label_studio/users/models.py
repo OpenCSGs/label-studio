@@ -222,11 +222,12 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
 
     def get_initials(self, is_deleted=False):
         initials = '?'
-
+        print(self.user_name)
         if is_deleted:
             return 'DU'
-
-        if not self.first_name and not self.last_name:
+        if  self.user_name :
+            initials = self.user_name[0:2]
+        elif self.first_name and not self.last_name:
             initials = self.email[0:2]
         elif self.first_name and not self.last_name:
             initials = self.first_name[0:1]
