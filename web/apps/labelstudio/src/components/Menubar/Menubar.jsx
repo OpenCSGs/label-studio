@@ -103,6 +103,18 @@ export const Menubar = ({
   const contextItem = menubarClass.elem("context-item");
   const showNewsletterDot = !isDefined(user?.allow_newsletters);
 
+  // 获取用户显示名称：优先使用user_name，其次username，最后邮箱
+  const userDisplayName = useMemo(() => {
+    if (!user) return "";
+    if (user.user_name) {
+      return user.user_name;
+    }
+    if (user.username) {
+      return user.username;
+    }
+    return user.email || "";
+  }, [user]);
+
   const handleLanguageChange = useCallback((lang) => {
     i18n.changeLanguage(lang);
     langMenuRef.current?.close();
@@ -363,14 +375,14 @@ export const Menubar = ({
               </Menu>
             }
           >
-            <div title={user?.email} className={menubarClass.elem("user")}>
+            <div title={userDisplayName} className={menubarClass.elem("user")}>
               <Userpic user={user} isInProgress={isInProgress} />
               {showNewsletterDot && (
                 <div className={menubarClass.elem("userpic-badge")} />
               )}
             </div>
           </Dropdown.Trigger> */}
-          <div title={user?.email} className={menubarClass.elem("user")}>
+          <div title={userDisplayName} className={menubarClass.elem("user")}>
             <Userpic user={user} isInProgress={isInProgress} />
             {showNewsletterDot && (
               <div className={menubarClass.elem("userpic-badge")} />
