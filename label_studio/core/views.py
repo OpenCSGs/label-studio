@@ -284,7 +284,7 @@ def system_config(request):
     try:
         # 从session或请求参数中获取origin
         origin = request.session.get('origin') or request.GET.get('origin')
-
+        logger.error(f'csghub origin URL: {origin}')
         # 构建API URL
         if origin:
             # 确保origin以/结尾，然后拼接接口路径
@@ -295,6 +295,7 @@ def system_config(request):
             api_url = 'https://opencsg.com/internal_api/system_config'
 
         # 调用外部API
+        logger.error(f'get config api_url URL: {api_url}')
         response = requests.get(api_url)
         response.raise_for_status()
         
