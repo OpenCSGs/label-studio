@@ -282,10 +282,20 @@ def collect_metrics(request):
 def system_config(request):
     """Proxy endpoint to fetch system config from external API"""
     try:
+        # 从session或请求参数中获取origin
+        origin = request.session.get('origin') or request.GET.get('origin')
+
+        # 构建API URL
+        if origin:
+            # 确保origin以/结尾，然后拼接接口路径
+            origin = origin.rstrip('/')
+            api_url = f"{origin}/internal_api/system_config"
+        else:
+            # 如果没有origin，使用默认URL
+            api_url = 'https://opencsg.com/internal_api/system_config'
+
         # 调用外部API
-        response = requests.get(
-            'https://opencsg-stg.com/internal_api/system_config'
-        )
+        response = requests.get(api_url)
         response.raise_for_status()
         
         # 返回JSON响应
