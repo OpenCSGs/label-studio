@@ -94,7 +94,7 @@ export const Menubar = ({
     props: {},
   });
   const [logoUrl, setLogoUrl] = useState(null);
-  const [useDefaultLogo, setUseDefaultLogo] = useState(false);
+  const [useDefaultLogo, setUseDefaultLogo] = useState(true); // 初始为true，等待logo加载成功后再显示
 
   const menubarClass = cn("menu-header");
   const menubarContext = menubarClass.elem("context");
@@ -178,29 +178,62 @@ export const Menubar = ({
     useMenuRef?.current?.close();
   }, [location]);
 
-  // 设置动态favicon
+  // 设置动态favicon（只有在logo成功加载时才设置）
   useEffect(() => {
+    let img = null; // 用于清理Image对象
+    let link = null; // 用于跟踪创建的link标签
+    let dynamicFaviconUrl = null; // 记录动态设置的favicon URL
+
     const setFavicon = () => {
       try {
-        // 从Local Storage读取origin
-        const origin = localStorage.getItem('origin');
+        // 只有在logo成功加载且不是默认logo时才设置favicon
+        if (!useDefaultLogo && logoUrl) {
+          // 从Local Storage读取origin
+          const origin = localStorage.getItem('origin');
 
-        if (origin) {
-          // 构建favicon URL
-          const faviconUrl = `${origin}/images/favicon.ico`;
+          if (origin) {
+            // 构建favicon URL
+            const faviconUrl = `${origin}/images/favicon.ico`;
+            dynamicFaviconUrl = faviconUrl; // 记录动态设置的favicon URL
 
-          // 查找现有的favicon link标签
-          let link = document.querySelector("link[rel*='icon']");
+            // 查找现有的favicon link标签
+            link = document.querySelector("link[rel*='icon']");
 
-          if (!link) {
-            // 如果不存在，创建新的link标签
-            link = document.createElement('link');
-            link.rel = 'shortcut icon';
-            document.head.appendChild(link);
+            if (!link) {
+              // 如果不存在，创建新的link标签
+              link = document.createElement('link');
+              link.rel = 'shortcut icon';
+              document.head.appendChild(link);
+            }
+
+            // 验证favicon是否可以加载
+            img = new Image();
+            img.onload = () => {
+              // favicon加载成功，更新href
+              if (link) {
+                link.href = faviconUrl;
+              }
+            };
+            img.onerror = () => {
+              // favicon加载失败，移除动态设置的favicon link标签
+              console.error('Favicon failed to load:', faviconUrl);
+              if (link && link.parentNode && link.href === faviconUrl) {
+                link.parentNode.removeChild(link);
+                link = null;
+                dynamicFaviconUrl = null;
+              }
+            };
+            img.src = faviconUrl;
           }
-
-          // 更新favicon的href
-          link.href = faviconUrl;
+        } else {
+          // 如果logo加载失败，移除所有favicon（包括动态设置的和默认的）
+          const existingLinks = document.querySelectorAll("link[rel*='icon']");
+          existingLinks.forEach((faviconLink) => {
+            if (faviconLink && faviconLink.parentNode) {
+              faviconLink.parentNode.removeChild(faviconLink);
+            }
+          });
+          dynamicFaviconUrl = null;
         }
       } catch (error) {
         console.error('Error setting favicon:', error);
@@ -208,10 +241,22 @@ export const Menubar = ({
     };
 
     setFavicon();
-  }, []);
+
+    // 清理函数
+    return () => {
+      if (img) {
+        img.onload = null;
+        img.onerror = null;
+        img.src = '';
+      }
+    };
+  }, [logoUrl, useDefaultLogo]);
 
   // 获取动态logo
   useEffect(() => {
+    let isMounted = true; // 用于防止组件卸载后的状态更新
+    let img = null; // 用于清理Image对象
+
     const fetchLogo = async () => {
       try {
         // 从Local Storage读取origin
@@ -222,29 +267,91 @@ export const Menubar = ({
           suppressError: true,
         });
 
+        if (!isMounted) return; // 组件已卸载，不再处理
+
         if (result && !result.error) {
           const data = result.response || result;
           const logoPath = data?.system_configs?.general_configs?.logo;
 
-          if (logoPath) {
-            // 拼接origin和logo路径
-            const finalLogoUrl = origin ? `${origin}${logoPath}` : logoPath;
-            setLogoUrl(finalLogoUrl);
-            setUseDefaultLogo(false);
+          // 检查logoPath是否有效（非空且非空字符串）
+          if (logoPath && logoPath.trim()) {
+            // 处理logo路径：如果是http/https开头就直接使用，否则拼接origin
+            let finalLogoUrl;
+            if (logoPath.startsWith('http://') || logoPath.startsWith('https://')) {
+              // 如果是完整URL，直接使用
+              finalLogoUrl = logoPath;
+            } else {
+              // 如果不是完整URL，需要拼接origin
+              if (origin) {
+                finalLogoUrl = logoPath.startsWith('/') 
+                  ? `${origin}${logoPath}` 
+                  : `${origin}/${logoPath}`;
+              } else {
+                // 没有origin，无法拼接，记录错误
+                console.error('Logo path is relative but no origin available:', logoPath);
+                if (isMounted) {
+                  setUseDefaultLogo(true);
+                  setLogoUrl(null);
+                }
+                return;
+              }
+            }
+            
+            // 验证logo是否可以加载
+            img = new Image();
+            img.onload = () => {
+              if (isMounted) {
+                // logo加载成功
+                setLogoUrl(finalLogoUrl);
+                setUseDefaultLogo(false);
+              }
+            };
+            img.onerror = () => {
+              // logo加载失败，不显示logo
+              console.error('Logo failed to load:', finalLogoUrl);
+              if (isMounted) {
+                setUseDefaultLogo(true);
+                setLogoUrl(null);
+              }
+            };
+            img.src = finalLogoUrl;
           } else {
-            setUseDefaultLogo(true);
+            // 没有logo路径或logo路径为空字符串
+            console.error('No logo path found in system config or logo path is empty');
+            if (isMounted) {
+              setUseDefaultLogo(true);
+              setLogoUrl(null);
+            }
           }
         } else {
-          setUseDefaultLogo(true);
+          // API调用失败
+          console.error('Failed to fetch system config:', result?.error);
+          if (isMounted) {
+            setUseDefaultLogo(true);
+            setLogoUrl(null);
+          }
         }
       } catch (error) {
         console.error('Error fetching logo:', error);
-        // 如果获取失败，使用默认logo
-        setUseDefaultLogo(true);
+        // 如果获取失败，不显示logo
+        if (isMounted) {
+          setUseDefaultLogo(true);
+          setLogoUrl(null);
+        }
       }
     };
 
     fetchLogo();
+
+    // 清理函数
+    return () => {
+      isMounted = false;
+      if (img) {
+        img.onload = null;
+        img.onerror = null;
+        img.src = '';
+      }
+    };
   }, [api]);
 
   return (
