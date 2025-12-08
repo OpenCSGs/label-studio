@@ -445,6 +445,10 @@ def login_reques(request):
     # 将语言保存到session中
     request.session['language'] = language
     origin = request.GET.get('origin')  # 获取origin参数
+    # 将origin保存到session中，供后续接口使用
+    logger.error(f'放入session的origin地址：{origin}')
+    if origin:
+        request.session['origin'] = origin
     user = request.user
     # 设置默认重定向页面
     if not next_page or not url_has_allowed_host_and_scheme(url=next_page, allowed_hosts=request.get_host()):
