@@ -299,8 +299,15 @@ def system_config(request):
         response = requests.get(api_url)
         response.raise_for_status()
         
+        data = response.json()
+        
+        # 检查是否有logo，如果没有则记录错误日志
+        logo_path = data.get('system_configs', {}).get('general_configs', {}).get('logo')
+        if not logo_path:
+            logger.error('No logo found in system config response')
+        
         # 返回JSON响应
-        return JsonResponse(response.json(), safe=False)
+        return JsonResponse(data, safe=False)
     except requests.exceptions.RequestException as e:
         logger.error(f'Error fetching system config: {e}')
         return JsonResponse(
