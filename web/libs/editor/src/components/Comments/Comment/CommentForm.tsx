@@ -1,5 +1,6 @@
 import { type FC, type MouseEventHandler, useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 
 import { LINK_COMMENT_MODE } from "../../../stores/Annotation/LinkingModes";
 import { CommentBase } from "../../../stores/Comment/Comment";
@@ -24,6 +25,7 @@ const ROWS = 1;
 const MAX_ROWS = 4;
 
 export const CommentForm: FC<CommentFormProps> = observer(({ commentStore, annotationStore, inline = true }) => {
+  const { t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
   const actionRef = useRef<ActionRefValue>({});
   const clearTooltipMessage = () => commentStore.setTooltipMessage("");
@@ -153,7 +155,7 @@ export const CommentForm: FC<CommentFormProps> = observer(({ commentStore, annot
         <TextArea
           actionRef={actionRef}
           name="comment"
-          placeholder="Add a comment"
+          placeholder={t("annotation.addComment")}
           value={text}
           rows={ROWS}
           maxRows={MAX_ROWS}

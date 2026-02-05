@@ -5,6 +5,7 @@ import { IconSend } from "@humansignal/icons";
 import "./CommentForm.scss";
 import { TextArea } from "../../../common/TextArea/TextArea";
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import { FF_DEV_3873, isFF } from "../../../utils/feature-flags";
 import { Button } from "@humansignal/ui";
 
@@ -19,6 +20,7 @@ export type CommentFormProps = {
 
 export const CommentForm: FC<CommentFormProps> = observer(
   ({ commentStore, annotationStore, inline = true, onChange, rows = 1, maxRows = 4 }) => {
+    const { t } = useTranslation();
     const formRef = useRef<HTMLFormElement>(null);
     const actionRef = useRef<{ update?: (text?: string) => void; el?: RefObject<HTMLTextAreaElement> }>({});
     const clearTooltipMessage = () => commentStore.setTooltipMessage("");
@@ -77,7 +79,7 @@ export const CommentForm: FC<CommentFormProps> = observer(
         <TextArea
           actionRef={actionRef}
           name="comment"
-          placeholder="Add a comment"
+          placeholder={t("annotation.addComment")}
           value={value}
           rows={rows}
           maxRows={maxRows}
@@ -87,7 +89,7 @@ export const CommentForm: FC<CommentFormProps> = observer(
           onBlur={clearTooltipMessage}
         />
         <Elem tag="div" name="primary-action">
-          <Button type="submit" aria-label="Submit comment" variant="neutral" look="string">
+          <Button type="submit" aria-label={t("annotation.add")} variant="neutral" look="string">
             <IconSend />
           </Button>
         </Elem>
