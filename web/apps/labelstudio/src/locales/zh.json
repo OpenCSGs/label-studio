@@ -412,7 +412,13 @@
     "reviewDeleted": "审查已删除",
     "propagated": "已传播",
     "showMore": "显示更多",
-    "showLess": "显示更少"
+    "showLess": "显示更少",
+    "addComment": "添加评论",
+    "add": "添加",
+    "submit": "提交",
+    "update": "修改",
+    "submitAndExit": "提交并退出",
+    "updateAndExit": "修改并退出"
   },
   "labelingConfig": {
     "labelingInterface": "标注界面",
@@ -472,7 +478,8 @@
       "Conversational AI": "对话式AI",
       "Ranking & Scoring": "排序与评分",
       "Structured Data Parsing": "结构化数据解析",
-      "Generative AI": "生成式AI"
+      "Generative AI": "生成式AI",
+      "Hybrid Annotation": "混合标注"
     },
     "templateTitles": {
       "Bbox object detection": "边界框目标检测",
@@ -539,7 +546,8 @@
       "Medical Image Classification with Bounding Boxes": "医学图像分类（带边界框）",
       "Image Captioning": "图像字幕生成",
       "Object Detection with Bounding Boxes": "目标检测（带边界框）",
-      "Multi-page document annotation": "多页文档标注"
+      "Multi-page document annotation": "多页文档标注",
+      "Image Hybrid Annotation": "图片混合标注"
     },
     "uiPreview": "界面预览"
   },
@@ -976,6 +984,90 @@
       "tool.increase-tool": {
         "label": "增大工具大小",
         "description": "增大工具大小"
+      }
+    }
+  },
+  "labelingSettings": {
+    "modal": {
+      "titleNew": "标注界面设置",
+      "titleOld": "设置"
+    },
+    "tabs": {
+      "general": "常规",
+      "hotkeys": "快捷键",
+      "layout": "布局"
+    },
+    "hotkeysTable": {
+      "shortcut": "快捷键",
+      "description": "描述"
+    },
+    "hotkeysTab": {
+      "Image": "图像",
+      "Annotations": "标注",
+      "AppStore": "全局快捷键",
+      "Audio": "音频控制",
+      "TimeSeries": "时序控制",
+      "SegmentationToolbar": "分割工具",
+      "Polygons": "多边形",
+      "Repeater": "重复",
+      "RegionStore": "区域管理"
+    },
+    "layout": {
+      "moveSidepanelToBottom": "将侧边栏移至底部",
+      "displayLabelsByDefault": "在结果面板中默认显示标签",
+      "showAnnotationsPanel": "显示标注面板",
+      "showPredictionsPanel": "显示预测面板"
+    },
+    "options": {
+      "enableHotkeys": {
+        "title": "标注快捷键",
+        "description": "使用快捷键快速选择标签",
+        "descriptionFallback": "启用标注快捷键"
+      },
+      "enableTooltips": {
+        "title": "在工具提示中显示快捷键",
+        "description": "在工具和操作提示中显示按键绑定",
+        "descriptionFallback": "显示快捷键提示"
+      },
+      "enableLabelTooltips": {
+        "title": "在标签上显示快捷键",
+        "description": "在标签上显示按键绑定",
+        "descriptionFallback": "显示标签快捷键提示"
+      },
+      "showLabels": {
+        "title": "显示区域标签",
+        "description": "显示区域标签名称",
+        "descriptionFallback": "在区域内部显示标签"
+      },
+      "continuousLabeling": {
+        "title": "创建区域后保持标签选中",
+        "description": "允许使用所选标签连续创建区域",
+        "descriptionFallback": "创建区域后保持标签选中"
+      },
+      "selectAfterCreate": {
+        "title": "创建后选中区域",
+        "description": "自动选中新创建的区域",
+        "descriptionFallback": "创建后选中区域"
+      },
+      "showLineNumbers": {
+        "title": "显示行号",
+        "description": "在文档中识别和引用特定文本行",
+        "descriptionFallback": "为文本显示行号"
+      },
+      "preserveSelectedTool": {
+        "title": "保持所选工具",
+        "description": "在任务间保持所选工具",
+        "descriptionFallback": "记住所选工具"
+      },
+      "enableSmoothing": {
+        "title": "缩放时像素平滑",
+        "description": "放大时平滑图像像素",
+        "descriptionFallback": "缩放时启用图像平滑"
+      },
+      "invertedZoom": {
+        "title": "反转缩放方向",
+        "description": "反转滚轮缩放方向",
+        "descriptionFallback": "启用反转缩放方向"
       }
     }
   }

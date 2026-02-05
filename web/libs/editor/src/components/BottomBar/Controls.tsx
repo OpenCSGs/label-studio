@@ -7,6 +7,7 @@
 import { observer } from "mobx-react";
 import type React from "react";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button, ButtonGroup, type ButtonProps } from "@humansignal/ui";
 import { IconBan, IconChevronDown } from "@humansignal/icons";
@@ -67,6 +68,7 @@ const ControlButton = observer(({ button, disabled, onClick, variant, look }: Co
 
 export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
   observer(({ store, history, annotation }) => {
+    const { t } = useTranslation();
     const isReview = store.hasInterface("review") || annotation.canBeReviewed;
     const isNotQuickView = store.hasInterface("topbar:prevnext");
     const historySelected = isDefined(store.annotationStore.selectedHistory);
@@ -226,7 +228,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
                 onClickMethod();
               }}
             >
-              {`${isUpdate ? "Update" : "Submit"} and exit`}
+              {isUpdate ? t("annotation.updateAndExit") : t("annotation.submitAndExit")}
             </Button>
           </div>
         );
@@ -253,7 +255,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
                     store.submitAnnotation();
                   }}
                 >
-                  Submit
+                  {t("annotation.submit")}
                 </Button>
                 {useExitOption ? (
                   <Dropdown.Trigger
@@ -295,7 +297,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
                   store.updateAnnotation();
                 }}
               >
-                {isUpdate ? "Update" : "Submit"}
+                {isUpdate ? t("annotation.update") : t("annotation.submit")}
               </Button>
               {useExitOption ? (
                 <Dropdown.Trigger

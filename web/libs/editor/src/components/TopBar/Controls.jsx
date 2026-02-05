@@ -10,6 +10,7 @@ import { isDefined } from "../../utils/utilities";
 
 import "./Controls.scss";
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const TOOLTIP_DELAY = 0.8;
 
@@ -32,6 +33,7 @@ const controlsInjector = inject(({ store }) => {
 
 export const Controls = controlsInjector(
   observer(({ store, history, annotation }) => {
+    const { t } = useTranslation();
     const isReview = store.hasInterface("review");
 
     const historySelected = isDefined(store.annotationStore.selectedHistory);
@@ -180,7 +182,7 @@ export const Controls = controlsInjector(
                   store.submitAnnotation();
                 }}
               >
-                Submit
+                {t("annotation.submit")}
               </Button>
             </Elem>
           </ButtonTooltip>,
@@ -200,7 +202,7 @@ export const Controls = controlsInjector(
                 store.updateAnnotation();
               }}
             >
-              {isUpdate ? "Update" : "Submit"}
+              {isUpdate ? t("annotation.update") : t("annotation.submit")}
             </Button>
           </ButtonTooltip>
         );
