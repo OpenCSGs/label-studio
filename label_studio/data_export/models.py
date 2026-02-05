@@ -161,10 +161,7 @@ class DataExport(object):
         with open(filename_info, 'w', encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
 
-        # print(project_dir,100*'*')
-        upload_without_cache_check(request,local_folder=project_dir,project=project)
-        # clear_folder(project_dir)
-
+        # 上传改为在 generate_export_file 中所有文件（含 zip）生成完成后再调用
         return filename_results
 
     @staticmethod
@@ -223,21 +220,21 @@ class DataExport(object):
                 target_path = os.path.join(target_dir, target_filename)
                 shutil.move(output_file, target_path)
                 content_type = f'application/{ext}'
-                # 返回路径而非文件对象
+                # 所有文件已生成到 target_dir，再上传
+                upload_without_cache_check(request, local_folder=target_dir, project=project)
                 return target_path, content_type, target_filename
-                # return None
             else:
                 # otherwise pack output directory into archive
-                zip_path = shutil.make_archive(os.path.join(tmp_dir, name), 'zip', tmp_dir)
+                # 在 tmp_dir 的父目录创建 zip，避免 zip 被包含进自己（make_archive 会打包 root_dir 下所有内容）
+                zip_base = os.path.join(os.path.dirname(tmp_dir), name)
+                zip_path = shutil.make_archive(zip_base, 'zip', tmp_dir)
                 target_filename = f"{name}.zip"
                 target_path = os.path.join(target_dir, target_filename)
                 shutil.move(zip_path, target_path)
                 content_type = 'application/zip'
-                # 返回路径而非文件对象
-
-
+                # 所有文件（含 zip）已生成到 target_dir，再上传
+                upload_without_cache_check(request, local_folder=target_dir, project=project)
                 return target_path, content_type, target_filename
-                # return None
 #
 
 class ConvertedFormat(models.Model):

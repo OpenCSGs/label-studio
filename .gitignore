@@ -13,6 +13,7 @@ etc/
 /src/
 yarn-error.log
 /dist/
+/web/.nx/
 
 # mobile/builds
 db/

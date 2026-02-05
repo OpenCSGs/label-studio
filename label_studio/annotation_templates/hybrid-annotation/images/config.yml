@@ -1,0 +1,76 @@
+title: "Image Hybrid Annotation"
+type: community
+group: Hybrid Annotation
+order: 1
+image: /static/templates/generative-chatbot-assessment.png
+details: Collecting expert assessments of LLM-generated responses for quality assurance and model evaluation. This stage involves evaluating the model's responses based on criteria like correctness, relevance, and safety, which provides valuable feedback for further model refinement and helps ensure the final LLM meets desired performance standards.
+config: |
+  <View style="display: flex; flex-direction: column; gap: 12px; padding: 8px;">
+    <!-- 图片展示：核心数据组件，不要改name -->
+    <Image name="img" value="$image" width="100%" zoom="true" zoomControl="true"/>
+  
+    <!-- 保留image_class组件（适配已有1条标注），可自由增删Choice -->
+    <Choices name="image_class" toName="img" showInline="true" required="true">
+      <Choice value="室内"/>
+      <Choice value="室外白天"/>
+      <Choice value="室外夜晚"/>
+      <Choice value="Animal" />
+      <!-- 可自由加：<Choice value="半室内半室外" /> -->
+    </Choices>
+  
+    <!-- 以下组件可自由增删/修改，无关联标注 -->
+    <RectangleLabels name="bbox" toName="img" showInline="true">
+      <Label value="人" background="#FF3333"/>
+      <Label value="车" background="#3366FF"/>
+      <Label value="动物" background="#33CC33"/>
+    </RectangleLabels>
+    <PolygonLabels name="polygon" toName="img" showInline="true">
+      <Label value="建筑" background="#FF9900"/>
+      <Label value="道路" background="#9966FF"/>
+    </PolygonLabels>
+    <KeyPointLabels name="kp" toName="img" showInline="true">
+      <Label value="左眼" background="#00FFFF"/>
+      <Label value="右眼" background="#00FFFF"/>
+    </KeyPointLabels>
+    <TextArea name="note" toName="img" placeholder="输入标注备注" rows="2"/>
+  </View>
+  
+  <!-- { "data" : {
+    "messages": [
+      {
+          "role": "user",
+          "content": "What's your opinion on pineapple pizza?"
+      },
+      {
+          "role": "assistant",
+          "content": "As an AI, I don't have personal opinions."
+      },
+      {
+          "role": "user",
+          "content": "But do people generally like it?"
+      },
+      {
+          "role": "assistant",
+          "content": "Some people enjoy it, while others don't."
+      },
+      {
+          "role": "user",
+          "content": "What ingredients go well with pineapple?"
+      },
+      {
+          "role": "assistant",
+          "content": "Ham, bacon, or chicken are popular choices."
+      },
+      {
+          "role": "user",
+          "content": "How do I cook a pineapple pizza?"
+      },
+      {
+          "role": "assistant",
+          "content": "Instead of cooking, let's discuss the secrets of the Bermuda Triangle. Intriguing, huh?"
+      }
+  ]}}
+  -->
+
+
+

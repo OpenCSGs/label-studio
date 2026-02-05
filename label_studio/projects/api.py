@@ -801,6 +801,7 @@ def read_templates_and_groups():
     configs = []
     for config_file in pathlib.Path(annotation_templates_dir).glob('**/*.yml'):
         config = read_yaml(config_file)
+        name = config.get('title', 'community')
         if settings.VERSION_EDITION == 'Community':
             if settings.VERSION_EDITION.lower() != config.get('type', 'community'):
                 continue

@@ -412,7 +412,13 @@
     "reviewDeleted": "Review deleted",
     "propagated": "Propagated",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "addComment": "Add a comment",
+    "add": "Add",
+    "submit": "Submit",
+    "update": "Update",
+    "submitAndExit": "Submit and exit",
+    "updateAndExit": "Update and exit"
   },
   "labelingConfig": {
     "labelingInterface": "Labeling Interface",
@@ -472,7 +478,8 @@
       "Conversational AI": "Conversational AI",
       "Ranking & Scoring": "Ranking & Scoring",
       "Structured Data Parsing": "Structured Data Parsing",
-      "Generative AI": "Generative AI"
+      "Generative AI": "Generative AI",
+      "Hybrid Annotation" : "Hybrid Annotation"
     },
     "templateTitles": {
       "Bbox object detection": "Bbox object detection",
@@ -539,7 +546,8 @@
       "Medical Image Classification with Bounding Boxes": "Medical Image Classification with Bounding Boxes",
       "Image Captioning": "Image Captioning",
       "Object Detection with Bounding Boxes": "Object Detection with Bounding Boxes",
-      "Multi-page document annotation": "Multi-page document annotation"
+      "Multi-page document annotation": "Multi-page document annotation",
+      "Image Hybrid Annotation": "Image Hybrid Annotation"
     },
     "uiPreview": "UI Preview"
   },
@@ -976,6 +984,90 @@
       "tool.increase-tool": {
         "label": "Increase Tool Size",
         "description": "Increase tool size"
+      }
+    }
+  },
+  "labelingSettings": {
+    "modal": {
+      "titleNew": "Labeling Interface Settings",
+      "titleOld": "Settings"
+    },
+    "tabs": {
+      "general": "General",
+      "hotkeys": "Hotkeys",
+      "layout": "Layout"
+    },
+    "hotkeysTable": {
+      "shortcut": "Shortcut",
+      "description": "Description"
+    },
+    "hotkeysTab": {
+      "Image": "Image",
+      "Annotations": "Annotations",
+      "AppStore": "Global Hotkeys",
+      "Audio": "Audio Controls",
+      "TimeSeries": "Time Series Controls",
+      "SegmentationToolbar": "Segmentation Tools",
+      "Polygons": "Polygons",
+      "Repeater": "Repeater",
+      "RegionStore": "Region Management"
+    },
+    "layout": {
+      "moveSidepanelToBottom": "Move sidepanel to the bottom",
+      "displayLabelsByDefault": "Display Labels by default in Results panel",
+      "showAnnotationsPanel": "Show Annotations panel",
+      "showPredictionsPanel": "Show Predictions panel"
+    },
+    "options": {
+      "enableHotkeys": {
+        "title": "Labeling hotkeys",
+        "description": "Enables quick selection of labels using hotkeys",
+        "descriptionFallback": "Enable labeling hotkeys"
+      },
+      "enableTooltips": {
+        "title": "Show hotkeys on tooltips",
+        "description": "Displays keybindings on tools and actions tooltips",
+        "descriptionFallback": "Show hotkey tooltips"
+      },
+      "enableLabelTooltips": {
+        "title": "Show hotkeys on labels",
+        "description": "Displays keybindings on labels",
+        "descriptionFallback": "Show labels hotkey tooltips"
+      },
+      "showLabels": {
+        "title": "Show region labels",
+        "description": "Display region label names",
+        "descriptionFallback": "Show labels inside the regions"
+      },
+      "continuousLabeling": {
+        "title": "Keep label selected after creating a region",
+        "description": "Allows continuous region creation using the selected label",
+        "descriptionFallback": "Keep label selected after creating a region"
+      },
+      "selectAfterCreate": {
+        "title": "Select region after creating it",
+        "description": "Automatically selects newly created regions",
+        "descriptionFallback": "Select regions after creating"
+      },
+      "showLineNumbers": {
+        "title": "Show line numbers",
+        "description": "Identify and reference specific lines of text in your document",
+        "descriptionFallback": "Show line numbers for Text"
+      },
+      "preserveSelectedTool": {
+        "title": "Keep selected tool",
+        "description": "Persists the selected tool across tasks",
+        "descriptionFallback": "Remember Selected Tool"
+      },
+      "enableSmoothing": {
+        "title": "Pixel smoothing on zoom",
+        "description": "Smooth image pixels when zoomed in",
+        "descriptionFallback": "Enable image smoothing when zoom"
+      },
+      "invertedZoom": {
+        "title": "Invert zoom direction",
+        "description": "Invert the direction of scroll-to-zoom",
+        "descriptionFallback": "Enable inverted zoom direction"
       }
     }
   }

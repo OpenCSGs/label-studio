@@ -283,8 +283,8 @@ export const Menubar = ({
             } else {
               // 如果不是完整URL，需要拼接origin
               if (origin) {
-                finalLogoUrl = logoPath.startsWith('/') 
-                  ? `${origin}${logoPath}` 
+                finalLogoUrl = logoPath.startsWith('/')
+                  ? `${origin}${logoPath}`
                   : `${origin}/${logoPath}`;
               } else {
                 // 没有origin，无法拼接，记录错误
@@ -296,7 +296,7 @@ export const Menubar = ({
                 return;
               }
             }
-            
+
             // 验证logo是否可以加载
             img = new Image();
             img.onload = () => {
