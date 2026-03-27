@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { DragDropContext, type DropResult } from "react-beautiful-dnd";
+import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 
 import Column from "./Column";
 import type { NewBoardData } from "./createData";

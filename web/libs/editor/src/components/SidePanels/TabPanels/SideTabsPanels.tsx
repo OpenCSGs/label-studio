@@ -1,8 +1,6 @@
 import { observer } from "mobx-react";
 import { type FC, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Block, Elem } from "../../../utils/bem";
-import { restoreComponentsToState } from "./utils";
+import { cn } from "../../../utils/bem";
 import { useMedia } from "../../../hooks/useMedia";
 import ResizeObserver from "../../../utils/resize-observer";
 import { clamp } from "../../../utils/utilities";
@@ -34,11 +32,11 @@ import {
   findZIndices,
   getAttachedPerSide,
   getLeftKeys,
-  getPartialEmptyBaseProps,
   getRightKeys,
   getSnappedHeights,
   joinPanelColumns,
   newPanelInState,
+  partialEmptyBaseProps,
   redistributeHeights,
   renameKeys,
   resizePanelColumns,
@@ -70,16 +68,10 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
   const [positioning, setPositioning] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const rootRef = useRef<HTMLDivElement>();
-  const { t, i18n } = useTranslation();
   const [snap, setSnap] = useState<DropSide | Side | undefined>();
-  const initialState = useMemo(() => restorePanel(showComments, t), [showComments, t]);
+  const initialState = useMemo(() => restorePanel(showComments), [showComments]);
   const [panelData, setPanelData] = useState<Record<string, PanelBBox>>(initialState.panelData);
   const [collapsedSide, setCollapsedSide] = useState(initialState.collapsedSide);
-
-  // Update panel titles when language changes
-  useEffect(() => {
-    setPanelData((currentData) => restoreComponentsToState(currentData, t));
-  }, [i18n.language, t]);
   const [breakPointActiveTab, setBreakPointActiveTab] = useState(0);
   const localSnap = useRef(snap);
   const collapsedSideRef = useRef(collapsedSide);
@@ -150,13 +142,13 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
         const height = viewportSize.current.height;
 
         setPanelData((state) => {
-          const newPanel = newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize, t);
+          const newPanel = newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize);
 
           return joinPanelColumns(newPanel, name, side, DEFAULT_PANEL_WIDTH, height, joinOrder);
         });
       } else {
         setPanelData((state) => {
-          return newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize, t);
+          return newPanelInState(state, name, movingPanel, movingTab, left, top, viewportSize);
         });
       }
       setSnap(undefined);
@@ -534,43 +526,48 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
     };
   }, []);
 
-  const partialEmptyBasePropsWithTranslation = useMemo(() => {
-    const updatedProps = { ...getPartialEmptyBaseProps(t) };
+  const getPartialEmptyBaseProps = useMemo(() => {
+    const updatedProps = { ...partialEmptyBaseProps };
 
-    updatedProps.panelViews = updatedProps.panelViews.filter(
+    updatedProps.panelViews = partialEmptyBaseProps.panelViews.filter(
       (view) => view.name !== "comments" || showComments,
     );
 
     return updatedProps;
-  }, [t, showComments]);
+  }, [partialEmptyBaseProps, showComments]);
 
-  const emptyBaseProps = { ...partialEmptyBasePropsWithTranslation, ...commonProps, breakPointActiveTab, setBreakPointActiveTab };
+  const emptyBaseProps = { ...getPartialEmptyBaseProps, ...commonProps, breakPointActiveTab, setBreakPointActiveTab };
 
   return (
     <SidePanelsContext.Provider value={contextValue}>
-      <Block
+      <div
         ref={(el: HTMLDivElement | null) => {
           if (el) {
             rootRef.current = el;
             setViewportSizeMatch(el.clientWidth <= maxWindowWidth);
           }
         }}
-        name="sidepanels"
-        mod={{ collapsed: panelBreakPoint }}
+        className={cn("sidepanels").mod({ collapsed: panelBreakPoint }).toClassName()}
         style={{ ...padding }}
       >
         {initialized && (
           <>
-            <Elem ref={contentRef} name="content" mod={{ resizing: lockPanelContents || positioning }}>
+            <div
+              ref={contentRef}
+              className={cn("sidepanels")
+                .elem("content")
+                .mod({ resizing: lockPanelContents || positioning })
+                .toClassName()}
+            >
               {children}
-            </Elem>
+            </div>
             {panelsHidden !== true && panelBreakPoint ? (
               <>
-                <Elem name="wrapper">
+                <div className={cn("sidepanels").elem("wrapper").toClassName()}>
                   <PanelTabsBase {...emptyBaseProps} contentRef={contentRef} isBottomPanel={true}>
                     <Tabs {...emptyBaseProps} />
                   </PanelTabsBase>
-                </Elem>
+                </div>
               </>
             ) : (
               <>
@@ -589,20 +586,22 @@ const SideTabsPanelsComponent: FC<SidePanelsProps> = ({
                     return <Fragment key={panelType}>{content}</Fragment>;
                   }
                   return (
-                    <Elem
+                    <div
                       key={panelType}
-                      name="wrapper"
-                      mod={{ align: panelType, snap: !lockPanelContents && snap === panelType && snap !== undefined }}
+                      className={cn("sidepanels")
+                        .elem("wrapper")
+                        .mod({ align: panelType, snap: !lockPanelContents && snap === panelType && snap !== undefined })
+                        .toClassName()}
                     >
                       {content}
-                    </Elem>
+                    </div>
                   );
                 })}
               </>
             )}
           </>
         )}
-      </Block>
+      </div>
     </SidePanelsContext.Provider>
   );
 };

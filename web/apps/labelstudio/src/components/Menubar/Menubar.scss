@@ -42,27 +42,28 @@
   }
 
   &__hotkeys {
-    display: flex;
-    padding: 0 var(--spacing-base);
-    align-items: center;
+      display: flex;
+      padding: 0 var(--spacing-base);
+      align-items: center;
   }
 
   &__hotkeys-button {
-    button {
-      svg {
-        width: 20px;
-        height: 20px;
-        color: var(--color-neutral-content-subtler);
-      }
-
-      &:hover {
+      button {
         svg {
-          color: var(--color-neutral-icon);
+          width: 20px;
+          height: 20px;
+          color: var(--color-neutral-content-subtler);
+        }
+
+        &:hover {
+          svg {
+            color: var(--color-neutral-icon);
+          }
         }
       }
-    }
   }
 
+  
   &__trigger {
     display: flex;
     padding: 0 20px;
@@ -82,10 +83,12 @@
 
   &__logo {
     color: var(--color-neutral-content);
-    height: 40px;
-    width: 142px;
-    margin-left: auto;
-    margin-right: auto;
+    /* 参考默认 logo.svg 原始尺寸 194×30，使用 max 约束保持灵活 */
+    max-height: 30px;
+    max-width: 194px;
+    height: auto;
+    width: auto;
+    object-fit: contain;
   }
 
   &__user {

@@ -1,3 +1,5 @@
+const metaModifier = window.navigator.platform.toLowerCase().indexOf("mac") >= 0 ? "metaKey" : "ctrlKey";
+
 export const Sidebar = {
   get outliner() {
     return cy.get(".lsf-outliner");
@@ -69,11 +71,11 @@ export const Sidebar = {
       // @link https://docs.cypress.io/api/commands/hover#Example-of-clicking-on-a-hidden-element
       .click({ force: true });
   },
-  toggleRegionSelection(selectorOrIndex: string | number) {
+  toggleRegionSelection(selectorOrIndex: string | number, withModifier = false) {
     const regionFinder =
       typeof selectorOrIndex === "number" ? this.findRegionByIndex.bind(this) : this.findRegion.bind(this);
 
-    regionFinder(selectorOrIndex).click();
+    regionFinder(selectorOrIndex).click({ [metaModifier]: withModifier });
   },
   collapseDetailsRightPanel() {
     cy.get(".lsf-sidepanels__wrapper_align_right .lsf-panel__toggle").should("be.visible").click();

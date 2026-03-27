@@ -1,130 +1,161 @@
-import { useCallback, useContext } from "react";
-import { Columns } from "../../../components";
+import { StorageProviderForm } from "@humansignal/app-common/blocks/StorageProviderForm";
+import { ff } from "@humansignal/core";
 import { Button } from "@humansignal/ui";
+import { useAtomValue } from "jotai";
+import { forwardRef, useCallback, useContext, useImperativeHandle } from "react";
+import { useTranslation } from "react-i18next";
+import { Columns } from "../../../components";
 import { confirm, modal } from "../../../components/Modal/Modal";
 import { Spinner } from "../../../components/Spinner/Spinner";
 import { ApiContext } from "../../../providers/ApiProvider";
 import { projectAtom } from "../../../providers/ProjectProvider";
+import { providers } from "./providers";
 import { StorageCard } from "./StorageCard";
 import { StorageForm } from "./StorageForm";
-import { useAtomValue } from "jotai";
-import { useStorageCard } from "./hooks/useStorageCard";
 
-export const StorageSet = ({ title, target, rootClass, buttonLabel }) => {
-  const api = useContext(ApiContext);
-  const project = useAtomValue(projectAtom);
-  const storageTypesQueryKey = ["storage-types", target];
-  const storagesQueryKey = ["storages", target, project?.id];
-
-  const {
-    storageTypes,
-    storageTypesLoading,
-    storageTypesLoaded,
-    reloadStorageTypes,
-    storages,
-    storagesLoading,
-    storagesLoaded,
-    reloadStoragesList,
-    loading,
-    loaded,
-    fetchStorages,
-  } = useStorageCard(target, project?.id);
-
-  const showStorageFormModal = useCallback(
-    (storage) => {
-      const action = storage ? "Edit" : "Add";
-      const actionTarget = target === "export" ? "Target" : "Source";
-      const title = `${action} ${actionTarget} Storage`;
-
-      const modalRef = modal({
-        title,
-        closeOnClickOutside: false,
-        style: { width: 760 },
-        body: (
-          <StorageForm
-            target={target}
-            storage={storage}
-            project={project.id}
-            rootClass={rootClass}
-            storageTypes={storageTypes}
-            onSubmit={async () => {
-              await fetchStorages();
-              modalRef.close();
-            }}
-          />
-        ),
-        footer: (
-          <>
-            <a
-              href="https://labelstud.io/guide/storage.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Learn more (Open in new tab)"
-            >
-              Learn more
-            </a>{" "}
-            about importing data and saving annotations to Cloud Storage.
-          </>
-        ),
-      });
+export const StorageSet = forwardRef(
+  (
+    {
+      title,
+      target,
+      rootClass,
+      buttonLabel,
+      // Props from parent for lifted state
+      storageTypes,
+      storages,
+      storagesLoaded,
+      loading,
+      loaded,
+      fetchStorages,
     },
-    [project, fetchStorages, target, rootClass],
-  );
+    ref,
+  ) => {
+    const api = useContext(ApiContext);
+    const project = useAtomValue(projectAtom);
 
-  const onEditStorage = useCallback(
-    async (storage) => {
-      showStorageFormModal(storage);
-    },
-    [showStorageFormModal],
-  );
+    const useNewStorageScreen = ff.isActive(ff.FF_NEW_STORAGES);
 
-  const onDeleteStorage = useCallback(
-    async (storage) => {
-      confirm({
-        title: "Deleting storage",
-        body: "This action cannot be undone. Are you sure?",
-        buttonLook: "destructive",
-        onOk: async () => {
-          const response = await api.callApi("deleteStorage", {
-            params: {
-              type: storage.type,
-              pk: storage.id,
-              target,
-            },
-          });
+    const showStorageFormModal = useCallback(
+      (storage) => {
+        const action = storage ? t("storage.edit") : t("storage.connect");
+        const actionTarget = target === "export" ? t("storage.target") : t("storage.source");
+        const modalTitle = `${action} ${actionTarget} ${t("storage.cloudStorage")}`;
 
-          if (response !== null) fetchStorages();
-        },
-      });
-    },
-    [fetchStorages],
-  );
+        const modalRef = modal({
+          title: modalTitle,
+          closeOnClickOutside: false,
+          style: { width: 840 },
+          bare: useNewStorageScreen,
+          onHidden: () => {
+            // Reset state when modal is closed (including Escape key)
+            // This ensures clean state for next modal open
+          },
+          body: useNewStorageScreen ? (
+            <StorageProviderForm
+              title={modalTitle}
+              target={target}
+              storage={storage}
+              project={project.id}
+              rootClass={rootClass}
+              storageTypes={storageTypes}
+              providers={providers}
+              onSubmit={async () => {
+                modalRef.close();
+                fetchStorages();
+              }}
+              onHide={() => {
+                // This will be called when the modal is closed via Escape key
+                // The state reset is handled inside StorageProviderForm
+              }}
+            />
+          ) : (
+            <StorageForm
+              target={target}
+              storage={storage}
+              project={project.id}
+              rootClass={rootClass}
+              storageTypes={storageTypes}
+              onSubmit={async () => {
+                await fetchStorages();
+                modalRef.close();
+              }}
+            />
+          ),
+        });
+      },
+      [project, fetchStorages, target, rootClass, t],
+    );
 
-  return (
-    <Columns.Column title={title}>
-      <div className={rootClass.elem("controls")}>
-        <Button onClick={() => showStorageFormModal()} disabled={loading} look="outlined" aria-label="Add storage">
-          {buttonLabel}
-        </Button>
-      </div>
+    const onEditStorage = useCallback(
+      async (storage) => {
+        showStorageFormModal(storage);
+      },
+      [showStorageFormModal],
+    );
 
-      {loading && !loaded ? (
-        <div className={rootClass.elem("empty")}>
-          <Spinner size={32} />
+    // Expose showStorageFormModal to parent via ref
+    useImperativeHandle(
+      ref,
+      () => ({
+        openAddModal: () => showStorageFormModal(),
+      }),
+      [showStorageFormModal],
+    );
+
+    const onDeleteStorage = useCallback(
+      async (storage) => {
+        confirm({
+          title: t("storage.deletingStorage"),
+          body: t("storage.deleteStorageConfirm"),
+          buttonLook: "negative",
+          onOk: async () => {
+            const response = await api.callApi("deleteStorage", {
+              params: {
+                type: storage.type,
+                pk: storage.id,
+                target,
+              },
+            });
+
+            if (response !== null) fetchStorages();
+          },
+        });
+      },
+      [fetchStorages, t],
+    );
+
+    return (
+      <Columns.Column title={title}>
+        <div className={rootClass.elem("controls")}>
+          <Button
+            onClick={() => showStorageFormModal()}
+            disabled={loading}
+            look="outlined"
+            data-testid={`add-${target === "export" ? "target" : "source"}-storage-button`}
+            aria-label={target === "export" ? t("storage.addTargetStorage") : t("storage.addSourceStorage")}
+          >
+            {buttonLabel}
+          </Button>
         </div>
-      ) : storagesLoaded && storages.length === 0 ? null : (
-        storages?.map?.((storage) => (
-          <StorageCard
-            key={storage.id}
-            storage={storage}
-            target={target}
-            rootClass={rootClass}
-            storageTypes={storageTypes}
-            onEditStorage={onEditStorage}
-            onDeleteStorage={onDeleteStorage}
-          />
-        ))
-      )}
-    </Columns.Column>
-  );
-};
+
+        {loading && !loaded ? (
+          <div className={rootClass.elem("empty")}>
+            <Spinner size={32} />
+          </div>
+        ) : storagesLoaded && storages.length === 0 ? null : (
+          storages?.map?.((storage) => (
+            <StorageCard
+              key={storage.id}
+              storage={storage}
+              target={target}
+              rootClass={rootClass}
+              storageTypes={storageTypes}
+              onEditStorage={onEditStorage}
+              onDeleteStorage={onDeleteStorage}
+            />
+          ))
+        )}
+      </Columns.Column>
+    );
+  },
+);

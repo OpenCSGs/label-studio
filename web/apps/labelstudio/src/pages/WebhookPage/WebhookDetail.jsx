@@ -1,29 +1,244 @@
+import { IconCross, IconPlus } from "@humansignal/icons";
+import { Button, Typography } from "@humansignal/ui";
+import cloneDeep from "lodash/cloneDeep";
 import { useEffect, useState } from "react";
-import { Button } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
 import { Form, Input, Label, Toggle } from "../../components/Form";
-import { Block, cn, Elem } from "../../utils/bem";
-import { cloneDeep } from "lodash";
-import { IconPlus, IconCross } from "@humansignal/icons";
 import { useAPI } from "../../providers/ApiProvider";
-import "./WebhookPage.scss";
-import { Space } from "../../components/Space/Space";
+import { cn } from "../../utils/bem";
 import { useProject } from "../../providers/ProjectProvider";
 import { WebhookDeleteModal } from "./WebhookDeleteModal";
-import { useTranslation } from "react-i18next";
+
+const WebhookForm = ({
+  webhook,
+  webhooksInfo,
+  fetchWebhooks,
+  onSelectActive,
+  onBack,
+  projectId,
+  headers,
+  onAddHeaderClick,
+  onHeaderRemove,
+  onHeaderChange,
+  sendForAllActions,
+  setSendForAllActions,
+  actions,
+  onActionChange,
+  isActive,
+  setIsActive,
+  sendPayload,
+  setSendPayload,
+  api,
+  rootClass,
+  t,
+}) => {
+  return (
+    <Form
+      action={webhook === null ? "createWebhook" : "updateWebhook"}
+      params={webhook === null ? {} : { pk: webhook.id }}
+      formData={webhook}
+      prepareData={(data) => {
+        return {
+          ...data,
+          project: projectId,
+          send_for_all_actions: sendForAllActions,
+          headers: Object.fromEntries(
+            headers.filter((header) => header.key !== "").map((header) => [header.key, header.value]),
+          ),
+          actions: Array.from(actions),
+          is_active: isActive,
+          send_payload: sendPayload,
+        };
+      }}
+      onSubmit={async (response) => {
+        if (!response.error_message) {
+          await fetchWebhooks();
+          onSelectActive(null);
+        }
+      }}
+    >
+      <Form.Row columnCount={1}>
+        <Label text={t("webhooks.payloadUrl")} large />
+        <div className="grid grid-cols-[1fr_135px] gap-tight">
+          <Input name="url" className="self-stretch w-auto" placeholder={t("webhooks.url")} />
+          <div className="grid grid-flow-col auto-cols-max items-center justify-end gap-tight self-center">
+            <span className="text-neutral-content">{t("webhooks.isActive")}</span>
+            <Toggle
+              skip
+              checked={isActive}
+              onChange={(e) => {
+                setIsActive(e.target.checked);
+              }}
+            />
+          </div>
+        </div>
+      </Form.Row>
+      <Form.Row columnCount={1}>
+        <div className="border border-neutral-border p-4 rounded-lg mb-4">
+          <div className="flex flex-col gap-tight">
+            <div className="flex items-center justify-between">
+              <Label text={t("webhooks.headers")} large />
+              <Button
+                type="button"
+                variant="primary"
+                look="string"
+                onClick={onAddHeaderClick}
+                className="!p-0 [&_span]:!text-[var(--grape_500)]"
+                leading={<IconPlus />}
+                tooltip={t("webhooks.addHeader")}
+              />
+            </div>
+            {headers.map((header, index) => {
+              return (
+                <div key={header.id} className="grid grid-cols-[1fr_1fr_40px] gap-tight">
+                  <Input
+                    skip
+                    placeholder="header"
+                    value={header.key}
+                    onChange={(e) => onHeaderChange("key", e, index)}
+                  />
+                  <Input
+                    skip
+                    placeholder="value"
+                    value={header.value}
+                    onChange={(e) => onHeaderChange("value", e, index)}
+                  />
+                  <div>
+                    <Button
+                      variant="negative"
+                      look="string"
+                      className="h-8 w-8 !p-0"
+                      type="button"
+                      icon={<IconCross />}
+                      onClick={() => onHeaderRemove(index)}
+                      tooltip={t("webhooks.removeHeader")}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Form.Row>
+      <div className="border border-neutral-border p-4 rounded-lg mb-4">
+        <div>
+          <Label text={t("webhooks.payload")} large />
+        </div>
+        <div>
+          <div className="my-2">
+            <Toggle
+              skip
+              checked={sendPayload}
+              onChange={(e) => {
+                setSendPayload(e.target.checked);
+              }}
+              label={t("webhooks.sendPayload")}
+            />
+          </div>
+          <div className="my-2">
+            <Toggle
+              skip
+              checked={sendForAllActions}
+              label={t("webhooks.sendForAllActions")}
+              onChange={(e) => {
+                setSendForAllActions(e.target.checked);
+              }}
+            />
+          </div>
+          <div>
+            {!sendForAllActions ? (
+              <div>
+                <h4 className="text-neutral-content">{t("webhooks.sendPayloadFor")}</h4>
+                <div>
+                  {Object.entries(webhooksInfo).map(([key, value]) => {
+                    return (
+                      <Form.Row key={key} columnCount={1}>
+                        <div>
+                          <Toggle
+                            skip
+                            name={key}
+                            type="checkbox"
+                            label={value.name}
+                            onChange={onActionChange}
+                            checked={actions.has(key)}
+                          />
+                        </div>
+                      </Form.Row>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 mt-base">
+        {webhook !== null && (
+          <Button
+            type="button"
+            variant="negative"
+            look="outlined"
+            aria-label={t("webhooks.deleteWebhookAria")}
+            onClick={() =>
+              WebhookDeleteModal({
+                onDelete: async () => {
+                  await api.callApi("deleteWebhook", {
+                    params: { pk: webhook.id },
+                  });
+                  onBack();
+                  await fetchWebhooks();
+                },
+              })
+            }
+          >
+            {t("webhooks.deleteWebhook")}
+          </Button>
+        )}
+        <div className={rootClass.elem("status")}>
+          <Form.Indicator />
+        </div>
+        <Button
+          variant="neutral"
+          look="outlined"
+          type="button"
+          className="ml-auto"
+          onClick={onBack}
+          aria-label={t("webhooks.cancel")}
+        >
+          {t("webhooks.cancel")}
+        </Button>
+        <Button
+          className={rootClass.elem("save-button")}
+          aria-label={webhook === null ? t("webhooks.addWebhook") : t("webhooks.saveChanges")}
+        >
+          {webhook === null ? t("webhooks.addWebhook") : t("webhooks.saveChanges")}
+        </Button>
+      </div>
+    </Form>
+  );
+};
 
 const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectActive }) => {
-  // if webhook === null - create mod
-  // else update
   const { t } = useTranslation();
   const rootClass = cn("webhook-detail");
 
   const api = useAPI();
-  const [headers, setHeaders] = useState(Object.entries(webhook?.headers || []));
+  const [headers, setHeaders] = useState(
+    webhook?.headers
+      ? Object.entries(webhook.headers).map(([key, value], index) => ({
+          id: `header-${Date.now()}-${index}`,
+          key,
+          value,
+        }))
+      : [],
+  );
   const [sendForAllActions, setSendForAllActions] = useState(webhook ? webhook.send_for_all_actions : true);
   const [actions, setActions] = useState(new Set(webhook?.actions));
   const [isActive, setIsActive] = useState(webhook ? webhook.is_active : true);
   const [sendPayload, setSendPayload] = useState(webhook ? webhook.send_payload : true);
+
   const { project } = useProject();
+
   const [projectId, setProjectId] = useState(project.id);
 
   useEffect(() => {
@@ -35,7 +250,14 @@ const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectA
   }, [project]);
 
   const onAddHeaderClick = () => {
-    setHeaders([...headers, ["", ""]]);
+    setHeaders([
+      ...headers,
+      {
+        id: `header-${Date.now()}-${Math.random()}`,
+        key: "",
+        value: "",
+      },
+    ]);
   };
   const onHeaderRemove = (index) => {
     const newHeaders = cloneDeep(headers);
@@ -47,10 +269,10 @@ const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectA
     const newHeaders = cloneDeep(headers);
 
     if (aim === "key") {
-      newHeaders[index][0] = event.target.value;
+      newHeaders[index].key = event.target.value;
     }
     if (aim === "value") {
-      newHeaders[index][1] = event.target.value;
+      newHeaders[index].value = event.target.value;
     }
     setHeaders(newHeaders);
   };
@@ -75,7 +297,13 @@ const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectA
       setSendPayload(true);
       return;
     }
-    setHeaders(Object.entries(webhook.headers));
+    setHeaders(
+      Object.entries(webhook.headers).map(([key, value], index) => ({
+        id: `header-${Date.now()}-${index}`,
+        key,
+        value,
+      })),
+    );
     setSendForAllActions(webhook.send_for_all_actions);
     setActions(new Set(webhook.actions));
     setIsActive(webhook.is_active);
@@ -83,207 +311,49 @@ const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectA
   }, [webhook]);
 
   if (projectId === undefined) return <></>;
+
   return (
-    <Block name="webhook">
-      <Elem name="title">
-        <>
-          <Elem
-            tag="span"
-            name="title-base"
-            onClick={() => {
-              onSelectActive(null);
-            }}
-          >
-            Webhooks
-          </Elem>{" "}
-          / {webhook === null ? "New Webhook" : "Edit Webhook"}
-        </>
-      </Elem>
-      <Elem name="content">
-        <Block name={"webhook-detail"}>
-          <Form
-            action={webhook === null ? "createWebhook" : "updateWebhook"}
-            params={webhook === null ? {} : { pk: webhook.id }}
-            formData={webhook}
-            prepareData={(data) => {
-              return {
-                ...data,
-                project: projectId,
-                send_for_all_actions: sendForAllActions,
-                headers: Object.fromEntries(headers.filter(([key]) => key !== "")),
-                actions: Array.from(actions),
-                is_active: isActive,
-                send_payload: sendPayload,
-              };
-            }}
-            onSubmit={async (response) => {
-              if (!response.error_message) {
-                await fetchWebhooks();
-                onSelectActive(null);
-              }
-            }}
-          >
-            <Form.Row columnCount={1}>
-              <Label text={t("webhooks.payloadUrl")} large />
-              <Space className={rootClass.elem("url-space")}>
-                <Input name="url" className={rootClass.elem("url-input")} placeholder={t("webhooks.url")} />
-                <Space align="end" className={rootClass.elem("activator")}>
-                  <span className={rootClass.elem("black-text")}>{t("webhooks.isActive")}</span>
-                  <Toggle
-                    skip
-                    checked={isActive}
-                    onChange={(e) => {
-                      setIsActive(e.target.checked);
-                    }}
-                  />
-                </Space>
-              </Space>
-            </Form.Row>
-            <Form.Row columnCount={1}>
-              <div className={rootClass.elem("headers")}>
-                <div className={rootClass.elem("headers-content")}>
-                  <Space spread className={rootClass.elem("headers-control")}>
-                    <Label text="Headers" large />
-                    <Button
-                      type="button"
-                      onClick={onAddHeaderClick}
-                      look="string"
-                      className={rootClass.elem("headers-add")}
-                      size="small"
-                    >
-                      <IconPlus className="!h-3" />
-                    </Button>
-                  </Space>
-                  {headers.map(([headKey, headValue], index) => {
-                    return (
-                      <Space key={index} className={rootClass.elem("headers-row")} columnCount={3}>
-                        <Input
-                          className={rootClass.elem("headers-input")}
-                          skip
-                          placeholder="header"
-                          value={headKey}
-                          onChange={(e) => onHeaderChange("key", e, index)}
-                        />
-                        <Input
-                          className={rootClass.elem("headers-input")}
-                          skip
-                          placeholder="value"
-                          value={headValue}
-                          onChange={(e) => onHeaderChange("value", e, index)}
-                        />
-                        <div>
-                          <Button
-                            className={rootClass.elem("headers-remove")}
-                            type="button"
-                            look="string"
-                            icon={<IconCross />}
-                            onClick={() => onHeaderRemove(index)}
-                          />
-                        </div>
-                      </Space>
-                    );
-                  })}
-                </div>
-              </div>
-            </Form.Row>
-            <Block name="webhook-payload">
-              <Elem name="title">
-                <Label text="Payload" large />
-              </Elem>
-              <Elem name="content">
-                <Elem name="content-row">
-                  <Toggle
-                    skip
-                    checked={sendPayload}
-                    onChange={(e) => {
-                      setSendPayload(e.target.checked);
-                    }}
-                    label="Send payload"
-                  />
-                </Elem>
-                <Elem name="content-row">
-                  <Toggle
-                    skip
-                    checked={sendForAllActions}
-                    label="Send for all actions"
-                    onChange={(e) => {
-                      setSendForAllActions(e.target.checked);
-                    }}
-                  />
-                </Elem>
-                <div>
-                  {!sendForAllActions ? (
-                    <Elem name="content-row-actions">
-                      <Elem tag="h4" name="title" mod={{ black: true }}>
-                        Send Payload for
-                      </Elem>
-                      <Elem name="actions">
-                        {Object.entries(webhooksInfo).map(([key, value]) => {
-                          return (
-                            <Form.Row key={key} columnCount={1}>
-                              <div>
-                                <Toggle
-                                  skip
-                                  name={key}
-                                  type="checkbox"
-                                  label={value.name}
-                                  onChange={onActionChange}
-                                  checked={actions.has(key)}
-                                />
-                              </div>
-                            </Form.Row>
-                          );
-                        })}
-                      </Elem>
-                    </Elem>
-                  ) : null}
-                </div>
-              </Elem>
-            </Block>
-            <Elem name="controls">
-              {webhook === null ? null : (
-                <Button
-                  look="danger"
-                  type="button"
-                  className={rootClass.elem("delete-button")}
-                  onClick={() =>
-                    WebhookDeleteModal({
-                      onDelete: async () => {
-                        await api.callApi("deleteWebhook", { params: { pk: webhook.id } });
-                        onBack();
-                        await fetchWebhooks();
-                      },
-                    })
-                  }
-                >
-                  Delete Webhook
-                </Button>
-              )}
-              <Space>
-                <div className={rootClass.elem("status")}>
-                  <Form.Indicator />
-                </div>
-                <Button
-                  type="button"
-                  look="outlined"
-                  className={rootClass.elem("cancel-button")}
-                  onClick={onBack}
-                  aria-label="Cancel webhook edit"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className={rootClass.elem("save-button")}
-                  aria-label={webhook === null ? "Add webhook" : "Save webhook"}
-                >
-                  {webhook === null ? "Add Webhook" : "Save"}
-                </Button>
-              </Space>
-            </Elem>
-          </Form>
-        </Block>
-      </Elem>
-    </Block>
+    <>
+      <header className="page-header flex items-center gap-2">
+        <Typography
+          as="a"
+          variant="headline"
+          size="medium"
+          onClick={() => onSelectActive(null)}
+          className="cursor-pointer text-neutral-content-subtler hover:text-neutral-content-subtle"
+        >
+          {t("webhooks.title")}
+        </Typography>
+        <Typography variant="headline" size="medium" className="text-neutral-content-subtler">
+          / {webhook === null ? t("webhooks.newWebhook") : t("webhooks.editWebhook")}
+        </Typography>
+      </header>
+      <div className="mt-base">
+        <WebhookForm
+          webhook={webhook}
+          webhooksInfo={webhooksInfo}
+          fetchWebhooks={fetchWebhooks}
+          onSelectActive={onSelectActive}
+          onBack={onBack}
+          projectId={projectId}
+          headers={headers}
+          onAddHeaderClick={onAddHeaderClick}
+          onHeaderRemove={onHeaderRemove}
+          onHeaderChange={onHeaderChange}
+          sendForAllActions={sendForAllActions}
+          setSendForAllActions={setSendForAllActions}
+          actions={actions}
+          onActionChange={onActionChange}
+          isActive={isActive}
+          setIsActive={setIsActive}
+          sendPayload={sendPayload}
+          setSendPayload={setSendPayload}
+          api={api}
+          rootClass={rootClass}
+          t={t}
+        />
+      </div>
+    </>
   );
 };
 

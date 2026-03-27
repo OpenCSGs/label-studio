@@ -1,8 +1,8 @@
 import { forwardRef, useCallback, useMemo } from "react";
 import { cn } from "../../utils/bem";
-import { useDropdown } from "../Dropdown/Dropdown";
+import { useDropdown } from "@humansignal/ui";
 import "./Menu.scss";
-import { Block, Elem, MenuContext } from "./MenuContext";
+import { MenuContext } from "./MenuContext";
 import { MenuItem } from "./MenuItem";
 
 export const Menu = forwardRef(
@@ -30,26 +30,23 @@ export const Menu = forwardRef(
 
     return (
       <MenuContext.Provider value={{ selected }}>
-        <Block
+        <ul
           ref={ref}
-          tag="ul"
-          name="main-menu"
-          mod={{ size, collapsed, contextual }}
-          mix={className}
+          className={cn("main-menu").mod({ size, collapsed, contextual }).mix(className).toClassName()}
           style={style}
           onClick={clickHandler}
         >
           {children}
-        </Block>
+        </ul>
       </MenuContext.Provider>
     );
   },
 );
 
 Menu.Item = MenuItem;
-Menu.Spacer = () => <Elem block="main-menu" tag="li" name="spacer" />;
-Menu.Divider = () => <Elem block="main-menu" tag="li" name="divider" />;
-Menu.Builder = (url, menuItems) => {
+Menu.Spacer = () => <li className={cn("main-menu").elem("spacer").toClassName()} />;
+Menu.Divider = () => <li className={cn("main-menu").elem("divider").toClassName()} />;
+Menu.Builder = (url, menuItems, t) => {
   return (menuItems ?? []).map((item, index) => {
     if (item === "SPACER") return <Menu.Spacer key={index} />;
     if (item === "DIVIDER") return <Menu.Divider key={index} />;
@@ -59,9 +56,13 @@ Menu.Builder = (url, menuItems) => {
 
     if (Array.isArray(item)) {
       [pagePath, pageLabel] = item;
+      if (t && typeof pageLabel === "string" && pageLabel.startsWith("i18n:")) {
+        pageLabel = t(pageLabel.slice(4));
+      }
     } else {
-      const { menuItem, title, path } = item;
-      pageLabel = title ?? menuItem;
+      const { menuItem, title, path, titleKey, menuItemKey } = item;
+      const rawLabel = title ?? menuItem;
+      pageLabel = t && (titleKey ?? menuItemKey) ? t(titleKey ?? menuItemKey) : rawLabel;
       pagePath = path;
     }
 
@@ -85,11 +86,9 @@ Menu.Builder = (url, menuItems) => {
 
 Menu.Group = ({ children, title, className, style }) => {
   return (
-    <Block name="menu-group" mix={className} style={style}>
-      <Elem name="title">{title}</Elem>
-      <Elem tag="ul" name="list">
-        {children}
-      </Elem>
-    </Block>
+    <div className={cn("menu-group").mix(className).toClassName()} style={style}>
+      <div className={cn("menu-group").elem("title").toClassName()}>{title}</div>
+      <ul className={cn("menu-group").elem("list").toClassName()}>{children}</ul>
+    </div>
   );
 };

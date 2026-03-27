@@ -12,7 +12,7 @@ export const Spinner = injector(({ SDK, visible = true, ...props }) => {
   const size = React.useMemo(() => {
     switch (props.size) {
       case "large":
-        return SDK?.spinnerSize?.large ?? 60;
+        return SDK?.spinnerSize?.large ?? 128;
       case "middle":
         return SDK?.spinnerSize?.middle ?? 48;
       case "small":
@@ -22,9 +22,7 @@ export const Spinner = injector(({ SDK, visible = true, ...props }) => {
     }
   }, [props.size]);
 
-  const source = React.useMemo(() => {
-    return Running.full;
-  }, [props.size]);
+  const source = Running.default;
 
   const videoStyles = {
     width: "100%",

@@ -1,40 +1,46 @@
 import { formatDistance } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Userpic } from "@humansignal/ui";
+import { useAuth } from "@humansignal/core/providers/AuthProvider";
 import { Pagination, Spinner } from "../../../components";
 import { usePage, usePageSize } from "../../../components/Pagination/Pagination";
 import { useAPI } from "../../../providers/ApiProvider";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import "./PeopleList.scss";
 import { CopyableTooltip } from "../../../components/CopyableTooltip/CopyableTooltip";
-import { useTranslation } from "react-i18next";
 
 export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
   const { t } = useTranslation();
   const api = useAPI();
+  const { user } = useAuth();
   const [usersList, setUsersList] = useState();
   const [currentPage] = usePage("page", 1);
   const [currentPageSize] = usePageSize("page_size", 30);
   const [totalItems, setTotalItems] = useState(0);
 
-  console.log({ currentPage, currentPageSize });
+  const orgId = user?.active_organization;
 
-  const fetchUsers = useCallback(async (page, pageSize) => {
-    const response = await api.callApi("memberships", {
-      params: {
-        pk: 1,
-        contributed_to_projects: 1,
-        page,
-        page_size: pageSize,
-      },
-    });
+  const fetchUsers = useCallback(
+    async (page, pageSize) => {
+      if (!orgId) return;
+      const response = await api.callApi("memberships", {
+        params: {
+          pk: orgId,
+          contributed_to_projects: 1,
+          page,
+          page_size: pageSize,
+        },
+      });
 
-    if (response.results) {
-      setUsersList(response.results);
-      setTotalItems(response.count);
-    }
-  }, []);
+      if (response?.results) {
+        setUsersList(response.results);
+        setTotalItems(response.count ?? 0);
+      }
+    },
+    [api, orgId],
+  );
 
   const selectUser = useCallback(
     (user) => {
@@ -48,8 +54,8 @@ export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
   );
 
   useEffect(() => {
-    fetchUsers(currentPage, currentPageSize);
-  }, []);
+    if (orgId) fetchUsers(currentPage, currentPageSize);
+  }, [orgId, fetchUsers, currentPage, currentPageSize]);
 
   useEffect(() => {
     if (isDefined(defaultSelected) && usersList) {
@@ -61,53 +67,49 @@ export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
 
   return (
     <>
-      <Block name="people-list">
-        <Elem name="wrapper">
+      <div className={cn("people-list").toClassName()}>
+        <div className={cn("people-list").elem("wrapper").toClassName()}>
           {usersList ? (
-            <Elem name="users">
-              <Elem name="header">
-                <Elem name="column" mix="avatar" />
-                <Elem name="column" mix="email">
-                  {t("organization.email")}
-                </Elem>
-                <Elem name="column" mix="name">
-                  {t("organization.name")}
-                </Elem>
-                <Elem name="column" mix="last-activity">
-                  {t("organization.lastActivity")}
-                </Elem>
-              </Elem>
-              <Elem name="body">
+            <div className={cn("people-list").elem("users").toClassName()}>
+              <div className={cn("people-list").elem("header").toClassName()}>
+                <div className={cn("people-list").elem("column").mix("avatar").toClassName()} />
+                <div className={cn("people-list").elem("column").mix("email").toClassName()}>{t("organization.email")}</div>
+                <div className={cn("people-list").elem("column").mix("name").toClassName()}>{t("organization.name")}</div>
+                <div className={cn("people-list").elem("column").mix("last-activity").toClassName()}>{t("organization.lastActivity")}</div>
+              </div>
+              <div className={cn("people-list").elem("body").toClassName()}>
                 {usersList.map(({ user }) => {
                   const active = user.id === selectedUser?.id;
 
                   return (
-                    <Elem key={`user-${user.id}`} name="user" mod={{ active }} onClick={() => selectUser(user)}>
-                      <Elem name="field" mix="avatar">
+                    <div
+                      key={`user-${user.id}`}
+                      className={cn("people-list").elem("user").mod({ active }).toClassName()}
+                      onClick={() => selectUser(user)}
+                    >
+                      <div className={cn("people-list").elem("field").mix("avatar").toClassName()}>
                         <CopyableTooltip title={`${t("organization.userId")}: ${user.id}`} textForCopy={user.id}>
                           <Userpic user={user} style={{ width: 28, height: 28 }} />
                         </CopyableTooltip>
-                      </Elem>
-                      <Elem name="field" mix="email">
-                        {user.email}
-                      </Elem>
-                      <Elem name="field" mix="name">
-                        {user.user_name}
-                      </Elem>
-                      <Elem name="field" mix="last-activity">
+                      </div>
+                      <div className={cn("people-list").elem("field").mix("email").toClassName()}>{user.email}</div>
+                      <div className={cn("people-list").elem("field").mix("name").toClassName()}>
+                        {user.first_name} {user.last_name}
+                      </div>
+                      <div className={cn("people-list").elem("field").mix("last-activity").toClassName()}>
                         {formatDistance(new Date(user.last_activity), new Date(), { addSuffix: true })}
-                      </Elem>
-                    </Elem>
+                      </div>
+                    </div>
                   );
                 })}
-              </Elem>
-            </Elem>
+              </div>
+            </div>
           ) : (
-            <Elem name="loading">
+            <div className={cn("people-list").elem("loading").toClassName()}>
               <Spinner size={36} />
-            </Elem>
+            </div>
           )}
-        </Elem>
+        </div>
         <Pagination
           page={currentPage}
           urlParamName="page"
@@ -117,7 +119,7 @@ export const PeopleList = ({ onSelect, selectedUser, defaultSelected }) => {
           onPageLoad={fetchUsers}
           style={{ paddingTop: 16 }}
         />
-      </Block>
+      </div>
     </>
   );
 };

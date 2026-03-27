@@ -1,13 +1,13 @@
-import { Block } from "apps/labelstudio/src/components/Menu/MenuContext";
-import { Input } from "../../../components/Form";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Space } from "@humansignal/ui/lib/space/space";
-import { API } from "apps/labelstudio/src/providers/ApiProvider";
-import { atomWithQuery } from "jotai-tanstack-query";
-import { useAtomValue } from "jotai";
-import { Modal } from "apps/labelstudio/src/components/Modal/ModalPopup";
 import { Button, Typography } from "@humansignal/ui";
 import { useTranslation } from "react-i18next";
+import { Space } from "@humansignal/ui/lib/space/space";
+import { cn } from "apps/labelstudio/src/utils/bem";
+import { Modal } from "apps/labelstudio/src/components/Modal/ModalPopup";
+import { API } from "apps/labelstudio/src/providers/ApiProvider";
+import { useAtomValue } from "jotai";
+import { atomWithQuery } from "jotai-tanstack-query";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Input } from "../../../components/Form";
 
 const linkAtom = atomWithQuery(() => ({
   queryKey: ["invite-link"],
@@ -28,7 +28,6 @@ export function InviteLink({
   onOpened?: () => void;
   onClosed?: () => void;
 }) {
-  const { t } = useTranslation();
   const modalRef = useRef<Modal>();
   useEffect(() => {
     if (modalRef.current && opened) {
@@ -38,10 +37,11 @@ export function InviteLink({
     }
   }, [opened]);
 
+  const { t } = useTranslation();
   return (
     <Modal
       ref={modalRef}
-      title={t("organization.invitePeople")}
+      title={t("organization.inviteMembers")}
       opened={opened}
       bareFooter={true}
       body={<InvitationModal />}
@@ -57,24 +57,27 @@ const InvitationModal = () => {
   const { t } = useTranslation();
   const { data: link } = useAtomValue(linkAtom);
   return (
-    <Block name="invite">
+    <div className={cn("invite").toClassName()}>
       <Input value={link} style={{ width: "100%" }} readOnly />
       <Typography size="small" className="text-neutral-content-subtler mt-base mb-wider">
-        {t("organization.invitePeopleDescription")}{" "}
+        Invite members to join your Label Studio instance. People that you invite have full access to all of your
+        projects.{" "}
         <a
           href="https://labelstud.io/guide/signup.html"
           target="_blank"
           rel="noreferrer"
           className="hover:underline"
           onClick={() =>
-            __lsa("docs.organization.add_people.learn_more", { href: "https://labelstud.io/guide/signup.html" })
+            __lsa("docs.organization.add_people.learn_more", {
+              href: "https://labelstud.io/guide/signup.html",
+            })
           }
         >
           {t("organization.learnMore")}
         </a>
         .
       </Typography>
-    </Block>
+    </div>
   );
 };
 
@@ -86,7 +89,13 @@ const InvitationFooter = () => {
   return (
     <Space spread>
       <Space>
-        <Button look="outlined" style={{ width: 170 }} onClick={() => refetch()} aria-label={t("organization.refreshInviteLink")}>
+        <Button
+          variant="negative"
+          look="outlined"
+          style={{ width: 170 }}
+          onClick={() => refetch()}
+          aria-label={t("organization.refreshInviteLink")}
+        >
           {t("organization.resetLink")}
         </Button>
       </Space>

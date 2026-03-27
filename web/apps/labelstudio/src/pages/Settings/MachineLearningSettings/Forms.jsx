@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@humansignal/ui";
 import { ErrorWrapper } from "../../../components/Error/Error";
 import { InlineError } from "../../../components/Error/InlineError";
@@ -23,20 +24,20 @@ const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
       <Input type="hidden" name="project" value={project.id} />
 
       <Form.Row columnCount={1}>
-        <Input name="title" label="Name" placeholder="Enter a name" required />
+        <Input name="title" label={t("machineLearning.name")} placeholder={t("machineLearning.enterName")} required />
       </Form.Row>
 
       <Form.Row columnCount={1}>
-        <Input name="url" label="Backend URL" required />
+        <Input name="url" label={t("machineLearning.backendUrl")} required />
       </Form.Row>
 
       <Form.Row columnCount={2}>
         <Select
           name="auth_method"
-          label="Select authentication method"
+          label={t("machineLearning.selectAuthMethod")}
           options={[
-            { label: "No Authentication", value: "NONE" },
-            { label: "Basic Authentication", value: "BASIC_AUTH" },
+            { label: t("machineLearning.noAuthentication"), value: "NONE" },
+            { label: t("machineLearning.basicAuthentication"), value: "BASIC_AUTH" },
           ]}
           value={selectedAuthMethod}
           onChange={setAuthMethod}
@@ -57,7 +58,7 @@ const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
       <Form.Row columnCount={1}>
         <TextArea
           name="extra_params"
-          label="Any extra params to pass during model connection"
+          label={t("machineLearning.extraParams")}
           style={{ minHeight: 120 }}
         />
       </Form.Row>
@@ -65,14 +66,14 @@ const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
       <Form.Row columnCount={1}>
         <Toggle
           name="is_interactive"
-          label="Interactive preannotations"
-          description="If enabled some labeling tools will send requests to the ML Backend interactively during the annotation process."
+          label={t("machineLearning.interactivePreannotations")}
+          description={t("machineLearning.interactivePreannotationsDescription")}
         />
       </Form.Row>
 
       <Form.Actions>
-        <Button type="submit" look="primary" onClick={() => setMLError(null)} aria-label="Save machine learning form">
-          Validate and Save
+        <Button type="submit" look="primary" onClick={() => setMLError(null)} aria-label={t("machineLearning.validateAndSave")}>
+          {t("machineLearning.validateAndSave")}
         </Button>
       </Form.Actions>
 
@@ -83,7 +84,7 @@ const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
               <ErrorWrapper
                 error={{
                   response: {
-                    detail: `Failed to ${backend ? "save" : "add new"} ML backend.`,
+                    detail: backend ? t("machineLearning.failedToSaveMlBackend") : t("machineLearning.failedToAddMlBackend"),
                     exc_info: response.error_message,
                   },
                 }}

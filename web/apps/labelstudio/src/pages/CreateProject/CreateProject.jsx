@@ -1,11 +1,9 @@
-import { EnterpriseBadge, Select, Typography } from "@humansignal/ui";
 import React from "react";
 import { useHistory } from "react-router";
 import { ToggleItems } from "../../components";
 import { Button } from "@humansignal/ui";
 import { Modal } from "../../components/Modal/Modal";
 import { Space } from "../../components/Space/Space";
-import { HeidiTips } from "../../components/HeidiTips/HeidiTips";
 import { useAPI } from "../../providers/ApiProvider";
 import { cn } from "../../utils/bem";
 import { ConfigPage } from "./Config/Config";
@@ -14,8 +12,6 @@ import { ImportPage } from "./Import/Import";
 import { useImportPage } from "./Import/useImportPage";
 import { useDraftProject } from "./utils/useDraftProject";
 import { Input, TextArea } from "../../components/Form";
-import { FF_LSDV_E_297, isFF } from "../../utils/feature-flags";
-import { createURL } from "../../components/HeidiTips/utils";
 import { useTranslation } from "react-i18next";
 
 const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => {
@@ -57,33 +53,6 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
           className="project-description w-full"
         />
       </div>
-      {isFF(FF_LSDV_E_297) && (
-        <div className="w-full flex flex-col gap-2">
-          <label>
-            {t("createProject.workspace")}
-            <EnterpriseBadge className="ml-2" />
-          </label>
-          <Select placeholder={t("settings.selectAnOption")} disabled options={[]} triggerClassName="!flex-1" />
-          <Typography size="small" className="mt-tight mb-wider">
-            {t("createProject.simplifyProjectManagement")}{" "}
-            <a
-              href={createURL(
-                "https://docs.humansignal.com/guide/manage_projects#Create-workspaces-to-organize-projects",
-                {
-                  experiment: "project_creation_dropdown",
-                  treatment: "simplify_project_management",
-                },
-              )}
-              target="_blank"
-              rel="noreferrer"
-              className="underline hover:no-underline"
-            >
-              {t("createProject.learnMore")}
-            </a>
-          </Typography>
-          <HeidiTips collection="projectCreation" />
-        </div>
-      )}
     </form>
   );
 };
@@ -142,6 +111,16 @@ export const CreateProject = ({ onClose }) => {
   );
 
   const onCreate = React.useCallback(async () => {
+    // First, persist project with label_config so import/reimport validates against it
+    const response = await api.callApi("updateProject", {
+      params: {
+        pk: project.id,
+      },
+      body: { ...projectBody, is_draft: false },
+    });
+
+    if (response === null) return;
+
     const imported = await finishUpload();
 
     if (!imported) return;
@@ -151,18 +130,10 @@ export const CreateProject = ({ onClose }) => {
     if (sample) await uploadSample(sample);
 
     __lsa("create_project.create", { sample: sample?.url });
-    const response = await api.callApi("updateProject", {
-      params: {
-        pk: project.id,
-      },
-      body: projectBody,
-    });
 
     setWaitingStatus(false);
 
-    if (response !== null) {
-      history.push(`/projects/${response.id}/data`);
-    }
+    history.push(`/projects/${response.id}/data`);
   }, [project, projectBody, finishUpload]);
 
   const onSaveName = async () => {
@@ -209,7 +180,6 @@ export const CreateProject = ({ onClose }) => {
             <Button
               variant="negative"
               look="outlined"
-              size="small"
               onClick={onDelete}
               waiting={waiting}
               aria-label={t("createProject.cancelProjectCreation")}
@@ -218,9 +188,9 @@ export const CreateProject = ({ onClose }) => {
             </Button>
             <Button
               look="primary"
-              size="small"
               onClick={onCreate}
               waiting={waiting || uploading}
+              waitingClickable={false}
               disabled={!project || uploadDisabled || error}
             >
               {t("createProject.save")}

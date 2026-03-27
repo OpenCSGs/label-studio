@@ -35,7 +35,16 @@
     "label": "标注",
     "accountSettings": "账户与设置",
     "logOut": "退出登录",
-    "newProject": "新项目"
+    "newProject": "新项目",
+    "api": "API",
+    "docs": "文档",
+    "github": "GitHub",
+    "slackCommunity": "Slack 社区",
+    "checkNotificationSettings": "请在账户与设置页面查看新的通知设置",
+    "themeAuto": "自动",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeBeta": "测试版"
   },
   "projects": {
     "title": "项目",
@@ -61,7 +70,9 @@
     "viewAll": "查看全部",
     "cantLoadProjects": "无法加载项目",
     "createFirstProject": "创建您的第一个项目",
-    "createFirstProjectDescription": "导入您的数据并设置标注界面以开始标注"
+    "createFirstProjectDescription": "导入您的数据并设置标注界面以开始标注",
+    "resources": "资源",
+    "resourcesDescription": "学习、探索和获取帮助"
   },
   "organization": {
     "title": "组织",
@@ -85,7 +96,17 @@
     "closeUserDetails": "关闭用户详情",
     "createdProjects": "创建的项目",
     "contributedTo": "参与的项目",
-    "lastActivityOn": "最后活动时间"
+    "lastActivityOn": "最后活动时间",
+    "addMembers": "添加成员",
+    "apiTokenSettingsSaved": "API 令牌设置已保存",
+    "inviteMembers": "邀请成员",
+    "personalAccessTokens": "个人访问令牌",
+    "personalAccessTokensDesc": "启用增强的令牌认证安全性",
+    "legacyTokens": "传统令牌",
+    "legacyTokensDesc": "启用传统访问令牌，永不过期",
+    "tokenTTL": "有效期（可选，仅限个人访问令牌）",
+    "tokenTTLDesc": "令牌创建后的有效天数。超过此时间后，用户需要创建新的访问令牌。",
+    "saveChanges": "保存更改"
   },
   "settings": {
     "title": "设置",
@@ -109,6 +130,7 @@
     "labelingInterface": "标注界面",
     "annotationSettings": "标注设置",
     "labelingInstructions": "标注说明",
+    "instructions": "说明",
     "labelingInstructionsDescription": "编写说明以帮助用户完成标注任务。",
     "labelingInstructionsHtml": "说明字段支持HTML标记，并允许使用图像、iframe（pdf）。",
     "showBeforeLabeling": "在标注前显示",
@@ -128,6 +150,14 @@
     "dropAllTabsHelp": "如果数据管理器无法加载，删除所有数据管理器标签页可能会有所帮助。",
     "deleteProject": "删除项目",
     "deleteProjectHelp": "删除项目将从数据库中删除所有任务、标注和项目数据。",
+    "typeToProceed": "要继续操作，请在下方输入 \"{{word}}\"：",
+    "cancel": "取消",
+    "cacheResetSuccess": "缓存重置成功",
+    "tabsDroppedSuccess": "所有标签页已删除",
+    "projectDeletedSuccess": "项目已删除",
+    "resetCacheMessage": "您即将重置 {{title}} 的缓存。此操作无法撤销。",
+    "dropTabsMessage": "您即将删除 {{title}} 的所有标签页。此操作无法撤销。",
+    "deleteProjectMessage": "您即将删除项目 {{title}}。此操作无法撤销。",
     "deleteAnnotations": "删除 {{count}} 个标注",
     "deleteTasks": "删除 {{count}} 个任务",
     "deletePredictions": "删除 {{count}} 个预测",
@@ -138,8 +168,24 @@
     "selectAnOption": "选择一个选项",
     "importedFileTooBig": "导入的文件太大"
   },
+  "predictions": {
+    "title": "预测",
+    "predictionsList": "预测列表",
+    "predictionsListDescription": "项目中可用的预测列表。每个卡片与单独的模型版本关联。要了解如何导入预测，请参阅文档。",
+    "noPredictionsYet": "尚未上传预测",
+    "noPredictionsDescription": "上传预测以自动预标注您的数据并加速标注。从多个模型版本导入预测以比较其性能，或从模型页面连接实时模型以按需生成预测。",
+    "deletePredictions": "删除预测",
+    "deletePredictionsConfirm": "此操作无法撤销。您确定吗？",
+    "lastPredictionCreated": "最后创建的预测",
+    "modelVersionUndefined": "模型版本未定义。可能意味着导入预测时缺少 model_version 字段。",
+    "noModelOrPredictions": "没有可用的模型或预测",
+    "selectModelOrPredictions": "选择要使用的预测或模型：",
+    "selectPlaceholder": "请选择模型或预测",
+    "modelsGroup": "模型",
+    "predictionsGroup": "预测"
+  },
   "webhooks": {
-    "title": "Webhooks",
+    "title": "Webhook",
     "addWebhook": "添加Webhook",
     "edit": "编辑",
     "delete": "删除",
@@ -148,7 +194,30 @@
     "payloadUrl": "有效载荷URL",
     "url": "URL",
     "isActive": "是否激活",
-    "created": "创建于"
+    "created": "创建于",
+    "addFirstWebhook": "添加您的第一个webhook",
+    "webhookDescription": "使用 Webhooks 设置订阅特定事件的集成。当事件触发时，Label Studio 会向配置的 webhook URL 发送 HTTP POST 请求。",
+    "contactAdminForWebhooks": "请联系管理员创建 Webhooks",
+    "newWebhook": "新建 Webhook",
+    "saveChanges": "保存更改",
+    "cancel": "取消",
+    "headers": "请求头",
+    "headerPlaceholder": "header",
+    "addHeader": "添加请求头",
+    "deleteWebhookAria": "删除 webhook",
+    "removeHeader": "移除请求头",
+    "payload": "有效载荷",
+    "sendPayload": "发送有效载荷",
+    "sendForAllActions": "对所有操作发送",
+    "sendPayloadFor": "发送有效载荷用于",
+    "deleteWebhook": "删除 Webhook",
+    "webhookSetupDescription": "使用 Webhooks 设置订阅特定事件的集成。当事件触发时，{appName} 会向配置的 webhook URL 发送 HTTP POST 请求。",
+    "learnMoreAria": "了解更多关于 webhooks 的信息（在新窗口中打开）",
+    "webhooksSettings": "Webhooks 设置",
+    "deleteConfirmTitle": "删除",
+    "deleteConfirmBody": "您确定要删除此 webhook 吗？此操作无法撤销。",
+    "cancelDeletion": "取消 webhook 删除",
+    "confirmDeletion": "确认删除 webhook"
   },
   "storage": {
     "edit": "编辑",
@@ -156,7 +225,44 @@
     "storageOptions": "存储选项",
     "syncStorage": "同步存储",
     "syncingMayTakeTime": "同步可能需要一些时间，请刷新页面以查看当前状态。",
-    "untitled": "未命名"
+    "untitled": "未命名",
+    "cloudStorage": "云存储",
+    "cloudStorageDescription": "使用云或数据库存储作为标注任务的来源或已完成标注的目标。",
+    "sourceCloudStorage": "源云存储",
+    "targetCloudStorage": "目标云存储",
+    "addSourceStorage": "添加源存储",
+    "addTargetStorage": "添加目标存储",
+    "addFirstCloudStorage": "添加您的第一个云存储",
+    "amazonS3": "Amazon S3",
+    "googleCloudStorage": "Google Cloud Storage",
+    "azureBlobStorage": "Azure Blob Storage",
+    "redisStorage": "Redis Storage",
+    "storageSyncErrorLog": "存储同步错误日志",
+    "seeDocs": "查看文档",
+    "troubleshootingTips": "获取云存储连接故障排除提示。",
+    "close": "关闭",
+    "copy": "复制",
+    "copied": "已复制！",
+    "initialized": "已初始化",
+    "queued": "已排队",
+    "inProgress": "进行中",
+    "failed": "失败",
+    "completedWithErrors": "完成但有错误",
+    "completed": "已完成",
+    "notSyncedYet": "尚未同步",
+    "viewLogs": "（查看日志）",
+    "storageType": "存储类型",
+    "successfullyConnected": "连接成功！",
+    "connectionFailed": "连接失败",
+    "checkConnection": "检查连接",
+    "saveStorage": "保存存储设置",
+    "addStorage": "添加存储",
+    "addStorageButton": "添加存储",
+    "deletingStorage": "正在删除存储",
+    "deleteStorageConfirm": "此操作无法撤销。您确定吗？",
+    "connect": "连接",
+    "source": "源",
+    "target": "目标"
   },
   "machineLearning": {
     "edit": "编辑",
@@ -171,15 +277,39 @@
     "training": "训练中",
     "predicting": "预测中",
     "created": "创建于",
+    "model": "模型",
+    "modelSettings": "模型设置",
     "modelOptions": "机器学习模型选项",
+    "learnMoreAria": "了解更多关于机器学习模型的信息（在新窗口中打开）",
     "connectedModelDetected": "已检测到连接的模型！如果您希望从此模型获取预测，请按照以下步骤操作：",
     "navigateToDataManager": "1. 导航到数据管理器。",
     "selectDesiredTasks": "2. 选择所需的任务。",
     "clickBatchPredictions": "3. 从操作菜单中点击批量预测。",
-    "useModelPredictionsForPrelabeling": "如果您想使用模型预测进行预标注，请在",
-    "annotationSettings": "标注设置"
+    "useModelPredictionsForPrelabeling": "如果您想使用模型预测进行预标注，请在<link>标注设置</link>中配置。",
+    "annotationSettings": "标注设置",
+    "connectModel": "连接模型",
+    "letsConnectFirstModel": "连接您的第一个模型",
+    "connectModelDescription": "连接机器学习模型以生成实时预测。比较预测结果，通过自动预标注加速标注，并通过主动学习将团队引导至最有影响力的任务。",
+    "configuration": "配置",
+    "startTrainingOnAnnotation": "提交标注时开始模型训练",
+    "startTrainingOnAnnotationDescription": "此选项将向 /train 发送包含标注信息的请求。您可以使用此功能启用主动学习循环。您也可以通过模型卡片中的菜单手动开始训练。",
+    "name": "名称",
+    "enterName": "输入名称",
+    "backendUrl": "后端 URL",
+    "selectAuthMethod": "选择认证方式",
+    "noAuthentication": "无认证",
+    "basicAuthentication": "基本认证",
+    "basicAuthUser": "基本认证用户名",
+    "basicAuthPass": "基本认证密码",
+    "extraParams": "模型连接时传递的额外参数",
+    "interactivePreannotations": "交互式预标注",
+    "interactivePreannotationsDescription": "如果启用，某些标注工具将在标注过程中向 ML 后端发送交互式请求。",
+    "validateAndSave": "验证并保存",
+    "failedToSaveMlBackend": "保存 ML 后端失败。",
+    "failedToAddMlBackend": "添加 ML 后端失败。"
   },
   "models": {
+    "title": "模型",
     "createModel": "创建模型",
     "createModelDescription": "使用LLM构建高质量模型以自动标注您的数据",
     "createNewModel": "创建新模型"
@@ -240,6 +370,47 @@
     "pinFiltersToSidebar": "将筛选条件固定到侧边栏",
     "where": "其中",
     "column": "列",
+    "columnId": "ID",
+    "columnIdHelp": "任务 ID",
+    "columnInnerId": "内部 ID",
+    "columnInnerIdHelp": "当前项目从 1 开始的内部任务 ID",
+    "columnData": "数据",
+    "columnCompleted": "已完成",
+    "columnCompletedHelp": "最近标注日期",
+    "columnAnnotations": "标注",
+    "columnAnnotationsHelp": "每个任务的标注总数",
+    "columnCancelled": "已取消",
+    "columnCancelledHelp": "已取消（跳过）的标注总数",
+    "columnPredictions": "预测",
+    "columnPredictionsHelp": "每个任务的预测总数",
+    "columnAnnotatedBy": "标注者",
+    "columnAnnotatedByHelp": "完成该任务的所有用户",
+    "columnAnnotationResults": "标注结果",
+    "columnAnnotationResultsHelp": "所有标注的标注结果汇总",
+    "columnAnnotationIds": "标注 ID",
+    "columnAnnotationIdsHelp": "所有标注的标注 ID 汇总",
+    "columnPredictionScore": "预测分数",
+    "columnPredictionScoreHelp": "所有任务预测的平均预测分数",
+    "columnPredictionModelVersions": "预测模型版本",
+    "columnPredictionModelVersionsHelp": "所有预测的模型版本汇总",
+    "columnPredictionResults": "预测结果",
+    "columnPredictionResultsHelp": "所有预测的预测结果汇总",
+    "columnUploadFilename": "上传文件名",
+    "columnUploadFilenameHelp": "上传文件的文件名",
+    "columnStorageFilename": "存储文件名",
+    "columnStorageFilenameHelp": "导入存储中的文件名",
+    "columnCreatedAt": "创建时间",
+    "columnCreatedAtHelp": "任务创建时间",
+    "columnUpdatedAt": "更新时间",
+    "columnUpdatedAtHelp": "任务更新时间",
+    "columnUpdatedBy": "更新者",
+    "columnUpdatedByHelp": "最后更新任务的用户",
+    "columnLeadTime": "处理时长",
+    "columnLeadTimeHelp": "所有标注的平均处理时长（秒）",
+    "columnDrafts": "草稿",
+    "columnDraftsHelp": "如果任务至少存在一个草稿则为 true",
+    "columnImage": "图像",
+    "columnImg": "图片",
     "and": "且",
     "or": "或",
     "filters": "筛选条件",
@@ -286,7 +457,34 @@
     "duplicate": "复制",
     "close": "关闭",
     "defaultTab": "默认",
-    "newTab": "新标签页 {{number}}"
+    "newTab": "新标签页 {{number}}",
+    "clearFilters": "清除筛选条件",
+    "noTasksFound": "未找到任务",
+    "tryAdjustingFilters": "尝试调整或清除筛选条件以查看更多结果",
+    "noTasksForReview": "没有可供审核或标注的任务",
+    "tasksImportedWillAppear": "导入到此项目的任务将显示在这里",
+    "startLabelingTasks": "开始标注任务",
+    "tasksLabeledWillAppear": "您已标注的任务将显示在这里",
+    "noTasksAvailable": "暂无可用任务",
+    "tasksAssignedWillAppear": "分配给您的任务将显示在这里",
+    "tasksWillAppearWhenAvailable": "任务可用时将显示在这里",
+    "importDataToGetStarted": "导入数据以开始您的项目",
+    "connectStorageOrUpload": "连接您的云存储或从计算机上传文件",
+    "connectCloudStorage": "连接云存储",
+    "seeDocsOnImporting": "查看数据导入文档",
+    "columnId": "ID",
+    "columnImage": "图像",
+    "columnData": "数据",
+    "columnCompleted": "已完成",
+    "columnAnnotatedBy": "标注者",
+    "columnImg": "img",
+    "fitImagesToWidth": "适应图像宽度",
+    "gridSettings": "网格设置",
+    "columnsCount": "列数",
+    "decreaseColumns": "减少列数",
+    "increaseColumns": "增加列数",
+    "showTaskSource": "显示任务源",
+    "sourceForTask": "任务 {{id}} 的源"
   },
   "createProject": {
     "title": "创建项目",
@@ -372,12 +570,16 @@
     "byTime": "按时间",
     "orderByScore": "按分数排序",
     "byScore": "按分数",
+    "orderByMediaStartTime": "按媒体开始时间排序",
+    "byMediaStartTime": "按媒体开始时间",
     "showAllRegions": "显示所有区域",
     "hideAllRegions": "隐藏所有区域",
     "incompleteRegion": "未完成的 {{type}}",
     "confidenceScore": "置信度分数",
     "collapse": "折叠",
     "expand": "展开",
+    "expandBottomPanel": "展开底部面板",
+    "collapseBottomPanel": "折叠底部面板",
     "noLabel": "无标签",
     "regionLinkCopiedToClipboard": "区域链接已复制到剪贴板",
     "copyRegionLink": "复制区域链接",
@@ -418,7 +620,21 @@
     "submit": "提交",
     "update": "修改",
     "submitAndExit": "提交并退出",
-    "updateAndExit": "修改并退出"
+    "updateAndExit": "修改并退出",
+    "saveResultsShortcut": "保存结果：[ Ctrl+Enter ]",
+    "submitCurrentAnnotation": "提交当前标注",
+    "submitAnnotation": "提交标注",
+    "updateAnnotation": "修改标注",
+    "noChangesWereMade": "未做任何更改",
+    "updateTaskShortcut": "修改此任务：[ Ctrl+Enter ]"
+  },
+  "unsavedChanges": {
+    "saveAndLeave": "保存并离开",
+    "saveChanges": "保存更改",
+    "title": "您有未保存的更改。",
+    "body": "离开前是否要保存？",
+    "cancel": "取消",
+    "discardAndLeave": "放弃并离开"
   },
   "labelingConfig": {
     "labelingInterface": "标注界面",
@@ -479,7 +695,8 @@
       "Ranking & Scoring": "排序与评分",
       "Structured Data Parsing": "结构化数据解析",
       "Generative AI": "生成式AI",
-      "Hybrid Annotation": "混合标注"
+      "Hybrid Annotation": "混合标注",
+      "Community Contributions": "社区贡献"
     },
     "templateTitles": {
       "Bbox object detection": "边界框目标检测",
@@ -547,7 +764,12 @@
       "Image Captioning": "图像字幕生成",
       "Object Detection with Bounding Boxes": "目标检测（带边界框）",
       "Multi-page document annotation": "多页文档标注",
-      "Image Hybrid Annotation": "图片混合标注"
+      "Image Hybrid Annotation": "图片混合标注",
+      "Two-Level Sentiment Analysis of X / Twitter posts": "X/Twitter 帖子二级情感分析",
+      "OCR Invoices Pre-NER BIO Format": "OCR 发票预命名实体识别 BIO 格式",
+      "NER Tagging for Invoices (BIO Format)": "发票命名实体识别标注（BIO 格式）",
+      "Breast Cancer Mammogram Classification": "乳腺癌钼靶分类",
+      "HTML NER Tagging": "HTML 命名实体识别标注"
     },
     "uiPreview": "界面预览"
   },
@@ -640,6 +862,71 @@
       }
     }
   },
+  "accountSettings": {
+    "myAccount": "我的账户",
+    "personalInfo": "个人信息",
+    "hotkeys": "快捷键",
+    "hotkeysDescription": "自定义键盘快捷键以加快您的工作流程。点击下方任意快捷键以分配最适合您的新键位组合。",
+    "emailPreferences": "邮件偏好",
+    "membershipInfo": "会员信息",
+    "personalAccessToken": "个人访问令牌",
+    "legacyToken": "旧版令牌",
+    "accessToken": "访问令牌",
+    "beta": "Beta",
+    "personalInfoForm": {
+      "uploadAvatar": "上传头像",
+      "delete": "删除",
+      "firstName": "名",
+      "lastName": "姓",
+      "email": "邮箱",
+      "phone": "电话",
+      "save": "保存",
+      "errorUpdatingAvatar": "更新头像失败",
+      "errorUpdatingUser": "更新用户信息失败"
+    },
+    "personalAccessTokenDesc": {
+      "description": "使用您的个人访问令牌通过 API 进行身份验证。",
+      "seeDocs": "查看",
+      "docs": "文档",
+      "createNewToken": "创建新令牌",
+      "oneActiveTokenTooltip": "您只能拥有一个有效令牌",
+      "newAuthToken": "新授权令牌",
+      "copyTokenHint": "请从下方复制您的新访问令牌并妥善保管。",
+      "accessToken": "访问令牌",
+      "copy": "复制",
+      "copied": "已复制！",
+      "manageTokensSecurely": "请安全地管理您的访问令牌",
+      "doNotShareKey": "请勿与任何人分享此密钥。如果您怀疑任何密钥已被泄露，您应该撤销它们并创建新的密钥。",
+      "revokeToken": "撤销",
+      "revokeTokenTitle": "撤销令牌",
+      "revokeTokenConfirm": "您确定要删除此访问令牌吗？使用此令牌的任何应用程序都需要新令牌才能访问 {{appName}}",
+      "expiresOn": "过期时间：{{date}}",
+      "personalAccessToken": "个人访问令牌",
+      "tokenExpiryDate": "令牌过期日期",
+      "loading": "加载中...",
+      "unableToLoadTokens": "无法加载令牌列表"
+    },
+    "membership": {
+      "userId": "用户 ID",
+      "registrationDate": "注册日期",
+      "annotationsSubmitted": "已提交标注数",
+      "projectsContributedTo": "参与项目数",
+      "organization": "组织",
+      "myRole": "我的角色",
+      "organizationId": "组织 ID",
+      "owner": "所有者",
+      "created": "创建时间",
+      "roles": {
+        "owner": "所有者",
+        "deactivated": "已停用",
+        "administrator": "管理员",
+        "manager": "经理",
+        "annotator": "标注员",
+        "reviewer": "审核员",
+        "pending": "待审核"
+      }
+    }
+  },
   "hotkeys": {
     "keyboardShortcuts": "键盘快捷键",
     "viewAllShortcuts": "查看所有可用的键盘快捷键。",
@@ -665,6 +952,7 @@
     "saveError": "保存时出错：{{error}}",
     "importSuccess": "快捷键导入成功",
     "importError": "导入快捷键时出错：{{error}}",
+    "importErrorTitle": "导入错误",
     "exportSuccess": "快捷键导出成功",
     "resetHotkeysTitle": "重置快捷键为默认值？",
     "resetHotkeysBody": "您确定要将所有快捷键和设置重置为默认值吗？此操作无法撤销。",
@@ -718,94 +1006,98 @@
       "imagegallery": {
         "title": "图像库导航",
         "description": "用于在多图像任务中在图像之间导航的快捷键"
+      },
+      "paragraphs": {
+        "title": "段落导航",
+        "description": "在段落/对话视图中导航短语和区域的快捷键"
       }
     },
     "hotkeys": {
-      "annotation.submit": {
+      "annotation_submit": {
         "label": "提交标注",
         "description": "提交当前标注"
       },
-      "annotation.skip": {
+      "annotation_skip": {
         "label": "跳过任务",
         "description": "跳过当前任务"
       },
-      "annotation.undo": {
+      "annotation_undo": {
         "label": "撤销",
         "description": "撤销上一个操作"
       },
-      "annotation.redo": {
+      "annotation_redo": {
         "label": "重做",
         "description": "重做之前撤销的操作"
       },
-      "dm.focus-previous": {
+      "dm_focus-previous": {
         "label": "聚焦上一个任务",
         "description": "将焦点移动到上一个任务"
       },
-      "dm.focus-next": {
+      "dm_focus-next": {
         "label": "聚焦下一个任务",
         "description": "将焦点移动到下一个任务"
       },
-      "dm.close-labeling": {
+      "dm_close-labeling": {
         "label": "聚焦已关闭任务",
         "description": "聚焦到已关闭任务列"
       },
-      "dm.open-labeling": {
+      "dm_open-labeling": {
         "label": "聚焦已打开任务",
         "description": "聚焦到已打开任务列"
       },
-      "dm.toggle-bulk-sidebar-minimization": {
+      "dm_toggle-bulk-sidebar-minimization": {
         "label": "切换批量操作侧边栏",
         "description": "最小化或展开批量操作侧边栏"
       },
-      "region.delete-all": {
+      "region_delete-all": {
         "label": "删除所有区域",
         "description": "移除所有区域"
       },
-      "region.focus": {
+      "region_focus": {
         "label": "聚焦第一个区域",
         "description": "将焦点移动到第一个可聚焦的区域"
       },
-      "region.relation": {
+      "region_relation": {
         "label": "创建区域关系",
         "description": "在选定的区域之间创建关系"
       },
-      "region.visibility": {
+      "region_visibility": {
         "label": "切换区域可见性",
         "description": "显示或隐藏选定的区域"
       },
-      "region.visibility-all": {
+      "region_visibility-all": {
         "label": "切换所有区域可见性",
         "description": "显示或隐藏所有区域"
       },
-      "region.lock": {
+      "region_lock": {
         "label": "锁定区域",
         "description": "锁定或解锁选定的区域"
       },
-      "region.meta": {
+      "region_meta": {
         "label": "编辑区域元数据",
         "description": "编辑选定区域的元数据"
       },
-      "region.unselect": {
+      "region_unselect": {
         "label": "取消选择区域",
         "description": "取消选择当前选定的区域"
       },
-      "region.exit": {
+      "region_exit": {
         "label": "退出区域模式",
         "description": "退出关系模式并取消选择区域"
       },
-      "region.delete": {
+      "region_delete": {
         "label": "删除选定区域",
         "description": "删除当前选定的区域"
       },
-      "region.cycle": {
+      "region_cycle": {
         "label": "循环区域",
         "description": "循环遍历所有区域"
       },
-      "region.duplicate": {
+      "region_duplicate": {
         "label": "复制区域",
         "description": "创建选定区域的副本"
       },
-      "segment.delete": {
+      "segment_delete": {
         "label": "删除片段",
         "description": "删除选定的片段"
       },
@@ -813,7 +1105,7 @@
         "label": "后退 1 秒",
         "description": "将音频后退 1 秒"
       },
-      "audio.playpause": {
+      "audio_playpause": {
         "label": "播放 / 暂停音频",
         "description": "切换音频播放"
       },
@@ -821,7 +1113,7 @@
         "label": "后退一步",
         "description": "后退一帧"
       },
-      "audio.step-forward": {
+      "audio_step-forward": {
         "label": "前进一步",
         "description": "前进一帧"
       },
@@ -829,7 +1121,7 @@
         "label": "播放 / 暂停视频",
         "description": "切换视频播放"
       },
-      "media.step-backward": {
+      "media_step-backward": {
         "label": "后退一步",
         "description": "后退一帧"
       },
@@ -837,63 +1129,63 @@
         "label": "前进一步",
         "description": "前进一帧"
       },
-      "video.keyframe-backward": {
+      "video_keyframe-backward": {
         "label": "上一个关键帧",
         "description": "跳转到上一个关键帧"
       },
-      "video.keyframe-forward": {
+      "video_keyframe-forward": {
         "label": "下一个关键帧",
         "description": "跳转到下一个关键帧"
       },
-      "video.backward": {
+      "video_backward": {
         "label": "向后搜索",
         "description": "向后搜索视频"
       },
-      "video.rewind": {
+      "video_rewind": {
         "label": "第一帧",
         "description": "跳转到第一帧"
       },
-      "video.forward": {
+      "video_forward": {
         "label": "向前搜索",
         "description": "向前搜索视频"
       },
-      "video.fastforward": {
+      "video_fastforward": {
         "label": "最后一帧",
         "description": "跳转到最后一帧"
       },
-      "video.hop-backward": {
+      "video_hop-backward": {
         "label": "快速后退",
         "description": "快速向后跳转"
       },
-      "video.hop-forward": {
+      "video_hop-forward": {
         "label": "快速前进",
         "description": "快速向前跳转"
       },
-      "ts.grow-left": {
+      "ts_grow-left": {
         "label": "向左扩展",
         "description": "将区域向左扩展"
       },
-      "ts.grow-right": {
+      "ts_grow-right": {
         "label": "向右扩展",
         "description": "将区域向右扩展"
       },
-      "ts.shrink-left": {
+      "ts_shrink-left": {
         "label": "从左侧收缩",
         "description": "从左侧收缩区域"
       },
-      "ts.shrink-right": {
+      "ts_shrink-right": {
         "label": "从右侧收缩",
         "description": "从右侧收缩区域"
       },
-      "ts.grow-left-large": {
+      "ts_grow-left-large": {
         "label": "向左扩展（大幅）",
         "description": "大幅向左扩展区域"
       },
-      "ts.grow-right-large": {
+      "ts_grow-right-large": {
         "label": "向右扩展（大幅）",
         "description": "大幅向右扩展区域"
       },
-      "ts.shrink-left-large": {
+      "ts_shrink-left-large": {
         "label": "从左侧收缩（大幅）",
         "description": "大幅从左侧收缩区域"
       },
@@ -901,51 +1193,51 @@
         "label": "从右侧收缩（大幅）",
         "description": "大幅从右侧收缩区域"
       },
-      "image.prev": {
+      "image_prev": {
         "label": "上一张图像",
         "description": "查看上一张图像"
       },
-      "image.next": {
+      "image_next": {
         "label": "下一张图像",
         "description": "查看下一张图像"
       },
-      "tool.zoom-in": {
+      "tool_zoom-in": {
         "label": "放大",
         "description": "放大图像"
       },
-      "tool.pan-image": {
+      "tool_pan-image": {
         "label": "平移图像",
         "description": "平移图像"
       },
-      "tool.zoom-to-fit": {
+      "tool_zoom-to-fit": {
         "label": "适应窗口",
         "description": "缩放以适应完整图像"
       },
-      "tool.zoom-to-actual": {
+      "tool_zoom-to-actual": {
         "label": "缩放到 100%",
         "description": "缩放到实际图像大小（100%）"
       },
-      "tool.zoom-out": {
+      "tool_zoom-out": {
         "label": "缩小",
         "description": "缩小图像"
       },
-      "tool.move": {
+      "tool_move": {
         "label": "移动工具",
         "description": "选择移动工具以重新定位标注"
       },
-      "tool.brush": {
+      "tool_brush": {
         "label": "画笔工具",
         "description": "选择画笔工具"
       },
-      "tool.ellipse": {
+      "tool_ellipse": {
         "label": "椭圆工具",
         "description": "选择椭圆工具"
       },
-      "tool.eraser": {
+      "tool_eraser": {
         "label": "橡皮擦工具",
         "description": "选择橡皮擦工具"
       },
-      "tool.auto-detect": {
+      "tool_auto-detect": {
         "label": "自动检测",
         "description": "使用自动检测工具自动建议区域"
       },
@@ -953,7 +1245,7 @@
         "label": "关键点工具",
         "description": "选择关键点标注工具"
       },
-      "tool.magic-wand": {
+      "tool_magic-wand": {
         "label": "魔术棒",
         "description": "选择魔术棒工具进行智能区域选择"
       },
@@ -961,11 +1253,11 @@
         "label": "多边形工具",
         "description": "选择多边形标注工具"
       },
-      "tool.rect": {
+      "tool_rect": {
         "label": "矩形工具",
         "description": "选择矩形标注工具"
       },
-      "tool.rect-3point": {
+      "tool_rect-3point": {
         "label": "三点矩形",
         "description": "使用三点选择绘制旋转矩形"
       },
@@ -973,7 +1265,7 @@
         "label": "向左旋转",
         "description": "将图像向左旋转 90°"
       },
-      "tool.rotate-right": {
+      "tool_rotate-right": {
         "label": "向右旋转",
         "description": "将图像向右旋转 90°"
       },
@@ -981,9 +1273,29 @@
         "label": "减小工具大小",
         "description": "减小工具大小"
       },
-      "tool.increase-tool": {
+      "tool_increase-tool": {
         "label": "增大工具大小",
         "description": "增大工具大小"
+      },
+      "phrases_next-phrase": {
+        "label": "下一个短语",
+        "description": "在段落视图中导航到下一个短语"
+      },
+      "phrases_previous-phrase": {
+        "label": "上一个短语",
+        "description": "在段落视图中导航到上一个短语"
+      },
+      "phrases_select_all_annotate": {
+        "label": "全选并标注",
+        "description": "选择当前短语中的所有文本并创建标注"
+      },
+      "phrases_next-region": {
+        "label": "短语中的下一个区域",
+        "description": "在当前短语内导航到下一个区域"
+      },
+      "phrases_previous-region": {
+        "label": "短语中的上一个区域",
+        "description": "在当前短语内导航到上一个区域"
       }
     }
   },
@@ -1011,6 +1323,10 @@
       "Polygons": "多边形",
       "Repeater": "重复",
       "RegionStore": "区域管理"
+    },
+    "tags": {
+      "textTag": "文本标签",
+      "imageTag": "图像标签"
     },
     "layout": {
       "moveSidepanelToBottom": "将侧边栏移至底部",
@@ -1069,6 +1385,24 @@
         "description": "反转滚轮缩放方向",
         "descriptionFallback": "启用反转缩放方向"
       }
+    }
+  },
+  "editor": {
+    "regionActions": {
+      "showSelectedRegion": "显示选定区域",
+      "hideSelectedRegion": "隐藏选定区域",
+      "lockOrUnlockSelectedRegion": "锁定或解锁选定区域",
+      "lockRegion": "锁定区域",
+      "unlockRegion": "解锁区域",
+      "deleteSelectedRegion": "删除选定区域",
+      "createRelation": "创建关系",
+      "editRegionMeta": "编辑区域元数据"
+    },
+    "zoom": {
+      "zoomOut": "缩小",
+      "zoomOutDescription": "缩小图像",
+      "zoomToFit": "适应窗口",
+      "zoomToActualSize": "实际大小"
     }
   }
 }

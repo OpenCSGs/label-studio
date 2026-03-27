@@ -2,30 +2,30 @@ import type { MouseEventHandler } from "react";
 
 import { IconCommentLinkTo, IconSend } from "@humansignal/icons";
 import { Tooltip } from "@humansignal/ui";
-import { useTranslation } from "react-i18next";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import "./CommentFormButtons.scss";
 
 export const CommentFormButtons = ({
   region,
   linking,
   onLinkTo,
-}: { region: any; linking: boolean; onLinkTo?: MouseEventHandler<HTMLElement> }) => {
-  const { t } = useTranslation();
-  return (
-    <Block name="comment-form-buttons">
-      <Elem name="buttons">
-        {onLinkTo && !region && (
-          <Tooltip title="Link to...">
-            <Elem name="action" tag="button" mod={{ highlight: linking }} onClick={onLinkTo}>
-              <IconCommentLinkTo />
-            </Elem>
-          </Tooltip>
-        )}
-        <Elem name="action" tag="button" type="submit" aria-label={t("annotation.add")}>
-          <IconSend />
-        </Elem>
-      </Elem>
-    </Block>
-  );
-};
+}: { region: any; linking: boolean; onLinkTo?: MouseEventHandler<HTMLElement> }) => (
+  <div className={cn("comment-form-buttons").toClassName()}>
+    <div className={cn("comment-form-buttons").elem("buttons").toClassName()}>
+      {onLinkTo && !region && (
+        <Tooltip title="Link to...">
+          <button
+            type="button"
+            className={cn("comment-form-buttons").elem("action").mod({ highlight: linking }).toClassName()}
+            onClick={onLinkTo}
+          >
+            <IconCommentLinkTo />
+          </button>
+        </Tooltip>
+      )}
+      <button type="submit" className={cn("comment-form-buttons").elem("action").toClassName()}>
+        <IconSend />
+      </button>
+    </div>
+  </div>
+);

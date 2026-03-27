@@ -1,7 +1,9 @@
 import logging
 from typing import Dict, Iterable, List, Union
 
+from django.shortcuts import get_object_or_404
 from io_storages.base_models import ImportStorage
+from rest_framework.exceptions import PermissionDenied, ValidationError
 
 from .azure_blob.api import AzureBlobExportStorageListAPI, AzureBlobImportStorageListAPI
 from .gcs.api import GCSExportStorageListAPI, GCSImportStorageListAPI
@@ -9,6 +11,57 @@ from .redis.api import RedisExportStorageListAPI, RedisImportStorageListAPI
 from .s3.api import S3ExportStorageListAPI, S3ImportStorageListAPI
 
 logger = logging.getLogger(__name__)
+
+
+def validate_storage_instance(request, serializer_class):
+    """
+    Preload and prepare a storage instance from request data.
+
+    This function handles the common logic for loading existing storage instances
+    or creating new ones from request data, including permission checks and
+    serializer validation.
+
+    Args:
+        request: The HTTP request containing storage data
+        serializer_class: The serializer class to use for validation
+
+    Returns:
+        The prepared storage instance
+
+    Raises:
+        PermissionDenied: If user doesn't have permission to access the storage
+        ValidationError: If serializer validation fails
+    """
+    if not serializer_class or not hasattr(serializer_class, 'Meta'):
+        raise ValidationError('Invalid or missing serializer class')
+
+    storage_id = request.data.get('id')
+    instance = None
+
+    if storage_id:
+        instance = get_object_or_404(serializer_class.Meta.model.objects.all(), pk=storage_id)
+        if not instance.has_permission(request.user):
+            raise PermissionDenied()
+
+    # combine instance fields with request.data
+    serializer = serializer_class(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    # if storage exists, we have to use instance from DB,
+    # because instance from serializer won't have credentials, they were popped intentionally
+    if instance:
+        instance = serializer.update(instance, serializer.validated_data)
+    else:
+        instance = serializer_class.Meta.model(**serializer.validated_data)
+
+    # double check: not all storages validate connection in serializer, just make another explicit check here
+    try:
+        instance.validate_connection()
+    except Exception as exc:
+        logger.error(f'Error validating storage connection: {exc}')
+        raise ValidationError('Error validating storage connection')
+
+    return instance
 
 
 def get_storage_list():

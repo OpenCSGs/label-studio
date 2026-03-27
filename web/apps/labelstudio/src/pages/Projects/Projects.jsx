@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useParams as useRouterParams } from "react-router";
 import { Redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@humansignal/ui";
 import { Oneof } from "../../components/Oneof/Oneof";
 import { Spinner } from "../../components/Spinner/Spinner";
 import { ApiContext } from "../../providers/ApiProvider";
 import { useContextProps } from "../../providers/RoutesProvider";
-import { Block, Elem } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { CreateProject } from "../CreateProject/CreateProject";
 import { DataManagerPage } from "../DataManager/DataManager";
 import { SettingsPage } from "../Settings";
 import { EmptyProjectsList, ProjectsList } from "./ProjectsList";
-import { useAbortController } from "@humansignal/core";
-import { useTranslation } from "react-i18next";
+import { useAbortController, useUpdatePageTitle } from "@humansignal/core";
 import "./Projects.scss";
 
 const getCurrentPage = () => {
@@ -22,6 +22,7 @@ const getCurrentPage = () => {
 };
 
 export const ProjectsPage = () => {
+  const { t } = useTranslation();
   const api = React.useContext(ApiContext);
   const abortController = useAbortController();
   const [projectsList, setProjectsList] = React.useState([]);
@@ -29,6 +30,8 @@ export const ProjectsPage = () => {
   const [currentPage, setCurrentPage] = useState(getCurrentPage());
   const [totalItems, setTotalItems] = useState(1);
   const setContextProps = useContextProps();
+
+  useUpdatePageTitle(t("projects.title"));
   const defaultPageSize = Number.parseInt(localStorage.getItem("pages:projects-list") ?? 30);
 
   const [modal, setModal] = React.useState(false);
@@ -51,6 +54,7 @@ export const ProjectsPage = () => {
       "color",
       "is_published",
       "assignment_settings",
+      "state",
     ].join(",");
 
     const data = await api.callApi("projects", {
@@ -60,7 +64,7 @@ export const ProjectsPage = () => {
     });
 
     setTotalItems(data?.count ?? 1);
-    setProjectsList(data.results ?? []);
+    setProjectsList(data?.results ?? []);
     setNetworkState("loaded");
 
     if (data?.results?.length) {
@@ -115,12 +119,12 @@ export const ProjectsPage = () => {
   }, [projectsList.length]);
 
   return (
-    <Block name="projects-page">
+    <div className={cn("projects-page").toClassName()}>
       <Oneof value={networkState}>
-        <Elem name="loading" case="loading">
+        <div className={cn("projects-page").elem("loading").toClassName()} case="loading">
           <Spinner size={64} />
-        </Elem>
-        <Elem name="content" case="loaded">
+        </div>
+        <div className={cn("projects-page").elem("content").toClassName()} case="loaded">
           {projectsList.length ? (
             <ProjectsList
               projects={projectsList}
@@ -133,13 +137,14 @@ export const ProjectsPage = () => {
             <EmptyProjectsList openModal={openModal} />
           )}
           {modal && <CreateProject onClose={closeModal} />}
-        </Elem>
+        </div>
       </Oneof>
-    </Block>
+    </div>
   );
 };
 
 ProjectsPage.title = "Projects";
+ProjectsPage.titleKey = "projects.title";
 ProjectsPage.path = "/projects";
 ProjectsPage.exact = true;
 ProjectsPage.routes = ({ store }) => [
@@ -162,8 +167,8 @@ ProjectsPage.context = ({ openModal, showButton }) => {
   const { t } = useTranslation();
   if (!showButton) return null;
   return (
-    <Button onClick={openModal} size="small" aria-label={t("projects.createProject")}>
-      {t("projects.createProject")}
+    <Button onClick={openModal} size="small" aria-label={t("menu.newProject")}>
+      {t("menu.newProject")}
     </Button>
   );
 };

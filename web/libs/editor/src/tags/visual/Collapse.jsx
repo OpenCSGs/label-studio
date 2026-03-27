@@ -24,6 +24,7 @@ const { Panel } = Collapse;
  * @name Collapse
  * @param {boolean} [accordion=true]  - Works as an accordion
  * @param {string} [bordered=false]   - Shows border
+ * @param {boolean} [open=false]      - Sets default collapsed state
  */
 const PanelModel = types
   .model({
@@ -31,6 +32,8 @@ const PanelModel = types
 
     _value: types.optional(types.string, ""),
     value: types.optional(types.string, ""),
+
+    open: types.maybeNull(types.boolean),
 
     children: Types.unionArray([
       "view",
@@ -41,6 +44,9 @@ const PanelModel = types
       "taxonomy",
       "choices",
       "choice",
+      "collapse",
+      "datetime",
+      "number",
       "rating",
       "ranker",
       "rectangle",
@@ -48,10 +54,14 @@ const PanelModel = types
       "polygon",
       "keypoint",
       "brush",
+      "bitmask",
+      "magicwand",
       "rectanglelabels",
       "bitmasklabels",
       "ellipselabels",
       "polygonlabels",
+      "vector",
+      "vectorlabels",
       "keypointlabels",
       "brushlabels",
       "hypertextlabels",
@@ -72,6 +82,12 @@ const PanelModel = types
       "timeserieslabels",
       "paragraphs",
       "paragraphlabels",
+      "pdf",
+      "video",
+      "videorectangle",
+      "timelinelabels",
+      "custominterface",
+      ...Registry.customTags.map((t) => t.tag.toLowerCase()),
     ]),
   })
   .views((self) => ({
@@ -101,6 +117,7 @@ const Model = types
 
     bordered: types.optional(types.boolean, false),
     accordion: types.optional(types.boolean, true),
+    open: types.maybeNull(types.boolean),
 
     children: Types.unionArray(["panel"]),
   })
@@ -121,16 +138,27 @@ const CollapseModel = types.compose("CollapseModel", AnnotationMixin, Model, Pro
 
 const HtxCollapse = observer(({ item }) => {
   const isBulkMode = isFF(FF_BULK_ANNOTATION) && !isSelfServe() && item.store.hasInterface("annotation:bulk");
+  const visibleChildren = item.children.filter((i) => i.type === "panel" && (!isBulkMode || i.isIndependent));
+
+  // Get default active keys based on both Collapse-level and Panel-level open properties
+  // Global open sets the base state for all panels
+  // Local open can override the global state for individual panels
+  const defaultActiveKeys = visibleChildren.filter((panel) => panel.open ?? item.open).map((c) => `panel-${c.value}`);
+
+  // For accordion mode, only the first active key should be used
+  const finalActiveKeys = item.accordion
+    ? defaultActiveKeys.length > 0
+      ? [defaultActiveKeys[0]]
+      : []
+    : defaultActiveKeys;
 
   return (
-    <Collapse bordered={item.bordered} accordion={item.accordion}>
-      {item.children
-        .filter((i) => i.type === "panel" && (!isBulkMode || i.isIndependent))
-        .map((i) => (
-          <Panel key={i._value} header={i._value} forceRender>
-            {Tree.renderChildren(i, item.annotation)}
-          </Panel>
-        ))}
+    <Collapse bordered={item.bordered} accordion={item.accordion} defaultActiveKey={finalActiveKeys}>
+      {visibleChildren.map((c, index) => (
+        <Panel key={`panel-${c.value}`} header={c._value || c.value || `Panel ${index + 1}`} forceRender>
+          {Tree.renderChildren(c, item.annotation)}
+        </Panel>
+      ))}
     </Collapse>
   );
 });

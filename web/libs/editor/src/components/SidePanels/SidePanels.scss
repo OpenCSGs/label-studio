@@ -26,8 +26,6 @@
     position: relative;
     z-index: 1;
 
-    @include styled-scrollbars;
-
     & .main-content {
       overflow: auto;
       padding-bottom: calc(var(--bottombar-height) + 8px);

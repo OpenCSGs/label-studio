@@ -89,7 +89,7 @@
     width: 100%;
   }
 
-  &[data-required] &__text::after {
+  &[data-required] &__text span::after {
     content: "Required";
     font-size: 0.825rem;
     color: var(--color-neutral-content-subtler);

@@ -3,14 +3,13 @@
  */
 
 import { inject, observer } from "mobx-react";
-import { IconBan } from "@humansignal/icons";
+import { IconBan, IconInfoOutline } from "@humansignal/icons";
 import { Button, Tooltip } from "@humansignal/ui";
-import { Block, Elem } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { isDefined } from "../../utils/utilities";
 
 import "./Controls.scss";
 import { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const TOOLTIP_DELAY = 0.8;
 
@@ -33,7 +32,6 @@ const controlsInjector = inject(({ store }) => {
 
 export const Controls = controlsInjector(
   observer(({ store, history, annotation }) => {
-    const { t } = useTranslation();
     const isReview = store.hasInterface("review");
 
     const historySelected = isDefined(store.annotationStore.selectedHistory);
@@ -123,9 +121,9 @@ export const Controls = controlsInjector(
       );
     } else if (annotation.skipped) {
       buttons.push(
-        <Elem name="skipped-info" key="skipped">
+        <div className={cn("controls").elem("skipped-info").toClassName()} key="skipped">
           <IconBan color="#d00" /> Was skipped
-        </Elem>,
+        </div>,
       );
       buttons.push(
         <ButtonTooltip key="cancel-skip" title="Cancel skip: []">
@@ -143,15 +141,38 @@ export const Controls = controlsInjector(
         </ButtonTooltip>,
       );
     } else {
+      // Manager roles that can force-skip unskippable tasks (OW=Owner, AD=Admin, MA=Manager)
+      const MANAGER_ROLES = ["OW", "AD", "MA"];
+
       if (store.hasInterface("skip")) {
+        const task = store.task;
+        const taskAllowSkip = task?.allow_skip !== false;
+        const userRole = window.APP_SETTINGS?.user?.role;
+        const hasForceSkipPermission = MANAGER_ROLES.includes(userRole);
+        const canSkip = taskAllowSkip || hasForceSkipPermission;
+        const isDisabled = disabled || !canSkip;
+
+        const tooltip = canSkip ? "Cancel (skip) task: [ Ctrl+Space ]" : "This task cannot be skipped";
+
+        const showInfoIcon = !taskAllowSkip && hasForceSkipPermission;
+
+        if (showInfoIcon) {
+          buttons.push(
+            <Tooltip key="skip-info" title="Annotators and Reviewers will not be able to skip this task">
+              <IconInfoOutline width={20} height={20} className="text-neutral-content ml-auto cursor-pointer" />
+            </Tooltip>,
+          );
+        }
+
         buttons.push(
-          <ButtonTooltip key="skip" title="Cancel (skip) task: [ Ctrl+Space ]">
+          <ButtonTooltip key="skip" title={tooltip}>
             <Button
               aria-label="Skip current task"
-              disabled={disabled}
+              disabled={isDisabled}
               variant="negative"
               look="outlined"
               onClick={async (e) => {
+                if (!canSkip) return;
                 if (store.hasInterface("comments:skip") ?? true) {
                   buttonHandler(e, () => store.skipTask({}), "Please enter a comment before skipping");
                 } else {
@@ -172,7 +193,7 @@ export const Controls = controlsInjector(
 
         buttons.push(
           <ButtonTooltip key="submit" title={title}>
-            <Elem name="tooltip-wrapper">
+            <div className={cn("controls").elem("tooltip-wrapper").toClassName()}>
               <Button
                 aria-label="Submit current annotation"
                 disabled={disabled || submitDisabled}
@@ -182,9 +203,9 @@ export const Controls = controlsInjector(
                   store.submitAnnotation();
                 }}
               >
-                {t("annotation.submit")}
+                Submit
               </Button>
-            </Elem>
+            </div>
           </ButtonTooltip>,
         );
       }
@@ -202,7 +223,7 @@ export const Controls = controlsInjector(
                 store.updateAnnotation();
               }}
             >
-              {isUpdate ? t("annotation.update") : t("annotation.submit")}
+              {isUpdate ? "Update" : "Submit"}
             </Button>
           </ButtonTooltip>
         );
@@ -212,9 +233,9 @@ export const Controls = controlsInjector(
     }
 
     return (
-      <Block name="controls">
+      <div className={cn("controls").toClassName()}>
         <div className="grid grid-flow-col auto-cols-fr gap-tight items-center">{buttons}</div>
-      </Block>
+      </div>
     );
   }),
 );

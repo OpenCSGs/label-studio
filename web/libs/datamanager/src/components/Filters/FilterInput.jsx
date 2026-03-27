@@ -11,7 +11,8 @@ export const FilterInput = ({ value, type, onChange, placeholder, schema, style 
 
   return (
     <Input
-      rawClassName="h-full"
+      rawClassName="min-w-[100px]"
+      size="small"
       type={type}
       value={value ?? ""}
       ref={inputRef}

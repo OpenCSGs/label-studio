@@ -4,7 +4,7 @@ short: Bulk labeling
 tier: enterprise
 type: guide
 order: 0
-order_enterprise: 135
+order_enterprise: 137
 meta_title: Bulk Labeling
 meta_description: Bulk labeling in Label Studio
 section: "Create & Manage Projects"

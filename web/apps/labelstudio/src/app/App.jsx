@@ -5,7 +5,7 @@ import { render } from "react-dom";
 import { Router } from "react-router-dom";
 import { LEAVE_BLOCKER_KEY, leaveBlockerCallback } from "../components/LeaveBlocker/LeaveBlocker";
 import { initSentry } from "../config/Sentry";
-import "../config/i18n"; // 初始化i18n
+import "../config/i18n";
 import { ApiProvider, useAPI } from "../providers/ApiProvider";
 import { AppStoreProvider } from "../providers/AppStoreProvider";
 import { ConfigProvider } from "../providers/ConfigProvider";
@@ -19,13 +19,13 @@ import { FF_UNSAVED_CHANGES, isFF } from "../utils/feature-flags";
 import { TourProvider } from "@humansignal/core";
 import { ToastProvider, ToastViewport } from "@humansignal/ui";
 import { JotaiProvider, JotaiStore } from "../utils/jotai-store";
-import { CurrentUserProvider } from "../providers/CurrentUser";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@humansignal/core/lib/utils/query-client";
 import { RootPage } from "./RootPage";
 import { ff } from "@humansignal/core";
 import "@humansignal/ui/src/tailwind.css";
 import "./App.scss";
+import { AuthProvider } from "@humansignal/core/providers/AuthProvider";
 
 const baseURL = new URL(APP_SETTINGS.hostname || location.origin);
 export const UNBLOCK_HISTORY_MESSAGE = "UNBLOCK_HISTORY";
@@ -57,6 +57,15 @@ window.LSH = browserHistory;
 
 initSentry(browserHistory);
 
+// 抑制 ResizeObserver 良性错误（来自 Radix Popover/floating-ui、Dropdown 等）
+const prevOnError = window.onerror;
+window.onerror = function (message, source, lineno, colno, error) {
+  if (typeof message === "string" && /ResizeObserver loop/.test(message)) {
+    return true; // 阻止默认处理，不输出到控制台
+  }
+  return prevOnError ? prevOnError.apply(this, arguments) : false;
+};
+
 const App = ({ content }) => {
   return (
     <ErrorBoundary>
@@ -65,13 +74,13 @@ const App = ({ content }) => {
           providers={[
             <QueryClientProvider client={queryClient} key="query" />,
             <JotaiProvider key="jotai" store={JotaiStore} />,
+            <AuthProvider key="auth" />,
             <AppStoreProvider key="app-store" />,
             <ToastProvider key="toast" />,
             <ApiProvider key="api" />,
             <ConfigProvider key="config" />,
             <RoutesProvider key="rotes" />,
             <ProjectProvider key="project" />,
-            <CurrentUserProvider key="current-user" />,
             ff.isActive(ff.FF_PRODUCT_TOUR) && <TourProvider useAPI={useAPI} />,
           ].filter(Boolean)}
         >

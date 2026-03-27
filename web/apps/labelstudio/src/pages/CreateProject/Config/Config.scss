@@ -1,17 +1,5 @@
 $scroll-width: 5px;
 
-@mixin styled-scroll() {
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    background-color: var(--color-neutral-border-bolder);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--color-neutral-surface);
-  }
-}
-
 .panel {
   display: none;
 }
@@ -24,18 +12,18 @@ $scroll-width: 5px;
   flex-direction: column;
 }
 
-.sidebar-menu__content > .wizard {
+.sidebar-menu__content>.wizard {
   height: calc(100% + 64px);
-  margin: -32px -40px;
+  margin: -32px;
 }
 
-.wizard > .configure {
+.wizard>.configure {
   flex: 1;
   min-height: 0;
   display: flex;
   align-items: stretch;
 
-  > * {
+  >* {
     flex: 50%;
   }
 }
@@ -46,6 +34,7 @@ $scroll-width: 5px;
   padding: 16px 16px - $scroll-width 16px 20px;
   overflow-y: scroll;
   background-color: var(--color-neutral-background);
+  gap: var(--spacing-base);
 
   &::-webkit-scrollbar {
     width: $scroll-width;
@@ -126,36 +115,53 @@ $scroll-width: 5px;
 
     ul {
       display: grid;
-      flex-wrap: wrap;
       padding: 0;
       margin: 16px 8px;
-      grid-template-columns: repeat(auto-fill, 276px);
-      grid-auto-columns: 276px;
-      grid-gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--spacing-wide);
+
+      // Better space utilization on larger screens
+      @media (width >= 1200px) {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+
+      @media (width >= 1600px) {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
     }
   }
 
   &__template {
     display: flex;
     flex-direction: column;
-    border-radius: 4px;
+    align-items: flex-start;
+    border-radius: 8px;
     cursor: pointer;
     position: relative;
-    width: 276px;
+    width: 100%;
     border: 1px solid var(--color-neutral-border);
-    box-sizing: content-box;
-    transition: all 300ms ease-out;
-    overflow: hidden;
+    background: var(--color-neutral-background);
+    box-shadow: 0 4px 8px 0 rgb(var(--color-neutral-shadow-raw) / 8%);
+    
+    // Smooth transitions for hover/focus interactions
+    transition: 
+      transform 0.2s ease-in-out,
+      border-color 0.15s ease-in-out,
+      background-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
 
-    &_active,
-    &:hover {
-      box-shadow: 0 0 0 6px var(--color-primary-focus-outline);
-      background: var(--color-neutral-surface-hover);
-      border-color: var(--color-primary-border-bolder);
+    &_disabled {
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
-    &:hover {
-      opacity: 0.9;
+    &_active,
+    &:hover,
+    &:focus {
+      border: 1px solid var(--color-primary-border);
+      box-shadow: 0 0 0 4px var(--color-primary-focus-outline);
+      background: var(--color-primary-background);
+      transform: translateY(-1px); // Subtle lift effect
     }
 
     h3 {
@@ -163,14 +169,15 @@ $scroll-width: 5px;
       padding: 12px;
       font-size: 14px;
       font-weight: 500;
-      border-top: 1px solid var(--color-neutral-content);
+      border-top: 1px solid var(--color-neutral-border);
       color: var(--color-neutral-content);
     }
 
     img {
       width: 100%;
       object-fit: cover;
-      border-radius: 4px 4px 0 0;
+      border-radius: 8px 8px 0 0;
+      aspect-ratio: 8 / 5;
     }
   }
 
@@ -247,15 +254,12 @@ $scroll-width: 5px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 16px;
 }
 
 .configure__editor {
   display: flex;
   flex: 1;
   overflow-y: auto;
-
-  @include styled-scroll;
 }
 
 .configure__tags-link {
@@ -284,7 +288,7 @@ $scroll-width: 5px;
 }
 
 .wizard .configure__visual {
-  > * {
+  >* {
     border-top: 1px solid var(--color-neutral-border);
     padding-top: 16px;
     margin-bottom: 16px;
@@ -301,7 +305,8 @@ $scroll-width: 5px;
     }
   }
 
-  input, select {
+  input,
+  select {
     padding: 4px 8px;
     font: inherit;
     color: inherit;
@@ -316,12 +321,12 @@ $scroll-width: 5px;
     color: var(--color-neutral-content);
   }
 
-  > p {
+  >p {
     line-height: 32px;
     color: var(--color-neutral-content-subtler);
   }
 
-  > p.configure__object-error {
+  >p.configure__object-error {
     line-height: 22px;
     margin-top: 8px;
     color: var(--color-negative-content);
@@ -398,8 +403,6 @@ $scroll-width: 5px;
   flex-direction: column;
   align-items: stretch;
   flex: 1;
-
-  @include styled-scroll;
 
   .configure__label {
     display: flex;
@@ -545,8 +548,6 @@ $scroll-width: 5px;
   flex-direction: column;
   color: var(--color-neutral-content);
 
-  @include styled-scroll;
-
   h3 {
     margin: 8px 0 16px;
     font-size: 16px;
@@ -585,7 +586,7 @@ $scroll-width: 5px;
 
 
   .main-view {
-    &__annotation{
+    &__annotation {
       padding: 0;
     }
   }

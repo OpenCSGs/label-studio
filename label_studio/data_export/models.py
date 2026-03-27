@@ -19,7 +19,9 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from label_studio_sdk.converter import Converter
 from tasks.models import Annotation
+
 from .export_file import upload_without_cache_check
+
 logger = logging.getLogger(__name__)
 
 
@@ -84,10 +86,6 @@ class Export(ExportMixin, models.Model):
     )
 
 
-    task_filter_options = models.JSONField(default=dict, blank=True)  # 存储任务筛选条件
-    annotation_filter_options = models.JSONField(default=dict, blank=True)  # 存储标注筛选条件
-    serialization_options = models.JSONField(default=dict, blank=True)  # 存储序列化选项（含导出格式）
-
 @receiver(post_save, sender=Export)
 def set_export_default_name(sender, instance, created, **kwargs):
     if created and not instance.title:
@@ -97,41 +95,11 @@ def set_export_default_name(sender, instance, created, **kwargs):
 
 class DataExport(object):
     # TODO: deprecated
-
-
     @staticmethod
-    def save_export_files(request,project, now, get_args, data, md5, name):
-        # print(name)
-        username = project.created_by.username if project.created_by else 'anonymous'
-        # print(username)
-
-        def clear_folder(folder_path):
-            """清空文件夹下的所有文件和子文件夹，但保留文件夹本身"""
-            if not os.path.exists(folder_path):
-                return
-
-            # 遍历文件夹内所有内容
-            for item in os.listdir(folder_path):
-                item_path = os.path.join(folder_path, item)
-                try:
-                    # 删除文件或符号链接
-                    if os.path.isfile(item_path) or os.path.islink(item_path):
-                        os.unlink(item_path)
-                    # 删除子文件夹及其内容
-                    elif os.path.isdir(item_path):
-                        shutil.rmtree(item_path)
-                except Exception as e:
-                    print(f"删除 {item_path} 失败: {e}")
+    def save_export_files(project, now, get_args, data, md5, name):
         """Generate two files: meta info and result file and store them locally for logging"""
-        # 按项目ID分目录（可选，避免文件混乱）
-        project_dir = os.path.join(settings.EXPORT_DIR, f"project_{project.id}")
-        os.makedirs(project_dir, exist_ok=True)
-
-
-        filename_results = os.path.join(project_dir, f'{name}.json')
-        filename_info = os.path.join(project_dir, f'{name}-info.json')
-
-
+        filename_results = os.path.join(settings.EXPORT_DIR, name + '.json')
+        filename_info = os.path.join(settings.EXPORT_DIR, name + '-info.json')
         annotation_number = Annotation.objects.filter(project=project).count()
         try:
             platform_version = version.get_git_version()
@@ -160,8 +128,6 @@ class DataExport(object):
             f.write(data)
         with open(filename_info, 'w', encoding='utf-8') as f:
             json.dump(info, f, ensure_ascii=False)
-
-        # 上传改为在 generate_export_file 中所有文件（含 zip）生成完成后再调用
         return filename_results
 
     @staticmethod
@@ -178,64 +144,63 @@ class DataExport(object):
         return sorted(formats, key=lambda f: f.get('disabled', False))
 
     @staticmethod
-    def generate_export_file(request,project, tasks, output_format, download_resources, get_args, hostname=None):
-        """Generate export file and return it as an open file object.
-
-        Be sure to close the file after using it, to avoid wasting disk space.
-        """
-
-        # prepare for saving
+    def generate_export_file(project, tasks, output_format, download_resources, get_args, hostname=None, request=None):
+        """Generate export file and return it as an open file object. request 可选，用于 CSGHub 上传。"""
         now = datetime.now()
         data = json.dumps(tasks, ensure_ascii=False)
         md5 = hashlib.md5(json.dumps(data).encode('utf-8')).hexdigest()   # nosec
         name = 'project-' + str(project.id) + '-at-' + now.strftime('%Y-%m-%d-%H-%M') + f'-{md5[0:8]}'
 
-        input_json = DataExport.save_export_files(request,project, now, get_args, data, md5, name)
+        input_json = DataExport.save_export_files(project, now, get_args, data, md5, name)
 
+        created_by = getattr(project.organization, 'created_by', None)
+        access_token = (created_by.get_token().key if (created_by and hasattr(created_by, 'get_token')) else '')
         converter = Converter(
             config=project.get_parsed_config(),
             project_dir=None,
             upload_dir=os.path.join(settings.MEDIA_ROOT, settings.UPLOAD_DIR),
             download_resources=download_resources,
-            access_token=project.organization.created_by.auth_token.key,
+            access_token=access_token,
             hostname=hostname,
         )
-
-
-
         with get_temp_dir() as tmp_dir:
             converter.convert(input_json, tmp_dir, output_format, is_dir=False)
             files = get_all_files_from_dir(tmp_dir)
-
-            # 目标目录：D:\rail_user_data\project_{id}
-            target_dir = os.path.join(settings.EXPORT_DIR, f"project_{project.id}")
-            os.makedirs(target_dir, exist_ok=True)
-
-
-            # if only one file is exported - no need to create archive
             if len(os.listdir(tmp_dir)) == 1:
                 output_file = files[0]
                 ext = os.path.splitext(output_file)[-1]
-                target_filename = f"{name}{ext}"
-                target_path = os.path.join(target_dir, target_filename)
-                shutil.move(output_file, target_path)
-                content_type = f'application/{ext}'
-                # 所有文件已生成到 target_dir，再上传
-                upload_without_cache_check(request, local_folder=target_dir, project=project)
-                return target_path, content_type, target_filename
-            else:
-                # otherwise pack output directory into archive
-                # 在 tmp_dir 的父目录创建 zip，避免 zip 被包含进自己（make_archive 会打包 root_dir 下所有内容）
-                zip_base = os.path.join(os.path.dirname(tmp_dir), name)
-                zip_path = shutil.make_archive(zip_base, 'zip', tmp_dir)
-                target_filename = f"{name}.zip"
-                target_path = os.path.join(target_dir, target_filename)
-                shutil.move(zip_path, target_path)
-                content_type = 'application/zip'
-                # 所有文件（含 zip）已生成到 target_dir，再上传
-                upload_without_cache_check(request, local_folder=target_dir, project=project)
-                return target_path, content_type, target_filename
-#
+                filename = name + os.path.splitext(output_file)[-1]
+                if request and getattr(project, 'dataset', None) and getattr(request.user, 'user_token', None):
+                    target_dir = os.path.join(settings.EXPORT_DIR, f'project_{project.id}')
+                    os.makedirs(target_dir, exist_ok=True)
+                    shutil.copy2(output_file, os.path.join(target_dir, filename))
+                    # 复制 result json 和 info json 到 target_dir，确保 CSGHub 上传包含完整文件
+                    shutil.copy2(input_json, os.path.join(target_dir, name + '.json'))
+                    shutil.copy2(os.path.join(settings.EXPORT_DIR, name + '-info.json'), os.path.join(target_dir, name + '-info.json'))
+                    try:
+                        upload_without_cache_check(request, project, target_dir)
+                    except Exception as e:
+                        logger.exception('CSGHub 上传失败: %s', e)
+                out = path_to_open_binary_file(output_file)
+                return out, f'application/{ext}', filename
+
+            zip_base = os.path.join(os.path.dirname(tmp_dir), name)
+            zip_path = shutil.make_archive(zip_base, 'zip', tmp_dir)
+            filename = name + '.zip'
+            if request and getattr(project, 'dataset', None) and getattr(request.user, 'user_token', None):
+                target_dir = os.path.join(settings.EXPORT_DIR, f'project_{project.id}')
+                os.makedirs(target_dir, exist_ok=True)
+                shutil.copy2(zip_path, os.path.join(target_dir, filename))
+                # 复制 result json 和 info json 到 target_dir，确保 CSGHub 上传包含完整文件
+                shutil.copy2(input_json, os.path.join(target_dir, name + '.json'))
+                shutil.copy2(os.path.join(settings.EXPORT_DIR, name + '-info.json'), os.path.join(target_dir, name + '-info.json'))
+                try:
+                    upload_without_cache_check(request, project, target_dir)
+                except Exception as e:
+                    logger.exception('CSGHub 上传失败: %s', e)
+            out = path_to_open_binary_file(zip_path)
+            return out, 'application/zip', filename
+
 
 class ConvertedFormat(models.Model):
     class Status(models.TextChoices):

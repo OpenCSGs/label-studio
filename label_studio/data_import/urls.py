@@ -6,10 +6,11 @@ from . import api
 
 app_name = 'data_import'
 
-_api_urlpatterns = [path('file-upload/<int:pk>', api.FileUploadAPI.as_view(), name='file-upload-detail'),
-                    path('public-list/', api.PublicListAPI.as_view(), name='public-list'),
-                    path('dataset-branches/', api.DatasetBranchesAPI.as_view(), name='dataset-branches'),
-                    ]
+_api_urlpatterns = [
+    path('file-upload/<int:pk>', api.FileUploadAPI.as_view(), name='file-upload-detail'),
+    path('public-list/', api.PublicListAPI.as_view(), name='public-list'),
+    path('dataset-branches/', api.DatasetBranchesAPI.as_view(), name='dataset-branches'),
+]
 
 _api_projects_urlpatterns = [
     # import api
@@ -18,9 +19,6 @@ _api_projects_urlpatterns = [
     path('<int:pk>/import/predictions', api.ImportPredictionsAPI.as_view(), name='project-import-predictions'),
     path('<int:pk>/reimport', api.ReImportAPI.as_view(), name='project-reimport'),
     path('<int:pk>/file-uploads', api.FileUploadListAPI.as_view(), name='project-file-upload-list'),
-
-    # path('<int:pk>/import/pro', api.ProImportAPI.as_view(), name='project-import-pro'),
-
 ]
 
 urlpatterns = [

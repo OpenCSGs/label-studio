@@ -1,6 +1,6 @@
 .userpic {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   display: flex;
   position: relative;
@@ -8,7 +8,7 @@
   border-radius: 50%;
   justify-content: center;
   background: var(--color-neutral-surface);
-  border: 1px solid rgba(var(--color-neutral-shadow-raw) / 10%);
+  border: 1px solid rgba(var(--color-neutral-shadow-raw) / 10% );
   box-shadow: none;
   transition: all 150ms ease-out;
 
@@ -25,6 +25,8 @@
 
   .username {
     font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
     line-height: 1;
     font-weight: bold;
     text-align: center;

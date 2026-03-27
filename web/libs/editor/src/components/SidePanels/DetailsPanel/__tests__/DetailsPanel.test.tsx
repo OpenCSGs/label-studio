@@ -4,16 +4,24 @@ import { Relations, Info } from "../DetailsPanel";
 
 // Mock the dependencies
 jest.mock("../../../../utils/bem", () => ({
-  Block: ({ children, ...props }: any) => (
-    <div data-testid="block" {...props}>
-      {children}
-    </div>
-  ),
-  Elem: ({ children, ...props }: any) => (
-    <div data-testid="elem" {...props}>
-      {children}
-    </div>
-  ),
+  cn: (block: string) => ({
+    elem: (elem: string) => ({
+      toClassName: () => `dm-${block}__${elem}`,
+      mod: (mods: any) => ({
+        toClassName: () => `dm-${block}__${elem}`,
+      }),
+    }),
+    mod: (mods: any) => ({
+      toClassName: () => `dm-${block}`,
+      mix: (...args: any[]) => ({
+        toClassName: () => `dm-${block}`,
+      }),
+    }),
+    toClassName: () => `dm-${block}`,
+    mix: (...args: any[]) => ({
+      toClassName: () => `dm-${block}`,
+    }),
+  }),
 }));
 
 jest.mock("../../../Comments/Comments", () => ({
@@ -73,6 +81,28 @@ jest.mock("@humansignal/icons", () => ({
 
 jest.mock("../../../../utils/docs", () => ({
   getDocsUrl: (path: string) => `https://docs.example.com/${path}`,
+}));
+
+jest.mock("../../../../utils/i18n", () => ({
+  useEditorT: () => (key: string, options?: Record<string, unknown>) => {
+    const translations: Record<string, string> = {
+      "annotation.viewRegionDetails": "View region details",
+      "annotation.selectRegionToViewDetails": "Select a region to view its properties, metadata and available actions",
+      "annotation.createRelationsBetweenRegions": "Create relations between regions",
+      "annotation.linkRegionsToDefineRelationships": "Link regions to define relationships between them",
+      "annotation.learnMore": "Learn more",
+      "annotation.relations": "Relations ({{count}})",
+      "annotation.annotationHistory": "Annotation History",
+      "annotation.comments": "Comments",
+    };
+    let result = translations[key] ?? key;
+    if (options && typeof options === "object") {
+      Object.entries(options).forEach(([k, v]) => {
+        result = result.replace(new RegExp(`{{${k}}}`, "g"), String(v));
+      });
+    }
+    return result;
+  },
 }));
 
 // Mock observer and inject
@@ -148,9 +178,7 @@ describe("DetailsPanel", () => {
       it("does not render relations count header when no relations exist", () => {
         render(<Relations currentEntity={mockCurrentEntityWithoutRelations} />);
 
-        const allElems = screen.getAllByTestId("elem");
-        const relationsCountElem = allElems.find((elem) => elem.textContent?.includes("Relations ("));
-        expect(relationsCountElem).toBeUndefined();
+        expect(screen.queryByText(/Relations \(/)).not.toBeInTheDocument();
       });
     });
 
@@ -171,9 +199,7 @@ describe("DetailsPanel", () => {
       it("renders relations count in header when relations exist", () => {
         render(<Relations currentEntity={mockCurrentEntityWithRelations} />);
 
-        const allElems = screen.getAllByTestId("elem");
-        const relationsCountElem = allElems.find((elem) => elem.textContent === "Relations (3)");
-        expect(relationsCountElem).toBeInTheDocument();
+        expect(screen.getByText(/Relations \(3\)/)).toBeInTheDocument();
       });
     });
   });

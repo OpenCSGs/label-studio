@@ -27,7 +27,7 @@ Feature("Conditional Serialization");
 
 Scenario("TextArea should not be serialized when parent View is not visible", async ({ I, LabelStudio }) => {
   I.amOnPage("/");
-  LabelStudio.init({ config, data });
+  LabelStudio.init({ config, data, annotations: [{ id: "1", result: [] }], taskId: 1 });
   LabelStudio.waitForObjectsReady();
 
   I.say("Check initial state - nested elements should not be visible");
@@ -55,6 +55,7 @@ Scenario("TextArea should not be serialized when parent View is not visible", as
   I.dontSee("Y");
   I.dontSee("details");
 
+  I.wait(1);
   I.say("Check serialization - details should not be included");
   const result = await LabelStudio.serialize();
 

@@ -4,7 +4,7 @@ node_modules
 __pycache__
 .local/
 .codesouler
-
+.nx
 # docs
 __generated__
 \#$

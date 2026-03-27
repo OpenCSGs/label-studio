@@ -1,10 +1,10 @@
 import { inject } from "mobx-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { Block, cn, Elem } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { Button } from "@humansignal/ui";
 import { FilterLine } from "./FilterLine/FilterLine";
 import { IconChevronRight, IconPlus } from "@humansignal/icons";
+import { getColumnTitle } from "../../utils/column-i18n";
 import "./Filters.scss";
 
 const injector = inject(({ store }) => ({
@@ -12,10 +12,10 @@ const injector = inject(({ store }) => ({
   views: store.viewsStore,
   currentView: store.currentView,
   filters: store.currentView?.currentFilters ?? [],
+  t: store?.t ?? ((k) => k),
 }));
 
-export const Filters = injector(({ views, currentView, filters }) => {
-  const { t } = useTranslation();
+export const Filters = injector(({ views, currentView, filters, t }) => {
   const { sidebarEnabled } = views;
 
   const fields = React.useMemo(
@@ -40,18 +40,18 @@ export const Filters = injector(({ views, currentView, filters }) => {
 
         group.options.push({
           value: filter.id,
-          title: filter.field.title,
+          title: getColumnTitle(filter.field, filter.field.title, t),
           original: filter,
         });
 
         return { ...res, [target]: group };
       }, {}),
-    [currentView.availableFilters],
+    [currentView.availableFilters, t],
   );
 
   return (
-    <Block name="filters" mod={{ sidebar: sidebarEnabled }}>
-      <Elem name="list" mod={{ withFilters: !!filters.length }}>
+    <div className={cn("filters").mod({ sidebar: sidebarEnabled }).toClassName()}>
+      <div className={cn("filters").elem("list").mod({ withFilters: !!filters.length }).toClassName()}>
         {filters.length ? (
           filters.map((filter, i) => (
             <FilterLine
@@ -62,21 +62,22 @@ export const Filters = injector(({ views, currentView, filters }) => {
               value={filter.currentValue}
               key={`${filter.filter.id}-${i}`}
               availableFilters={Object.values(fields)}
-              dropdownClassName={cn("filters").elem("selector")}
+              dropdownClassName={cn("filters").elem("selector").toClassName()}
+              t={t}
             />
           ))
         ) : (
-          <Elem name="empty">{t("dataManager.noFiltersApplied")}</Elem>
+          <div className={cn("filters").elem("empty").toClassName()}>No filters applied</div>
         )}
-      </Elem>
-      <Elem name="actions">
+      </div>
+      <div className={cn("filters").elem("actions").toClassName()}>
         <Button
           size="small"
           look="string"
           onClick={() => currentView.createFilter()}
           leading={<IconPlus className="!h-3 !w-3" />}
         >
-          {filters.length ? t("dataManager.addAnotherFilter") : t("dataManager.addFilter")}
+          Add {filters.length ? "Another Filter" : "Filter"}
         </Button>
 
         {!sidebarEnabled ? (
@@ -84,14 +85,14 @@ export const Filters = injector(({ views, currentView, filters }) => {
             look="string"
             type="link"
             size="small"
-            tooltip={t("dataManager.pinToSidebar")}
+            tooltip="Pin to sidebar"
             onClick={() => views.expandFilters()}
-            aria-label={t("dataManager.pinFiltersToSidebar")}
+            aria-label="Pin filters to sidebar"
           >
             <IconChevronRight className="!w-4 !h-4" />
           </Button>
         ) : null}
-      </Elem>
-    </Block>
+      </div>
+    </div>
   );
 });

@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 // UI components
 import { Button, Tooltip } from "@humansignal/ui";
 import { Toggle as UiToggle } from "@humansignal/ui";
 import { KeyboardKey } from "./Key";
 import { IconClose } from "@humansignal/ui";
+
+import { getHotkeyLabel, getHotkeyDescription } from "./utils";
 
 // Type definitions
 interface Hotkey {
@@ -129,11 +131,14 @@ export const HotkeyItem = ({ hotkey, onEdit, isEditing, onSave, onCancel, onTogg
     onEdit(hotkey.id);
   };
 
+  const label = getHotkeyLabel(t, hotkey);
+  const description = getHotkeyDescription(t, hotkey);
+
   // Render edit mode interface
   if (isEditing) {
     return (
       <div className="py-3 space-y-3 border-b border-border last:border-0">
-        <div className="font-medium">{hotkey.label}</div>
+        <div className="font-medium">{label}</div>
         <div className="flex gap-3">
           {/* Key recording input area */}
           <Button
@@ -160,7 +165,7 @@ export const HotkeyItem = ({ hotkey, onEdit, isEditing, onSave, onCancel, onTogg
           {/* Action buttons */}
           <div className="flex flex-row gap-2">
             <Button variant="primary" onClick={handleSave} disabled={!editedKey || !!error}>
-              {t("hotkeys.apply")}
+              Apply
             </Button>
             <Button variant="neutral" icon={<IconClose />} onClick={handleCancel} />
           </div>
@@ -180,14 +185,14 @@ export const HotkeyItem = ({ hotkey, onEdit, isEditing, onSave, onCancel, onTogg
         <UiToggle
           checked={hotkey.active}
           onChange={handleToggle}
-          aria-label={hotkey.active ? t("hotkeys.disableHotkey", { label: hotkey.label }) : t("hotkeys.enableHotkey", { label: hotkey.label })}
+          aria-label={hotkey.active ? t("hotkeys.disableHotkey", { label }) : t("hotkeys.enableHotkey", { label })}
         />
       </div>
 
       {/* Label and description */}
       <div className="flex-1 mr-4">
-        <div className="font-medium">{hotkey.label}</div>
-        <div className="text-sm text-neutral-content-subtler">{hotkey.description}</div>
+        <div className="font-medium">{label}</div>
+        {description && <div className="text-sm text-neutral-content-subtler">{description}</div>}
       </div>
 
       {/* Current hotkey display (clickable to edit) */}

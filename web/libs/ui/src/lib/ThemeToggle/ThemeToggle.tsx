@@ -3,11 +3,12 @@ import styles from "./ThemeToggle.module.scss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ReactComponent as Sun } from "./icons/sun.svg";
 import { ReactComponent as Moon } from "./icons/moon.svg";
-import { Badge } from "@humansignal/ui";
 import { atom, useSetAtom } from "jotai";
 
 interface ThemeToggleProps {
   className?: string;
+  /** 翻译函数，用于国际化主题切换文案 */
+  t?: (key: string) => string;
 }
 
 const THEME_OPTIONS = ["Auto", "Light", "Dark"];
@@ -22,7 +23,13 @@ export const getCurrentTheme = () => {
     : themeSelection;
 };
 export const themeAtom = atom<string>(getCurrentTheme());
-export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
+const THEME_I18N_KEYS: Record<string, string> = {
+  Auto: "menu.themeAuto",
+  Light: "menu.themeLight",
+  Dark: "menu.themeDark",
+};
+
+export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className, t }) => {
   const presetTheme = window.localStorage.getItem(PREFERRED_COLOR_SCHEME_KEY) ?? THEME_OPTIONS[1];
   const [theme, setTheme] = useState(presetTheme);
   const systemMode = useMemo(
@@ -49,10 +56,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
     setThemeAtom(newTheme);
   }, [theme]);
 
-  const themeLabel = useMemo(
-    () => THEME_OPTIONS.find((option) => option.toLowerCase() === theme.toLowerCase()),
-    [theme],
-  );
+  const themeLabel = useMemo(() => {
+    const option = THEME_OPTIONS.find((opt) => opt.toLowerCase() === theme.toLowerCase());
+    if (!option) return theme;
+    const key = THEME_I18N_KEYS[option];
+    return key && t ? t(key) : option;
+  }, [theme, t]);
 
   return (
     <button
@@ -70,9 +79,6 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
         </div>
       </div>
       <span className={clsx(styles.themeToggle__label)}>{themeLabel}</span>
-      <Badge variant="beta" className={styles.betaBadge}>
-        Beta
-      </Badge>
     </button>
   );
 };

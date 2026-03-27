@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import { IconOutlinerDrag, IconCollapseSmall, IconExpandSmall } from "@humansignal/ui";
 import { useDrag } from "../../../hooks/useDrag";
-import { Block, Elem } from "../../../utils/bem";
+import { useEditorT } from "../../../utils/i18n";
+import { cn } from "../../../utils/bem";
+import { TAB_TITLE_KEYS } from "./utils";
 import { DEFAULT_PANEL_HEIGHT } from "../constants";
 import "./Tabs.scss";
 import { type BaseProps, Side, type TabProps } from "./types";
@@ -158,24 +160,30 @@ const Tab = ({
   );
 
   const Label = () => (
-    <Elem
+    <div
       id={`${panelKey}_${tabIndex}_droppable`}
-      name="tab"
-      mod={{ active: locked ? tabIndex === breakPointActiveTab : active }}
+      className={cn("panel-tabs")
+        .elem("tab")
+        .mod({ active: locked ? tabIndex === breakPointActiveTab : active })
+        .toClassName()}
     >
-      {!locked && <Elem name="icon" tag={IconOutlinerDrag} />}
+      {!locked && <IconOutlinerDrag className={cn("panel-tabs").elem("icon").toClassName()} />}
       {tabText}
-    </Elem>
+    </div>
   );
 
   return (
-    <Block name="panel-tabs">
-      <Elem name="draggable-tab" id={`${tabText}-draggable`} ref={tabRef}>
+    <div className={cn("panel-tabs").toClassName()}>
+      <div
+        className={cn("panel-tabs").elem("draggable-tab").toClassName()}
+        id={`${tabText}-draggable`}
+        ref={tabRef as any}
+      >
         <Label />
-      </Elem>
-      <Elem
-        ref={ghostTabRef}
-        name="ghost-tab"
+      </div>
+      <div
+        ref={ghostTabRef as any}
+        className={cn("panel-tabs").elem("ghost-tab").toClassName()}
         style={{
           width: `${panelWidth}px`,
           height: "fit-content",
@@ -184,9 +192,9 @@ const Tab = ({
         }}
       >
         <Label />
-        {shouldShowGhostTab && <Elem name="contents">{children}</Elem>}
-      </Elem>
-    </Block>
+        {shouldShowGhostTab && <div className={cn("panel-tabs").elem("contents").toClassName()}>{children}</div>}
+      </div>
+    </div>
   );
 };
 
@@ -199,27 +207,33 @@ export const Tabs = (
     panelHeight?: number;
   },
 ) => {
+  const t = useEditorT();
   const ActiveComponent = props.locked
     ? props.panelViews[props.breakPointActiveTab].component
     : props.panelViews?.find((view) => view.active)?.component;
 
   return (
     <>
-      <Block name="tabs">
-        <Elem name="tabs-row">
+      <div className={cn("tabs").toClassName()}>
+        <div className={cn("tabs").elem("tabs-row").toClassName()}>
           {props.panelViews.map((view, index) => {
             const { component: Component } = view;
+            const i18nKey = TAB_TITLE_KEYS[view.name] ?? view.title;
+            const tabTitle = t(i18nKey);
 
             return (
-              <Elem name="tab-container" key={`${view.title}-${index}-tab`} mod={{ active: view.active }}>
+              <div
+                className={cn("tabs").elem("tab-container").mod({ active: view.active }).toClassName()}
+                key={`${view.name}-${index}-tab`}
+              >
                 <Tab
                   name={view.name}
                   rootRef={props.root}
-                  key={`${view.title}-tab`}
+                  key={`${view.name}-tab`}
                   panelKey={props.name}
                   tabIndex={index}
                   active={view.active}
-                  tabTitle={view.title}
+                  tabTitle={tabTitle}
                   panelWidth={props.width}
                   viewLength={props.panelViews.length}
                   locked={props.locked}
@@ -230,14 +244,17 @@ export const Tabs = (
                   breakPointActiveTab={props.breakPointActiveTab}
                   setBreakPointActiveTab={props.setBreakPointActiveTab}
                 >
-                  <Elem name="content">
-                    <Component key={`${view.title}-${index}-ghost`} {...props} name={"outliner"} />
-                  </Elem>
+                  <div className={cn("tabs").elem("content").toClassName()}>
+                    <Component key={`${view.name}-${index}-ghost`} {...props} name={"outliner"} />
+                  </div>
                 </Tab>
-              </Elem>
+              </div>
             );
           })}
-          <Elem id={`${props.name}_${props.panelViews.length}-droppable-space`} name="drop-space-after" />
+          <div
+            id={`${props.name}_${props.panelViews.length}-droppable-space`}
+            className={cn("tabs").elem("drop-space-after").toClassName()}
+          />
           {props.isBottomPanel && props.settings?.collapsibleBottomPanel && (
             <Button
               className="collapsible-bottom-panel-toggle"
@@ -256,18 +273,18 @@ export const Tabs = (
                 cursor: "pointer",
               }}
               onClick={() => props.setBottomCollapsed?.(!props.bottomCollapsed)}
-              title={props.bottomCollapsed ? "Expand Bottom Panel" : "Collapse Bottom Panel"}
+              title={props.bottomCollapsed ? t("annotation.expandBottomPanel") : t("annotation.collapseBottomPanel")}
             >
               {props.bottomCollapsed ? <IconExpandSmall /> : <IconCollapseSmall />}
             </Button>
           )}
-        </Elem>
+        </div>
         {!props.bottomCollapsed && (
-          <Elem name="contents" style={{ overflow: "auto" }}>
+          <div className={cn("tabs").elem("contents").toClassName()} style={{ overflow: "auto" }}>
             {ActiveComponent && <ActiveComponent {...props} />}
-          </Elem>
+          </div>
         )}
-      </Block>
+      </div>
     </>
   );
 };

@@ -3,6 +3,7 @@
 import datetime
 from typing import Optional
 
+from core.feature_flags import flag_set
 from core.utils.common import load_func
 from core.utils.db import fast_first
 from django.conf import settings
@@ -15,9 +16,9 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from organizations.models import Organization
-from pygments.lexer import default
 from rest_framework.authtoken.models import Token
 from users.functions import hash_upload
+from users.functions.last_activity import get_user_last_activity, schedule_activity_sync, set_user_last_activity
 
 YEAR_START = 1980
 YEAR_CHOICES = []
@@ -66,8 +67,36 @@ class UserLastActivityMixin(models.Model):
     last_activity = models.DateTimeField(_('last activity'), default=timezone.now, editable=False)
 
     def update_last_activity(self):
-        self.last_activity = timezone.now()
-        self.save(update_fields=['last_activity'])
+        """Update user's last activity timestamp using Redis caching."""
+        current_time = timezone.now()
+
+        if flag_set('fflag_fix_back_plt_840_redis_last_activity_29072025_short', user='auto'):
+            redis_success = set_user_last_activity(self.id, current_time)
+
+            if not redis_success:
+                self.last_activity = current_time
+                self.save(update_fields=['last_activity'])
+            else:
+                schedule_activity_sync()
+        else:
+            self.last_activity = current_time
+            self.save(update_fields=['last_activity'])
+
+    def get_last_activity(self):
+        """Get user's last activity timestamp with Redis caching."""
+        # Try Redis first, fallback to database
+        cached_activity = get_user_last_activity(self.id)
+
+        if cached_activity is not None:
+            return cached_activity
+
+        # If not in Redis, return database value
+        return self.last_activity
+
+    @property
+    def last_activity_cached(self):
+        """Property for accessing cached last activity."""
+        return self.get_last_activity()
 
     class Meta:
         abstract = True
@@ -120,29 +149,17 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
     allow_newsletters = models.BooleanField(
         _('allow newsletters'), null=True, default=None, help_text=_('Allow sending newsletters to user')
     )
-    ###########
+    # CSGHub 二开
     authorization = models.CharField(
-        _('authorization'),
-        max_length=300,
-        default='',
-        blank=True,
-        help_text=_('Name of associated dataset')
+        _('authorization'), max_length=300, default='', blank=True, help_text=_('CSGHub authorization header')
     )
     user_token = models.CharField(
-        _('user token'),
-        max_length=100,
-        default='',
-        blank=True,
-        help_text=_('Name of associated dataset')
+        _('user token'), max_length=100, default='', blank=True, help_text=_('CSGHub user token')
     )
     user_name = models.CharField(
-        _('user name'),
-        max_length=100,
-        default='',
-        blank=True,
-        help_text=_('Name of associated dataset')
+        _('user name'), max_length=100, default='', blank=True, help_text=_('CSGHub user name')
     )
-    ############
+
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
@@ -162,7 +179,6 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
             models.Index(fields=['authorization']),
             models.Index(fields=['user_token']),
             models.Index(fields=['user_name']),
-
         ]
 
     @cached_property
@@ -222,12 +238,11 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
 
     def get_initials(self, is_deleted=False):
         initials = '?'
-        print(self.user_name)
         if is_deleted:
             return 'DU'
-        if  self.user_name :
-            initials = self.user_name[0:2]
-        elif self.first_name and not self.last_name:
+        if self.user_name:
+            return self.user_name[0:2]
+        if not self.first_name and not self.last_name:
             initials = self.email[0:2]
         elif self.first_name and not self.last_name:
             initials = self.first_name[0:1]

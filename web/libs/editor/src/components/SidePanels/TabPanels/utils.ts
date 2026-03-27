@@ -22,6 +22,14 @@ import {
   type ViewportSize,
 } from "./types";
 
+export const TAB_TITLE_KEYS: Record<string, string> = {
+  regions: "annotation.regions",
+  history: "annotation.history",
+  relations: "annotation.relationsTitle",
+  info: "annotation.info",
+  comments: "annotation.comments",
+};
+
 export const determineLeftOrRight = (event: any, droppableElement?: ReactNode) => {
   const element = droppableElement || (event.target as HTMLElement);
   const dropWidth = (element as HTMLElement).clientWidth as number;
@@ -127,156 +135,126 @@ export const panelComponents: { [key: string]: FC<PanelProps> } = {
   info: Info as FC<PanelProps>,
 };
 
-const getPanelViews = (t?: (key: string) => string): PanelView[] => {
-  // Default English titles
-  const defaultTitles: Record<string, string> = {
-    "annotation.regions": "Regions",
-    "annotation.history": "History",
-    "annotation.relationsTitle": "Relations",
-    "annotation.info": "Info",
-    "annotation.comments": "Comments",
-  };
+const panelViews = [
+  {
+    name: "regions",
+    title: "annotation.regions",
+    component: panelComponents.regions as FC<PanelProps>,
+    active: true,
+  },
+  {
+    name: "history",
+    title: "annotation.history",
+    component: panelComponents.history as FC<PanelProps>,
+    active: false,
+  },
 
-  const translate = t || ((key: string) => defaultTitles[key] || key);
-  return [
-    {
-      name: "regions",
-      title: translate("annotation.regions"),
-      component: panelComponents.regions as FC<PanelProps>,
-      active: true,
-    },
-    {
-      name: "history",
-      title: translate("annotation.history"),
-      component: panelComponents.history as FC<PanelProps>,
-      active: false,
-    },
-    {
-      name: "relations",
-      title: translate("annotation.relationsTitle"),
-      component: panelComponents.relations as FC<PanelProps>,
-      active: false,
-    },
-    {
-      name: "info",
-      title: translate("annotation.info"),
-      component: panelComponents.info as FC<PanelProps>,
-      active: true,
-    },
-    {
-      name: "comments",
-      title: translate("annotation.comments"),
-      component: panelComponents.comments as FC<PanelProps>,
-      active: false,
-    },
-  ];
-};
+  {
+    name: "relations",
+    title: "annotation.relationsTitle",
+    component: panelComponents.relations as FC<PanelProps>,
+    active: false,
+  },
+  {
+    name: "info",
+    title: "annotation.info",
+    component: panelComponents.info as FC<PanelProps>,
+    active: true,
+  },
+  {
+    name: "comments",
+    title: "annotation.comments",
+    component: panelComponents.comments as FC<PanelProps>,
+    active: false,
+  },
+];
 
-// Keep backward compatibility - use default English titles if no translation function provided
-const panelViews = getPanelViews();
-
-const getEnterprisePanelDefault = (t?: (key: string) => string): Record<string, PanelBBox> => {
-  const views = getPanelViews(t);
-  return {
-    "info-comments-history": {
-      order: 1,
-      top: 0,
-      left: 0,
-      relativeLeft: 0,
-      relativeTop: 0,
-      zIndex: 10,
-      width: DEFAULT_PANEL_WIDTH,
-      height: DEFAULT_PANEL_HEIGHT,
-      visible: true,
-      detached: false,
-      alignment: Side.right,
-      maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
-      panelViews: [views[3], views[4], views[1]],
-    },
-    "regions-relations": {
-      order: 2,
-      top: 0,
-      left: 0,
-      relativeLeft: 0,
-      relativeTop: 0,
-      zIndex: 10,
-      width: DEFAULT_PANEL_WIDTH,
-      height: DEFAULT_PANEL_HEIGHT,
-      visible: true,
-      detached: false,
-      alignment: Side.right,
-      maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
-      panelViews: [views[0], views[2]],
-    },
-  };
-};
-
-const getOpenSourcePanelDefault = (t?: (key: string) => string): Record<string, PanelBBox> => {
-  const views = getPanelViews(t);
-  return {
-    "info-history": {
-      order: 1,
-      top: 0,
-      left: 0,
-      relativeLeft: 0,
-      relativeTop: 0,
-      zIndex: 10,
-      width: DEFAULT_PANEL_WIDTH,
-      height: DEFAULT_PANEL_HEIGHT,
-      visible: true,
-      detached: false,
-      alignment: Side.right,
-      maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
-      panelViews: [views[3], views[1]],
-    },
-    "regions-relations": {
-      order: 2,
-      top: 0,
-      left: 0,
-      relativeLeft: 0,
-      relativeTop: 0,
-      zIndex: 10,
-      width: DEFAULT_PANEL_WIDTH,
-      height: DEFAULT_PANEL_HEIGHT,
-      visible: true,
-      detached: false,
-      alignment: Side.right,
-      maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
-      panelViews: [views[0], views[2]],
-    },
-  };
-};
-
-// Keep backward compatibility
-export const enterprisePanelDefault = getEnterprisePanelDefault();
-export const openSourcePanelDefault = getOpenSourcePanelDefault();
-
-export const getPartialEmptyBaseProps = (t?: (key: string) => string) => {
-  const views = getPanelViews(t);
-  return {
-    ...emptyPanel,
-    name: "breakpointCollapsed",
-    positioning: false,
-    height: DEFAULT_PANEL_HEIGHT,
-    maxHeight: DEFAULT_PANEL_HEIGHT,
-    detached: false,
-    maxWidth: DEFAULT_PANEL_MAX_WIDTH,
+export const enterprisePanelDefault: Record<string, PanelBBox> = {
+  "info-comments-history": {
+    order: 1,
+    top: 0,
+    left: 0,
+    relativeLeft: 0,
+    relativeTop: 0,
     zIndex: 10,
-    expanded: true,
-    locked: true,
-    alignment: Side.left,
-    lockPanelContents: false,
-    attachedKeys: [],
-    sidePanelCollapsed: { [Side.left]: false, [Side.right]: false },
-    setSidePanelCollapsed: () => {},
-    dragTop: false,
-    dragBottom: false,
-    panelViews: [views[0], views[1], views[2], views[3], views[4]],
-  };
+    width: DEFAULT_PANEL_WIDTH,
+    height: DEFAULT_PANEL_HEIGHT,
+    visible: true,
+    detached: false,
+    alignment: Side.right,
+    maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
+    panelViews: [panelViews[3], panelViews[4], panelViews[1]],
+  },
+  "regions-relations": {
+    order: 2,
+    top: 0,
+    left: 0,
+    relativeLeft: 0,
+    relativeTop: 0,
+    zIndex: 10,
+    width: DEFAULT_PANEL_WIDTH,
+    height: DEFAULT_PANEL_HEIGHT,
+    visible: true,
+    detached: false,
+    alignment: Side.right,
+    maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
+    panelViews: [panelViews[0], panelViews[2]],
+  },
 };
 
-// Keep backward compatibility
-export const partialEmptyBaseProps = getPartialEmptyBaseProps();
+export const openSourcePanelDefault: Record<string, PanelBBox> = {
+  "info-history": {
+    order: 1,
+    top: 0,
+    left: 0,
+    relativeLeft: 0,
+    relativeTop: 0,
+    zIndex: 10,
+    width: DEFAULT_PANEL_WIDTH,
+    height: DEFAULT_PANEL_HEIGHT,
+    visible: true,
+    detached: false,
+    alignment: Side.right,
+    maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
+    panelViews: [panelViews[3], panelViews[1]],
+  },
+  "regions-relations": {
+    order: 2,
+    top: 0,
+    left: 0,
+    relativeLeft: 0,
+    relativeTop: 0,
+    zIndex: 10,
+    width: DEFAULT_PANEL_WIDTH,
+    height: DEFAULT_PANEL_HEIGHT,
+    visible: true,
+    detached: false,
+    alignment: Side.right,
+    maxHeight: DEFAULT_PANEL_MAX_HEIGHT,
+    panelViews: [panelViews[0], panelViews[2]],
+  },
+};
+
+export const partialEmptyBaseProps = {
+  ...emptyPanel,
+  name: "breakpointCollapsed",
+  positioning: false,
+  height: DEFAULT_PANEL_HEIGHT,
+  maxHeight: DEFAULT_PANEL_HEIGHT,
+  detached: false,
+  maxWidth: DEFAULT_PANEL_MAX_WIDTH,
+  zIndex: 10,
+  expanded: true,
+  locked: true,
+  alignment: Side.left,
+  lockPanelContents: false,
+  attachedKeys: [],
+  sidePanelCollapsed: { [Side.left]: false, [Side.right]: false },
+  setSidePanelCollapsed: () => {},
+  dragTop: false,
+  dragBottom: false,
+  panelViews: [panelViews[0], panelViews[1], panelViews[2], panelViews[3], panelViews[4]],
+};
 
 export const resizers = ["top-left", "top-right", "bottom-left", "bottom-right", "top", "bottom", "right", "left"];
 
@@ -295,23 +273,20 @@ export const checkCollapsedPanelsHaveData = (collapsedSide: PanelsCollapsed, pan
   return collapsedCopy;
 };
 
-export const restorePanel = (showComments: boolean, t?: (key: string) => string): StoredPanelState => {
+export const restorePanel = (showComments: boolean): StoredPanelState => {
   const previousState = window.localStorage.getItem("panelState");
   const parsed: StoredPanelState | null = previousState && JSON.parse(previousState);
   const panelData = parsed && parsed.panelData;
   const defaultCollapsedSide = { [Side.left]: false, [Side.right]: false };
   const collapsedSide = parsed?.collapsedSide ?? defaultCollapsedSide;
   const allTabs = panelData && Object.values(panelData).flatMap((panel) => panel.panelViews);
-  const translatedPanelViews = getPanelViews(t);
   // don't use comments tab anywhere if it's disabled
-  const countOfAllAvailableTabs = translatedPanelViews.length - (showComments ? 0 : 1);
+  const countOfAllAvailableTabs = panelViews.length - (showComments ? 0 : 1);
 
   // stored state can have less tabs than available, for example if it was stored on old version
   // or if comments were enabled; then return default state
   if (!allTabs || allTabs.length !== countOfAllAvailableTabs) {
-    const defaultPanel = showComments 
-      ? getEnterprisePanelDefault(t) 
-      : getOpenSourcePanelDefault(t);
+    const defaultPanel = showComments ? enterprisePanelDefault : openSourcePanelDefault;
 
     return { panelData: defaultPanel, collapsedSide: defaultCollapsedSide };
   }
@@ -320,39 +295,22 @@ export const restorePanel = (showComments: boolean, t?: (key: string) => string)
   const withActiveDefaults = setActiveDefaults(noEmptyPanels);
   const safeCollapsedSide = checkCollapsedPanelsHaveData(collapsedSide, withActiveDefaults);
 
-  return { panelData: restoreComponentsToState(withActiveDefaults, t), collapsedSide: safeCollapsedSide };
+  return { panelData: restoreComponentsToState(withActiveDefaults), collapsedSide: safeCollapsedSide };
 };
 
-export const restoreComponentsToState = (panelData: Record<string, PanelBBox>, t?: (key: string) => string) => {
+export const restoreComponentsToState = (panelData: Record<string, PanelBBox>) => {
   const updatedPanels: Record<string, PanelBBox> = { ...panelData };
-  
-  // Only update titles if translation function is provided
-  if (t) {
-    const views = getPanelViews(t);
-    const viewMap = new Map(views.map(v => [v.name, v]));
 
-    Object.keys(updatedPanels).forEach((panelName) => {
-      const panel = updatedPanels[panelName];
+  Object.keys(updatedPanels).forEach((panelName) => {
+    const panel = updatedPanels[panelName];
 
-      panel.panelViews.forEach((view: PanelView) => {
-        view.component = panelComponents[view.name];
-        // Update title with translation
-        const translatedView = viewMap.get(view.name);
-        if (translatedView) {
-          view.title = translatedView.title;
-        }
-      });
+    panel.panelViews.forEach((view: { name: string; title?: string; component: FC<PanelProps> }) => {
+      view.component = panelComponents[view.name];
+      if (TAB_TITLE_KEYS[view.name]) {
+        view.title = TAB_TITLE_KEYS[view.name];
+      }
     });
-  } else {
-    // Just restore components without updating titles
-    Object.keys(updatedPanels).forEach((panelName) => {
-      const panel = updatedPanels[panelName];
-
-      panel.panelViews.forEach((view: PanelView) => {
-        view.component = panelComponents[view.name];
-      });
-    });
-  }
+  });
 
   return updatedPanels;
 };
@@ -554,30 +512,18 @@ export const newPanelFromTab = (
   left: number,
   top: number,
   viewportSize: MutableRefObject<ViewportSize>,
-  t?: (key: string) => string,
-) => {
-  const views = getPanelViews(t);
-  const viewMap = new Map(views.map(v => [v.name, v]));
-  const originalView = state[movingPanel].panelViews[movingTab];
-  const translatedView = viewMap.get(originalView.name);
-  
-  return {
-    ...emptyPanel,
-    name,
-    panelViews: [{ 
-      ...originalView, 
-      title: translatedView?.title || originalView.title,
-      active: true 
-    }],
-    top,
-    left,
-    relativeTop: (top / viewportSize.current.height) * 100,
-    relativeLeft: (left / viewportSize.current.width) * 100,
-    visible: true,
-    detached: true,
-    zIndex: 12,
-  };
-};
+) => ({
+  ...emptyPanel,
+  name,
+  panelViews: [{ ...state[movingPanel].panelViews[movingTab], active: true }],
+  top,
+  left,
+  relativeTop: (top / viewportSize.current.height) * 100,
+  relativeLeft: (left / viewportSize.current.width) * 100,
+  visible: true,
+  detached: true,
+  zIndex: 12,
+});
 
 export const newPanelInState = (
   state: Record<string, PanelBBox>,
@@ -587,9 +533,8 @@ export const newPanelInState = (
   left: number,
   top: number,
   viewportSize: MutableRefObject<ViewportSize>,
-  t?: (key: string) => string,
 ) => {
-  const newPanel = newPanelFromTab(state, name, movingPanel, movingTab, left, top, viewportSize, t);
+  const newPanel = newPanelFromTab(state, name, movingPanel, movingTab, left, top, viewportSize);
   const stateWithRemovals = stateRemovedTab(state, movingPanel, movingTab);
   const panelsWithRemovals = stateRemovePanelEmptyViews(stateWithRemovals);
   const panelWithAdditions = { ...panelsWithRemovals, [`${newPanel.name}`]: newPanel };

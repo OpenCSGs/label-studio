@@ -9,6 +9,7 @@ type UserpicProps = {
   badge?: Record<string, any> | null;
   className?: string;
   faded?: boolean;
+  showUsernameTooltip?: boolean;
   showUsername?: boolean;
   size?: number;
   src?: string;
@@ -30,7 +31,8 @@ export const Userpic = forwardRef(
       badge = null,
       className,
       faded = false,
-      showUsername,
+      showUsernameTooltip = false,
+      showUsername = false,
       size,
       src,
       style = {},
@@ -69,11 +71,8 @@ export const Userpic = forwardRef(
 
     const displayName = useMemo(() => {
       const curUser = user ?? userRef.current;
-      // 优先使用 user_name 字段
-      if (curUser?.user_name) {
-        return curUser.user_name;
-      }
-      // 如果没有 user_name，使用 userDisplayName 作为后备
+      // 优先使用 user_name 字段（与 CSGHub 一致）
+      if (curUser?.user_name) return curUser.user_name;
       return userDisplayName(curUser);
     }, [user]);
 
@@ -135,37 +134,41 @@ export const Userpic = forwardRef(
     }
 
     const userpic = (
-      <div
-        ref={ref}
-        data-testid="userpic"
-        className={clsx(styles.userpic, { [styles.faded]: faded, ...classNameList })}
-        style={stylesheet}
-        {...rest}
-      >
-        {children ? (
-          children
-        ) : (
-          <>
-            <img
-              className={clsx(styles.avatar, { [styles.faded]: faded })}
-              ref={imgRef}
-              src={finalSrc}
-              alt={(displayName ?? "").toUpperCase()}
-              style={{ opacity: imgVisible ? (faded ? 0.3 : 1) : 0 }}
-              onLoad={onImageLoaded}
-              onError={() => setFinalSrc(FALLBACK_IMAGE)}
-            />
-            {renderName()}
-          </>
-        )}
-        {badge &&
-          Object.entries(badge).map(([align, content], i) => {
-            return (
-              <div key={`badge-${i}`} className={clsx(styles.badge, { [styles[align]]: true })}>
-                {content}
-              </div>
-            );
-          })}
+      <div className="flex items-center gap-2">
+        <div
+          ref={ref}
+          data-testid="userpic"
+          className={clsx(styles.userpic, { [styles.faded]: faded, ...classNameList })}
+          style={stylesheet}
+          {...rest}
+        >
+          {children ? (
+            children
+          ) : (
+            <>
+              <img
+                className={clsx(styles.avatar, { [styles.faded]: faded })}
+                ref={imgRef}
+                src={finalSrc}
+                alt={(displayName ?? "").toUpperCase()}
+                style={{ opacity: imgVisible ? (faded ? 0.3 : 1) : 0 }}
+                onLoad={onImageLoaded}
+                onError={() => setFinalSrc(FALLBACK_IMAGE)}
+              />
+              {renderName()}
+            </>
+          )}
+          {badge &&
+            Object.entries(badge).map(([align, content], i) => {
+              return (
+                <div key={`badge-${i}`} className={clsx(styles.badge, { [styles[align]]: true })}>
+                  {content}
+                </div>
+              );
+            })}
+        </div>
+
+        {showUsername && <span className="text-sm text-gray-500 line-clamp-1">{displayName}</span>}
       </div>
     );
 
@@ -183,7 +186,7 @@ export const Userpic = forwardRef(
       return username;
     }, [user, username]);
 
-    return showUsername && userFullName ? <Tooltip title={userFullName}>{userpic}</Tooltip> : userpic;
+    return showUsernameTooltip && userFullName ? <Tooltip title={userFullName}>{userpic}</Tooltip> : userpic;
   },
 );
 

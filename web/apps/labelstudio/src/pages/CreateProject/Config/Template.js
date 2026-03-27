@@ -45,10 +45,9 @@ export class Template {
 
   initRoot() {
     const tags = this.flatten(this.$root);
-    // Use translated versions if translation function is provided
     const OBJECTS_TO_USE = this.t ? getOBJECTS(this.t) : OBJECTS;
     const CONTROLS_TO_USE = this.t ? getCONTROLS(this.t) : CONTROLS;
-    
+
     this.objects = tags.filter(
       ($tag) => $tag.tagName in OBJECTS_TO_USE && ($tag.getAttribute("value") || $tag.getAttribute("valueList")),
     );

@@ -359,7 +359,13 @@ export default types
 
           entity?.submissionInProgress();
 
-          if (isReview) {
+          if (self.hasInterface("annotation:bulk")) {
+            const customButtons = self.customButtons?.get("_replace");
+            const submitButton = customButtons?.find((btn) => btn.name === "submit");
+            if (submitButton && !submitButton.disabled) {
+              self.handleCustomButton?.(submitButton);
+            }
+          } else if (isReview) {
             self.acceptAnnotation();
           } else if (!isUpdate && self.hasInterface("submit")) {
             self.submitAnnotation();
@@ -455,19 +461,33 @@ export default types
       hotkeys.addNamed("annotation:undo", () => {
         const annotation = self.annotationStore.selected;
 
-        if (!annotation.isDrawing) annotation.undo();
+        // Allow undo even during drawing - the undo() method handles stopping drawing
+        // when appropriate (e.g., when vertices <= 1 for vector regions)
+        // This matches the behavior of the undo button which doesn't check isDrawing
+        annotation.undo();
       });
 
       hotkeys.addNamed("annotation:redo", () => {
         const annotation = self.annotationStore.selected;
 
-        if (!annotation.isDrawing) annotation.redo();
+        // Allow redo even during drawing - matches the behavior of the redo button
+        // which doesn't check isDrawing
+        annotation.redo();
       });
 
-      hotkeys.addNamed("region:exit", () => {
-        const c = self.annotationStore.selected;
+      hotkeys.addNamed("region:exit", (e) => {
+        e.stopImmediatePropagation();
 
-        if (c && c.isLinkingMode) {
+        const c = self.annotationStore.selected;
+        const managers = ToolsManager.allInstances();
+        const tools = managers
+          .map((m) => m.findSelectedTool())
+          .filter(Boolean)
+          .filter((t) => t.isDrawing);
+
+        if (tools.length > 0) {
+          tools.forEach((t) => t.complete?.());
+        } else if (c && c.isLinkingMode) {
           c.stopLinkingMode();
         } else if (!c.isDrawing) {
           c.unselectAll();
@@ -654,6 +674,17 @@ export default types
 
     function skipTask(extraData) {
       if (self.isSubmitting) return;
+      // Manager roles that can force-skip unskippable tasks (OW=Owner, AD=Admin, MA=Manager)
+      const MANAGER_ROLES = ["OW", "AD", "MA"];
+      const task = self.task;
+      const taskAllowSkip = task?.allow_skip !== false;
+      const userRole = window.APP_SETTINGS?.user?.role;
+      const hasForceSkipPermission = MANAGER_ROLES.includes(userRole);
+      const canSkip = taskAllowSkip || hasForceSkipPermission;
+      if (!canSkip) {
+        console.warn("Task cannot be skipped: allow_skip is false and user lacks manager role");
+        return;
+      }
       handleSubmittingFlag(() => {
         getEnv(self).events.invoke("skipTask", self, extraData);
         self.incrementQueuePosition();

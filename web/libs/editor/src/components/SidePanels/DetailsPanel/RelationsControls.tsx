@@ -1,17 +1,16 @@
-import { type FC, useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { observer } from "mobx-react";
-import { Block, Elem } from "../../../utils/bem";
 import { Button } from "@humansignal/ui";
+import { observer } from "mobx-react";
+import { type FC, useCallback } from "react";
+import { cn } from "../../../utils/bem";
 import "./RelationsControls.scss";
-import { IconOutlinerEyeClosed, IconOutlinerEyeOpened, IconSortUp, IconSortDown } from "@humansignal/icons";
+import { IconOutlinerEyeClosed, IconOutlinerEyeOpened, IconSortDown, IconSortUp } from "@humansignal/icons";
 
 const RelationsControlsComponent: FC<any> = ({ relationStore }) => {
   return (
-    <Block name="relation-controls">
+    <div className={cn("relation-controls").toClassName()}>
       <ToggleRelationsVisibilityButton relationStore={relationStore} />
       <ToggleRelationsOrderButton relationStore={relationStore} />
-    </Block>
+    </div>
   );
 };
 
@@ -20,7 +19,6 @@ interface ToggleRelationsVisibilityButtonProps {
 }
 
 const ToggleRelationsVisibilityButton = observer<FC<ToggleRelationsVisibilityButtonProps>>(({ relationStore }) => {
-  const { t } = useTranslation();
   const toggleRelationsVisibility = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -33,15 +31,17 @@ const ToggleRelationsVisibilityButton = observer<FC<ToggleRelationsVisibilityBut
   const isDisabled = !relationStore?.relations?.length;
   const isAllHidden = !(!isDisabled && relationStore.isAllHidden);
 
+  // This comes from an Elem tag that was set without a name. The CSS was fixed to make it work,
+  // but this is clearly bad CSS usage.
   return (
-    <Elem
-      tag={Button}
+    <Button
+      className={cn("relation-controls").mod({ hidden: isAllHidden }).toClassName()}
+      variant="neutral"
       look="string"
       size="small"
       disabled={isDisabled}
       onClick={toggleRelationsVisibility}
-      mod={{ hidden: isAllHidden }}
-      aria-label={isAllHidden ? t("annotation.showAll") : t("annotation.hideAll")}
+      aria-label={isAllHidden ? "Show all" : "Hide all"}
       icon={
         isAllHidden ? (
           <IconOutlinerEyeClosed width={16} height={16} />
@@ -49,7 +49,7 @@ const ToggleRelationsVisibilityButton = observer<FC<ToggleRelationsVisibilityBut
           <IconOutlinerEyeOpened width={16} height={16} />
         )
       }
-      tooltip={isAllHidden ? t("annotation.showAll") : t("annotation.hideAll")}
+      tooltip={isAllHidden ? "Show all" : "Hide all"}
       tooltipTheme="dark"
     />
   );
@@ -60,7 +60,6 @@ interface ToggleRelationsOrderButtonProps {
 }
 
 const ToggleRelationsOrderButton = observer<FC<ToggleRelationsOrderButtonProps>>(({ relationStore }) => {
-  const { t } = useTranslation();
   const toggleRelationsOrder = useCallback(
     (e: any) => {
       e.preventDefault();
@@ -73,17 +72,19 @@ const ToggleRelationsOrderButton = observer<FC<ToggleRelationsOrderButtonProps>>
   const isDisabled = !relationStore?.relations?.length;
   const isAsc = relationStore.order === "asc";
 
+  // This comes from an Elem tag that was set without a name. The CSS was fixed to make it work,
+  // but this is clearly bad CSS usage.
   return (
-    <Elem
-      tag={Button}
+    <Button
+      className={cn("relation-controls").mod({ order: relationStore.order }).toClassName()}
+      variant="neutral"
       look="string"
       size="small"
       onClick={toggleRelationsOrder}
       disabled={isDisabled}
-      mod={{ order: relationStore.order }}
-      aria-label={isAsc ? t("annotation.orderByOldest") : t("annotation.orderByNewest")}
+      aria-label={isAsc ? "Order by oldest" : "Order by newest"}
       icon={isAsc ? <IconSortUp /> : <IconSortDown />}
-      tooltip={isAsc ? t("annotation.orderByOldest") : t("annotation.orderByNewest")}
+      tooltip={isAsc ? "Order by oldest" : "Order by newest"}
       tooltipTheme="dark"
     />
   );

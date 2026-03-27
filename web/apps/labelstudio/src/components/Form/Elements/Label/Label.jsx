@@ -35,19 +35,23 @@ const Label = ({
   };
 
   classList.push(rootClass.mod(mods).toClassName());
+  const rootProps = {
+    className: clsx(classList, className),
+    style: style,
+  };
+
+  if (required) {
+    rootProps["data-required"] = true;
+  }
 
   return createElement(
     tagName,
-    {
-      className: clsx(classList, className),
-      "data-required": required,
-      style: style,
-    },
+    rootProps,
     <>
       <div className={rootClass.elem("text")}>
         <div className={rootClass.elem("content")}>
           <div className={rootClass.elem("label")}>
-            {text}
+            <span>{text}</span>
             {tooltip && (
               <div className={rootClass.elem("tooltip")}>
                 <Tooltip title={tooltip}>{tooltipIcon ? tooltipIcon : <IconInfoOutline />}</Tooltip>

@@ -35,7 +35,16 @@
     "label": "Label",
     "accountSettings": "Account & Settings",
     "logOut": "Log Out",
-    "newProject": "New project"
+    "newProject": "New project",
+    "api": "API",
+    "docs": "Docs",
+    "github": "GitHub",
+    "slackCommunity": "Slack Community",
+    "checkNotificationSettings": "Please check new notification settings in the Account & Settings page",
+    "themeAuto": "Auto",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeBeta": "Beta"
   },
   "projects": {
     "title": "Projects",
@@ -61,7 +70,9 @@
     "viewAll": "View All",
     "cantLoadProjects": "can't load projects",
     "createFirstProject": "Create your first project",
-    "createFirstProjectDescription": "Import your data and set up the labeling interface to start annotating"
+    "createFirstProjectDescription": "Import your data and set up the labeling interface to start annotating",
+    "resources": "Resources",
+    "resourcesDescription": "Learn, explore and get help"
   },
   "organization": {
     "title": "Organization",
@@ -85,7 +96,17 @@
     "closeUserDetails": "Close user details",
     "createdProjects": "Created Projects",
     "contributedTo": "Contributed to",
-    "lastActivityOn": "Last activity on"
+    "lastActivityOn": "Last activity on",
+    "addMembers": "Add Members",
+    "apiTokenSettingsSaved": "API Token settings saved",
+    "inviteMembers": "Invite members",
+    "personalAccessTokens": "Personal Access Tokens",
+    "personalAccessTokensDesc": "Enable increased token authentication security",
+    "legacyTokens": "Legacy Tokens",
+    "legacyTokensDesc": "Enable legacy access tokens, these do not expire",
+    "tokenTTL": "Time-to-Live (optional, Personal Access Token only)",
+    "tokenTTLDesc": "The number of days, after creation, that the token will be valid for. After this time period a user will need to create a new access token",
+    "saveChanges": "Save Changes"
   },
   "settings": {
     "title": "Settings",
@@ -109,6 +130,7 @@
     "labelingInterface": "Labeling Interface",
     "annotationSettings": "Annotation Settings",
     "labelingInstructions": "Labeling Instructions",
+    "instructions": "Instructions",
     "labelingInstructionsDescription": "Write instructions to help users complete labeling tasks.",
     "labelingInstructionsHtml": "The instruction field supports HTML markup and it allows use of images, iframes (pdf).",
     "showBeforeLabeling": "Show before labeling",
@@ -128,6 +150,14 @@
     "dropAllTabsHelp": "If the Data Manager is not loading, dropping all Data Manager tabs can help.",
     "deleteProject": "Delete Project",
     "deleteProjectHelp": "Deleting a project removes all tasks, annotations, and project data from the database.",
+    "typeToProceed": "To proceed, type \"{{word}}\" in the field below:",
+    "cancel": "Cancel",
+    "cacheResetSuccess": "Cache reset successfully",
+    "tabsDroppedSuccess": "All tabs dropped successfully",
+    "projectDeletedSuccess": "Project deleted successfully",
+    "resetCacheMessage": "You are about to reset the cache for {{title}}. This action cannot be undone.",
+    "dropTabsMessage": "You are about to drop all tabs for {{title}}. This action cannot be undone.",
+    "deleteProjectMessage": "You are about to delete the project {{title}}. This action cannot be undone.",
     "deleteAnnotations": "Delete {{count}} Annotations",
     "deleteTasks": "Delete {{count}} Tasks",
     "deletePredictions": "Delete {{count}} Predictions",
@@ -137,6 +167,22 @@
     "saveAnnotationSettings": "Save annotation settings",
     "selectAnOption": "Select an option",
     "importedFileTooBig": "Imported file is too big"
+  },
+  "predictions": {
+    "title": "Predictions",
+    "predictionsList": "Predictions List",
+    "predictionsListDescription": "List of predictions available in the project. Each card is associated with a separate model version. To learn about how to import predictions,",
+    "noPredictionsYet": "No predictions uploaded yet",
+    "noPredictionsDescription": "Upload predictions to automatically prelabel your data and speed up annotation. Import predictions from multiple model versions to compare their performance, or connect live models from the Model page to generate predictions on demand.",
+    "deletePredictions": "Delete Predictions",
+    "deletePredictionsConfirm": "This action cannot be undone. Are you sure?",
+    "lastPredictionCreated": "Last prediction created",
+    "modelVersionUndefined": "Model version is undefined. Likely means that model_version field was missing when predictions were imported.",
+    "noModelOrPredictions": "No model or predictions available",
+    "selectModelOrPredictions": "Select which predictions or which model you want to use:",
+    "selectPlaceholder": "Please select model or predictions",
+    "modelsGroup": "Models",
+    "predictionsGroup": "Predictions"
   },
   "webhooks": {
     "title": "Webhooks",
@@ -148,7 +194,30 @@
     "payloadUrl": "Payload URL",
     "url": "URL",
     "isActive": "Is Active",
-    "created": "Created"
+    "created": "Created",
+    "addFirstWebhook": "Add your first webhook",
+    "webhookDescription": "Setup integrations that subscribe to certain events using Webhooks. When an event is triggered, Label Studio sends an HTTP POST request to the configured webhook URL.",
+    "contactAdminForWebhooks": "Contact your administrator to create Webhooks",
+    "newWebhook": "New Webhook",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "headers": "Headers",
+    "headerPlaceholder": "header",
+    "addHeader": "Add Header",
+    "deleteWebhookAria": "Delete webhook",
+    "removeHeader": "Remove Header",
+    "payload": "Payload",
+    "sendPayload": "Send payload",
+    "sendForAllActions": "Send for all actions",
+    "sendPayloadFor": "Send Payload for",
+    "deleteWebhook": "Delete Webhook",
+    "webhookSetupDescription": "Setup integrations that subscribe to certain events using Webhooks. When an event is triggered, {appName} sends an HTTP POST request to the configured webhook URL.",
+    "learnMoreAria": "Learn more about webhooks (opens in new window)",
+    "webhooksSettings": "Webhooks Settings",
+    "deleteConfirmTitle": "Delete",
+    "deleteConfirmBody": "Are you sure you want to delete the webhook? This action cannot be undone.",
+    "cancelDeletion": "Cancel webhook deletion",
+    "confirmDeletion": "Confirm webhook deletion"
   },
   "storage": {
     "edit": "Edit",
@@ -156,7 +225,44 @@
     "storageOptions": "Storage options",
     "syncStorage": "Sync Storage",
     "syncingMayTakeTime": "Syncing may take some time, please refresh the page to see the current status.",
-    "untitled": "Untitled"
+    "untitled": "Untitled",
+    "cloudStorage": "Cloud Storage",
+    "cloudStorageDescription": "Use cloud or database storage as the source for your labeling tasks or the target of your completed annotations.",
+    "sourceCloudStorage": "Source Cloud Storage",
+    "targetCloudStorage": "Target Cloud Storage",
+    "addSourceStorage": "Add Source Storage",
+    "addTargetStorage": "Add Target Storage",
+    "addFirstCloudStorage": "Add your first cloud storage",
+    "amazonS3": "Amazon S3",
+    "googleCloudStorage": "Google Cloud Storage",
+    "azureBlobStorage": "Azure Blob Storage",
+    "redisStorage": "Redis Storage",
+    "storageSyncErrorLog": "Storage Sync Error Log",
+    "seeDocs": "See docs",
+    "troubleshootingTips": "for troubleshooting tips on cloud storage connections. ",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "initialized": "Initialized",
+    "queued": "Queued",
+    "inProgress": "In progress",
+    "failed": "Failed",
+    "completedWithErrors": "Completed with errors",
+    "completed": "Completed",
+    "notSyncedYet": "Not synced yet",
+    "viewLogs": "(View Logs)",
+    "storageType": "Storage Type",
+    "successfullyConnected": "Successfully connected!",
+    "connectionFailed": "Connection failed",
+    "checkConnection": "Check Connection",
+    "saveStorage": "Save storage settings",
+    "addStorage": "Add storage",
+    "addStorageButton": "Add Storage",
+    "deletingStorage": "Deleting storage",
+    "deleteStorageConfirm": "This action cannot be undone. Are you sure?",
+    "connect": "Connect",
+    "source": "Source",
+    "target": "Target"
   },
   "machineLearning": {
     "edit": "Edit",
@@ -171,15 +277,39 @@
     "training": "Training",
     "predicting": "Predicting",
     "created": "Created",
+    "model": "Model",
+    "modelSettings": "Model Settings",
     "modelOptions": "Machine learning model options",
+    "learnMoreAria": "Learn more about machine learning models (opens in new window)",
     "connectedModelDetected": "A connected model has been detected! If you wish to fetch predictions from this model, please follow these steps:",
     "navigateToDataManager": "1. Navigate to the Data Manager.",
     "selectDesiredTasks": "2. Select the desired tasks.",
     "clickBatchPredictions": "3. Click on Batch predictions from the Actions menu.",
-    "useModelPredictionsForPrelabeling": "If you want to use the model predictions for prelabeling, please configure this in the",
-    "annotationSettings": "Annotation settings"
+    "useModelPredictionsForPrelabeling": "If you want to use the model predictions for prelabeling, please configure this in the <link>Annotation settings</link>.",
+    "annotationSettings": "Annotation settings",
+    "connectModel": "Connect Model",
+    "letsConnectFirstModel": "Let's connect your first model",
+    "connectModelDescription": "Connect a machine learning model to generate live predictions for your project. Compare predictions, accelerate labeling with automatic prelabeling, and direct your team to the most impactful tasks through active learning.",
+    "configuration": "Configuration",
+    "startTrainingOnAnnotation": "Start model training on annotation submission",
+    "startTrainingOnAnnotationDescription": "This option will send a request to /train with information about annotations. You can use this to enable an Active Learning loop. You can also manually start training through model menu in its card.",
+    "name": "Name",
+    "enterName": "Enter a name",
+    "backendUrl": "Backend URL",
+    "selectAuthMethod": "Select authentication method",
+    "noAuthentication": "No Authentication",
+    "basicAuthentication": "Basic Authentication",
+    "basicAuthUser": "Basic auth user",
+    "basicAuthPass": "Basic auth pass",
+    "extraParams": "Any extra params to pass during model connection",
+    "interactivePreannotations": "Interactive preannotations",
+    "interactivePreannotationsDescription": "If enabled some labeling tools will send requests to the ML Backend interactively during the annotation process.",
+    "validateAndSave": "Validate and Save",
+    "failedToSaveMlBackend": "Failed to save ML backend.",
+    "failedToAddMlBackend": "Failed to add new ML backend."
   },
   "models": {
+    "title": "Models",
     "createModel": "Create a Model",
     "createModelDescription": "Build a high quality model to auto-label your data using LLMs",
     "createNewModel": "Create new model"
@@ -240,6 +370,47 @@
     "pinFiltersToSidebar": "Pin filters to sidebar",
     "where": "Where",
     "column": "Column",
+    "columnId": "ID",
+    "columnIdHelp": "Task ID",
+    "columnInnerId": "Inner ID",
+    "columnInnerIdHelp": "Internal task ID starting from 1 for the current project",
+    "columnData": "data",
+    "columnCompleted": "Completed",
+    "columnCompletedHelp": "Last annotation date",
+    "columnAnnotations": "Annotations",
+    "columnAnnotationsHelp": "Total annotations per task",
+    "columnCancelled": "Cancelled",
+    "columnCancelledHelp": "Total cancelled (skipped) annotations",
+    "columnPredictions": "Predictions",
+    "columnPredictionsHelp": "Total predictions per task",
+    "columnAnnotatedBy": "Annotated by",
+    "columnAnnotatedByHelp": "All users who completed the task",
+    "columnAnnotationResults": "Annotation results",
+    "columnAnnotationResultsHelp": "Annotation results stacked over all annotations",
+    "columnAnnotationIds": "Annotation IDs",
+    "columnAnnotationIdsHelp": "Annotation IDs stacked over all annotations",
+    "columnPredictionScore": "Prediction score",
+    "columnPredictionScoreHelp": "Average prediction score over all task predictions",
+    "columnPredictionModelVersions": "Prediction model versions",
+    "columnPredictionModelVersionsHelp": "Model versions aggregated over all predictions",
+    "columnPredictionResults": "Prediction results",
+    "columnPredictionResultsHelp": "Prediction results stacked over all predictions",
+    "columnUploadFilename": "Upload filename",
+    "columnUploadFilenameHelp": "Filename of uploaded file",
+    "columnStorageFilename": "Storage filename",
+    "columnStorageFilenameHelp": "Filename from import storage",
+    "columnCreatedAt": "Created at",
+    "columnCreatedAtHelp": "Task creation time",
+    "columnUpdatedAt": "Updated at",
+    "columnUpdatedAtHelp": "Task update time",
+    "columnUpdatedBy": "Updated by",
+    "columnUpdatedByHelp": "User who did the last task update",
+    "columnLeadTime": "Lead Time",
+    "columnLeadTimeHelp": "Average lead time over all annotations (seconds)",
+    "columnDrafts": "Drafts",
+    "columnDraftsHelp": "True if at least one draft exists for the task",
+    "columnImage": "image",
+    "columnImg": "img",
     "and": "And",
     "or": "Or",
     "filters": "Filters",
@@ -286,7 +457,34 @@
     "duplicate": "Duplicate",
     "close": "Close",
     "defaultTab": "Default",
-    "newTab": "New Tab {{number}}"
+    "newTab": "New Tab {{number}}",
+    "clearFilters": "Clear Filters",
+    "noTasksFound": "No tasks found",
+    "tryAdjustingFilters": "Try adjusting or clearing the filters to see more results",
+    "noTasksForReview": "No tasks available for review or labeling",
+    "tasksImportedWillAppear": "Tasks imported to this project will appear here",
+    "startLabelingTasks": "Start labeling tasks",
+    "tasksLabeledWillAppear": "Tasks you've labeled will appear here",
+    "noTasksAvailable": "No tasks available",
+    "tasksAssignedWillAppear": "Tasks assigned to you will appear here",
+    "tasksWillAppearWhenAvailable": "Tasks will appear here when they become available",
+    "importDataToGetStarted": "Import data to get your project started",
+    "connectStorageOrUpload": "Connect your cloud storage or upload files from your computer",
+    "connectCloudStorage": "Connect Cloud Storage",
+    "seeDocsOnImporting": "See docs on importing data",
+    "columnId": "ID",
+    "columnImage": "Image",
+    "columnData": "Data",
+    "columnCompleted": "Completed",
+    "columnAnnotatedBy": "Annotated by",
+    "columnImg": "img",
+    "fitImagesToWidth": "Fit images to width",
+    "gridSettings": "Grid settings",
+    "columnsCount": "Columns",
+    "decreaseColumns": "Decrease columns number",
+    "increaseColumns": "Increase columns number",
+    "showTaskSource": "Show task source",
+    "sourceForTask": "Source for task {{id}}"
   },
   "createProject": {
     "title": "Create Project",
@@ -372,12 +570,16 @@
     "byTime": "By Time",
     "orderByScore": "Order by Score",
     "byScore": "By Score",
+    "orderByMediaStartTime": "Order by Media Start Time",
+    "byMediaStartTime": "By Media Start Time",
     "showAllRegions": "Show all regions",
     "hideAllRegions": "Hide all regions",
     "incompleteRegion": "Incomplete {{type}}",
     "confidenceScore": "Confidence Score",
     "collapse": "Collapse",
     "expand": "Expand",
+    "expandBottomPanel": "Expand Bottom Panel",
+    "collapseBottomPanel": "Collapse Bottom Panel",
     "noLabel": "No Label",
     "regionLinkCopiedToClipboard": "Region link copied to clipboard",
     "copyRegionLink": "Copy Region Link",
@@ -418,7 +620,21 @@
     "submit": "Submit",
     "update": "Update",
     "submitAndExit": "Submit and exit",
-    "updateAndExit": "Update and exit"
+    "updateAndExit": "Update and exit",
+    "saveResultsShortcut": "Save results: [ Ctrl+Enter ]",
+    "submitCurrentAnnotation": "Submit current annotation",
+    "submitAnnotation": "Submit annotation",
+    "updateAnnotation": "Update annotation",
+    "noChangesWereMade": "No changes were made",
+    "updateTaskShortcut": "Update this task: [ Ctrl+Enter ]"
+  },
+  "unsavedChanges": {
+    "saveAndLeave": "Save and Leave",
+    "saveChanges": "Save changes",
+    "title": "You have unsaved changes.",
+    "body": "Would you like to save them before leaving?",
+    "cancel": "Cancel",
+    "discardAndLeave": "Discard and leave"
   },
   "labelingConfig": {
     "labelingInterface": "Labeling Interface",
@@ -479,7 +695,8 @@
       "Ranking & Scoring": "Ranking & Scoring",
       "Structured Data Parsing": "Structured Data Parsing",
       "Generative AI": "Generative AI",
-      "Hybrid Annotation" : "Hybrid Annotation"
+      "Hybrid Annotation": "Hybrid Annotation",
+      "Community Contributions": "Community Contributions"
     },
     "templateTitles": {
       "Bbox object detection": "Bbox object detection",
@@ -640,6 +857,71 @@
       }
     }
   },
+  "accountSettings": {
+    "myAccount": "My Account",
+    "personalInfo": "Personal Info",
+    "hotkeys": "Hotkeys",
+    "hotkeysDescription": "Customize your keyboard shortcuts to speed up your workflow. Click on any hotkey below to assign a new key combination that works best for you.",
+    "emailPreferences": "Email Preferences",
+    "membershipInfo": "Membership Info",
+    "personalAccessToken": "Personal Access Token",
+    "legacyToken": "Legacy Token",
+    "accessToken": "Access Token",
+    "beta": "Beta",
+    "personalInfoForm": {
+      "uploadAvatar": "Upload Avatar",
+      "delete": "Delete",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "E-mail",
+      "phone": "Phone",
+      "save": "Save",
+      "errorUpdatingAvatar": "Error updating avatar",
+      "errorUpdatingUser": "Error updating user"
+    },
+    "personalAccessTokenDesc": {
+      "description": "Authenticate with our API using your personal access token.",
+      "seeDocs": "See",
+      "docs": "Docs",
+      "createNewToken": "Create New Token",
+      "oneActiveTokenTooltip": "You can only have one active token",
+      "newAuthToken": "New Auth Token",
+      "copyTokenHint": "Copy your new access token from below and keep it secure.",
+      "accessToken": "Access Token",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "manageTokensSecurely": "Manage your access tokens securely",
+      "doNotShareKey": "Do not share this key with anyone. If you suspect any keys have been compromised, you should revoke them and create new ones.",
+      "revokeToken": "Revoke",
+      "revokeTokenTitle": "Revoke Token",
+      "revokeTokenConfirm": "Are you sure you want to delete this access token? Any application using this token will need a new token to be able to access {{appName}}",
+      "expiresOn": "Expires on {{date}}",
+      "personalAccessToken": "Personal access token",
+      "tokenExpiryDate": "Token Expiry Date",
+      "loading": "Loading...",
+      "unableToLoadTokens": "Unable to load tokens list"
+    },
+    "membership": {
+      "userId": "User ID",
+      "registrationDate": "Registration date",
+      "annotationsSubmitted": "Annotations Submitted",
+      "projectsContributedTo": "Projects contributed to",
+      "organization": "Organization",
+      "myRole": "My role",
+      "organizationId": "Organization ID",
+      "owner": "Owner",
+      "created": "Created",
+      "roles": {
+        "owner": "Owner",
+        "deactivated": "Deactivated",
+        "administrator": "Administrator",
+        "manager": "Manager",
+        "annotator": "Annotator",
+        "reviewer": "Reviewer",
+        "pending": "Pending"
+      }
+    }
+  },
   "hotkeys": {
     "keyboardShortcuts": "Keyboard Shortcuts",
     "viewAllShortcuts": "View all available keyboard shortcuts.",
@@ -665,6 +947,7 @@
     "saveError": "Error saving: {{error}}",
     "importSuccess": "Hotkeys imported successfully",
     "importError": "Error importing hotkeys: {{error}}",
+    "importErrorTitle": "Import Error",
     "exportSuccess": "Hotkeys exported successfully",
     "resetHotkeysTitle": "Reset Hotkeys to Defaults?",
     "resetHotkeysBody": "Are you sure you want to reset all hotkeys and settings to their default values? This action cannot be undone.",
@@ -718,10 +1001,14 @@
       "imagegallery": {
         "title": "Image Gallery Navigation",
         "description": "Shortcuts for navigating between images in multi-image tasks"
+      },
+      "paragraphs": {
+        "title": "Paragraph Navigation",
+        "description": "Shortcuts for navigating phrases and regions in paragraph/dialogue view"
       }
     },
     "hotkeys": {
-      "annotation.submit": {
+      "annotation_submit": {
         "label": "Submit Annotation",
         "description": "Submit the current annotation"
       },
@@ -729,15 +1016,15 @@
         "label": "Skip Task",
         "description": "Skip the current task"
       },
-      "annotation.undo": {
+      "annotation_undo": {
         "label": "Undo",
         "description": "Undo last action"
       },
-      "annotation.redo": {
+      "annotation_redo": {
         "label": "Redo",
         "description": "Redo previously undone action"
       },
-      "dm.focus-previous": {
+      "dm_focus-previous": {
         "label": "Focus Previous Task",
         "description": "Move focus to the previous task"
       },
@@ -745,7 +1032,7 @@
         "label": "Focus Next Task",
         "description": "Move focus to the next task"
       },
-      "dm.close-labeling": {
+      "dm_close-labeling": {
         "label": "Focus Closed Task",
         "description": "Focus on the closed task column"
       },
@@ -753,7 +1040,7 @@
         "label": "Focus Open Task",
         "description": "Focus on the open task column"
       },
-      "dm.toggle-bulk-sidebar-minimization": {
+      "dm_toggle-bulk-sidebar-minimization": {
         "label": "Toggle Bulk Sidebar",
         "description": "Minimize or expand bulk actions sidebar"
       },
@@ -761,15 +1048,15 @@
         "label": "Delete All Regions",
         "description": "Remove all regions"
       },
-      "region.focus": {
+      "region_focus": {
         "label": "Focus First Region",
         "description": "Move focus to the first focusable region"
       },
-      "region.relation": {
+      "region_relation": {
         "label": "Create Region Relation",
         "description": "Create a relation between selected regions"
       },
-      "region.visibility": {
+      "region_visibility": {
         "label": "Toggle Region Visibility",
         "description": "Show or hide the selected region"
       },
@@ -777,7 +1064,7 @@
         "label": "Toggle All Region Visibility",
         "description": "Show or hide all regions"
       },
-      "region.lock": {
+      "region_lock": {
         "label": "Lock Region",
         "description": "Lock or unlock the selected region"
       },
@@ -785,7 +1072,7 @@
         "label": "Edit Region Metadata",
         "description": "Edit metadata for selected region"
       },
-      "region.unselect": {
+      "region_unselect": {
         "label": "Unselect Region",
         "description": "Deselect the currently selected region"
       },
@@ -793,7 +1080,7 @@
         "label": "Exit Region Mode",
         "description": "Exit relation mode and unselect region"
       },
-      "region.delete": {
+      "region_delete": {
         "label": "Delete Selected Region",
         "description": "Delete currently selected region"
       },
@@ -801,15 +1088,15 @@
         "label": "Cycle Regions",
         "description": "Cycle through all regions"
       },
-      "region.duplicate": {
+      "region_duplicate": {
         "label": "Duplicate Region",
         "description": "Create a copy of the selected region"
       },
-      "segment.delete": {
+      "segment_delete": {
         "label": "Delete Segment",
         "description": "Delete selected segment"
       },
-      "audio.back": {
+      "audio_back": {
         "label": "Rewind 1 Second",
         "description": "Rewind the audio by 1 second"
       },
@@ -817,7 +1104,7 @@
         "label": "Play / Pause Audio",
         "description": "Toggle audio playback"
       },
-      "audio.step-backward": {
+      "audio_step-backward": {
         "label": "Step Back",
         "description": "Step back one frame"
       },
@@ -825,7 +1112,7 @@
         "label": "Step Forward",
         "description": "Step forward one frame"
       },
-      "media.playpause": {
+      "media_playpause": {
         "label": "Play / Pause Video",
         "description": "Toggle video playback"
       },
@@ -833,7 +1120,7 @@
         "label": "Step Back",
         "description": "Step one frame backward"
       },
-      "media.step-forward": {
+      "media_step-forward": {
         "label": "Step Forward",
         "description": "Step one frame forward"
       },
@@ -841,15 +1128,15 @@
         "label": "Previous Keyframe",
         "description": "Jump to previous keyframe"
       },
-      "video.keyframe-forward": {
+      "video_keyframe-forward": {
         "label": "Next Keyframe",
         "description": "Jump to next keyframe"
       },
-      "video.backward": {
+      "video_backward": {
         "label": "Seek Backward",
         "description": "Seek video backward"
       },
-      "video.rewind": {
+      "video_rewind": {
         "label": "First Frame",
         "description": "Jump to first frame"
       },
@@ -857,7 +1144,7 @@
         "label": "Seek Forward",
         "description": "Seek video forward"
       },
-      "video.fastforward": {
+      "video_fastforward": {
         "label": "Last Frame",
         "description": "Jump to last frame"
       },
@@ -865,11 +1152,11 @@
         "label": "Hop Backward",
         "description": "Hop backward quickly"
       },
-      "video.hop-forward": {
+      "video_hop-forward": {
         "label": "Hop Forward",
         "description": "Hop forward quickly"
       },
-      "ts.grow-left": {
+      "ts_grow-left": {
         "label": "Extend Left",
         "description": "Extend the region to the left"
       },
@@ -877,7 +1164,7 @@
         "label": "Extend Right",
         "description": "Extend the region to the right"
       },
-      "ts.shrink-left": {
+      "ts_shrink-left": {
         "label": "Shrink Left",
         "description": "Shrink the region from the left"
       },
@@ -885,47 +1172,47 @@
         "label": "Shrink Right",
         "description": "Shrink the region from the right"
       },
-      "ts.grow-left-large": {
+      "ts_grow-left-large": {
         "label": "Extend Left (Large)",
         "description": "Extend region left significantly"
       },
-      "ts.grow-right-large": {
+      "ts_grow-right-large": {
         "label": "Extend Right (Large)",
         "description": "Extend region right significantly"
       },
-      "ts.shrink-left-large": {
+      "ts_shrink-left-large": {
         "label": "Shrink Left (Large)",
         "description": "Shrink region from left significantly"
       },
-      "ts.shrink-right-large": {
+      "ts_shrink-right-large": {
         "label": "Shrink Right (Large)",
         "description": "Shrink region from right significantly"
       },
-      "image.prev": {
+      "image_prev": {
         "label": "Previous Image",
         "description": "View previous image"
       },
-      "image.next": {
+      "image_next": {
         "label": "Next Image",
         "description": "View next image"
       },
-      "tool.zoom-in": {
+      "tool_zoom-in": {
         "label": "Zoom In",
         "description": "Zoom in on the image"
       },
-      "tool.pan-image": {
+      "tool_pan-image": {
         "label": "Pan Image",
         "description": "Pan around the image"
       },
-      "tool.zoom-to-fit": {
+      "tool_zoom-to-fit": {
         "label": "Zoom to Fit",
         "description": "Zoom to fit the full image in view"
       },
-      "tool.zoom-to-actual": {
+      "tool_zoom-to-actual": {
         "label": "Zoom to 100%",
         "description": "Zoom to actual image size (100%)"
       },
-      "tool.zoom-out": {
+      "tool_zoom-out": {
         "label": "Zoom Out",
         "description": "Zoom out of the image"
       },
@@ -933,57 +1220,77 @@
         "label": "Move Tool",
         "description": "Select the move tool to reposition annotations"
       },
-      "tool.brush": {
+      "tool_brush": {
         "label": "Brush Tool",
         "description": "Select the brush tool"
       },
-      "tool.ellipse": {
+      "tool_ellipse": {
         "label": "Ellipse Tool",
         "description": "Select the ellipse tool"
       },
-      "tool.eraser": {
+      "tool_eraser": {
         "label": "Eraser Tool",
         "description": "Select the eraser tool"
       },
-      "tool.auto-detect": {
+      "tool_auto-detect": {
         "label": "Auto Detect",
         "description": "Use the auto-detect tool to automatically suggest regions"
       },
-      "tool.key-point": {
+      "tool_key-point": {
         "label": "Key Point Tool",
         "description": "Select the key point annotation tool"
       },
-      "tool.magic-wand": {
+      "tool_magic-wand": {
         "label": "Magic Wand",
         "description": "Select the magic wand tool for smart region selection"
       },
-      "tool.polygon": {
+      "tool_polygon": {
         "label": "Polygon Tool",
         "description": "Select the polygon annotation tool"
       },
-      "tool.rect": {
+      "tool_rect": {
         "label": "Rectangle Tool",
         "description": "Select the rectangle annotation tool"
       },
-      "tool.rect-3point": {
+      "tool_rect-3point": {
         "label": "3-Point Rectangle",
         "description": "Draw a rotated rectangle using 3-point selection"
       },
-      "tool.rotate-left": {
+      "tool_rotate-left": {
         "label": "Rotate Left",
         "description": "Rotate the image 90° to the left"
       },
-      "tool.rotate-right": {
+      "tool_rotate-right": {
         "label": "Rotate Right",
         "description": "Rotate the image 90° to the right"
       },
-      "tool.decrease-tool": {
+      "tool_decrease-tool": {
         "label": "Decrease Tool Size",
         "description": "Decrease tool size"
       },
-      "tool.increase-tool": {
+      "tool_increase-tool": {
         "label": "Increase Tool Size",
         "description": "Increase tool size"
+      },
+      "phrases_next-phrase": {
+        "label": "Next Phrase",
+        "description": "Navigate to the next phrase in paragraph view"
+      },
+      "phrases_previous-phrase": {
+        "label": "Previous Phrase",
+        "description": "Navigate to the previous phrase in paragraph view"
+      },
+      "phrases_select_all_annotate": {
+        "label": "Select All and Annotate",
+        "description": "Select all text in current phrase and create annotation"
+      },
+      "phrases_next-region": {
+        "label": "Next Region in Phrase",
+        "description": "Navigate to the next region within current phrase"
+      },
+      "phrases_previous-region": {
+        "label": "Previous Region in Phrase",
+        "description": "Navigate to the previous region within current phrase"
       }
     }
   },
@@ -1011,6 +1318,10 @@
       "Polygons": "Polygons",
       "Repeater": "Repeater",
       "RegionStore": "Region Management"
+    },
+    "tags": {
+      "textTag": "Text Tag",
+      "imageTag": "Image Tag"
     },
     "layout": {
       "moveSidepanelToBottom": "Move sidepanel to the bottom",
@@ -1069,6 +1380,24 @@
         "description": "Invert the direction of scroll-to-zoom",
         "descriptionFallback": "Enable inverted zoom direction"
       }
+    }
+  },
+  "editor": {
+    "regionActions": {
+      "showSelectedRegion": "Show selected region",
+      "hideSelectedRegion": "Hide selected region",
+      "lockOrUnlockSelectedRegion": "Lock or unlock the selected region",
+      "lockRegion": "Lock region",
+      "unlockRegion": "Unlock region",
+      "deleteSelectedRegion": "Delete selected region",
+      "createRelation": "Create Relation",
+      "editRegionMeta": "Edit region's meta"
+    },
+    "zoom": {
+      "zoomOut": "Zoom Out",
+      "zoomOutDescription": "Zoom out of the image",
+      "zoomToFit": "Zoom to fit",
+      "zoomToActualSize": "Zoom to actual size"
     }
   }
 }

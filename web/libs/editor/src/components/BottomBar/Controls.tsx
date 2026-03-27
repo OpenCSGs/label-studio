@@ -7,13 +7,13 @@
 import { observer } from "mobx-react";
 import type React from "react";
 import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { Button, ButtonGroup, type ButtonProps } from "@humansignal/ui";
+import { useEditorT } from "../../utils/i18n";
 import { IconBan, IconChevronDown } from "@humansignal/icons";
-import { Dropdown } from "../../common/Dropdown/Dropdown";
+import { Dropdown } from "@humansignal/ui";
 import type { CustomButtonType } from "../../stores/CustomButton";
-import { Block, cn, Elem } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { FF_REVIEWER_FLOW, isFF } from "../../utils/feature-flags";
 import { isDefined, toArray } from "../../utils/utilities";
 import {
@@ -68,7 +68,7 @@ const ControlButton = observer(({ button, disabled, onClick, variant, look }: Co
 
 export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
   observer(({ store, history, annotation }) => {
-    const { t } = useTranslation();
+    const t = useEditorT();
     const isReview = store.hasInterface("review") || annotation.canBeReviewed;
     const isNotQuickView = store.hasInterface("topbar:prevnext");
     const historySelected = isDefined(store.annotationStore.selectedHistory);
@@ -149,7 +149,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
     }
 
     if (buttonsReplacement) {
-      return <Block name="controls">{buttons}</Block>;
+      return <div className={cn("controls").toClassName()}>{buttons}</div>;
     }
 
     if (isReview) {
@@ -182,9 +182,9 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
       buttons.push(<AcceptButton key="review-accept" disabled={disabled} history={history} store={store} />);
     } else if (annotation.skipped) {
       buttons.push(
-        <Elem name="skipped-info" key="skipped">
+        <div className={cn("controls").elem("skipped-info").toClassName()} key="skipped">
           <IconBan /> Was skipped
-        </Elem>,
+        </div>,
       );
       buttons.push(<UnskipButton key="unskip" disabled={disabled} store={store} />);
     } else {
@@ -200,7 +200,13 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
 
       const useExitOption = !isDisabled && isNotQuickView;
 
-      const SubmitOption = ({ isUpdate, onClickMethod }: { isUpdate: boolean; onClickMethod: () => any }) => {
+      const SubmitOption = ({
+        isUpdate,
+        onClickMethod,
+      }: {
+        isUpdate: boolean;
+        onClickMethod: () => any;
+      }) => {
         return (
           <div className="p-tighter rounded">
             <Button
@@ -235,14 +241,14 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
       };
 
       if (userGenerate || (store.explore && !userGenerate && store.hasInterface("submit"))) {
-        const title = submitDisabled ? EMPTY_SUBMIT_TOOLTIP : "Save results: [ Ctrl+Enter ]";
+        const title = submitDisabled ? EMPTY_SUBMIT_TOOLTIP : t("annotation.saveResultsShortcut");
 
         buttons.push(
           <ButtonTooltip key="submit" title={title}>
-            <Elem name="tooltip-wrapper">
+            <div className={cn("controls").elem("tooltip-wrapper").toClassName()}>
               <ButtonGroup>
                 <Button
-                  aria-label="Submit current annotation"
+                  aria-label={t("annotation.submitCurrentAnnotation")}
                   name="submit"
                   className="w-[150px]"
                   disabled={isDisabled}
@@ -266,13 +272,13 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
                       </div>
                     }
                   >
-                    <Button disabled={isDisabled} aria-label="Submit annotation">
+                    <Button disabled={isDisabled} aria-label={t("annotation.submitAnnotation")}>
                       <IconChevronDown />
                     </Button>
                   </Dropdown.Trigger>
                 ) : null}
               </ButtonGroup>
-            </Elem>
+            </div>
           </ButtonTooltip>,
         );
       } else if ((userGenerate && sentUserGenerate) || (!userGenerate && store.hasInterface("update"))) {
@@ -281,10 +287,13 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
         const noChanges = isFF(FF_REVIEWER_FLOW) && !history.canUndo && !annotation.draftId;
         const isUpdateDisabled = isDisabled || noChanges;
         const button = (
-          <ButtonTooltip key="update" title={noChanges ? "No changes were made" : "Update this task: [ Ctrl+Enter ]"}>
+          <ButtonTooltip
+            key="update"
+            title={noChanges ? t("annotation.noChangesWereMade") : t("annotation.updateTaskShortcut")}
+          >
             <ButtonGroup>
               <Button
-                aria-label="submit"
+                aria-label={t("annotation.submit")}
                 name="submit"
                 className="w-[150px]"
                 disabled={isUpdateDisabled}
@@ -304,7 +313,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
                   alignment="top-right"
                   content={<SubmitOption onClickMethod={store.updateAnnotation} isUpdate={isUpdate} />}
                 >
-                  <Button disabled={isUpdateDisabled} aria-label="Update annotation">
+                  <Button disabled={isUpdateDisabled} aria-label={t("annotation.updateAnnotation")}>
                     <IconChevronDown />
                   </Button>
                 </Dropdown.Trigger>
@@ -317,6 +326,6 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
       }
     }
 
-    return <Block name="controls">{buttons}</Block>;
+    return <div className={cn("controls").toClassName()}>{buttons}</div>;
   }),
 );

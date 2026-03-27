@@ -3,8 +3,7 @@
 
 import { observer } from "mobx-react";
 import { type CSSProperties, type FC, Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Block, Elem } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { DetailsPanel } from "./DetailsPanel/DetailsPanel";
 import { OutlinerPanel } from "./OutlinerPanel/OutlinerPanel";
 
@@ -75,26 +74,24 @@ const savePanel = (name: PanelType, panelData: PanelBBox) => {
   window.localStorage.setItem(`panel:${name}`, JSON.stringify(panelData));
 };
 
-const getPanelView = (t: (key: string) => string): Record<PanelType, PanelView> => ({
+const panelView: Record<PanelType, PanelView> = {
   outliner: {
-    title: t("annotation.outliner"),
+    title: "Outliner",
     component: OutlinerPanel as FC<PanelProps>,
     icon: IconHamburger,
   },
   details: {
-    title: t("annotation.details"),
+    title: "Details",
     component: DetailsPanel as FC<PanelProps>,
     icon: IconDetails,
   },
-});
+};
 
 const SidePanelsComponent: FC<SidePanelsProps> = ({ currentEntity, panelsHidden, children }) => {
-  const { t } = useTranslation();
   const snapTreshold = 5;
   const regions = currentEntity.regionStore;
   const viewportSize = useRef({ width: 0, height: 0 });
   const screenSizeMatch = useMedia(`screen and (max-width: ${maxWindowWidth}px)`);
-  const panelView = useMemo(() => getPanelView(t), [t]);
   const [panelMaxWidth, setPanelMaxWidth] = useState(DEFAULT_PANEL_MAX_WIDTH);
   const [viewportSizeMatch, setViewportSizeMatch] = useState(false);
   const [resizing, setResizing] = useState(false);
@@ -486,24 +483,30 @@ const SidePanelsComponent: FC<SidePanelsProps> = ({ currentEntity, panelsHidden,
 
   return (
     <SidePanelsContext.Provider value={contextValue}>
-      <Block
+      <div
         ref={(el: HTMLDivElement | null) => {
           if (el) {
             rootRef.current = el;
             setViewportSizeMatch(el.clientWidth <= maxWindowWidth);
           }
         }}
-        name="sidepanels"
+        className={cn("sidepanels")
+          .mod({ collapsed: sidepanelsCollapsed, newLabelingUI: isFF(FF_DEV_3873) })
+          .toClassName()}
         style={{
           ...padding,
         }}
-        mod={{ collapsed: sidepanelsCollapsed, newLabelingUI: isFF(FF_DEV_3873) }}
       >
         {initialized && (
           <>
-            <Elem name="content" mod={{ resizing: resizing || positioning }}>
+            <div
+              className={cn("sidepanels")
+                .elem("content")
+                .mod({ resizing: resizing || positioning })
+                .toClassName()}
+            >
               {children}
-            </Elem>
+            </div>
             {panelsHidden !== true && (
               <>
                 {Object.entries(panels).map(([key, panel]) => {
@@ -514,16 +517,22 @@ const SidePanelsComponent: FC<SidePanelsProps> = ({ currentEntity, panelsHidden,
                   }
 
                   return (
-                    <Elem key={key} name="wrapper" mod={{ align: key, snap: snap === key && snap !== undefined }}>
+                    <div
+                      key={key}
+                      className={cn("sidepanels")
+                        .elem("wrapper")
+                        .mod({ align: key, snap: snap === key && snap !== undefined })
+                        .toClassName()}
+                    >
                       {content}
-                    </Elem>
+                    </div>
                   );
                 })}
               </>
             )}
           </>
         )}
-      </Block>
+      </div>
     </SidePanelsContext.Provider>
   );
 };

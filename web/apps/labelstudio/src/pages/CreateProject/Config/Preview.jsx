@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Spinner } from "../../../components";
 import { cn } from "../../../utils/bem";
 import "./Config.scss";
 import { EMPTY_CONFIG } from "./Template";
 import { API_CONFIG } from "../../../config/ApiConfig";
 import { useAPI } from "../../../providers/ApiProvider";
-import { useTranslation } from "react-i18next";
 
 const configClass = cn("configure");
 
@@ -45,6 +45,12 @@ export const Preview = ({ config, data, error, loading, project }) => {
    * @param {string} url http/https are not proxied and returned as is
    */
   const onPresignUrlForProject = async (_, url) => {
+    // if URL is a relative, presigned url (url matches /tasks|projects/:id/resolve/.*) make it absolute
+    const presignedUrlPattern = /^\/(?:tasks|projects)\/\d+\/resolve\/?/;
+    if (presignedUrlPattern.test(url)) {
+      url = new URL(url, document.location.origin).toString();
+    }
+
     const parsedUrl = new URL(url);
 
     // return same url if http(s)

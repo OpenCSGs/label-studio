@@ -200,9 +200,6 @@
     overflow: hidden;
     height: calc(100% - var(--header-height));
     position: relative;
-
-    @include styled-scrollbars;
-
     pointer-events: all;
   }
 

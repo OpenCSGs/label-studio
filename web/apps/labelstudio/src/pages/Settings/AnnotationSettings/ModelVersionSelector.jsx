@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAPI } from "../../../providers/ApiProvider";
 import { Select } from "../../../components/Form";
 import { ProjectContext } from "../../../providers/ProjectProvider";
@@ -9,6 +10,7 @@ export const ModelVersionSelector = ({
   apiName = "projectModelVersions",
   ...props
 }) => {
+  const { t } = useTranslation();
   const api = useAPI();
   const { project } = useContext(ProjectContext);
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ export const ModelVersionSelector = ({
         const label = `${item.title} (${item.readable_state})`;
 
         return {
-          group: "Models",
+          group: t("predictions.modelsGroup"),
           value: item.title,
           label,
         };
@@ -53,7 +55,7 @@ export const ModelVersionSelector = ({
         const label = `${item.model_version} (${item.count} predictions)`;
 
         return {
-          group: "Predictions",
+          group: t("predictions.predictionsGroup"),
           value: item.model_version,
           label,
         };
@@ -75,7 +77,7 @@ export const ModelVersionSelector = ({
 
   return (
     <div>
-      <label>Select which predictions or which model you want to use:</label>
+      <label>{t("predictions.selectModelOrPredictions")}</label>
       <div style={{ display: "flex", alignItems: "center", width: 400 }}>
         <div style={{ flex: 1, paddingRight: 16 }}>
           <Select
@@ -84,7 +86,7 @@ export const ModelVersionSelector = ({
             value={version}
             onChange={setVersion}
             options={[...models, ...versions]}
-            placeholder={placeholder || "Please select model or predictions"}
+            placeholder={placeholder || t("predictions.selectPlaceholder")}
             isInProgress={loading}
             {...props}
           />

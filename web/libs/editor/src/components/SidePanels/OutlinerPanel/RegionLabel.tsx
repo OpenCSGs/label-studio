@@ -1,15 +1,13 @@
 import { observer } from "mobx-react";
-import { useTranslation } from "react-i18next";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 
 export type RegionLabelProps = {
   item: any;
 };
 export const RegionLabel = observer(({ item }: RegionLabelProps) => {
-  const { t } = useTranslation();
   const { type } = item ?? {};
   if (!type) {
-    return t("annotation.noLabel");
+    return "No Label";
   }
   if (type.includes("label")) {
     return item.value;
@@ -20,18 +18,20 @@ export const RegionLabel = observer(({ item }: RegionLabelProps) => {
     const labels: any[] = [].concat(...labelsInResults);
 
     return (
-      <Block name="labels-list">
+      <div className={cn("labels-list").toClassName()}>
         {labels.map((label, index) => {
           const color = label.background || "#000000";
 
           return [
             index ? ", " : null,
-            <Elem key={label.id} style={{ color }}>
-              {label.value || t("annotation.noLabel")}
-            </Elem>,
+            // This comes from an Elem tag that was set without a name. The CSS was fixed to make it work,
+            // but this is clearly bad CSS usage.
+            <div key={label.id} className={cn("labels-list").toClassName()} style={{ color }}>
+              {label.value || "No label"}
+            </div>,
           ];
         })}
-      </Block>
+      </div>
     );
   }
   if (type.includes("tool")) {

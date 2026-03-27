@@ -14,6 +14,7 @@ from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.db import transaction
+from django.db.models import Prefetch
 from django.http import FileResponse, HttpResponse
 from django.utils.decorators import method_decorator
 from drf_spectacular.types import OpenApiTypes
@@ -25,8 +26,6 @@ from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from tasks.models import Task
-import json
-from django.http import JsonResponse
 
 from .models import ConvertedFormat, DataExport, Export
 from .serializers import (
@@ -87,7 +86,6 @@ class ExportFormatsListAPI(generics.RetrieveAPIView):
 @method_decorator(
     name='get',
     decorator=extend_schema(
-        deprecated=True,
         parameters=[
             OpenApiParameter(
                 name='export_type',
@@ -97,7 +95,7 @@ class ExportFormatsListAPI(generics.RetrieveAPIView):
             ),
             OpenApiParameter(
                 name='download_all_tasks',
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.BOOL,
                 location='query',
                 description='If true, download all tasks regardless of status. If false, download only annotated tasks.',
             ),
@@ -156,8 +154,8 @@ class ExportFormatsListAPI(generics.RetrieveAPIView):
             )
         },
         extensions={
-            'x-fern-sdk-group-name': 'projects',
-            'x-fern-sdk-method-name': 'export',
+            'x-fern-sdk-group-name': ['projects', 'exports'],
+            'x-fern-sdk-method-name': 'download_sync',
             'x-fern-audiences': ['public'],
         },
     ),
@@ -169,69 +167,92 @@ class ExportAPI(generics.RetrieveAPIView):
         return Project.objects.filter(organization=self.request.user.active_organization)
 
     def get_task_queryset(self, queryset):
-        return queryset.select_related('project').prefetch_related('annotations', 'predictions')
+        # Import here to avoid circular dependencies
+        from core.feature_flags import flag_set
+        from tasks.models import Annotation
+
+        # Create a prefetch for annotations with FSM state
+        annotations_qs = Annotation.objects.all()
+
+        # Only annotate FSM state if both feature flags are enabled
+        user = getattr(self.request, 'user', None)
+        if (
+            flag_set('fflag_feat_fit_568_finite_state_management', user=user)
+            and flag_set('fflag_feat_fit_710_fsm_state_fields', user=user)
+            and hasattr(annotations_qs, 'with_state')
+        ):
+            annotations_qs = annotations_qs.with_state()
+
+        qs = queryset.select_related('project').prefetch_related(
+            Prefetch('annotations', queryset=annotations_qs), 'predictions'
+        )
+
+        # Add FSM state annotation to tasks as well to avoid N+1 queries during export
+        if (
+            flag_set('fflag_feat_fit_568_finite_state_management', user=user)
+            and flag_set('fflag_feat_fit_710_fsm_state_fields', user=user)
+            and hasattr(qs, 'with_state')
+        ):
+            qs = qs.with_state()
+        return qs
 
     def get(self, request, *args, **kwargs):
-        try:
-            project = self.get_object()
-            query_serializer = ExportParamSerializer(data=request.GET)
-            query_serializer.is_valid(raise_exception=True)
+        project = self.get_object()
+        query_serializer = ExportParamSerializer(data=request.GET)
+        query_serializer.is_valid(raise_exception=True)
 
-            export_type = (
-                query_serializer.validated_data.get('exportType') or query_serializer.validated_data['export_type']
-            )
-            only_finished = not query_serializer.validated_data['download_all_tasks']
-            download_resources = query_serializer.validated_data['download_resources']
-            interpolate_key_frames = query_serializer.validated_data['interpolate_key_frames']
+        export_type = (
+            query_serializer.validated_data.get('exportType') or query_serializer.validated_data['export_type']
+        )
+        only_finished = not query_serializer.validated_data['download_all_tasks']
+        download_resources = query_serializer.validated_data['download_resources']
+        interpolate_key_frames = query_serializer.validated_data['interpolate_key_frames']
 
-            tasks_ids = request.GET.getlist('ids[]')
+        tasks_ids = request.GET.getlist('ids[]')
 
-            logger.debug('Get tasks')
-            query = Task.objects.filter(project=project)
-            if tasks_ids and len(tasks_ids) > 0:
-                logger.debug(f'Select only subset of {len(tasks_ids)} tasks')
-                query = query.filter(id__in=tasks_ids)
-            if only_finished:
-                query = query.filter(annotations__isnull=False).distinct()
+        logger.debug('Get tasks')
+        query = Task.objects.filter(project=project)
+        if tasks_ids and len(tasks_ids) > 0:
+            logger.debug(f'Select only subset of {len(tasks_ids)} tasks')
+            query = query.filter(id__in=tasks_ids)
+        if only_finished:
+            query = query.filter(annotations__isnull=False).distinct()
 
-            task_ids = query.values_list('id', flat=True)
+        task_ids = query.values_list('id', flat=True)
 
-            logger.debug('Serialize tasks for export')
-            tasks = []
-            for _task_ids in batch(task_ids, 1000):
-                tasks += ExportDataSerializer(
-                    self.get_task_queryset(query.filter(id__in=_task_ids)),
-                    many=True,
-                    expand=['drafts'],
-                    context={'interpolate_key_frames': interpolate_key_frames},
-                ).data
-            logger.debug('Prepare export files')
-            # DataExport.generate_export_file(
-            #     project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
-            # )
-            export_file, content_type, filename = DataExport.generate_export_file(
-                request,project, tasks, export_type, download_resources, request.GET, hostname=request.build_absolute_uri('/')
-            )
+        logger.debug('Serialize tasks for export')
+        tasks = []
+        for _task_ids in batch(task_ids, 1000):
+            tasks += ExportDataSerializer(
+                self.get_task_queryset(query.filter(id__in=_task_ids)),
+                many=True,
+                expand=['drafts'],
+                context={'interpolate_key_frames': interpolate_key_frames},
+            ).data
+        logger.debug('Prepare export files')
 
-            # r = FileResponse(export_file, as_attachment=False, content_type=content_type, filename=filename)
-            # r['filename'] = filename
-            # return Response(
-            #     {'detail': f'Error in exporting file'},
-            #     status=status.HTTP_400_BAD_REQUEST
-            # )
+        export_file, content_type, filename = DataExport.generate_export_file(
+            project,
+            tasks,
+            export_type,
+            download_resources,
+            request.GET,
+            hostname=request.build_absolute_uri('/'),
+            request=request,
+        )
+
+        # 已上传到 CSGHub 时返回 JSON，前端不触发本地下载
+        if getattr(project, 'dataset', None) and getattr(request.user, 'user_token', None):
+            if hasattr(export_file, 'close'):
+                export_file.close()
             return Response(
-                {"detail": "Export completed successfully"},
-                status=status.HTTP_200_OK
+                {'exported_to_csghub': True, 'detail': 'Export completed successfully'},
+                status=status.HTTP_200_OK,
             )
-        except Exception as e:
-            # return Response(
-            #     {"detail": "Export completed successfully"},
-            #     status=status.HTTP_200_OK
-            # )
-            return Response(
-                {'detail': f'Error in exporting file{e}'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+
+        r = FileResponse(export_file, as_attachment=True, content_type=content_type, filename=filename)
+        r['filename'] = filename
+        return r
 
 
 # @method_decorator(
@@ -396,7 +417,7 @@ class ExportListAPI(generics.ListCreateAPIView):
             ),
             OpenApiParameter(
                 name='export_pk',
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.INT,
                 location='path',
                 description='Primary key identifying the export file.',
             ),
@@ -423,7 +444,7 @@ class ExportListAPI(generics.ListCreateAPIView):
             ),
             OpenApiParameter(
                 name='export_pk',
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.INT,
                 location='path',
                 description='Primary key identifying the export file.',
             ),
@@ -503,11 +524,20 @@ class ExportDetailAPI(generics.RetrieveDestroyAPIView):
             ),
             OpenApiParameter(
                 name='export_pk',
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.INT,
                 location='path',
                 description='Primary key identifying the export file.',
             ),
         ],
+        responses={
+            (200, 'application/*'): OpenApiResponse(
+                description='Export file',
+                response={
+                    'type': 'string',
+                    'format': 'binary',
+                },
+            ),
+        },
         extensions={
             'x-fern-sdk-group-name': ['projects', 'exports'],
             'x-fern-sdk-method-name': 'download',
@@ -632,7 +662,6 @@ def set_convert_background_failure(job, connection, type, value, traceback_obj):
     ConvertedFormat.objects.filter(id=convert_id).update(status=Export.Status.FAILED, traceback=trace)
 
 
-@method_decorator(name='get', decorator=extend_schema(exclude=True))
 @method_decorator(
     name='post',
     decorator=extend_schema(
@@ -649,11 +678,22 @@ def set_convert_background_failure(job, connection, type, value, traceback_obj):
             ),
             OpenApiParameter(
                 name='export_pk',
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.INT,
                 location='path',
                 description='Primary key identifying the export file.',
             ),
         ],
+        responses={
+            200: OpenApiResponse(
+                response={
+                    'type': 'object',
+                    'properties': {
+                        'export_type': {'type': 'string'},
+                        'converted_format': {'type': 'integer'},
+                    },
+                },
+            ),
+        },
         extensions={
             'x-fern-sdk-group-name': ['projects', 'exports'],
             'x-fern-sdk-method-name': 'convert',
@@ -661,7 +701,7 @@ def set_convert_background_failure(job, connection, type, value, traceback_obj):
         },
     ),
 )
-class ExportConvertAPI(generics.RetrieveAPIView):
+class ExportConvertAPI(generics.CreateAPIView):
     queryset = Export.objects.all()
     lookup_url_kwarg = 'export_pk'
     permission_required = all_permissions.projects_change
@@ -673,11 +713,12 @@ class ExportConvertAPI(generics.RetrieveAPIView):
         export_type = serializer.validated_data['export_type']
         download_resources = serializer.validated_data.get('download_resources')
 
-        with transaction.atomic():
-            converted_format, created = ConvertedFormat.objects.get_or_create(export=snapshot, export_type=export_type)
+        converted_format, created = ConvertedFormat.objects.exclude(
+            status=ConvertedFormat.Status.FAILED
+        ).get_or_create(export=snapshot, export_type=export_type)
 
-            if not created:
-                raise ValidationError(f'Conversion to {export_type} already started')
+        if not created:
+            raise ValidationError(f'Conversion to {export_type} already started')
 
         start_job_async_or_sync(
             async_convert,
@@ -689,5 +730,3 @@ class ExportConvertAPI(generics.RetrieveAPIView):
             on_failure=set_convert_background_failure,
         )
         return Response({'export_type': export_type, 'converted_format': converted_format.id})
-
-

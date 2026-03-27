@@ -1,10 +1,18 @@
 import { render } from "@testing-library/react";
 import { CurrentTask } from "../CurrentTask";
-import { BlockContext, cn } from "../../../utils/bem.ts";
 import { FF_LEAP_1173 } from "../../../utils/feature-flags";
 import { mockFF } from "../../../../__mocks__/global";
 
 const ff = mockFF();
+
+// Helper to set up window.APP_SETTINGS for role-based tests
+const setupAppSettings = (role?: string) => {
+  (window as any).APP_SETTINGS = {
+    user: {
+      role,
+    },
+  };
+};
 
 describe("CurrentTask", () => {
   let store: any;
@@ -17,6 +25,8 @@ describe("CurrentTask", () => {
   });
 
   beforeEach(() => {
+    // Reset APP_SETTINGS before each test
+    (window as any).APP_SETTINGS = undefined;
     // Initialize your store with default values
     store = {
       annotationStore: { selected: { pk: null } },
@@ -33,11 +43,12 @@ describe("CurrentTask", () => {
           annotationId: null,
         },
       ],
-      task: { id: 6616 },
+      task: { id: 6616, allow_skip: true, allow_postpone: true },
       commentStore: {
         loading: "list",
         comments: [],
         setAddedCommentThisSession: jest.fn(),
+        addedCommentThisSession: false,
       },
       queuePosition: 1,
       prevTask: jest.fn(),
@@ -48,16 +59,14 @@ describe("CurrentTask", () => {
   });
 
   it("sets canPostpone correctly", () => {
-    // check if next-task is enabled
+    // check if next-task is enabled (when canPostpone is true)
     store.hasInterface.mockImplementation((interfaceName: string) =>
       ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
     );
+    store.canGoNextTask = false; // Ensure canGoNextTask is false so postpone is the only option
+    store.annotationStore.selected.pk = null; // No submitted annotation
 
-    const { rerender, getByTestId } = render(
-      <BlockContext.Provider value={cn("block-name")}>
-        <CurrentTask store={store} />
-      </BlockContext.Provider>,
-    );
+    const { rerender, getByTestId } = render(<CurrentTask store={store} />);
 
     expect(getByTestId("next-task").disabled).toBe(false);
 
@@ -69,31 +78,27 @@ describe("CurrentTask", () => {
         .mockImplementation((interfaceName: string) =>
           ["skip", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
         ),
+      canGoNextTask: false, // Ensure canGoNextTask is false
     };
 
-    rerender(
-      <BlockContext.Provider value={cn("block-name")}>
-        <CurrentTask store={store} />
-      </BlockContext.Provider>,
-    );
+    rerender(<CurrentTask store={store} />);
 
     expect(getByTestId("next-task").disabled).toBe(true);
 
     // check if next-task is disabled removing the skip interface
-    store = {
-      ...store,
+    // When skip interface is removed, canPostpone becomes false (FF_LEAP_1173 requires skip)
+    // So button should be disabled unless canGoNextTask is true
+    Object.assign(store, {
       hasInterface: jest
         .fn()
         .mockImplementation((interfaceName: string) =>
           ["postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
         ),
-    };
+      canGoNextTask: false, // Ensure canGoNextTask is false for this test
+    });
+    store.annotationStore.selected.pk = null; // Ensure no submitted annotation
 
-    rerender(
-      <BlockContext.Provider value={cn("block-name")}>
-        <CurrentTask store={store} />
-      </BlockContext.Provider>,
-    );
+    rerender(<CurrentTask store={store} />);
 
     expect(getByTestId("next-task").disabled).toBe(true);
 
@@ -105,13 +110,10 @@ describe("CurrentTask", () => {
         .mockImplementation((interfaceName: string) =>
           ["topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
         ),
+      canGoNextTask: false, // Ensure canGoNextTask is false for this test
     };
 
-    rerender(
-      <BlockContext.Provider value={cn("block-name")}>
-        <CurrentTask store={store} />
-      </BlockContext.Provider>,
-    );
+    rerender(<CurrentTask store={store} />);
 
     expect(getByTestId("next-task").disabled).toBe(true);
 
@@ -125,11 +127,77 @@ describe("CurrentTask", () => {
         ),
     };
 
-    rerender(
-      <BlockContext.Provider value={cn("block-name")}>
-        <CurrentTask store={store} />
-      </BlockContext.Provider>,
+    rerender(<CurrentTask store={store} />);
+
+    expect(getByTestId("next-task").disabled).toBe(true);
+  });
+
+  it("disables postpone button when allow_skip=false", () => {
+    store.hasInterface.mockImplementation((interfaceName: string) =>
+      ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
     );
+    store.task = { id: 6616, allow_skip: false, allow_postpone: true };
+
+    const { getByTestId } = render(<CurrentTask store={store} />);
+
+    expect(getByTestId("next-task").disabled).toBe(true);
+  });
+
+  it("enables postpone button when allow_skip=true", () => {
+    store.hasInterface.mockImplementation((interfaceName: string) =>
+      ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
+    );
+    store.task = { id: 6616, allow_skip: true, allow_postpone: true };
+
+    const { getByTestId } = render(<CurrentTask store={store} />);
+
+    expect(getByTestId("next-task").disabled).toBe(false);
+  });
+
+  it("enables postpone button when allow_skip is undefined", () => {
+    store.hasInterface.mockImplementation((interfaceName: string) =>
+      ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
+    );
+    store.task = { id: 6616, allow_postpone: true }; // no allow_skip property
+
+    const { getByTestId } = render(<CurrentTask store={store} />);
+
+    expect(getByTestId("next-task").disabled).toBe(false);
+  });
+
+  // Role-based tests (OW=Owner, AD=Admin, MA=Manager can force-skip/postpone)
+  it("enables postpone button when allow_skip=false but user is Owner (OW)", () => {
+    setupAppSettings("OW");
+    store.hasInterface.mockImplementation((interfaceName: string) =>
+      ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
+    );
+    store.task = { id: 6616, allow_skip: false };
+
+    const { getByTestId } = render(<CurrentTask store={store} />);
+
+    expect(getByTestId("next-task").disabled).toBe(false);
+  });
+
+  it("enables postpone button when allow_skip=false but user is Manager (MA)", () => {
+    setupAppSettings("MA");
+    store.hasInterface.mockImplementation((interfaceName: string) =>
+      ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
+    );
+    store.task = { id: 6616, allow_skip: false };
+
+    const { getByTestId } = render(<CurrentTask store={store} />);
+
+    expect(getByTestId("next-task").disabled).toBe(false);
+  });
+
+  it("disables postpone button when allow_skip=false and user is Annotator (AN)", () => {
+    setupAppSettings("AN");
+    store.hasInterface.mockImplementation((interfaceName: string) =>
+      ["skip", "postpone", "topbar:prevnext", "topbar:task-counter"].includes(interfaceName),
+    );
+    store.task = { id: 6616, allow_skip: false };
+
+    const { getByTestId } = render(<CurrentTask store={store} />);
 
     expect(getByTestId("next-task").disabled).toBe(true);
   });

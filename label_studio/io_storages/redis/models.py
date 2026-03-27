@@ -84,11 +84,23 @@ class RedisImportStorageBase(ImportStorage, RedisStorageMixin):
     def can_resolve_url(self, url):
         return False
 
-    def iterkeys(self):
+    def iter_objects(self):
         client = self.get_client()
         path = str(self.path)
         for key in client.keys(path + '*'):
             yield key
+
+    def iter_keys(self):
+        for key in self.iter_objects():
+            yield key
+
+    def get_unified_metadata(self, obj):
+        self.get_client()
+        return {
+            'key': obj,
+            'last_modified': '',
+            'size': self.client.get(self.key),
+        }
 
     def get_data(self, key) -> list[StorageObject]:
         client = self.get_client()

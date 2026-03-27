@@ -13,7 +13,10 @@ section: "Review & Measure Quality"
 
 Write a custom agreement metric to assess the quality of the predictions and annotations in your Label Studio Enterprise project. Label Studio Enterprise contains a variety of [agreement metrics for your project](stats.html) but if you want to evaluate annotations using a custom metric or a standard metric not available in Label Studio, you can write your own. 
 
-This functionality is only available for Label Studio Enterprise Cloud customers, or for [customers running Label Studio Enterprise in a private cloud](#Set-up-permissions-for-a-private-cloud-custom-agreement-metric) with Amazon Web Services Elastic Compute Cluster [(AWS EC2)](https://aws.amazon.com/ec2/) or Amazon Elastic Kubernetes Service [(EKS)](https://aws.amazon.com/eks/).
+!!! note
+    This functionality is available out-of-the-box for Label Studio Enterprise Cloud users. 
+    
+    For Label Studio Enterprise on-prem environments, you must configure Amazon Web Services Elastic Compute Cluster [(AWS EC2)](https://aws.amazon.com/ec2/) or Amazon Elastic Kubernetes Service [(EKS)](https://aws.amazon.com/eks/). For more information, see [the section below on setting up permissions](#Set-up-permissions-for-a-private-cloud-custom-agreement-metric).   
 
 
 Label Studio Enterprise Edition includes various annotation and labeling statistics and the ability to add your own. The open source Community Edition of Label Studio does not contain these calculations. If you're using Label Studio Community Edition, see <a href="https://labelstud.io/guide/label_studio_compare.html">Label Studio Features</a> to learn more.
@@ -52,13 +55,27 @@ This function takes the following arguments:
 | `per_label` | boolean | Whether to perform an agreement calculation for each label in the annotation, or across the entire annotation result.  |
 | `return` | float | The agreement score to assign, as a float point number between 0 and 1. |
 
-For example, the following agreement metric compares two annotations for a classification task with choice options of "Positive" and "Negative":
+For example, given the following labeling config:
+
+```xml
+<View>
+  <Image name="image" value="$image"/>
+  <Choices name="choice" toName="image" showInLine="true">
+    <Choice value="Positive" />
+    <Choice value="Negative" />
+	<Choice value="Neutral" />
+  </Choices>
+</View>
+```
+
+The following agreement metric compares two annotations for a classification task with choice options of "Positive" and "Negative":
+
 ```python
 def agreement(annotation_1, annotation_2, per_label=False) -> float:
 
     # Retrieve two annotations in the Label Studio JSON format
-    r1 = annotation_1["result"][0]["value"]["choices"][0][0]
-    r2 = annotation_2["result"][0]["value"]["choices"][0][0]
+    r1 = annotation_1["result"][0]["value"]["choices"][0]
+    r2 = annotation_2["result"][0]["value"]["choices"][0]
     
     # Determine annotation agreement based on specific choice values
     if r1 == r2:
@@ -78,8 +95,8 @@ If you set `per_label=True`, you can define a separate method or agreement score
 ```python
 def agreement(annotation_1, annotation_2, per_label=False) -> float:
 
-    label_1 = annotation_1["result"][0]["value"]["choices"][0][0]
-    label_2 = annotation_2["result"][0]["value"]["choices"][0][0]
+    label_1 = annotation_1["result"][0]["value"]["choices"][0]
+    label_2 = annotation_2["result"][0]["value"]["choices"][0]
     weight = {"Positive": 0.99, "Negative": 0.01}
     
     if label_1 == label_2:
@@ -269,6 +286,9 @@ To grant permissions to a specific user, role, or EKS node group used to manage 
       },
       {
          "Action": [
+            "logs:CreateLogGroup",
+            "logs:PutRetentionPolicy",
+            "logs:TagResource",
             "logs:StartQuery",
             "logs:GetQueryResults"
          ],

@@ -1,10 +1,9 @@
 import { type FC, type RefObject, useCallback, useRef } from "react";
-import { Block, Elem } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { IconSend } from "@humansignal/icons";
 
 import { TextArea } from "../../common/TextArea/TextArea";
 import { observer } from "mobx-react";
-import { useTranslation } from "react-i18next";
 import { Button } from "@humansignal/ui";
 
 export type CommentFormProps = {
@@ -20,7 +19,6 @@ export type CommentFormProps = {
 
 export const CommentFormBase: FC<CommentFormProps> = observer(
   ({ value = "", inline = true, onChange, onSubmit, onBlur, rows = 1, maxRows = 4, classifications }) => {
-    const { t } = useTranslation();
     const formRef = useRef<HTMLFormElement>(null);
     const actionRef = useRef<{ update?: (text?: string) => void; el?: RefObject<HTMLTextAreaElement> }>({});
 
@@ -47,11 +45,11 @@ export const CommentFormBase: FC<CommentFormProps> = observer(
     );
 
     return (
-      <Block ref={formRef} tag="form" name="comment-form" mod={{ inline }} onSubmit={submitHandler}>
+      <form ref={formRef as any} className={cn("comment-form").mod({ inline }).toClassName()} onSubmit={submitHandler}>
         <TextArea
           actionRef={actionRef}
           name="comment"
-          placeholder={t("annotation.addComment")}
+          placeholder="Add a comment"
           value={value}
           rows={rows}
           maxRows={maxRows}
@@ -67,12 +65,12 @@ export const CommentFormBase: FC<CommentFormProps> = observer(
           }}
           onBlur={(e) => onBlur?.(e)}
         />
-        <Elem tag="div" name="primary-action">
-          <Button type="submit" aria-label={t("annotation.add")} variant="neutral" look="string">
+        <div className={cn("comment-form").elem("primary-action").toClassName()}>
+          <Button type="submit" aria-label="Submit comment" variant="neutral" look="string">
             <IconSend />
           </Button>
-        </Elem>
-      </Block>
+        </div>
+      </form>
     );
   },
 );

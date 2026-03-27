@@ -1296,6 +1296,14 @@
       "apps/labelstudio/project.json",
       "nx/core/project-json"
     ],
+    "targets.serve.options.host": [
+      "apps/labelstudio/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.port": [
+      "apps/labelstudio/project.json",
+      "nx/core/project-json"
+    ],
     "targets.serve.options.buildTarget": [
       "apps/labelstudio/project.json",
       "nx/core/project-json"

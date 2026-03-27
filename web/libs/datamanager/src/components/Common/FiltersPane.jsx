@@ -1,11 +1,10 @@
 import { inject, observer } from "mobx-react";
 import React, { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
 import { IconChevronDown } from "@humansignal/icons";
 import { Filters } from "../Filters/Filters";
 import { Badge } from "./Badge/Badge";
 import { Button } from "@humansignal/ui";
-import { Dropdown } from "./Dropdown/Dropdown";
+import { Dropdown } from "@humansignal/ui";
 import { Icon } from "./Icon/Icon";
 
 const buttonInjector = inject(({ store }) => {
@@ -15,13 +14,13 @@ const buttonInjector = inject(({ store }) => {
     viewsStore,
     sidebarEnabled: viewsStore?.sidebarEnabled ?? false,
     activeFiltersNumber: currentView?.filtersApplied ?? false,
+    t: store?.t ?? ((k) => k),
   };
 });
 
 export const FiltersButton = buttonInjector(
   observer(
-    React.forwardRef(({ activeFiltersNumber, size, sidebarEnabled, viewsStore, ...rest }, ref) => {
-      const { t } = useTranslation();
+    React.forwardRef(({ activeFiltersNumber, size, sidebarEnabled, viewsStore, t, ...rest }, ref) => {
       const hasFilters = activeFiltersNumber > 0;
 
       return (

@@ -1,9 +1,9 @@
 import { IconSortDown, IconSortUp } from "@humansignal/icons";
 import { Button, ButtonGroup } from "@humansignal/ui";
 import { inject } from "mobx-react";
-import { useTranslation } from "react-i18next";
 import { FieldsButton } from "../../Common/FieldsButton";
 import { Space } from "../../Common/Space/Space";
+import { getColumnTitle } from "../../../utils/column-i18n";
 
 const injector = inject(({ store }) => {
   const view = store?.currentView;
@@ -11,18 +11,18 @@ const injector = inject(({ store }) => {
   return {
     view,
     ordering: view?.currentOrder,
+    t: store?.t ?? ((k) => k),
   };
 });
 
-export const OrderButton = injector(({ size, ordering, view, ...rest }) => {
-  const { t } = useTranslation();
+export const OrderButton = injector(({ size, ordering, view, t, ...rest }) => {
   return (
     <Space style={{ fontSize: 12 }}>
       <ButtonGroup collapsed {...rest}>
         <FieldsButton
           size={size}
           style={{ minWidth: 67, textAlign: "left", marginRight: -1 }}
-          title={ordering ? ordering.column?.title : t("dataManager.orderBy")}
+          title={ordering ? getColumnTitle(ordering.column, ordering.column?.title, t) : t("dataManager.orderBy")}
           onClick={(col) => view.setOrdering(col.id)}
           onReset={() => view.setOrdering(null)}
           resetTitle={t("dataManager.default")}

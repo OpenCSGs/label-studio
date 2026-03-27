@@ -1,10 +1,10 @@
 import { type FormEventHandler, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { Button, InputFile, ToastType, useToast, Userpic } from "@humansignal/ui";
-// @todo we should not use anything from `apps` in `libs`
-import { API } from "apps/labelstudio/src/providers/ApiProvider";
+import { getApiInstance } from "@humansignal/core";
 import styles from "../AccountSettings.module.scss";
-import { useCurrentUserAtom } from "@humansignal/core/lib/hooks/useCurrentUser";
+import { useAuth } from "@humansignal/core/providers/AuthProvider";
 import { atomWithMutation } from "jotai-tanstack-query";
 import { useAtomValue } from "jotai";
 
@@ -21,8 +21,9 @@ const updateUserAvatarAtom = atomWithMutation(() => ({
     body,
     isDelete,
   }: { userId: number; body: FormData; isDelete?: never } | { userId: number; isDelete: true; body?: never }) {
+    const api = getApiInstance();
     const method = isDelete ? "deleteUserAvatar" : "updateUserAvatar";
-    const response = await API.invoke(
+    const response = await api.invoke(
       method,
       {
         pk: userId,
@@ -40,13 +41,14 @@ const updateUserAvatarAtom = atomWithMutation(() => ({
 }));
 
 export const PersonalInfo = () => {
+  const { t } = useTranslation();
   const toast = useToast();
-  const { user, fetch: refetchUser, isInProgress: userInProgress, updateAsync: updateUser } = useCurrentUserAtom();
+  const { user, refetch: refetchUser, isLoading: userInProgress, update: updateUser } = useAuth();
   const updateUserAvatar = useAtomValue(updateUserAvatarAtom);
   const [isInProgress, setIsInProgress] = useState(false);
-  const [fname, setFname] = useState(user?.first_name);
-  const [lname, setLname] = useState(user?.last_name);
-  const [phone, setPhone] = useState(user?.phone);
+  const [fname, setFname] = useState(user?.first_name ?? "");
+  const [lname, setLname] = useState(user?.last_name ?? "");
+  const [phone, setPhone] = useState(user?.phone ?? "");
   const avatarRef = useRef<HTMLInputElement>();
   const fileChangeHandler: FormEventHandler<HTMLInputElement> = useCallback(
     async (e) => {
@@ -61,13 +63,16 @@ export const PersonalInfo = () => {
       });
 
       if (!response.$meta.ok) {
-        toast.show({ message: response?.response?.detail ?? "Error updating avatar", type: ToastType.error });
+        toast?.show({
+          message: response?.response?.detail ?? t("accountSettings.personalInfoForm.errorUpdatingAvatar"),
+          type: ToastType.error,
+        });
       } else {
         refetchUser();
       }
       input.value = "";
     },
-    [user?.id],
+    [user?.id, t, toast, updateUserAvatar, refetchUser],
   );
 
   const deleteUserAvatar = async () => {
@@ -86,10 +91,13 @@ export const PersonalInfo = () => {
 
       refetchUser();
       if (!response?.$meta.ok) {
-        toast.show({ message: response?.response?.detail ?? "Error updating user", type: ToastType.error });
+        toast?.show({
+          message: response?.response?.detail ?? t("accountSettings.personalInfoForm.errorUpdatingUser"),
+          type: ToastType.error,
+        });
       }
     },
-    [user?.id],
+    [user?.id, t, toast, updateUser, refetchUser],
   );
 
   useEffect(() => {
@@ -97,9 +105,9 @@ export const PersonalInfo = () => {
   }, [userInProgress]);
 
   useEffect(() => {
-    setFname(user?.first_name);
-    setLname(user?.last_name);
-    setPhone(user?.phone);
+    setFname(user?.first_name ?? "");
+    setLname(user?.last_name ?? "");
+    setPhone(user?.phone ?? "");
   }, [user]);
 
   return (
@@ -113,11 +121,12 @@ export const PersonalInfo = () => {
               onChange={fileChangeHandler}
               accept="image/png, image/jpeg, image/jpg"
               ref={avatarRef}
+              text={t("accountSettings.personalInfoForm.uploadAvatar")}
             />
           </form>
           {user?.avatar && (
             <Button type="submit" variant="negative" look="outlined" size="medium" onClick={deleteUserAvatar}>
-              Delete
+              {t("accountSettings.personalInfoForm.delete")}
             </Button>
           )}
         </div>
@@ -125,7 +134,7 @@ export const PersonalInfo = () => {
           <div className={styles.flexRow}>
             <div className={styles.flex1}>
               <Input
-                label="First Name"
+                label={t("accountSettings.personalInfoForm.firstName")}
                 value={fname}
                 onChange={(e: React.KeyboardEvent<HTMLInputElement>) => setFname(e.currentTarget.value)}
                 name="first_name"
@@ -133,7 +142,7 @@ export const PersonalInfo = () => {
             </div>
             <div className={styles.flex1}>
               <Input
-                label="Last Name"
+                label={t("accountSettings.personalInfoForm.lastName")}
                 value={lname}
                 onChange={(e: React.KeyboardEvent<HTMLInputElement>) => setLname(e.currentTarget.value)}
                 name="last_name"
@@ -142,11 +151,16 @@ export const PersonalInfo = () => {
           </div>
           <div className={styles.flexRow}>
             <div className={styles.flex1}>
-              <Input label="E-mail" type="email" readOnly={true} value={user?.email} />
+              <Input
+                label={t("accountSettings.personalInfoForm.email")}
+                type="email"
+                readOnly={true}
+                value={user?.email ?? ""}
+              />
             </div>
             <div className={styles.flex1}>
               <Input
-                label="Phone"
+                label={t("accountSettings.personalInfoForm.phone")}
                 type="phone"
                 onChange={(e: React.KeyboardEvent<HTMLInputElement>) => setPhone(e.currentTarget.value)}
                 value={phone}
@@ -155,8 +169,8 @@ export const PersonalInfo = () => {
             </div>
           </div>
           <div className={clsx(styles.flexRow, styles.flexEnd)}>
-            <Button look="primary" style={{ width: 125 }} waiting={isInProgress}>
-              Save
+            <Button style={{ width: 125 }} waiting={isInProgress}>
+              {t("accountSettings.personalInfoForm.save")}
             </Button>
           </div>
         </form>

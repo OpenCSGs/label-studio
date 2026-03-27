@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 
 import { sanitizeHtml } from "../../utils/html";
 import type { InputItem } from "./createData";

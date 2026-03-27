@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
-import { IconWarning, ToastType, useToast } from "@humansignal/ui";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IconWarning, ToastType, useToast } from "@humansignal/ui";
 
 // Shadcn UI components
 import { Button } from "@humansignal/ui";
@@ -19,9 +19,13 @@ import { HotkeySection } from "./Hotkeys/Section";
 import { ImportDialog } from "./Hotkeys/Import";
 import { KeyboardKey } from "./Hotkeys/Key";
 import type { Hotkey, Section, DirtyState, DuplicateConfirmDialog, ImportData } from "./Hotkeys/utils";
-import { getTranslatedSections } from "./Hotkeys/utils";
+// @ts-ignore
+import { HOTKEY_SECTIONS } from "./Hotkeys/defaults";
 import styles from "../AccountSettings.module.scss";
 import { useHotkeys } from "../hooks/useHotkeys";
+
+// Type the imported defaults
+const typedHotkeySections = HOTKEY_SECTIONS as Section[];
 
 export const HotkeysHeaderButtons = () => {
   const { t } = useTranslation();
@@ -62,9 +66,6 @@ export const HotkeysManager = () => {
 
   // Use the shared hook for common functionality
   const { hotkeys, setHotkeys, isLoading, setIsLoading, saveHotkeysToAPI } = useHotkeys();
-  
-  // Get translated sections
-  const typedHotkeySections = useMemo(() => getTranslatedSections(t), [t]);
 
   // Check if a hotkey conflicts with others globally
   const getGlobalDuplicates = (hotkeyId: string, newKey: string): Hotkey[] => {
@@ -197,7 +198,7 @@ export const HotkeysManager = () => {
         setDirtyState(newDirtyState);
 
         const sectionName =
-          sectionId === "settings" ? t("hotkeys.settings") : typedHotkeySections.find((s: Section) => s.id === sectionId)?.title;
+          sectionId === "settings" ? t("hotkeys.settings") : getSectionTitle(sectionId);
 
         if (toast) {
           toast.show({
@@ -215,9 +216,9 @@ export const HotkeysManager = () => {
       }
     } catch (error: unknown) {
       if (toast) {
-        const errorMessage = error instanceof Error ? error.message : t("hotkeys.unknownError");
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         toast.show({
-          message: t("hotkeys.saveError", { error: errorMessage }),
+          message: `Error saving: ${errorMessage}`,
           type: ToastType.error,
         });
       }
@@ -359,9 +360,7 @@ export const HotkeysManager = () => {
             <div>
               <IconWarning className="text-warning-icon" />
             </div>
-            <div>
-              {t("hotkeys.duplicateHotkeyWarning")}
-            </div>
+            <div>{t("hotkeys.duplicateHotkeyWarning")}</div>
           </DialogDescription>
 
           <DialogFooter>

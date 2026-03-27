@@ -1,5 +1,15 @@
+const DEFAULT_TITLES = {
+  "labelingConfig.widthOfRegionBorders": "Width of region borders",
+  "labelingConfig.allowImageZoom": "Allow image zoom (ctrl+wheel)",
+  "labelingConfig.showControlsToZoomInAndOut": "Show controls to zoom in and out",
+  "labelingConfig.showControlsToRotateImage": "Show controls to rotate image",
+  "labelingConfig.selectTextByWords": "Select text by words",
+  "labelingConfig.displayLabels": "Display labels:",
+  "labelingConfig.addFilterForLongListOfLabels": "Add filter for long list of labels",
+};
+
 const getOBJECTS = (t) => {
-  const translate = t || ((key) => key);
+  const translate = t || ((key) => DEFAULT_TITLES[key] ?? key);
   return {
     Image: {
       type: "Image",
@@ -68,7 +78,7 @@ const getOBJECTS = (t) => {
 };
 
 const getLabels = (t) => {
-  const translate = t || ((key) => key);
+  const translate = t || ((key) => DEFAULT_TITLES[key] ?? key);
   return {
     type: "Labels",
     settings: {
@@ -162,7 +172,7 @@ const getTAGS = (t) => {
   return { ...getOBJECTS(t), ...getCONTROLS(t) };
 };
 
-// Keep backward compatibility - export default English versions
+// Keep backward compatibility - export default English versions when no t
 const OBJECTS = getOBJECTS();
 const Labels = getLabels();
 const CONTROLS = getCONTROLS();

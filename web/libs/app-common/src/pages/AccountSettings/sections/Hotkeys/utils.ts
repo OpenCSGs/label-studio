@@ -1,4 +1,4 @@
-import { DEFAULT_HOTKEYS, HOTKEY_SECTIONS } from "./defaults";
+import { DEFAULT_HOTKEYS } from "./defaults";
 
 // Type definitions - centralized here to avoid duplication
 export interface Hotkey {
@@ -12,9 +12,6 @@ export interface Hotkey {
   description?: string;
   subgroup?: string;
 }
-
-// Type for translation function
-export type TranslationFunction = (key: string) => string;
 
 export interface Section {
   id: string;
@@ -51,6 +48,7 @@ export interface SaveResult {
   ok: boolean;
   error?: string;
   data?: unknown;
+  runtimeReloadSuccess?: boolean;
 }
 
 export interface ApiResponse {
@@ -72,36 +70,11 @@ interface RawHotkey {
 }
 
 // Convert DEFAULT_HOTKEYS with numeric IDs to typed hotkeys with string IDs
-export const getTypedDefaultHotkeys = (t?: TranslationFunction): Hotkey[] => {
-  const hotkeys = (DEFAULT_HOTKEYS as RawHotkey[]).map((hotkey) => ({
+export const getTypedDefaultHotkeys = (): Hotkey[] => {
+  return (DEFAULT_HOTKEYS as RawHotkey[]).map((hotkey) => ({
     ...hotkey,
     id: String(hotkey.id), // Convert numeric id to string
   }));
-  
-  // If translation function is provided, translate labels and descriptions
-  if (t) {
-    return hotkeys.map((hotkey) => {
-      const hotkeyKey = hotkey.element.replace(/:/g, ".").toLowerCase();
-      
-      // Translate label
-      const labelKey = `hotkeys.hotkeys.${hotkeyKey}.label`;
-      const translatedLabel = t(labelKey);
-      const label = translatedLabel !== labelKey ? translatedLabel : hotkey.label;
-      
-      // Translate description
-      const descKey = `hotkeys.hotkeys.${hotkeyKey}.description`;
-      const translatedDesc = t(descKey);
-      const description = translatedDesc !== descKey ? translatedDesc : hotkey.description;
-      
-      return {
-        ...hotkey,
-        label,
-        description,
-      };
-    });
-  }
-  
-  return hotkeys;
 };
 
 // Global property declaration
@@ -111,35 +84,6 @@ declare global {
   }
 }
 
-// Get translated sections
-export const getTranslatedSections = (t?: TranslationFunction): Section[] => {
-  const sections = HOTKEY_SECTIONS as Section[];
-  
-  if (t) {
-    return sections.map((section) => {
-      const sectionKey = section.id.toLowerCase().replace(/_/g, "");
-      
-      // Translate title
-      const titleKey = `hotkeys.sections.${sectionKey}.title`;
-      const translatedTitle = t(titleKey);
-      const title = translatedTitle !== titleKey ? translatedTitle : section.title;
-      
-      // Translate description
-      const descKey = `hotkeys.sections.${sectionKey}.description`;
-      const translatedDesc = t(descKey);
-      const description = translatedDesc !== descKey ? translatedDesc : section.description;
-      
-      return {
-        ...section,
-        title,
-        description,
-      };
-    });
-  }
-  
-  return sections;
-};
-
 // Global property setup function - called explicitly rather than as side effect
 export const setupGlobalHotkeys = (): void => {
   if (typeof window !== "undefined") {
@@ -148,4 +92,20 @@ export const setupGlobalHotkeys = (): void => {
       window.DEFAULT_HOTKEYS = getTypedDefaultHotkeys();
     }
   }
+};
+
+// Convert element key (e.g. "annotation:submit" or "dm.focus-previous") to i18n key.
+// i18next uses "." as key separator, so we use "_" to avoid path conflicts.
+const getHotkeyI18nKey = (element: string): string => element.replace(/[:.]/g, "_");
+
+export const getHotkeyLabel = (t: (key: string) => string, hotkey: Hotkey): string => {
+  const key = `hotkeys.hotkeys.${getHotkeyI18nKey(hotkey.element)}.label`;
+  const translated = t(key);
+  return translated !== key ? translated : hotkey.label;
+};
+
+export const getHotkeyDescription = (t: (key: string) => string, hotkey: Hotkey): string => {
+  const key = `hotkeys.hotkeys.${getHotkeyI18nKey(hotkey.element)}.description`;
+  const translated = t(key);
+  return translated !== key ? translated : (hotkey.description ?? "");
 };

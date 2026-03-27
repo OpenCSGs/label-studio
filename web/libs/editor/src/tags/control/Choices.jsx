@@ -12,7 +12,7 @@ import Types from "../../core/Types";
 import { guidGenerator } from "../../core/Helpers";
 import ControlBase from "./Base";
 import { AnnotationMixin } from "../../mixins/AnnotationMixin";
-import { Block } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import "./Choices/Choices.scss";
 
 import "./Choice";
@@ -92,6 +92,7 @@ import { Select, Tooltip } from "@humansignal/ui";
  * @param {boolean} [perItem]          - Use this tag to select a choice for a specific item inside the object instead of the whole object
  * @param {string} [value]             - Task data field containing a list of dynamically loaded choices (see example below)
  * @param {boolean} [allowNested]      - Allow to use `children` field in dynamic choices to nest them. Submitted result will contain array of arrays, every item is a list of values from topmost parent choice down to selected one.
+ * @param {select|inline|vertical} [layout] - Layout of the choices: `select` for dropdown/select box format, `inline` for horizontal single row display, `vertical` for vertically stacked display (default)
  */
 const TagAttrs = types.model({
   toname: types.maybeNull(types.string),
@@ -291,13 +292,14 @@ const ChoicesSelectLayout = observer(({ item }) => {
 
 const HtxChoices = observer(({ item }) => {
   return (
-    <Block
-      name="choices"
-      mod={{ hidden: !item.isVisible || !item.perRegionVisible(), layout: item.layout }}
+    <div
+      className={cn("choices")
+        .mod({ hidden: !item.isVisible || !item.perRegionVisible(), layout: item.layout })
+        .toClassName()}
       ref={item.elementRef}
     >
       {item.layout === "select" ? <ChoicesSelectLayout item={item} /> : Tree.renderChildren(item, item.annotation)}
-    </Block>
+    </div>
   );
 });
 

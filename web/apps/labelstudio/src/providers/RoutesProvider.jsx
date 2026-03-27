@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { generatePath, matchPath, useHistory, useLocation } from "react-router";
 import { Pages } from "../pages";
 import { setBreadcrumbs, useBreadcrumbControls } from "../services/breadrumbs";
@@ -38,6 +39,7 @@ const findMacthingComponents = (path, routesMap, parentPath = "") => {
 };
 
 export const RoutesProvider = ({ children }) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useFixedLocation();
   const config = useConfig();
@@ -87,7 +89,7 @@ export const RoutesProvider = ({ children }) => {
         .map((route) => {
           const params = matchPath(location.pathname, { path: route.path });
           const path = generatePath(route.path, params.params);
-          const title = route.title instanceof Function ? route.title() : route.title;
+          const title = route.titleKey ? t(route.titleKey) : (route.title instanceof Function ? route.title() : route.title);
           const key = route.component?.displayName ?? route.key ?? path;
 
           return { path, title, key };
@@ -98,7 +100,7 @@ export const RoutesProvider = ({ children }) => {
     } catch (err) {
       console.log(err);
     }
-  }, [location, routesMap, currentContextProps, routesChain, lastRoute]);
+  }, [location, routesMap, currentContextProps, routesChain, lastRoute, t]);
 
   return <RoutesContext.Provider value={contextValue}>{children}</RoutesContext.Provider>;
 };

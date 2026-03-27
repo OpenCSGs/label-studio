@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Card, Dropdown, Menu } from "../../../components";
-import { Button } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
+import { Card, Menu } from "../../../components";
+import { Button, Dropdown } from "@humansignal/ui";
 import { ApiContext } from "../../../providers/ApiProvider";
 import { StorageSummary } from "./StorageSummary";
 import { IconEllipsisVertical } from "@humansignal/icons";
-import { useTranslation } from "react-i18next";
 
 export const StorageCard = ({ rootClass, target, storage, onEditStorage, onDeleteStorage, storageTypes }) => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export const StorageCard = ({ rootClass, target, storage, onEditStorage, onDelet
 
   return (
     <Card
-      header={storageData.title?.slice?.(0, 70) ?? `${t("storage.untitled")} ${storageData.type}`}
+      header={storageData.title ?? `${t("storage.untitled")} ${storageData.type}`}
       extra={
         <Dropdown.Trigger
           align="right"

@@ -1,21 +1,21 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
-import { ToastType, useToast } from "@humansignal/ui";
+import { confirm } from "@humansignal/ui/lib/modal";
+import { ToastType, useToast } from "@humansignal/ui/lib/toast/toast";
 import { useTranslation } from "react-i18next";
-import { useAPI } from "apps/labelstudio/src/providers/ApiProvider";
 // @ts-ignore
-import { confirm } from "apps/labelstudio/src/components/Modal/Modal";
+import { useAPI } from "@humansignal/core";
+import { useCallback, useEffect, useState } from "react";
 import {
+  type ApiResponse,
+  type ExportData,
   getTypedDefaultHotkeys,
   type Hotkey,
   type HotkeySettings,
-  type ExportData,
   type ImportData,
   type SaveResult,
-  type ApiResponse,
 } from "../sections/Hotkeys/utils";
 
-// Get default hotkeys - will be translated when hook is used
-const getDefaultHotkeys = (t?: (key: string) => string): Hotkey[] => getTypedDefaultHotkeys(t);
+// Type the imported defaults and convert numeric ids to strings
+const typedDefaultHotkeys: Hotkey[] = getTypedDefaultHotkeys();
 
 export const useHotkeys = () => {
   const { t } = useTranslation();
@@ -24,9 +24,6 @@ export const useHotkeys = () => {
   const [hotkeySettings, setHotkeySettings] = useState<HotkeySettings>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const api = useAPI();
-  
-  // Get translated default hotkeys
-  const typedDefaultHotkeys = useMemo(() => getDefaultHotkeys(t), [t]);
 
   // Update hotkeys with custom settings
   const updateHotkeysWithCustomSettings = useCallback(
@@ -60,6 +57,53 @@ export const useHotkeys = () => {
     [],
   );
 
+  // Simple hotkey reload - just update global state and call setKeymap
+  const reloadHotkeysInRuntime = useCallback(
+    (customHotkeys: Record<string, { key: string; active: boolean; description?: string }>) => {
+      // Update APP_SETTINGS.user.customHotkeys (for Help modal and fallback)
+      if (window.APP_SETTINGS?.user) {
+        window.APP_SETTINGS.user.customHotkeys = customHotkeys;
+      }
+
+      const EditorHotkey = window.Htx?.Hotkey;
+
+      // Transform custom hotkeys to editor format (same logic as base.html)
+      const editorCustomHotkeys: Record<string, any> = {};
+      const prefixRegex = /^(annotation|timeseries|audio|regions|video|image_gallery|tools):(.*)/;
+
+      for (const key in customHotkeys) {
+        const match = key.match(prefixRegex);
+        if (match) {
+          const [, , shortKey] = match;
+          const value = customHotkeys[key];
+
+          if (value && value.active === false) {
+            editorCustomHotkeys[shortKey] = { ...value, key: null };
+          } else {
+            editorCustomHotkeys[shortKey] = value;
+          }
+        }
+      }
+
+      // Get current keymap and merge with custom hotkeys
+      const currentKeymap = EditorHotkey?.keymap ? { ...EditorHotkey.keymap } : {};
+      const mergedKeymap = Object.assign({}, currentKeymap, editorCustomHotkeys);
+
+      // Update APP_SETTINGS.editor_keymap (for DataManager/Explorer)
+      if (window.APP_SETTINGS) {
+        window.APP_SETTINGS.editor_keymap = mergedKeymap;
+      }
+
+      // Call Hotkey.setKeymap() - the main propagation path
+      try {
+        EditorHotkey?.setKeymap(mergedKeymap as any);
+      } catch (error) {
+        console.warn("Failed to update hotkeys:", error);
+      }
+    },
+    [],
+  );
+
   // Load hotkeys from API
   const loadHotkeysFromAPI = useCallback(async () => {
     try {
@@ -71,7 +115,7 @@ export const useHotkeys = () => {
       if (response && (response as ApiResponse).custom_hotkeys) {
         // Use API data
         const apiResponse = response as ApiResponse;
-        const updatedHotkeys = updateHotkeysWithCustomSettings(typedDefaultHotkeys, apiResponse.custom_hotkeys!);
+        const updatedHotkeys = updateHotkeysWithCustomSettings(typedDefaultHotkeys, apiResponse.custom_hotkeys || {});
         setHotkeys(updatedHotkeys);
         // Store current settings from API response
         setHotkeySettings(apiResponse.hotkey_settings || {});
@@ -103,7 +147,7 @@ export const useHotkeys = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [api, toast, updateHotkeysWithCustomSettings, typedDefaultHotkeys, t]);
+  }, [api, toast, updateHotkeysWithCustomSettings, t]);
 
   // Save hotkeys to API function (handles both save and reset operations)
   const saveHotkeysToAPI = useCallback(
@@ -140,6 +184,9 @@ export const useHotkeys = () => {
             data: response,
           };
         }
+
+        // Apply hotkeys immediately without page refresh
+        reloadHotkeysInRuntime(customHotkeys);
 
         return {
           ok: true,
@@ -204,16 +251,16 @@ export const useHotkeys = () => {
           } else {
             if (toast) {
               toast.show({
-                message: t("hotkeys.resetFailed", { error: result.error || t("hotkeys.unknownError") }),
+                message: `Failed to save reset hotkeys: ${result.error || "Unknown error"}`,
                 type: ToastType.error,
               });
             }
           }
         } catch (error: unknown) {
           if (toast) {
-            const errorMessage = error instanceof Error ? error.message : t("hotkeys.unknownError");
+            const errorMessage = error instanceof Error ? error.message : "Unknown error";
             toast.show({
-              message: t("hotkeys.resetError", { error: errorMessage }),
+              message: `Error resetting hotkeys: ${errorMessage}`,
               type: ToastType.error,
             });
           }
@@ -222,7 +269,7 @@ export const useHotkeys = () => {
         }
       },
     });
-  }, [saveHotkeysToAPI, toast, t, typedDefaultHotkeys]);
+  }, [saveHotkeysToAPI, toast, t]);
 
   // Handle exporting hotkeys
   const handleExportHotkeys = useCallback(() => {
@@ -253,7 +300,10 @@ export const useHotkeys = () => {
     URL.revokeObjectURL(url);
 
     if (toast) {
-      toast.show({ message: t("hotkeys.exportSuccess"), type: ToastType.info });
+      toast.show({
+        message: t("hotkeys.exportSuccess"),
+        type: ToastType.info,
+      });
     }
   }, [hotkeys, hotkeySettings, toast, t]);
 
@@ -278,7 +328,10 @@ export const useHotkeys = () => {
         setHotkeys(importedHotkeys);
 
         if (toast) {
-          toast.show({ message: t("hotkeys.importSuccess"), type: ToastType.info });
+          toast.show({
+            message: t("hotkeys.importSuccess"),
+            type: ToastType.info,
+          });
         }
 
         // Reload from API to ensure consistency
@@ -286,7 +339,10 @@ export const useHotkeys = () => {
       } catch (error: unknown) {
         if (toast) {
           const errorMessage = error instanceof Error ? error.message : t("hotkeys.unknownError");
-          toast.show({ message: t("hotkeys.importError", { error: errorMessage }), type: ToastType.error });
+          toast.show({
+            message: t("hotkeys.importError", { error: errorMessage }),
+            type: ToastType.error,
+          });
         }
       } finally {
         setIsLoading(false);
@@ -295,10 +351,10 @@ export const useHotkeys = () => {
     [saveHotkeysToAPI, loadHotkeysFromAPI, toast, t],
   );
 
-  // Load hotkeys on hook mount and when translation changes
+  // Load hotkeys on hook mount
   useEffect(() => {
     loadHotkeysFromAPI();
-  }, [loadHotkeysFromAPI, t]);
+  }, [loadHotkeysFromAPI]);
 
   return {
     hotkeys,

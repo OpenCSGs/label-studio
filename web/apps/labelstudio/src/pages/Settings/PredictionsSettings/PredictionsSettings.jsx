@@ -1,18 +1,23 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider } from "../../../components/Divider/Divider";
-import { EmptyState } from "../../../components/EmptyState/EmptyState";
-import { IconPredictions, Typography } from "@humansignal/ui";
+import { EmptyState, SimpleCard } from "@humansignal/ui";
+import { IconPredictions, Typography, IconExternal } from "@humansignal/ui";
+import { useUpdatePageTitle, createTitleFromSegments } from "@humansignal/core";
 import { useAPI } from "../../../providers/ApiProvider";
 import { ProjectContext } from "../../../providers/ProjectProvider";
 import { Spinner } from "../../../components/Spinner/Spinner";
 import { PredictionsList } from "./PredictionsList";
 
 export const PredictionsSettings = () => {
+  const { t } = useTranslation();
   const api = useAPI();
   const { project } = useContext(ProjectContext);
   const [versions, setVersions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
+  useUpdatePageTitle(createTitleFromSegments([project?.title, "Predictions Settings"]));
 
   const fetchVersions = useCallback(async () => {
     setLoading(true);
@@ -37,7 +42,7 @@ export const PredictionsSettings = () => {
   return (
     <section className="max-w-[42rem]">
       <Typography variant="headline" size="medium" className="mb-tight">
-        Predictions
+        {t("predictions.title")}
       </Typography>
       <div>
         {loading && <Spinner size={32} />}
@@ -45,13 +50,12 @@ export const PredictionsSettings = () => {
         {loaded && versions.length > 0 && (
           <>
             <Typography variant="title" size="medium">
-              Predictions List
+              {t("predictions.predictionsList")}
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler mt-base mb-wider">
-              List of predictions available in the project. Each card is associated with a separate model version. To
-              learn about how to import predictions,{" "}
+              {t("predictions.predictionsListDescription")}{" "}
               <a href="https://labelstud.io/guide/predictions.html" target="_blank" rel="noreferrer">
-                see&nbsp;the&nbsp;documentation
+                {t("organization.learnMore")}
               </a>
               .
             </Typography>
@@ -59,20 +63,32 @@ export const PredictionsSettings = () => {
         )}
 
         {loaded && versions.length === 0 && (
-          <EmptyState
-            icon={<IconPredictions />}
-            title="No predictions yet uploaded"
-            description="Predictions could be used to prelabel the data, or validate the model. You can upload and select predictions from multiple model versions. You can also connect live models in the Model tab."
-            footer={
-              <div>
-                Need help?
-                <br />
-                <a href="https://labelstud.io/guide/predictions" target="_blank" rel="noreferrer">
-                  Learn more on how to upload predictions in our docs
-                </a>
-              </div>
-            }
-          />
+          <SimpleCard title="" className="bg-primary-background border-primary-border-subtler p-base">
+            <EmptyState
+              size="medium"
+              variant="primary"
+              icon={<IconPredictions />}
+              title={t("predictions.noPredictionsYet")}
+              description={t("predictions.noPredictionsDescription")}
+              footer={
+                !window.APP_SETTINGS?.whitelabel_is_active && (
+                  <Typography variant="label" size="small" className="text-primary-link">
+                    <a
+                      href="https://labelstud.io/guide/predictions"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-testid="predictions-help-link"
+                      aria-label={t("predictions.title")}
+                      className="inline-flex items-center gap-1 hover:underline"
+                    >
+                      {t("organization.learnMore")}
+                      <IconExternal width={16} height={16} />
+                    </a>
+                  </Typography>
+                )
+              }
+            />
+          </SimpleCard>
         )}
 
         <PredictionsList project={project} versions={versions} fetchVersions={fetchVersions} />
@@ -84,4 +100,5 @@ export const PredictionsSettings = () => {
 };
 
 PredictionsSettings.title = "Predictions";
+PredictionsSettings.titleKey = "predictions.title";
 PredictionsSettings.path = "/predictions";
