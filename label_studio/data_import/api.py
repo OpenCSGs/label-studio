@@ -3,11 +3,12 @@
 import json
 import logging
 import mimetypes
+import os
 import time
 from urllib.parse import unquote, urlparse
 
-import os
 import requests
+
 from core.decorators import override_report_only_csp
 from core.feature_flags import flag_set
 from core.permissions import ViewClassPermission, all_permissions
@@ -21,6 +22,7 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
+from label_studio_sdk.label_interface import LabelInterface
 from projects.models import Project, ProjectImport, ProjectReimport
 from ranged_fileresponse import RangedFileResponse
 from rest_framework import generics, status
@@ -37,10 +39,6 @@ from webhooks.models import WebhookAction
 from webhooks.utils import emit_webhooks_for_instance
 
 from label_studio.core.utils.common import load_func
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from .functions import (
     async_import_background,
@@ -56,6 +54,56 @@ from .uploader import create_file_uploads, load_tasks
 logger = logging.getLogger(__name__)
 
 ProjectImportPermission = load_func(settings.PROJECT_IMPORT_PERMISSION)
+
+
+# ---------- CSGHub 二开 ----------
+
+
+@method_decorator(name='get', decorator=extend_schema(exclude=True))
+class PublicListAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_name = getattr(request.user, 'user_name', None) or ''
+        authorization = getattr(request.user, 'authorization', None) or ''
+        if not user_name:
+            return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:18120')
+        if not endpoint:
+            return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}/datasets?per=50&page=1"
+        try:
+            resp = requests.get(url, headers={"Authorization": authorization}, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            paths = [item.get('path', '') for item in (data.get('data') or []) if item and item.get('path')]
+            return Response(paths)
+        except requests.RequestException as e:
+            return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
+
+
+@method_decorator(name='get', decorator=extend_schema(exclude=True))
+class DatasetBranchesAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        repo_id = request.query_params.get('repo_id')
+        if not repo_id:
+            return Response({"error": "缺少 repo_id 参数"}, status=status.HTTP_400_BAD_REQUEST)
+        authorization = getattr(request.user, 'authorization', None) or ''
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:18120')
+        if not endpoint:
+            return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        url = f"{endpoint.rstrip('/')}/api/v1/datasets/{repo_id}/branches"
+        try:
+            resp = requests.get(url, headers={"Authorization": authorization}, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            names = [item.get('name', '') for item in (data.get('data') or []) if item and item.get('name')]
+            return Response(names)
+        except requests.RequestException as e:
+            return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
+
 
 task_create_response_scheme = {
     201: OpenApiResponse(
@@ -130,139 +178,6 @@ task_create_response_scheme = {
     ),
 }
 
-# from label_studio.users.user_t_data import get_data, set_data, delete_data, list_all_accounts
-
-
-# # 获取数据
-# user_info = get_data("z275748353")
-# print(user_info)
-#
-# # 设置数据
-# set_data("new_user", {"token": "new_token123"})
-#
-# # 删除数据
-# delete_data("old_user")
-#
-# # 列出所有账号
-# all_accounts = list_all_accounts()
-# print(all_accounts)
-
-@permission_classes([IsAuthenticated])  # 仅允许已登录用户访问
-class PublicListAPI(APIView):
-    # 获取用户数据
-
-    print(100*'*')
-    def get(self, request):
-        user_token1 = request.user.user_token
-        authorization = request.user.authorization
-        user_name = request.user.user_name
-
-
-        # 从当前登录用户对象中获取用户名（自动获取，无需前端传参）
-        # user_name = str(request.user).split('@')[0]
-        # user_name = str(request.user).split('@')[0]
-
-        # print(user_data)
-        # print(user_data['authorization'])
-        if not user_name:
-            return Response(
-                {"error": "当前用户未设置用户名"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # # 获取用户数据
-        # user_data = get_data(user_name)
-        # print(user_name)
-        # print(user_data['authorization'])
-        if user_name is None:
-            return Response(
-                {"error": f"用户 '{user_name}' 的数据不存在"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-
-        # print(user_name)
-        # print(user_data['authorization'])
-        # 调用外部API（使用当前用户的authorization）
-        # os.environ['CSGHUB_ENDPOINT']
-        url = f"{os.environ['CSGHUB_ENDPOINT']}/api/v1/user/{user_name}/datasets?per=50&page=1"
-        headers = {
-            "Authorization": authorization
-        }
-
-        try:
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()  # 处理HTTP错误状态码
-            list=[]
-
-            data = response.json()
-            # print(data)
-            for i in data['data']:
-                list.append(i['path'])
-            return Response(list)
-            # return Response(
-            #     {"error": "当前用户未设置用户名"},
-            #     status=status.HTTP_400_BAD_REQUEST
-            # )
-        except requests.exceptions.RequestException as e:
-            return Response(
-                {"error": f"调用外部API失败: {str(e)}"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-
-@permission_classes([IsAuthenticated])
-class DatasetBranchesAPI(APIView):
-    def get(self, request):
-        user_token1 = request.user.user_token
-        authorization = request.user.authorization
-        user_name = request.user.user_name
-        # base_url = "http://net-power.9free.com.cn:18120"
-
-        repo_id = request.query_params.get('repo_id')
-
-        endpoint = f"/api/v1/datasets/{repo_id}/branches"
-        url = f"{os.environ['CSGHUB_ENDPOINT']}{endpoint}"
-
-        headers = {
-            "Authorization": authorization
-        }
-        # 发送GET请求
-        response = requests.get(url, headers=headers)
-        # 解析JSON响应
-        branches_data = response.json()
-        # print(branches_data,100*'-')
-        list = []
-        for i in branches_data['data']:
-            list.append(i['name'])
-
-        #TODO: 添加逻辑以处理数据 并增加日志
-        return Response(list)
-
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from django.core.exceptions import ObjectDoesNotExist
-from projects.models import Project
-import logging
-from time import timezone
-# class ProImportAPI(APIView):
-#     """
-#     专业版任务创建接口
-#     支持通过多种方式创建标注任务
-#     """
-#
-#     def post(self, request, pk):
-#         response = {'message': 'Importing tasks is not available in Community edition'}
-#         return Response(
-#             response,
-#             status=status.HTTP_200_OK
-#         )
-#     def _create_tasks(self, project, validated_data):
-#         response = {'message': 'Importing tasks is not available in Community edition'}
-#         return Response(response, status=status.HTTP_201_CREATED)
 
 @method_decorator(
     name='post',
@@ -359,29 +274,7 @@ from time import timezone
         """.format(
             host=(settings.HOSTNAME or 'https://localhost:8080')
         ),
-        request={
-            'type': 'array',
-            'items': {'type': 'object'},
-            # TODO: this example doesn't work - perhaps we need to migrate to drf-spectacular for "anyOf" support
-            # also fern will change to at least provide a list of examples FER-1969
-            # right now we can only rely on documenation examples
-            # properties={
-            #     'data': openapi.Schema(type=OpenApiTypes.OBJECT, description='Data of the task'),
-            #     'annotations': openapi.Schema(
-            #         many=True,
-            #         description='Annotations for this task',
-            #     ),
-            #     'predictions': openapi.Schema(
-            #         many=True,
-            #         description='Predictions for this task',
-            #     )
-            # },
-            # example={
-            #     'data': {'image': 'http://example.com/image.jpg'},
-            #     'annotations': [annotation_response_example],
-            #     'predictions': [prediction_response_example]
-            # }
-        },
+        request=ImportApiSerializer(many=True),
         extensions={
             'x-fern-sdk-group-name': 'projects',
             'x-fern-sdk-method-name': 'import_tasks',
@@ -423,12 +316,42 @@ class ImportAPI(generics.CreateAPIView):
         tasks = None
         # upload files from request, and parse all tasks
         # TODO: Stop passing request to load_tasks function, make all validation before
-
         parsed_data, file_upload_ids, could_be_tasks_list, found_formats, data_columns = load_tasks(request, project)
 
         if preannotated_from_fields:
             # turn flat task JSONs {"column1": value, "column2": value} into {"data": {"column1"..}, "predictions": [{..."column2"}]
-            parsed_data = reformat_predictions(parsed_data, preannotated_from_fields)
+            raise_errors = flag_set('fflag_feat_utc_210_prediction_validation_15082025', user='auto')
+            logger.info(f'Reformatting predictions with raise_errors: {raise_errors}')
+            parsed_data = reformat_predictions(parsed_data, preannotated_from_fields, project, raise_errors)
+
+        # Conditionally validate predictions: skip when label config is default during project creation
+        if project.label_config_is_not_default:
+            validation_errors = []
+            li = LabelInterface(project.label_config)
+
+            for i, task in enumerate(parsed_data):
+                if 'predictions' in task:
+                    for j, prediction in enumerate(task['predictions']):
+                        try:
+                            validation_errors_list = li.validate_prediction(prediction, return_errors=True)
+                            if validation_errors_list:
+                                for error in validation_errors_list:
+                                    validation_errors.append(f'Task {i}, prediction {j}: {error}')
+                        except Exception as e:
+                            error_msg = f'Task {i}, prediction {j}: Error validating prediction - {str(e)}'
+                            validation_errors.append(error_msg)
+
+            if validation_errors:
+                error_message = f'Prediction validation failed ({len(validation_errors)} errors):\n'
+                for error in validation_errors:
+                    error_message += f'- {error}\n'
+
+                if flag_set('fflag_feat_utc_210_prediction_validation_15082025', user='auto'):
+                    raise ValidationError({'predictions': [error_message]})
+                else:
+                    logger.error(
+                        f'Prediction validation failed, not raising error - ({len(validation_errors)} errors):\n{error_message}'
+                    )
 
         if commit_to_project:
             # Immediately create project tasks and update project states and counters
@@ -476,12 +399,8 @@ class ImportAPI(generics.CreateAPIView):
         }
         if tasks and return_task_ids:
             response['task_ids'] = [task.id for task in tasks]
-        # print(response)
-        # import json
-        # response = json.dumps(response,ensure_ascii= False)
-        # return Response(response, status=status.HTTP_201_CREATED)
-        return Response(response, status=status.HTTP_200_OK)
-        # return Response("abcdefg", status=status.HTTP_200_OK)
+
+        return Response(response, status=status.HTTP_201_CREATED)
 
     @timeit
     def async_import(self, request, project, preannotated_from_fields, commit_to_project, return_task_ids):
@@ -501,12 +420,20 @@ class ImportAPI(generics.CreateAPIView):
             project_import.save(update_fields=['file_upload_ids', 'could_be_tasks_list'])
         elif 'application/x-www-form-urlencoded' in request.content_type:
             logger.debug(f'Import from url: {request.data.get("url")}')
-            # empty url
-            url = request.data.get('url')
-            if not url:
-                raise ValidationError('"url" is not found in request data')
-            project_import.url = url
-            project_import.save(update_fields=['url'])
+            dataset = request.data.get('dataset')
+            dataset_branches = request.data.get('datasetBranches')
+            if dataset and dataset_branches:
+                project.dataset = dataset
+                project.datasetBranches = dataset_branches
+                project.save(update_fields=['dataset', 'datasetBranches'])
+                project_import.url = f"dataset={dataset}&datasetBranches={dataset_branches}"
+                project_import.save(update_fields=['url'])
+            else:
+                url = request.data.get('url')
+                if not url:
+                    raise ValidationError('"url" is not found in request data')
+                project_import.url = url
+                project_import.save(update_fields=['url'])
         # take one task from request DATA
         elif 'application/json' in request.content_type and isinstance(request.data, dict):
             project_import.tasks = [request.data]
@@ -535,15 +462,7 @@ class ImportAPI(generics.CreateAPIView):
         return Response(response, status=status.HTTP_201_CREATED)
 
     def create(self, request, *args, **kwargs):
-        # response = {'message': 'Importing tasks is not available in Community edition'}
-        # print(response)
-        # # import json
-        # # response = json.dumps(response,ensure_ascii= False)
-        # # return Response(response, status=status.HTTP_201_CREATED)
-        # return Response(response, status=status.HTTP_200_OK)
-        # print(request,100*'*')
         commit_to_project = bool_from_request(request.query_params, 'commit_to_project', True)
-        # commit_to_project = False
         return_task_ids = bool_from_request(request.query_params, 'return_task_ids', False)
         preannotated_from_fields = list_of_strings_from_request(request.query_params, 'preannotated_from_fields', None)
 
@@ -553,13 +472,63 @@ class ImportAPI(generics.CreateAPIView):
         if settings.VERSION_EDITION != 'Community':
             return self.async_import(request, project, preannotated_from_fields, commit_to_project, return_task_ids)
         else:
-
             return self.sync_import(request, project, preannotated_from_fields, commit_to_project, return_task_ids)
 
 
 # Import
-@extend_schema(exclude=True)
+@method_decorator(
+    name='post',
+    decorator=extend_schema(
+        tags=['Import'],
+        summary='Import predictions',
+        description='Import model predictions for tasks in the specified project.',
+        parameters=[
+            OpenApiParameter(
+                name='id',
+                type=OpenApiTypes.INT,
+                location='path',
+                description='A unique integer value identifying this project.',
+            ),
+        ],
+        request=PredictionSerializer(many=True),
+        responses={
+            201: OpenApiResponse(
+                description='Predictions successfully imported',
+                response={
+                    'title': 'Predictions import response',
+                    'description': 'Import result',
+                    'type': 'object',
+                    'properties': {
+                        'created': {
+                            'title': 'created',
+                            'description': 'Number of predictions created',
+                            'type': 'integer',
+                        }
+                    },
+                },
+            ),
+            400: OpenApiResponse(
+                description='Bad Request',
+            ),
+        },
+        extensions={
+            'x-fern-sdk-group-name': 'projects',
+            'x-fern-sdk-method-name': 'import_predictions',
+            'x-fern-audiences': ['public'],
+        },
+    ),
+)
 class ImportPredictionsAPI(generics.CreateAPIView):
+    """
+    API for importing predictions to a project.
+
+    Memory optimization controlled by feature flag:
+    'fflag_fix_back_4620_memory_efficient_predictions_import_08012025_short'
+
+    When flag is enabled: Uses memory-efficient batch processing (reduces memory usage by 90-99%)
+    When flag is disabled: Uses legacy implementation for safe fallback
+    """
+
     permission_required = all_permissions.projects_change
     parser_classes = (JSONParser, MultiPartParser, FormParser)
     serializer_class = PredictionSerializer
@@ -569,27 +538,145 @@ class ImportPredictionsAPI(generics.CreateAPIView):
         # check project permissions
         project = self.get_object()
 
+        # Use feature flag to control memory-efficient implementation rollout
+        if flag_set('fflag_fix_back_4620_memory_efficient_predictions_import_08012025_short', user=self.request.user):
+            return self._create_memory_efficient(project)
+        else:
+            return self._create_legacy(project)
+
+    def _create_memory_efficient(self, project):
+        """Memory-efficient batch processing implementation"""
+        # Configure batch processing settings
+        # Use smaller batch size for processing to avoid memory issues
+        PROCESSING_BATCH_SIZE = getattr(settings, 'PREDICTION_IMPORT_BATCH_SIZE', 500)
+
+        request_data = self.request.data
+        total_predictions = len(request_data)
+
+        logger.debug(
+            f'Importing {total_predictions} predictions to project {project} using memory-efficient batch processing (batch size: {PROCESSING_BATCH_SIZE})'
+        )
+
+        total_created = 0
+        all_task_ids = set()
+
+        # Process predictions in smaller batches to avoid memory issues
+        for batch_start in range(0, total_predictions, PROCESSING_BATCH_SIZE):
+            batch_end = min(batch_start + PROCESSING_BATCH_SIZE, total_predictions)
+            batch_items = request_data[batch_start:batch_end]
+
+            # Extract task IDs for this batch
+            batch_task_ids = [item.get('task') for item in batch_items]
+
+            # Validate that all task IDs in this batch exist in the project
+            # This is much more memory efficient than loading all project task IDs upfront
+            existing_task_ids = set(
+                Task.objects.filter(project=project, id__in=batch_task_ids).values_list('id', flat=True)
+            )
+
+            # Build predictions for this batch
+            batch_predictions = []
+            for item in batch_items:
+                task_id = item.get('task')
+
+                if task_id not in existing_task_ids:
+                    raise ValidationError(
+                        f'{item} contains invalid "task" field: task ID {task_id} ' f'not found in project {project}'
+                    )
+
+                batch_predictions.append(
+                    Prediction(
+                        task_id=task_id,
+                        project_id=project.id,
+                        result=Prediction.prepare_prediction_result(item.get('result'), project),
+                        score=item.get('score'),
+                        model_version=item.get('model_version', 'undefined'),
+                    )
+                )
+                all_task_ids.add(task_id)
+
+            # Bulk create this batch with the configured batch size
+            batch_created = Prediction.objects.bulk_create(batch_predictions, batch_size=settings.BATCH_SIZE)
+            total_created += len(batch_created)
+
+            logger.debug(
+                f'Processed batch {batch_start}-{batch_end-1}: created {len(batch_created)} predictions '
+                f'(total so far: {total_created})'
+            )
+
+        # Update task counters for all affected tasks
+        # Only pass the unique task IDs that were actually processed
+        if all_task_ids:
+            start_job_async_or_sync(update_tasks_counters, Task.objects.filter(id__in=all_task_ids))
+
+        return Response({'created': total_created}, status=status.HTTP_201_CREATED)
+
+    def _create_legacy(self, project):
+        """Legacy implementation - kept for safe rollback"""
         tasks_ids = set(Task.objects.filter(project=project).values_list('id', flat=True))
 
         logger.debug(
-            f'Importing {len(self.request.data)} predictions to project {project} with {len(tasks_ids)} tasks'
+            f'Importing {len(self.request.data)} predictions to project {project} with {len(tasks_ids)} tasks (legacy mode)'
         )
+
+        li = LabelInterface(project.label_config)
+
+        # Validate all predictions before creating any
+        validation_errors = []
         predictions = []
-        for item in self.request.data:
+
+        for i, item in enumerate(self.request.data):
+            # Validate task ID
             if item.get('task') not in tasks_ids:
-                raise ValidationError(
-                    f'{item} contains invalid "task" field: corresponding task ID couldn\'t be retrieved '
-                    f'from project {project} tasks'
+                if flag_set('fflag_feat_utc_210_prediction_validation_15082025', user='auto'):
+                    validation_errors.append(
+                        f'Prediction {i}: Invalid task ID {item.get("task")} - task not found in project'
+                    )
+                    continue
+                else:
+                    # Before change we raised only here
+                    raise ValidationError(
+                        f'{item} contains invalid "task" field: corresponding task ID couldn\'t be retrieved '
+                        f'from project {project} tasks'
+                    )
+
+            # Validate prediction using LabelInterface only
+            try:
+                validation_errors_list = li.validate_prediction(item, return_errors=True)
+
+                # If prediction is invalid, add error to validation_errors list and continue to next prediction
+                if validation_errors_list:
+                    # Format errors for better readability
+                    for error in validation_errors_list:
+                        validation_errors.append(f'Prediction {i}: {error}')
+                    continue
+
+            except Exception as e:
+                validation_errors.append(f'Prediction {i}: Error validating prediction - {str(e)}')
+                continue
+
+            # If prediction is valid, add it to predictions list to be created
+            try:
+                predictions.append(
+                    Prediction(
+                        task_id=item['task'],
+                        project_id=project.id,
+                        result=Prediction.prepare_prediction_result(item.get('result'), project),
+                        score=item.get('score'),
+                        model_version=item.get('model_version', 'undefined'),
+                    )
                 )
-            predictions.append(
-                Prediction(
-                    task_id=item['task'],
-                    project_id=project.id,
-                    result=Prediction.prepare_prediction_result(item.get('result'), project),
-                    score=item.get('score'),
-                    model_version=item.get('model_version', 'undefined'),
-                )
-            )
+            except Exception as e:
+                validation_errors.append(f'Prediction {i}: Failed to create prediction - {str(e)}')
+                continue
+
+        # If there are validation errors, raise them before creating any predictions
+        if validation_errors:
+            if flag_set('fflag_feat_utc_210_prediction_validation_15082025', user='auto'):
+                raise ValidationError(validation_errors)
+            else:
+                logger.error(f'Prediction validation failed ({len(validation_errors)} errors):\n{validation_errors}')
+
         predictions_obj = Prediction.objects.bulk_create(predictions, batch_size=settings.BATCH_SIZE)
         start_job_async_or_sync(update_tasks_counters, Task.objects.filter(id__in=tasks_ids))
         return Response({'created': len(predictions_obj)}, status=status.HTTP_201_CREATED)
@@ -735,7 +822,7 @@ class ReImportAPI(ImportAPI):
         Retrieve the list of uploaded files used to create labeling tasks for a specific project.
         """,
         extensions={
-            'x-fern-sdk-group-name': ['projects', 'file_uploads'],
+            'x-fern-sdk-group-name': ['files'],
             'x-fern-sdk-method-name': 'list',
             'x-fern-audiences': ['public'],
         },
@@ -750,7 +837,7 @@ class ReImportAPI(ImportAPI):
         Delete uploaded files for a specific project.
         """,
         extensions={
-            'x-fern-sdk-group-name': ['projects', 'file_uploads'],
+            'x-fern-sdk-group-name': ['files'],
             'x-fern-sdk-method-name': 'delete_many',
             'x-fern-audiences': ['public'],
         },
@@ -799,7 +886,7 @@ class FileUploadListAPI(generics.mixins.ListModelMixin, generics.mixins.DestroyM
         summary='Get file upload',
         description='Retrieve details about a specific uploaded file.',
         extensions={
-            'x-fern-sdk-group-name': ['projects', 'file_uploads'],
+            'x-fern-sdk-group-name': ['files'],
             'x-fern-sdk-method-name': 'get',
             'x-fern-audiences': ['public'],
         },
@@ -813,7 +900,7 @@ class FileUploadListAPI(generics.mixins.ListModelMixin, generics.mixins.DestroyM
         description='Update a specific uploaded file.',
         request=FileUploadSerializer,
         extensions={
-            'x-fern-sdk-group-name': ['projects', 'file_uploads'],
+            'x-fern-sdk-group-name': ['files'],
             'x-fern-sdk-method-name': 'update',
             'x-fern-audiences': ['public'],
         },
@@ -826,7 +913,7 @@ class FileUploadListAPI(generics.mixins.ListModelMixin, generics.mixins.DestroyM
         summary='Delete file upload',
         description='Delete a specific uploaded file.',
         extensions={
-            'x-fern-sdk-group-name': ['projects', 'file_uploads'],
+            'x-fern-sdk-group-name': ['files'],
             'x-fern-sdk-method-name': 'delete',
             'x-fern-audiences': ['public'],
         },
@@ -859,7 +946,7 @@ class FileUploadAPI(generics.RetrieveUpdateDestroyAPIView):
         summary='Download file',
         description='Download a specific uploaded file.',
         extensions={
-            'x-fern-sdk-group-name': ['projects', 'file_uploads'],
+            'x-fern-sdk-group-name': ['files'],
             'x-fern-sdk-method-name': 'download',
             'x-fern-audiences': ['public'],
         },

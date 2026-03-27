@@ -103,21 +103,10 @@
     (function() {
       console.log("Execute inline script");
 
-      // 先获取当前用户信息，获取活跃组织ID
-      const getCurrentUser = () => {
-        return fetch("/api/current-user/whoami")
-          .then(response => response.json())
-          .catch(err => {
-            console.error("Failed to get current user:", err);
-            return { active_organization_id: 1 }; // 降级处理，保留原行为
-          });
-      };
-
       const API = {
         users: {
-          getAll(orgId) {
-            // 使用动态获取的组织ID
-            return fetch(`/api/organizations/${orgId}/memberships`)
+          getAll() {
+            return fetch("/api/organizations/1/memberships")
               .then(data => data.json())
               .then(data => data.map(u => Object.assign(u.user, {
                 member_id: u.id,
@@ -125,7 +114,7 @@
               })))
           },
           getOne(id) {
-            return fetch(`/api/users/${id}`)
+            return fetch("/api/users/" + id)
               .then(data => data.json())
           },
         }
@@ -162,7 +151,6 @@
           ],
           projects: null,
           users: null,
-          activeOrgId: null // 存储活跃组织ID
         }),
         methods: {
           select(user) {
@@ -174,22 +162,14 @@
           },
           //// api
           loadUsers() {
-            // 先获取活跃组织ID，再加载用户列表
-            getCurrentUser().then(userData => {
-              this.activeOrgId = userData.active_organization_id;
-              if (!this.activeOrgId) {
-                console.warn("No active organization found, falling back to 1");
-                this.activeOrgId = 1;
-              }
-
-              return API.users.getAll(this.activeOrgId)
-                .then((users) => {
-                  this.users = users || [];
-                  if (this.users.length > 0) {
-                    this.select(this.users[0]);
-                  }
-                })
-            }).catch(console.error)
+            return API.users.getAll()
+              .then((users) => {
+                this.users = users || [];
+                if (this.users.length > 0) {
+                  this.select(this.users[0]);
+                }
+              })
+              .catch(console.error) // @todo deal with errors
           },
           loadUser(id) {
             return API.users.getOne(id)
@@ -199,7 +179,7 @@
                 user.projects = data.projects || [];
                 this.projects = data.projects || []
               })
-              .catch(console.error)
+              .catch(console.error) // @todo deal with errors
           },
           //// columns
           render_header(field_id) {
@@ -232,6 +212,7 @@
             if (user.avatar) {
               content += '<img src="' + user.avatar + '" width="28" alt="' + user.name + '" />'
             } else {
+              // get only the first letters
               content += "<span>" + user.initials + "</span>"
             }
             content += "</div>";

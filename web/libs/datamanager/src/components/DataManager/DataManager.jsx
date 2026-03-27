@@ -1,7 +1,6 @@
 import { inject, observer } from "mobx-react";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import { cn } from "../../utils/bem";
 import { Interface } from "../Common/Interface";
 import { Space } from "../Common/Space/Space";
@@ -31,6 +30,7 @@ const summaryInjector = inject(({ store }) => {
     totalAnnotations: taskStore?.totalAnnotations ?? 0,
     totalPredictions: taskStore?.totalPredictions ?? 0,
     cloudSync: project.target_syncing ?? project.source_syncing ?? false,
+    t: store?.t ?? ((k) => k),
   };
 });
 
@@ -44,7 +44,7 @@ const switchInjector = inject(({ store }) => {
 });
 
 const ProjectSummary = summaryInjector((props) => {
-  const { t } = useTranslation();
+  const t = props.t;
   return (
     <Space size="large" style={{ paddingRight: "1em", color: "var(--color-neutral-content-subtle)" }}>
       {props.cloudSync && (

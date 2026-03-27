@@ -104,17 +104,13 @@ ffmpeg -y -i audio.mp3 -ar 8k -ac 1 audio.wav
 
 See [Pre-annotations](#Pre-annotations) below. 
 
-### Can't label PDF data
-
-Label Studio does not support labeling PDF files directly. However, you can convert files to HTML using your PDF viewer or another tool and label the PDF as part of the HTML. See an example labeling configuration in the [Label Studio playground](/playground/?config=%3CView%3E%3Cbr%3E%20%20%3CHyperText%20name%3D%22pdf%22%20value%3D%22%24pdf%22%2F%3E%3Cbr%3E%3Cbr%3E%20%20%3CHeader%20value%3D%22Rate%20this%20article%22%2F%3E%3Cbr%3E%20%20%3CRating%20name%3D%22rating%22%20toName%3D%22pdf%22%20maxRating%3D%2210%22%20icon%3D%22star%22%20size%3D%22medium%22%20%2F%3E%3Cbr%3E%3Cbr%3E%20%20%3CChoices%20name%3D%22choices%22%20choice%3D%22single-radio%22%20toName%3D%22pdf%22%20showInline%3D%22true%22%3E%3Cbr%3E%20%20%20%20%3CChoice%20value%3D%22Important%20article%22%2F%3E%3Cbr%3E%20%20%20%20%3CChoice%20value%3D%22Yellow%20press%22%2F%3E%3Cbr%3E%20%20%3C%2FChoices%3E%3Cbr%3E%3C%2FView%3E%3Cbr%3E).
-
 ## Cloud and local storage
 
 When working with an external Cloud Storage connection (S3, GCS, Azure), keep the following in mind:
 
 * For Source storage:
-   * When "Treat every bucket object as a source file" is checked, Label Studio doesn’t import the data stored in the bucket, but instead creates *references* to the objects. Therefore, you have full access control on the data to be synced and shown on the labeling screen.
-   * When "Treat every bucket object as a source file" is unchecked, bucket files are assumed to be immutable; the only way to push an updated file's state to Label Studio is to upload it with a new filename or delete all tasks that are associated with that file and resync.
+   * When **Files** import method is selected, Label Studio doesn’t import the data stored in the bucket, but instead creates *references* to the objects. Therefore, you have full access control on the data to be synced and shown on the labeling screen.
+   * When **Tasks** import method is selected, bucket files are assumed to be immutable; the only way to push an updated file's state to Label Studio is to upload it with a new filename to storage or delete all tasks that are associated with that file and resync.
 * Sync operations with external buckets only goes one way. It either creates tasks from objects on the bucket (Source storage) or pushes annotations to the output bucket (Target storage). Changing something on the bucket side doesn’t guarantee consistency in results.
 * We recommend using a separate bucket folder for each Label Studio project.
 
@@ -169,11 +165,11 @@ First, check that you have specified the correct credentials (see the sections a
 Then go to the cloud storage settings page and click **Edit** next to the cloud connection. From here, you can check the following:
 
 * The **File Filter Regex** is set and correct. When no filters are specified, all found items are skipped. The filter should be a valid regular expression, not a wildcard (e.g. `.*` is a valid, `*.` is not valid)
-* **Treat every bucket object as a source file** should be toggled `ON` if you work with images, audio, text files or any other binary content stored in the bucket. 
+* **Import method** should be set to `Files` for simple cases if you work with images, audio, text files or any other binary content stored in the bucket.
 
-    This instructs Label Studio to create URI endpoints and store this as a labeling task payload, and resolve them into presigned `https` URLs when opening the labeling screen. 
+    This instructs Label Studio to create tasks automatically with URI links (like `s3://bucket/1.jpg`), and resolve them into presigned `https` URLs when opening the labeling screen. 
 
-    If you store JSON tasks in the Label Studio format in your bucket - turn this toggle `OFF`. 
+    If you store JSON/JSONL tasks in the Label Studio format or Parquet files in your bucket - set this option to "Tasks". 
 
 * Check for rq worker failures. An easy way to check rq workers is complete an export operation. 
 
@@ -181,8 +177,8 @@ Then go to the cloud storage settings page and click **Edit** next to the cloud 
 
 ### JSON files from a cloud storage are not synced and the Data Manager is empty
 
-1. Edit the storage settings to enable **Treat every bucket object as a source file**. If you see tasks in the Data Manager, proceed to step 2. 
-2. Disable **Treat every bucket object as a source file**. 
+1. Edit the storage settings. If you see tasks in the Data Manager, proceed to step 2. 
+2. Set **Import method** to "Tasks". 
 
     If you don’t see tasks in the Data Manager, your bucket doesn’t have GET permissions, only LIST permissions.  
 
@@ -193,7 +189,7 @@ If there is only LIST permission, Label Studio can scan the bucket for the exist
 
 If the tasks sync to Label Studio but don't appear the way that you expect, maybe with URLs instead of images or with one task where you expect to see many, check the following:
 - If you're placing JSON files in [cloud storage](storage.html), ensure that if you have multiple tasks in the same file, they are all formatted the same way (for example, you cannot have 1 task with the raw contents of the `data` field and another task that contains annotations and predictions in the same file).
-- If you're syncing image or audio files, make sure **Treat every bucket object as a source file** is enabled. 
+- If you're syncing image or audio files, make sure **Import method** is set to "Files". 
 
 ### Unable to access local storage when using Windows
 

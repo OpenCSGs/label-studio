@@ -1,8 +1,7 @@
 import { observer } from "mobx-react";
 import { getRoot } from "mobx-state-tree";
 import { useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { debounce } from "../../../utils/debounce";
 import { FilterDropdown } from "../FilterDropdown";
 import * as FilterInputs from "../types";
@@ -19,7 +18,6 @@ import { Common } from "../types/Common";
  * @param {{field: FieldConfig}} param0
  */
 export const FilterOperation = observer(({ filter, field, operator, value, disabled }) => {
-  const { t } = useTranslation();
   const cellView = filter.cellView;
   const types = cellView?.customOperators ?? [
     ...(FilterInputs[filter.filter.currentType] ?? FilterInputs.String),
@@ -67,53 +65,43 @@ export const FilterOperation = observer(({ filter, field, operator, value, disab
     operatorList = operatorList.filter((op) => allowedOperators.includes(op.key));
   }
   const operators = operatorList.map(({ key, label }) => {
-    // Translate common operator labels
-    // For date filters, use date-specific translations for "less" and "greater"
-    const isDateFilter = filter.filter.currentType === "Date" || filter.filter.currentType === "Datetime";
-    let translationKey = `dataManager.filterOperator.${key}`;
-    
-    // Special handling for date filters
-    if (isDateFilter && key === "less") {
-      translationKey = "dataManager.filterOperator.isBefore";
-    } else if (isDateFilter && key === "greater") {
-      translationKey = "dataManager.filterOperator.isAfter";
-    }
-    
-    const translatedLabel = t(translationKey);
-    // Use translation if available, otherwise use original label
-    // For symbols like "=", "<", ">", etc., keep the original label
-    let finalLabel = translatedLabel !== translationKey ? translatedLabel : label;
-    
     if (filter.filter.field.isAnnotationResultsFilterColumn) {
-      if (key === "contains") finalLabel = t("dataManager.includesAll");
-      if (key === "not_contains") finalLabel = t("dataManager.doesNotIncludeAll");
+      if (filter.schema?.multiple ?? false) {
+        if (key === "contains") label = "includes all";
+        if (key === "not_contains") label = "does not include all";
+      } else {
+        if (key === "contains") label = "is";
+        if (key === "not_contains") label = "is not";
+      }
     }
-    return { value: key, label: finalLabel };
+    return { value: key, label };
   });
+  const columnClass = cn("filterLine").elem("column");
 
   return Input ? (
     <>
-      <Elem block="filter-line" name="column" mix="operation">
+      <div className={columnClass.mix("operation").toString()}>
         <FilterDropdown
-          placeholder={t("dataManager.condition")}
+          placeholder="Condition"
           value={filter.operator}
           disabled={types.length === 1 || disabled}
           items={availableOperators ? operators.filter((op) => availableOperators.includes(op.value)) : operators}
           onChange={onOperatorSelected}
         />
-      </Elem>
-      <Elem block="filter-line" name="column" mix="value">
+      </div>
+      <div className={columnClass.mix("value").toString()}>
         <Input
           {...field}
           key={`${filter.filter.id}-${filter.filter.currentType}`}
           schema={filter.schema}
           filter={filter}
+          multiple={filter.schema?.multiple ?? false}
           value={value}
           onChange={onChange}
           size="small"
           disabled={disabled}
         />
-      </Elem>
+      </div>
     </>
   ) : null;
 });

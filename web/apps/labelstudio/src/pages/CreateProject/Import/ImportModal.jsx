@@ -4,13 +4,13 @@ import { Button } from "@humansignal/ui";
 import { Modal } from "../../../components/Modal/Modal";
 import { Space } from "../../../components/Space/Space";
 import { useAPI } from "../../../providers/ApiProvider";
+import { useTranslation } from "react-i18next";
 import { ProjectProvider, useProject } from "../../../providers/ProjectProvider";
 import { useFixedLocation } from "../../../providers/RoutesProvider";
-import { Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { useRefresh } from "../../../utils/hooks";
 import { ImportPage } from "./Import";
 import { useImportPage } from "./useImportPage";
-import { useTranslation } from "react-i18next";
 
 export const Inner = () => {
   const { t } = useTranslation();
@@ -74,9 +74,7 @@ export const Inner = () => {
       bare
     >
       <Modal.Header divided>
-        <Elem block="modal" name="title">
-          {t("dataManager.importData")}
-        </Elem>
+        <div className={cn("modal").elem("title").toClassName()}>{t("dataManager.importData")}</div>
 
         <Space>
           <Button
@@ -85,7 +83,7 @@ export const Inner = () => {
             look="outlined"
             waiting={waiting}
             onClick={onCancel}
-            aria-label={t("dataManager.cancelImport")}
+            aria-label={t("createProject.cancelImport")}
           >
             {t("createProject.cancel")}
           </Button>
@@ -94,7 +92,7 @@ export const Inner = () => {
             onClick={onFinish}
             waiting={waiting || uploading}
             disabled={uploadDisabled}
-            aria-label={t("dataManager.finishImport")}
+            aria-label={t("createProject.finishImport")}
           >
             {t("dataManager.import")}
           </Button>

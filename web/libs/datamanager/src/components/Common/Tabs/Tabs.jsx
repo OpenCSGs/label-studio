@@ -1,10 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { IconEllipsisVertical, IconPlus } from "@humansignal/icons";
 import { cn } from "../../../utils/bem";
 import { Button } from "@humansignal/ui";
-import { Dropdown } from "../Dropdown/DropdownComponent";
+import { Dropdown } from "@humansignal/ui";
 import Input from "../Input/Input";
 import "./Tabs.scss";
 import { TabsMenu } from "./TabsMenu";
@@ -85,36 +84,12 @@ export const TabsItem = ({
   managable = true,
   virtual = false,
 }) => {
-  const { t } = useTranslation();
   const { switchTab, selectedTab, lastTab, allowedActions } = useContext(TabsContext);
   const [currentTitle, setCurrentTitle] = useState(title);
   const [renameMode, setRenameMode] = useState(false);
   const [hover, setHover] = useState(false);
 
   const active = tab === selectedTab;
-
-  // Translate special tab titles
-  const translateTabTitle = useCallback((tabTitle) => {
-    if (!tabTitle) return tabTitle;
-    
-    // Translate "Default"
-    if (tabTitle === "Default") {
-      return t("dataManager.defaultTab");
-    }
-    
-    // Translate "New Tab X" pattern
-    const newTabMatch = tabTitle.match(/^New Tab (\d+)$/);
-    if (newTabMatch) {
-      const tabNumber = newTabMatch[1];
-      return t("dataManager.newTab", { number: tabNumber });
-    }
-    
-    // Return original title if no translation needed
-    return tabTitle;
-  }, [t]);
-
-  // Display title (translated) vs edit title (original)
-  const displayTitle = useMemo(() => translateTabTitle(currentTitle), [currentTitle, translateTabTitle]);
 
   const tabIsEditable = useMemo(() => editable && allowedActions.edit, [editable, allowedActions]);
 
@@ -132,13 +107,6 @@ export const TabsItem = ({
     return managable && (tabIsEditable || tabIsDeletable || tabIsCloneable);
   }, [managable, tabIsEditable, tabIsDeletable, tabIsCloneable]);
 
-  // Update currentTitle when title prop changes (but not in rename mode)
-  useEffect(() => {
-    if (!renameMode && title !== currentTitle) {
-      setCurrentTitle(title);
-    }
-  }, [title, renameMode, currentTitle]);
-
   const saveTabTitle = useCallback(
     (ev) => {
       const { type, key } = ev;
@@ -155,7 +123,7 @@ export const TabsItem = ({
         onFinishEditing(currentTitle);
       }
     },
-    [currentTitle, title, onCancelEditing, onFinishEditing],
+    [currentTitle],
   );
 
   return (
@@ -172,7 +140,7 @@ export const TabsItem = ({
           })
           .toString()}
         onClick={() => switchTab?.(tab)}
-        title={displayTitle}
+        title={currentTitle}
         data-leave
       >
         {renameMode ? (
@@ -195,7 +163,7 @@ export const TabsItem = ({
               textOverflow: "ellipsis",
             }}
           >
-            {displayTitle}
+            {currentTitle}
           </span>
         )}
       </div>

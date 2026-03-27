@@ -39,6 +39,7 @@ import ControlBase from "./Base";
  * @param {string} [strokeColor]     - Stroke color in hexadecimal
  * @param {number} [strokeWidth=1]   - Width of stroke
  * @param {boolean} [canRotate=true] - Show or hide rotation control. Note that the anchor point in the results is different than the anchor point used when rotating with the rotation tool. For more information, see [Rotation](/templates/image_bbox#Rotation).
+ * @param {pixel|none} [snap=none]   - Snap rectangle to image pixels
  */
 
 const Validation = types.model({

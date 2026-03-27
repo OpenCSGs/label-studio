@@ -34,7 +34,7 @@ function useStorageTypes(target: "import" | "export") {
   const { data, isLoading, isSuccess, refetch } = useQuery({
     queryKey: storageTypesQueryKey,
     async queryFn() {
-      const result = await api.callApi("storageTypes", {
+      const result = await api.callApi<{ title: string; name: string }[]>("storageTypes", {
         params: { target },
         errorFilter: () => true,
       });

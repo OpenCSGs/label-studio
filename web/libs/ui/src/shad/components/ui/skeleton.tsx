@@ -6,7 +6,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="skeleton"
       data-testid="skeleton-loader"
       className={cn(
-        "bg-lsNeutralBorderSubtle/50 bg-no-repeat  bg-shimmer-size bg-gradient-to-r",
+        "bg-neutral-surface-active bg-no-repeat bg-shimmer-size bg-gradient-to-r",
         "from-white/5 via-white/20 to-white/5",
         "rounded-sm animate-shimmer",
         className,

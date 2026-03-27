@@ -9,11 +9,12 @@ import * as xpath from "xpath-range";
 import ObjectTag from "../../../components/Tags/Object";
 import { STATE_CLASS_MODS } from "../../../mixins/HighlightMixin";
 import Utils from "../../../utils";
-import { Block, cn, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { htmlEscape, matchesSelector } from "../../../utils/html";
 import {
   applyTextGranularity,
   fixCodePointsInRange,
+  fixRange,
   rangeToGlobalOffset,
   trimSelection,
 } from "../../../utils/selection-tools";
@@ -194,7 +195,7 @@ class RichTextPieceView extends Component {
       if (selection.isCollapsed) return false;
       if (!area) return false;
 
-      let range = selection.getRangeAt(0);
+      let range = fixRange(selection.getRangeAt(0));
 
       // @todo would be more convenient to try to reduce the range to be within the root,
       // @todo so for example if we drag to the left and the range is outside of the root, we would
@@ -558,44 +559,44 @@ class RichTextPieceView extends Component {
       };
 
       return (
-        <Block name="richtext" tag={ObjectTag} item={item}>
-          <Elem
+        <ObjectTag item={item} className={cn("richtext").toClassName()}>
+          <div
             key="root"
-            name="container"
-            mod={{ canResizeSpans: ff.isActive(ff.FF_ADJUSTABLE_SPANS) }}
+            className={cn("richtext")
+              .elem("container")
+              .mod({ canResizeSpans: ff.isActive(ff.FF_ADJUSTABLE_SPANS) })
+              .mix("htx-richtext")
+              .toClassName()}
             ref={(el) => {
               item.mountNodeRef.current = el;
               el && this.markObjectAsLoaded();
             }}
             data-linenumbers={isText && settings.showLineNumbers ? "enabled" : "disabled"}
-            className="htx-richtext"
             dangerouslySetInnerHTML={{ __html: val }}
             {...eventHandlers}
           />
-        </Block>
+        </ObjectTag>
       );
     }
     return (
-      <Block name="richtext" tag={ObjectTag} item={item}>
-        <Elem name="loading" ref={this.loadingRef}>
+      <ObjectTag item={item} className={cn("richtext").toClassName()}>
+        <div className={cn("richtext").elem("loading").toClassName()} ref={this.loadingRef}>
           <LoadingOutlined />
-        </Elem>
-
-        <Elem
+        </div>
+        {/* biome-ignore lint/a11y/useIframeTitle: As a result from BEM migration */}
+        <iframe
           key="root"
-          name="iframe"
-          tag="iframe"
+          className={cn("richtext").elem("iframe").mix("htx-richtext").toClassName()}
           referrerPolicy="no-referrer"
           sandbox="allow-same-origin allow-scripts"
           ref={(el) => {
             item.setReady(false);
             item.mountNodeRef.current = el;
           }}
-          className="htx-richtext"
           srcDoc={val}
           onLoad={this.onIFrameLoad}
         />
-      </Block>
+      </ObjectTag>
     );
   }
 }

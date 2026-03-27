@@ -1,14 +1,15 @@
 import { IconExternal, IconFolderAdd, IconHumanSignal, IconUserAdd, IconFolderOpen } from "@humansignal/icons";
-import { Button, SimpleCard, Spinner, Typography } from "@humansignal/ui";
+import { Button, SimpleCard, Spinner, Tooltip, Typography } from "@humansignal/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { useUpdatePageTitle } from "@humansignal/core";
 import { HeidiTips } from "../../components/HeidiTips/HeidiTips";
 import { useAPI } from "../../providers/ApiProvider";
 import { CreateProject } from "../CreateProject/CreateProject";
 import { InviteLink } from "../Organization/PeoplePage/InviteLink";
 import type { Page } from "../types/Page";
-import { useTranslation } from "react-i18next";
 
 const PROJECTS_TO_SHOW = 10;
 
@@ -26,7 +27,7 @@ const resources = [
     url: "https://labelstud.io/learn/categories/release-notes/",
   },
   {
-    title: "数据标注.io Blog",
+    title: "LabelStud.io Blog",
     url: "https://labelstud.io/blog/",
   },
   {
@@ -35,7 +36,7 @@ const resources = [
   },
 ];
 
-const getActions = (t) => [
+const getActions = (t: (k: string) => string) => [
   {
     title: t("home.createProject"),
     icon: IconFolderAdd,
@@ -44,18 +45,19 @@ const getActions = (t) => [
   {
     title: t("home.invitePeople"),
     icon: IconUserAdd,
-    type: "invitePeople",
+    type: "inviteMembers",
   },
 ] as const;
 
-type Action = (typeof actions)[number]["type"];
-
 export const HomePage: Page = () => {
   const { t } = useTranslation();
+  const actions = getActions(t);
+  type Action = (typeof actions)[number]["type"];
   const api = useAPI();
   const [creationDialogOpen, setCreationDialogOpen] = useState(false);
   const [invitationOpen, setInvitationOpen] = useState(false);
-  const actions = getActions(t);
+
+  useUpdatePageTitle(t("home.title"));
   const { data, isFetching, isSuccess, isError } = useQuery({
     queryKey: ["projects", { page_size: 10 }],
     async queryFn() {
@@ -71,7 +73,7 @@ export const HomePage: Page = () => {
         case "createProject":
           setCreationDialogOpen(true);
           break;
-        case "invitePeople":
+        case "inviteMembers":
           setInvitationOpen(true);
           break;
       }
@@ -80,16 +82,16 @@ export const HomePage: Page = () => {
 
   return (
     <main className="p-6">
-      <div className="grid">
+      <div className="grid grid-cols-[minmax(0,1fr)_450px] gap-6">
         <section className="flex flex-col gap-6">
-          {/* <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <Typography variant="headline" size="small">
-              Welcome 👋
+              {t("home.title")} 👋
             </Typography>
             <Typography size="small" className="text-neutral-content-subtler">
-              Let's get you started.
+              {t("projects.createProjectDescription")}
             </Typography>
-          </div> */}
+          </div>
           <div className="flex justify-start gap-4">
             {actions.map((action) => {
               return (
@@ -111,9 +113,9 @@ export const HomePage: Page = () => {
             title={
               data && data?.count > 0 ? (
                 <>
-                  {t("home.recentProjects")}{" "}
+                  Recent Projects{" "}
                   <a href="/projects" className="text-lg font-normal hover:underline">
-                    {t("home.viewAll")}
+                    View All
                   </a>
                 </>
               ) : null
@@ -124,7 +126,7 @@ export const HomePage: Page = () => {
                 <Spinner />
               </div>
             ) : isError ? (
-              <div className="h-64 flex justify-center items-center">{t("home.cantLoadProjects")}</div>
+              <div className="h-64 flex justify-center items-center">can't load projects</div>
             ) : isSuccess && data && data.results.length === 0 ? (
               <div className="flex flex-col justify-center items-center border border-primary-border-subtle bg-primary-emphasis-subtle rounded-lg h-64">
                 <div
@@ -140,7 +142,7 @@ export const HomePage: Page = () => {
                 <Typography size="small" className="text-neutral-content-subtler">
                   {t("home.createFirstProjectDescription")}
                 </Typography>
-                <Button className="mt-4" onClick={() => setCreationDialogOpen(true)} aria-label={t("home.createProject")}>
+                <Button className="mt-4" onClick={() => setCreationDialogOpen(true)} aria-label={t("projects.createProject")}>
                   {t("home.createProject")}
                 </Button>
               </div>
@@ -153,9 +155,9 @@ export const HomePage: Page = () => {
             ) : null}
           </SimpleCard>
         </section>
-        {/* <section className="flex flex-col gap-6">
+        <section className="flex flex-col gap-6">
           <HeidiTips collection="projectSettings" />
-          <SimpleCard title="Resources" description="Learn, explore and get help" data-testid="resources-card">
+          <SimpleCard title={t("home.resources")} description={t("home.resourcesDescription")} data-testid="resources-card">
             <ul>
               {resources.map((link) => {
                 return (
@@ -176,9 +178,9 @@ export const HomePage: Page = () => {
           </SimpleCard>
           <div className="flex gap-2 items-center">
             <IconHumanSignal />
-            <span className="text-neutral-content-subtle">数据标注 Version: Community</span>
+            <span className="text-neutral-content-subtle">Label Studio Version: Community</span>
           </div>
-        </section> */}
+        </section>
       </div>
       {creationDialogOpen && <CreateProject onClose={() => setCreationDialogOpen(false)} />}
       <InviteLink opened={invitationOpen} onClosed={() => setInvitationOpen(false)} />
@@ -186,7 +188,8 @@ export const HomePage: Page = () => {
   );
 };
 
-HomePage.title = "Home"; // This is used for routing, not displayed
+HomePage.title = "Home";
+HomePage.titleKey = "home.title";
 HomePage.path = "/";
 HomePage.exact = true;
 
@@ -195,7 +198,6 @@ function ProjectSimpleCard({
 }: {
   project: APIProject;
 }) {
-  const { t } = useTranslation();
   const finished = project.finished_task_number ?? 0;
   const total = project.task_number ?? 0;
   const progress = (total > 0 ? finished / total : 0) * 100;
@@ -213,9 +215,11 @@ function ProjectSimpleCard({
         style={{ borderLeftColor: color }}
       >
         <div className="flex flex-col gap-1">
-          <span className="text-neutral-content">{project.title}</span>
+          <Tooltip title={project.title}>
+            <span className="text-neutral-content truncate">{project.title}</span>
+          </Tooltip>
           <div className="text-neutral-content-subtler text-sm">
-            {finished} {t("projects.of")} {total} {t("projects.tasks")} ({total > 0 ? Math.round((finished / total) * 100) : 0}%)
+            {finished} of {total} Tasks ({total > 0 ? Math.round((finished / total) * 100) : 0}%)
           </div>
         </div>
         <div className="bg-neutral-surface rounded-full overflow-hidden w-full h-2 shadow-neutral-border-subtle shadow-border-1">

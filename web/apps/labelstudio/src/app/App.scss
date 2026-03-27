@@ -1,7 +1,7 @@
-@import "../themes/default/variables";
+@import '../themes/default/variables';
 
 body {
-  --header-height: 80px;
+  --header-height: 48px;
   --menu-animation-duration: 0.15s;
   --menu-animation-curve: cubic-bezier(0.21, 1.04, 0.68, 1);
   --menu-animation-start: -10px;
@@ -13,8 +13,7 @@ body {
   width: 100vw;
   max-width: 100%;
   min-height: 100vh;
-  scrollbar-color: var(--color-neutral-border-bold)
-    var(--color-neutral-background);
+  scrollbar-color: var(--color-neutral-border-bold) var(--color-neutral-background);
 }
 
 .app-wrapper {
@@ -55,7 +54,7 @@ body {
     display: flex;
     gap: 8px;
 
-    > * {
+    >* {
       line-height: 1em;
     }
   }
@@ -82,7 +81,7 @@ body {
     height: 24px;
     display: block;
     margin: 0 auto;
-    content: "";
+    content: '';
     border-radius: 100%;
     background-color: var(--background);
     color: var(--color-neutral-content);

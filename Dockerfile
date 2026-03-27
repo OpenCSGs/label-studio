@@ -1,7 +1,7 @@
-# syntax=docker/dockerfile:1.6
+# syntax=docker/dockerfile:1
 ARG NODE_VERSION=22
-ARG PYTHON_VERSION=3.12
-ARG POETRY_VERSION=2.1.3
+ARG PYTHON_VERSION=3.13
+ARG POETRY_VERSION=2.1.4
 ARG VERSION_OVERRIDE
 ARG BRANCH_OVERRIDE
 ARG BUILD_CN=false
@@ -10,7 +10,7 @@ ARG BASE_IMAGE_PATH=
 ################################ Overview
 
 # This Dockerfile builds a Label Studio environment.
-# It consists of three main stages:
+# It consists of five main stages:
 # 1. "frontend-builder" - Compiles the frontend assets using Node.
 # 2. "frontend-version-generator" - Generates version files for frontend sources.
 # 3. "venv-builder" - Prepares the virtualenv environment.
@@ -82,6 +82,7 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_CACHE_DIR="/.poetry-cache" \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
+    POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true \
     PATH="/opt/poetry/bin:$PATH"
 
 ADD https://install.python-poetry.org /tmp/install-poetry.py

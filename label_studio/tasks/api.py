@@ -2,8 +2,10 @@
 """
 import logging
 
+from core.feature_flags import flag_set
 from core.mixins import GetParentObjectMixin
 from core.permissions import ViewClassPermission, all_permissions
+from core.utils.common import is_community
 from core.utils.params import bool_from_request
 from data_manager.api import TaskListAPI as DMTaskListAPI
 from data_manager.functions import evaluate_predictions
@@ -19,7 +21,7 @@ from drf_spectacular.utils import OpenApiExample, OpenApiParameter, OpenApiRespo
 from projects.functions.stream_history import fill_history_annotation
 from projects.models import Project
 from rest_framework import generics, viewsets
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 from tasks.models import Annotation, AnnotationDraft, Prediction, Task
@@ -71,7 +73,9 @@ logger = logging.getLogger(__name__)
             'x-fern-sdk-method-name': 'create',
             'x-fern-audiences': ['public'],
         },
-    ),
+    )
+    if is_community()
+    else lambda f: f,
 )
 @method_decorator(
     name='get',
@@ -163,11 +167,13 @@ logger = logging.getLogger(__name__)
             'x-fern-sdk-method-name': 'list',
             'x-fern-pagination': {
                 'offset': '$request.page',
-                'results': '$response.results',
+                'results': '$response.tasks',
             },
             'x-fern-audiences': ['public'],
         },
-    ),
+    )
+    if is_community()
+    else lambda f: f,
 )
 class TaskListAPI(DMTaskListAPI):
     serializer_class = TaskSerializer
@@ -282,8 +288,7 @@ class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
         super().initial(request, *args, **kwargs)
         self.task = self.get_object()
 
-    @staticmethod
-    def prefetch(queryset):
+    def prefetch(self, queryset):
         return queryset.prefetch_related(
             'annotations',
             'predictions',
@@ -318,13 +323,17 @@ class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
             project.evaluate_predictions_automatically or project.show_collab_predictions
         ) and not self.task.predictions.exists():
             evaluate_predictions([self.task])
-            self.task.refresh_from_db()
+            # refresh task from db with prefetches
+            self.task = self.get_object()
 
         serializer = self.get_serializer_class()(
             self.task, many=False, context=context, expand=['annotations.completed_by']
         )
         data = serializer.data
         return Response(data)
+
+    def get_excluded_fields_for_evaluation(self):
+        return ['annotations_results', 'predictions_results']
 
     def get_queryset(self):
         task_id = self.request.parser_context['kwargs'].get('pk')
@@ -334,7 +343,13 @@ class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
         if review:
             kwargs = {'fields_for_evaluation': ['annotators', 'reviewed']}
         else:
-            kwargs = {'all_fields': True}
+            if flag_set('fflag_fix_back_bros_182_api_task_optimizations', user=self.request.user):
+                kwargs = {
+                    'all_fields': True,
+                    'excluded_fields_for_evaluation': self.get_excluded_fields_for_evaluation(),
+                }
+            else:
+                kwargs = {'all_fields': True}
         project = self.request.query_params.get('project') or self.request.data.get('project')
         if not project:
             project = task.project.id
@@ -509,10 +524,10 @@ class AnnotationAPI(generics.RetrieveUpdateDestroyAPIView):
         tags=['Annotations'],
         summary='Create annotation',
         description="""
-        Add annotations to a task like an annotator does. The content of the result field depends on your 
-        labeling configuration. For example, send the following data as part of your POST 
+        Add annotations to a task like an annotator does. The content of the result field depends on your
+        labeling configuration. For example, send the following data as part of your POST
         request to send an empty annotation with the ID of the user who completed the task:
-        
+
         ```json
         {
         "result": {},
@@ -521,7 +536,7 @@ class AnnotationAPI(generics.RetrieveUpdateDestroyAPIView):
         "lead_time": 0,
         "task": 0
         "completed_by": 123
-        } 
+        }
         ```
         """,
         parameters=[
@@ -582,6 +597,14 @@ class AnnotationsListAPI(GetParentObjectMixin, generics.ListCreateAPIView):
         task = self.parent_object
         # annotator has write access only to annotations and it can't be checked it after serializer.save()
         user = self.request.user
+
+        # Check if task is being skipped and if it's allowed
+        was_cancelled_get = bool_from_request(self.request.GET, 'was_cancelled', False)
+        was_cancelled_data = self.request.data.get('was_cancelled', False)
+        is_skipping = was_cancelled_get or was_cancelled_data
+
+        if is_skipping and not task.allow_skip:
+            raise ValidationError({'detail': 'This task cannot be skipped.'})
 
         # updates history
         result = ser.validated_data.get('result')

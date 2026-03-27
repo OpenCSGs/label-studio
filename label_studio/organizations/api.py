@@ -9,7 +9,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiParameter, extend_schema
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 from organizations.models import Organization, OrganizationMember
 from organizations.serializers import (
     OrganizationIdSerializer,
@@ -34,8 +34,7 @@ from users.models import User
 
 from label_studio.core.permissions import ViewClassPermission, all_permissions
 from label_studio.core.utils.params import bool_from_request
-from django.http import Http404
-from django.db import models
+
 logger = logging.getLogger(__name__)
 
 HasObjectPermission = load_func(settings.MEMBER_PERM)
@@ -179,53 +178,20 @@ class OrganizationMemberListAPI(generics.ListAPIView):
         }
 
     def get_queryset(self):
-        # 尝试从URL参数中获取组织ID（兼容原有逻辑）
-        org_id = self.kwargs.get(self.lookup_field)
-
-        # 优先使用URL中的组织ID（如果有效）
-        if org_id is not None:
-            try:
-                # 验证URL中的组织ID是否属于当前用户可访问的组织
-                org = generics.get_object_or_404(self.request.user.organizations, pk=org_id)
-            except Http404:
-                # URL中的组织ID无效时，fallback到用户的活跃组织
-                org = self.request.user.active_organization
-        else:
-            # 若URL中未传组织ID，直接使用用户的活跃组织
-            org = self.request.user.active_organization
-
-        # 最终校验：确保组织存在
-        if not org:
-            raise Http404("No active organization found for the user")
-
-        # 核心修改：跨数据库兼容的去重逻辑
-        # 1. 先获取所有成员ID，按user_id去重（取最新的一条记录）
-        member_ids = (
-            OrganizationMember.objects.filter(organization=org)
-            .order_by('user_id', '-created_at')  # 按用户ID分组，取最新创建的记录
-            .values('user_id')
-            .annotate(last_id=models.Max('id'))  # 每个用户保留最大ID（最新记录）
-            .values_list('last_id', flat=True)  # 提取去重后的成员ID列表
-        )
-
-        # 2. 根据去重后的成员ID筛选记录
-        base_queryset = OrganizationMember.objects.filter(id__in=member_ids)
-
-        # 3. 应用flag过滤逻辑
+        org = generics.get_object_or_404(self.request.user.organizations, pk=self.kwargs[self.lookup_field])
         if flag_set('fix_backend_dev_3134_exclude_deactivated_users', self.request.user):
             serializer = OrganizationMemberListParamsSerializer(data=self.request.GET)
             serializer.is_valid(raise_exception=True)
             active = serializer.validated_data.get('active')
 
+            # return only active users (exclude DISABLED and NOT_ACTIVATED)
             if active:
-                # 仅保留活跃用户
-                return base_queryset.filter(
-                    user__is_active=True,
-                    user__is_deleted=False
-                ).order_by('user__username')
-            return base_queryset.order_by('user__username')
+                return org.active_members.prefetch_related('user__om_through').order_by('user__username')
+
+            # organization page to show all members
+            return org.members.prefetch_related('user__om_through').order_by('user__username')
         else:
-            return base_queryset.order_by('user__username')
+            return org.members.prefetch_related('user__om_through').order_by('user__username')
 
 
 @method_decorator(
@@ -265,9 +231,10 @@ class OrganizationMemberListAPI(generics.ListAPIView):
             ),
         ],
         responses={
-            204: 'Member deleted successfully.',
-            405: 'User cannot soft delete self.',
-            404: 'Member not found',
+            204: OpenApiResponse(description='Member deleted successfully.'),
+            405: OpenApiResponse(description='User cannot soft delete self.'),
+            404: OpenApiResponse(description='Member not found'),
+            403: OpenApiResponse(description='You can delete members only for your current active organization'),
         },
         extensions={
             'x-fern-sdk-group-name': ['organizations', 'members'],
@@ -390,7 +357,7 @@ class OrganizationAPI(generics.RetrieveUpdateAPIView):
 class OrganizationInviteAPI(generics.RetrieveAPIView):
     parser_classes = (JSONParser,)
     queryset = Organization.objects.all()
-    permission_required = all_permissions.organizations_change
+    permission_required = all_permissions.organizations_invite
 
     def get(self, request, *args, **kwargs):
         org = request.user.active_organization

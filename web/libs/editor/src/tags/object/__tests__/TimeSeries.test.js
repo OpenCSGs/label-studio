@@ -11,6 +11,11 @@ const ff = mockFF();
 const mockEnv = {
   events: { addNamed: jest.fn(), removeNamed: jest.fn() },
   syncManager: { syncSend: jest.fn() },
+  messages: {
+    URL_TAGS_DOCS: "https://labelstud.io/tags",
+    ERR_LOADING_S3: "S3 loading error",
+    ERR_LOADING_CORS: "CORS loading error",
+  },
 };
 
 // Mock store setup following the pattern from Paragraphs tests
@@ -159,6 +164,200 @@ describe("TimeSeries time parsing", () => {
 
     const time = 1234.56;
     expect(modelNoFormat.parseTime(time)).toBe(time);
+  });
+});
+
+describe("TimeSeries fractional seconds padding", () => {
+  const model = TimeSeriesModel.create(
+    {
+      name: "timeseries",
+      timeformat: "%Y-%m-%d %H:%M:%S.%L",
+      value: "$timeseries",
+      sync: "video1",
+      defaultwidth: "100%",
+      timecolumn: "time",
+      children: [],
+    },
+    mockEnv,
+  );
+  const store = MockStore.create({ timeseries: model }, mockEnv);
+
+  it("should pad single digit fractional seconds to 3 digits", () => {
+    // Set up test data with single digit fractional seconds
+    const testData = {
+      time: ["2025-07-06 16:35:17.0", "2025-07-06 16:35:18.5"],
+      value: [1, 1.5],
+    };
+
+    store.task.dataObj = { timeseries: testData };
+    model.setData(testData);
+
+    // Get the processed data object which should have padded timestamps
+    const dataObj = model.dataObj;
+    expect(dataObj).toBeTruthy();
+    expect(dataObj.time).toBeDefined();
+
+    // Verify that single digit fractional seconds are padded to 3 digits
+    const expectedTimestamps = [
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:17.000").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:18.500").getTime(),
+    ];
+
+    expect(dataObj.time).toEqual(expectedTimestamps);
+  });
+
+  it("should pad two digit fractional seconds to 3 digits", () => {
+    // Set up test data with two digit fractional seconds
+    const testData = {
+      time: ["2025-07-06 16:35:17.12", "2025-07-06 16:35:18.99"],
+      value: [1, 1.5],
+    };
+
+    store.task.dataObj = { timeseries: testData };
+    model.setData(testData);
+
+    const dataObj = model.dataObj;
+    expect(dataObj).toBeTruthy();
+
+    // Verify that two digit fractional seconds are padded to 3 digits
+    const expectedTimestamps = [
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:17.120").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:18.990").getTime(),
+    ];
+
+    expect(dataObj.time).toEqual(expectedTimestamps);
+  });
+
+  it("should leave three digit fractional seconds unchanged", () => {
+    // Set up test data with already correct 3 digit fractional seconds
+    const testData = {
+      time: ["2025-07-06 16:35:17.123", "2025-07-06 16:35:18.456"],
+      value: [1, 1.5],
+    };
+
+    store.task.dataObj = { timeseries: testData };
+    model.setData(testData);
+
+    const dataObj = model.dataObj;
+    expect(dataObj).toBeTruthy();
+
+    // Verify that 3 digit fractional seconds remain unchanged
+    const expectedTimestamps = [
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:17.123").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:18.456").getTime(),
+    ];
+
+    expect(dataObj.time).toEqual(expectedTimestamps);
+  });
+
+  it("should handle microseconds and pad remaining digits correctly", () => {
+    const modelWithMicros = TimeSeriesModel.create(
+      {
+        name: "timeseries",
+        timeformat: "%Y-%m-%d %H:%M:%S.%f",
+        value: "$timeseries",
+        sync: "video1",
+        defaultwidth: "100%",
+        timecolumn: "time",
+        children: [],
+      },
+      mockEnv,
+    );
+    const storeWithMicros = MockStore.create({ timeseries: modelWithMicros }, mockEnv);
+
+    // Test data mixing microseconds and shorter fractional seconds
+    const testData = {
+      time: [
+        "2025-07-06 16:35:17.123456", // 6 digits - should truncate to .123
+        "2025-07-06 16:35:18.0", // 1 digit - should pad to .000
+        "2025-07-06 16:35:19.12", // 2 digits - should pad to .120
+      ],
+      value: [1, 1.5, 2],
+    };
+
+    storeWithMicros.task.dataObj = { timeseries: testData };
+    modelWithMicros.setData(testData);
+
+    const dataObj = modelWithMicros.dataObj;
+    expect(dataObj).toBeTruthy();
+
+    // Verify microseconds are truncated and other values are padded
+    const expectedTimestamps = [
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:17.123").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:18.000").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:19.120").getTime(),
+    ];
+
+    expect(dataObj.time).toEqual(expectedTimestamps);
+  });
+
+  it("should handle timestamps without fractional seconds", () => {
+    // Create a model with timeFormat that doesn't expect fractional seconds
+    const modelNoFractional = TimeSeriesModel.create(
+      {
+        name: "timeseries",
+        timeformat: "%Y-%m-%d %H:%M:%S", // No .%L here
+        value: "$timeseries",
+        sync: "video1",
+        defaultwidth: "100%",
+        timecolumn: "time",
+        children: [],
+      },
+      mockEnv,
+    );
+    const storeNoFractional = MockStore.create({ timeseries: modelNoFractional }, mockEnv);
+
+    // Test data with no decimal points
+    const testData = {
+      time: ["2025-07-06 16:35:17", "2025-07-06 16:35:18"],
+      value: [1, 1.5],
+    };
+
+    storeNoFractional.task.dataObj = { timeseries: testData };
+    modelNoFractional.setData(testData);
+
+    const dataObj = modelNoFractional.dataObj;
+    expect(dataObj).toBeTruthy();
+
+    // Verify timestamps without decimals are processed normally
+    // These should pass through D3 parsing without our padding logic
+    const expectedTimestamps = [
+      d3.utcParse("%Y-%m-%d %H:%M:%S")("2025-07-06 16:35:17").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S")("2025-07-06 16:35:18").getTime(),
+    ];
+
+    expect(dataObj.time).toEqual(expectedTimestamps);
+  });
+
+  it("should handle mixed fractional second formats in the same dataset", () => {
+    // Test data with various fractional second formats
+    const testData = {
+      time: [
+        "2025-07-06 16:35:17.0", // 1 digit
+        "2025-07-06 16:35:17.5", // 1 digit
+        "2025-07-06 16:35:18.0", // 1 digit
+        "2025-07-06 16:35:18.5", // 1 digit
+        "2025-07-06 16:35:19.0", // 1 digit
+      ],
+      value: [1, 1.5, 1, 2.5, 1.5],
+    };
+
+    store.task.dataObj = { timeseries: testData };
+    model.setData(testData);
+
+    const dataObj = model.dataObj;
+    expect(dataObj).toBeTruthy();
+
+    // This matches the exact example from the user's request
+    const expectedTimestamps = [
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:17.000").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:17.500").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:18.000").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:18.500").getTime(),
+      d3.utcParse("%Y-%m-%d %H:%M:%S.%L")("2025-07-06 16:35:19.000").getTime(),
+    ];
+
+    expect(dataObj.time).toEqual(expectedTimestamps);
   });
 });
 

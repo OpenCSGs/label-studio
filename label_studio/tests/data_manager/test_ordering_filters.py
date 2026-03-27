@@ -7,9 +7,13 @@ from data_import.models import FileUpload
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.utils.timezone import now
+from fsm.state_choices import TaskStateChoices
+from fsm.tests.factories import TaskStateFactory
 from projects.models import Project
-
-from ..utils import make_annotation, make_annotator, make_prediction, make_task, project_id  # noqa
+from projects.tests.factories import ProjectFactory
+from rest_framework.test import APIClient
+from tasks.tests.factories import TaskFactory
+from tests.utils import make_annotation, make_annotator, make_prediction, make_task, project_id  # noqa
 
 
 @pytest.mark.parametrize(
@@ -66,18 +70,32 @@ def test_views_ordering(ordering, element_index, undefined, business_client, pro
         user=project.created_by, project=project, file=ContentFile('', name='file_upload1')
     )
 
-    task_id_1 = make_task({'data': {task_field_name: 1}, 'file_upload': file_upload1}, project).id
+    task_id_1 = make_task({'data': {task_field_name: 1, 'data': 1}, 'file_upload': file_upload1}, project).id
     make_annotation({'result': [{'1': True}]}, task_id_1)
-    make_prediction({'result': [{'1': True}], 'score': 1}, task_id_1)
+    make_prediction(
+        {
+            'result': [{'from_name': 'test_batch_predictions', 'to_name': 'text', 'value': {'choices': ['class_A']}}],
+            'score': 0.5,
+        },
+        task_id_1,
+    )
 
     file_upload2 = FileUpload.objects.create(
         user=project.created_by, project=project, file=ContentFile('', name='file_upload2')
     )
-    task_id_2 = make_task({'data': {task_field_name: 2}, 'file_upload': file_upload2}, project).id
+    task_id_2 = make_task({'data': {task_field_name: 2, 'data': 2}, 'file_upload': file_upload2}, project).id
     for _ in range(0, 2):
         make_annotation({'result': [{'2': True}], 'was_cancelled': True}, task_id_2)
     for _ in range(0, 2):
-        make_prediction({'result': [{'2': True}], 'score': 2}, task_id_2)
+        make_prediction(
+            {
+                'result': [
+                    {'from_name': 'test_batch_predictions', 'to_name': 'text', 'value': {'choices': ['class_B']}}
+                ],
+                'score': 1,
+            },
+            task_id_2,
+        )
 
     task_ids = [task_id_1, task_id_2]
 
@@ -85,6 +103,49 @@ def test_views_ordering(ordering, element_index, undefined, business_client, pro
     response_data = response.json()
 
     assert response_data['tasks'][0]['id'] == task_ids[element_index]
+
+
+@pytest.mark.django_db
+def test_views_ordering_task_state():
+    """
+    This test verifies that ordering by task state orders by the state progression, and not in alphabetical order.
+    """
+    project = ProjectFactory()
+    user = project.created_by
+
+    task_created = TaskFactory(project=project)
+    TaskStateFactory(task=task_created, state=TaskStateChoices.CREATED)
+    task_in_progress = TaskFactory(project=project)
+    TaskStateFactory(task=task_in_progress, state=TaskStateChoices.IN_PROGRESS)
+    task_completed = TaskFactory(project=project)
+    TaskStateFactory(task=task_completed, state=TaskStateChoices.COMPLETED)
+
+    api_client = APIClient()
+    api_client.force_authenticate(user=user)
+
+    # Create view
+    payload = {'project': project.id, 'data': {'test': 1, 'ordering': ['tasks:state']}}
+    response = api_client.post('/api/dm/views/', data=payload, format='json')
+    assert response.status_code == 201
+    view_id = response.json()['id']
+
+    response = api_client.get(f'/api/tasks?view={view_id}')
+    response_data = response.json()
+
+    assert response_data['tasks'][0]['id'] == task_created.id
+    assert response_data['tasks'][1]['id'] == task_in_progress.id
+    assert response_data['tasks'][2]['id'] == task_completed.id
+
+    # Update view descending
+    payload = {'project': project.id, 'data': {'test': 1, 'ordering': ['tasks:-state']}}
+    response = api_client.patch(f'/api/dm/views/{view_id}', data=payload, format='json')
+    assert response.status_code == 200
+
+    response = api_client.get(f'/api/tasks?view={view_id}')
+    response_data = response.json()
+    assert response_data['tasks'][0]['id'] == task_completed.id
+    assert response_data['tasks'][1]['id'] == task_in_progress.id
+    assert response_data['tasks'][2]['id'] == task_created.id
 
 
 @pytest.mark.parametrize(
@@ -336,29 +397,61 @@ def test_views_filters(filters, ids, business_client, project_id):
 
     task_data_field_name = settings.DATA_UNDEFINED_NAME
 
-    task_id_1 = make_task({'data': {task_data_field_name: 'some text1'}}, project).id
+    task_id_1 = make_task({'data': {task_data_field_name: 'some text1', 'data': 'some text1'}}, project).id
     make_annotation(
-        {'result': [{'from_name': '1_first', 'to_name': '', 'value': {}}], 'completed_by': ann1}, task_id_1
+        {
+            'result': [
+                {
+                    'from_name': 'test_batch_predictions',
+                    'to_name': 'text',
+                    'value': {'choices': ['class_A']},
+                    'text': 'first annotation',
+                }
+            ],
+            'completed_by': ann1,
+        },
+        task_id_1,
     )
-    make_prediction({'result': [{'from_name': '1_first', 'to_name': '', 'value': {}}], 'score': 1}, task_id_1)
+    make_prediction(
+        {
+            'result': [{'from_name': 'test_batch_predictions', 'to_name': 'text', 'value': {'choices': ['class_A']}}],
+            'score': 1,
+        },
+        task_id_1,
+    )
 
-    task_id_2 = make_task({'data': {task_data_field_name: 'some text2'}}, project).id
+    task_id_2 = make_task({'data': {task_data_field_name: 'some text2', 'data': 'some text2'}}, project).id
     for ann in (ann1, ann2):
         make_annotation(
             {
-                'result': [{'from_name': '2_second', 'to_name': '', 'value': {}}],
+                'result': [
+                    {
+                        'from_name': 'test_batch_predictions',
+                        'to_name': 'text',
+                        'value': {'choices': ['class_B']},
+                        'text': 'second annotation',
+                    }
+                ],
                 'was_cancelled': True,
                 'completed_by': ann,
             },
             task_id_2,
         )
     for _ in range(0, 2):
-        make_prediction({'result': [{'from_name': '2_second', 'to_name': '', 'value': {}}], 'score': 2}, task_id_2)
+        make_prediction(
+            {
+                'result': [
+                    {'from_name': 'test_batch_predictions', 'to_name': 'text', 'value': {'choices': ['class_B']}}
+                ],
+                'score': 2,
+            },
+            task_id_2,
+        )
 
     task_ids = [0, task_id_1, task_id_2]
 
     for _ in range(0, 2):
-        task_id = make_task({'data': {task_data_field_name: 'some text_'}}, project).id
+        task_id = make_task({'data': {task_data_field_name: 'some text_', 'data': 'some text_'}}, project).id
         task_ids.append(task_id)
 
     for item in filters['items']:

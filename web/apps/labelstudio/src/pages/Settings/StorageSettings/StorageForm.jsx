@@ -1,10 +1,11 @@
 import { forwardRef, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@humansignal/ui";
 import { InlineError } from "../../../components/Error/InlineError";
 import { Form, Input } from "../../../components/Form";
 import { Oneof } from "../../../components/Oneof/Oneof";
 import { ApiContext } from "../../../providers/ApiProvider";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 
 export const StorageForm = forwardRef(({ onSubmit, target, project, rootClass, storage, storageTypes }, ref) => {
@@ -34,7 +35,7 @@ export const StorageForm = forwardRef(({ onSubmit, target, project, rootClass, s
         skip: true,
         type: "select",
         name: "storage_type",
-        label: "Storage Type",
+        label: t("storage.storageType"),
         disabled: !!storage,
         options: storageTypes.map(({ name, title }) => ({
           value: name,
@@ -97,16 +98,16 @@ export const StorageForm = forwardRef(({ onSubmit, target, project, rootClass, s
         valid={connectionValid}
         extra={
           connectionValid !== null && (
-            <Block name="form-indicator">
+            <div className={cn("form-indicator").toClassName()}>
               <Oneof value={connectionValid}>
-                <Elem tag="span" mod={{ type: "success" }} name="item" case={true}>
+                <span className={cn("form-indicator").elem("item").mod({ type: "success" }).toClassName()} case={true}>
                   Successfully connected!
-                </Elem>
-                <Elem tag="span" mod={{ type: "fail" }} name="item" case={false}>
+                </span>
+                <span className={cn("form-indicator").elem("item").mod({ type: "fail" }).toClassName()} case={false}>
                   Connection failed
-                </Elem>
+                </span>
               </Oneof>
-            </Block>
+            </div>
           )
         }
       >
@@ -117,12 +118,12 @@ export const StorageForm = forwardRef(({ onSubmit, target, project, rootClass, s
             look="outlined"
             waiting={checking}
             onClick={validateStorageConnection}
-            aria-label="Test storage connection"
+            aria-label={t("storage.checkConnection")}
           >
-            Check Connection
+            {t("storage.checkConnection")}
           </Button>
-          <Button type="submit" aria-label={storage ? "Save storage settings" : "Add storage"}>
-            {storage ? "Save" : "Add Storage"}
+          <Button type="submit" aria-label={storage ? t("storage.saveStorage") : t("storage.addStorage")}>
+            {storage ? t("settings.save") : t("storage.addStorageButton")}
           </Button>
         </div>
       </Form.Actions>

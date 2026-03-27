@@ -1,26 +1,30 @@
 import { Button, Checkbox } from "@humansignal/ui";
 import { inject, observer } from "mobx-react";
 import React from "react";
-import { Elem } from "../../utils/bem";
-import { Dropdown } from "./Dropdown/Dropdown";
+import { cn } from "../../utils/bem";
+import { Dropdown } from "@humansignal/ui";
 import { Menu } from "./Menu/Menu";
+import { getColumnTitle } from "../../utils/column-i18n";
 
 const injector = inject(({ store }) => {
   return {
     columns: Array.from(store.currentView?.targetColumns ?? []),
+    t: store?.t ?? ((k) => k),
   };
 });
 
-const FieldsMenu = observer(({ columns, WrapperComponent, onClick, onReset, selected, resetTitle }) => {
+const FieldsMenu = observer(({ columns, WrapperComponent, onClick, onReset, selected, resetTitle, t }) => {
+  const _t = t ?? ((k) => k);
   const MenuItem = (col, onClick) => {
+    const displayTitle = getColumnTitle(col, col.title, _t);
     return (
       <Menu.Item key={col.key} name={col.key} onClick={onClick} disabled={col.disabled}>
         {WrapperComponent && col.wra !== false ? (
           <WrapperComponent column={col} disabled={col.disabled}>
-            {col.title}
+            {displayTitle}
           </WrapperComponent>
         ) : (
-          col.title
+          displayTitle
         )}
       </Menu.Item>
     );
@@ -32,7 +36,7 @@ const FieldsMenu = observer(({ columns, WrapperComponent, onClick, onReset, sele
         MenuItem(
           {
             key: "none",
-            title: resetTitle ?? "Default",
+            title: resetTitle ?? _t("dataManager.default"),
             wrap: false,
           },
           onReset,
@@ -41,7 +45,7 @@ const FieldsMenu = observer(({ columns, WrapperComponent, onClick, onReset, sele
       {columns.map((col) => {
         if (col.children) {
           return (
-            <Menu.Group key={col.key} title={col.title}>
+            <Menu.Group key={col.key} title={getColumnTitle(col, col.title, _t)}>
               {col.children.map((col) => MenuItem(col, () => onClick?.(col)))}
             </Menu.Group>
           );
@@ -71,9 +75,11 @@ export const FieldsButton = injector(
     resetTitle,
     filter,
     selected,
+    t,
     tooltip,
     tooltipTheme = "dark",
     openUpwardForShortViewport = true,
+    "data-testid": dataTestId,
   }) => {
     const content = [];
 
@@ -81,7 +87,14 @@ export const FieldsButton = injector(
 
     const renderButton = () => {
       return (
-        <Button variant="neutral" size="small" look="outlined" leading={icon} trailing={trailingIcon}>
+        <Button
+          variant="neutral"
+          size="small"
+          look="outlined"
+          leading={icon}
+          trailing={trailingIcon}
+          data-testid={dataTestId}
+        >
           {content.length ? content : null}
         </Button>
       );
@@ -98,13 +111,14 @@ export const FieldsButton = injector(
             onReset={onReset}
             selected={selected}
             resetTitle={resetTitle}
+            t={t}
           />
         }
         style={{ maxHeight: 280, overflow: "auto" }}
         openUpwardForShortViewport={openUpwardForShortViewport}
       >
         {tooltip ? (
-          <Elem name={"field-button"} style={{ zIndex: 1000 }} rawClassName="h-[40px] flex items-center">
+          <div className={`${cn("field-button").toClassName()} h-[40px] flex items-center`} style={{ zIndex: 1000 }}>
             <Button
               tooltip={tooltip}
               variant="neutral"
@@ -112,10 +126,11 @@ export const FieldsButton = injector(
               look="outlined"
               leading={icon}
               trailing={trailingIcon}
+              data-testid={dataTestId}
             >
               {content.length ? content : null}
             </Button>
-          </Elem>
+          </div>
         ) : (
           renderButton()
         )}

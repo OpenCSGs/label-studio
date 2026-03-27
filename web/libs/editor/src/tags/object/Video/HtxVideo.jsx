@@ -1,11 +1,13 @@
+import { observer } from "mobx-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { IconZoomIn } from "@humansignal/icons";
 import { Button } from "@humansignal/ui";
-import { Dropdown } from "../../../common/Dropdown/Dropdown";
+import { Dropdown } from "@humansignal/ui";
 import { Menu } from "../../../common/Menu/Menu";
 import { ErrorMessage } from "../../../components/ErrorMessage/ErrorMessage";
 import ObjectTag from "../../../components/Tags/Object";
+import { VideoConfigControl } from "../../../components/Timeline/Controls/VideoConfigControl";
 import { Timeline } from "../../../components/Timeline/Timeline";
 import { clampZoom, VideoCanvas } from "../../../components/VideoCanvas/VideoCanvas";
 import {
@@ -17,11 +19,14 @@ import {
 import { defaultStyle } from "../../../core/Constants";
 import { useFullscreen } from "../../../hooks/useFullscreen";
 import { useToggle } from "../../../hooks/useToggle";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import ResizeObserver from "../../../utils/resize-observer";
 import { clamp, isDefined } from "../../../utils/utilities";
 import "./Video.scss";
 import { VideoRegions } from "./VideoRegions";
+import { ff } from "@humansignal/core";
+
+const isSyncedBuffering = ff.isActive(ff.FF_SYNCED_BUFFERING);
 
 function useZoom(videoDimensions, canvasDimentions, shouldClampPan) {
   const [zoomState, setZoomState] = useState({ zoom: 1, pan: { x: 0, y: 0 } });
@@ -109,6 +114,22 @@ function useZoom(videoDimensions, canvasDimentions, shouldClampPan) {
   return [zoomState, { setZoomAndPan, setZoom, setPan }];
 }
 
+const VideoConfig = observer(({ item }) => {
+  const [isConfigModalActive, setIsConfigModalActive] = useState(false);
+
+  return (
+    <VideoConfigControl
+      configModal={isConfigModalActive}
+      onSetModal={setIsConfigModalActive}
+      speed={item.speed}
+      onSpeedChange={item.handleSpeed}
+      loopTimelineRegion={item.loopTimelineRegion}
+      onLoopTimelineRegionChange={item.setLoopTimelineRegion}
+      minSpeed={item.minplaybackspeed}
+    />
+  );
+});
+
 const HtxVideoView = ({ item, store }) => {
   if (!item._value) return null;
 
@@ -121,9 +142,20 @@ const HtxVideoView = ({ item, store }) => {
   const [videoLength, _setVideoLength] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [position, _setPosition] = useState(1);
+  const scrubStateRef = useRef({
+    isScrubbing: false,
+    wasPlaying: false,
+    timeoutId: null,
+    lastChangeTime: 0,
+  });
+  const seekRafRef = useRef(null);
 
   const [videoSize, setVideoSize] = useState(null);
-  const [videoDimensions, setVideoDimensions] = useState({ width: 0, height: 0, ratio: 1 });
+  const [videoDimensions, setVideoDimensions] = useState({
+    width: 0,
+    height: 0,
+    ratio: 1,
+  });
   const [{ zoom, pan }, { setZoomAndPan, setZoom, setPan }] = useZoom(
     videoDimensions,
     item.ref.current
@@ -357,7 +389,7 @@ const HtxVideoView = ({ item, store }) => {
       }
       return true;
     });
-  }, []);
+  }, [item]);
 
   const handlePause = useCallback(() => {
     setPlaying((_playing) => {
@@ -368,6 +400,22 @@ const HtxVideoView = ({ item, store }) => {
       return false;
     });
   }, []);
+
+  const handlePlayClick = useCallback(() => {
+    if (isSyncedBuffering && item.isBuffering) {
+      item.triggerSyncPlay(true);
+    } else {
+      handlePlay();
+    }
+  }, []);
+
+  const handlePauseClick = useCallback(() => {
+    if (isSyncedBuffering && item.isBuffering) {
+      item.triggerSyncPause(true);
+    } else {
+      handlePause();
+    }
+  });
 
   const handleSelectRegion = useCallback(
     (_, id, select) => {
@@ -408,15 +456,63 @@ const HtxVideoView = ({ item, store }) => {
   const handleTimelinePositionChange = useCallback(
     (newPosition) => {
       if (position !== newPosition) {
-        item.setFrame(newPosition);
+        const now = Date.now();
+        const state = scrubStateRef.current;
+        const isRapidScrubbing = now - state.lastChangeTime < 100;
+        state.lastChangeTime = now;
+
+        // Handle pause/resume when scrubbing while playing
+        if (playing && !state.isScrubbing) {
+          state.isScrubbing = true;
+          state.wasPlaying = true;
+          item.ref.current?.pause();
+          item.triggerSyncPause();
+
+          // Resume after scrubbing ends
+          if (state.timeoutId) clearTimeout(state.timeoutId);
+          state.timeoutId = setTimeout(() => {
+            state.isScrubbing = false;
+            if (state.wasPlaying && item.ref.current && !item.ref.current.playing) {
+              const video = item.ref.current.videoRef?.current;
+              const resume = () => {
+                if (item.ref.current && !item.ref.current.playing) {
+                  item.ref.current.play();
+                  item.triggerSyncPlay();
+                }
+              };
+              // Wait for seek to complete before resuming
+              video?.seeking ? video.addEventListener("seeked", resume, { once: true }) : resume();
+            }
+            state.wasPlaying = false;
+          }, 200);
+        }
+
         setPosition(newPosition);
+
+        // Batch rapid seeks, immediate seek for single changes
+        if (seekRafRef.current) cancelAnimationFrame(seekRafRef.current);
+
+        if (isRapidScrubbing) {
+          // Batch rapid scrubbing seeks
+          seekRafRef.current = requestAnimationFrame(() => {
+            seekRafRef.current = null;
+            item.setFrame(newPosition);
+          });
+        } else {
+          // Immediate seek for single frame changes (tests, single clicks)
+          item.setFrame(newPosition);
+        }
       }
     },
-    [item, position],
+    [item, position, playing],
   );
 
   useEffect(
     () => () => {
+      // Cleanup
+      const state = scrubStateRef.current;
+      if (state.timeoutId) clearTimeout(state.timeoutId);
+      if (seekRafRef.current) cancelAnimationFrame(seekRafRef.current);
       item.ref.current = null;
     },
     [],
@@ -460,14 +556,14 @@ const HtxVideoView = ({ item, store }) => {
 
   return (
     <ObjectTag item={item}>
-      <Block name="video-segmentation" ref={mainContentRef} mod={{ fullscreen: isFullScreen }}>
+      <div className={cn("video-segmentation").mod({ fullscreen: isFullScreen }).toClassName()} ref={mainContentRef}>
         {item.errors?.map((error, i) => (
           <ErrorMessage key={`err-${i}`} error={error} />
         ))}
 
-        <Block name="video" mod={{ fullscreen: isFullScreen }} ref={videoBlockRef}>
-          <Elem
-            name="main"
+        <div className={cn("video").mod({ fullscreen: isFullScreen }).toClassName()} ref={videoBlockRef}>
+          <div
+            className={cn("video").elem("main").toClassName()}
             ref={videoContainerRef}
             style={{ height: Number(item.height) }}
             onMouseDown={handlePan}
@@ -487,6 +583,7 @@ const HtxVideoView = ({ item, store }) => {
                     workingArea={videoDimensions}
                     allowRegionsOutsideWorkingArea={!limitCanvasDrawingBoundaries}
                     stageRef={stageRef}
+                    currentFrame={position}
                   />
                 )}
                 <VideoCanvas
@@ -499,6 +596,7 @@ const HtxVideoView = ({ item, store }) => {
                   pan={pan}
                   speed={item.speed}
                   framerate={item.framerate}
+                  buffering={item.isBuffering}
                   allowInteractions={false}
                   allowPanOffscreen={!limitCanvasDrawingBoundaries}
                   onFrameChange={handleFrameChange}
@@ -509,17 +607,20 @@ const HtxVideoView = ({ item, store }) => {
                   onPlay={handlePlay}
                   onPause={handlePause}
                   onSeeked={item.handleSeek}
+                  onBuffering={item.handleBuffering}
+                  loopFrameRange={item.loopTimelineRegion}
+                  selectedFrameRange={item.selectedFrameRange}
                 />
               </>
             )}
-          </Elem>
-        </Block>
+          </div>
+        </div>
 
         {loaded && (
-          <Elem
-            name="timeline"
-            tag={Timeline}
-            playing={playing}
+          <Timeline
+            className={cn("video-segmentation").elem("timeline").toClassName()}
+            playing={isSyncedBuffering && item.isBuffering ? item.wasPlayingBeforeBuffering : playing}
+            buffering={isSyncedBuffering ? item.isBuffering : false}
             length={videoLength}
             position={position}
             regions={regions}
@@ -537,29 +638,32 @@ const HtxVideoView = ({ item, store }) => {
                 position: "left",
                 component: () => {
                   return (
-                    <Dropdown.Trigger
-                      key="dd"
-                      inline={isFullScreen}
-                      content={
-                        <Menu size="auto" closeDropdownOnItemClick={false}>
-                          <Menu.Item onClick={zoomIn}>Zoom In</Menu.Item>
-                          <Menu.Item onClick={zoomOut}>Zoom Out</Menu.Item>
-                          <Menu.Item onClick={zoomToFit}>Zoom To Fit</Menu.Item>
-                          <Menu.Item onClick={zoomReset}>Zoom 100%</Menu.Item>
-                        </Menu>
-                      }
-                    >
-                      <Button size="small" variant="neutral" look="string">
-                        <IconZoomIn />
-                      </Button>
-                    </Dropdown.Trigger>
+                    <>
+                      <VideoConfig item={item} />
+                      <Dropdown.Trigger
+                        key="dd"
+                        inline={isFullScreen}
+                        content={
+                          <Menu size="auto" closeDropdownOnItemClick={false}>
+                            <Menu.Item onClick={zoomIn}>Zoom In</Menu.Item>
+                            <Menu.Item onClick={zoomOut}>Zoom Out</Menu.Item>
+                            <Menu.Item onClick={zoomToFit}>Zoom To Fit</Menu.Item>
+                            <Menu.Item onClick={zoomReset}>Zoom 100%</Menu.Item>
+                          </Menu>
+                        }
+                      >
+                        <Button size="small" variant="neutral" look="string">
+                          <IconZoomIn />
+                        </Button>
+                      </Dropdown.Trigger>
+                    </>
                   );
                 },
               },
             ]}
             onPositionChange={handleTimelinePositionChange}
-            onPlay={handlePlay}
-            onPause={handlePause}
+            onPlay={handlePlayClick}
+            onPause={handlePauseClick}
             onFullscreenToggle={handleFullscreenToggle}
             onSelectRegion={handleSelectRegion}
             onStartDrawing={item.startDrawing}
@@ -567,7 +671,7 @@ const HtxVideoView = ({ item, store }) => {
             onAction={handleAction}
           />
         )}
-      </Block>
+      </div>
     </ObjectTag>
   );
 };

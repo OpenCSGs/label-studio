@@ -5,7 +5,7 @@ import { IconTrash } from "@humansignal/icons";
 import { ToggleItems } from "../../../components";
 import { Form, Input } from "../../../components/Form";
 import { useAPI } from "../../../providers/ApiProvider";
-import { Block, cn, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { Palette } from "../../../utils/colors";
 import { FF_UNSAVED_CHANGES, isFF } from "../../../utils/feature-flags";
 import { colorNames } from "./colors";
@@ -17,7 +17,7 @@ import { TemplatesList } from "./TemplatesList";
 import tags from "@humansignal/core/lib/utils/schema/tags.json";
 import { UnsavedChanges } from "./UnsavedChanges";
 import { Checkbox, CodeEditor, Select } from "@humansignal/ui";
-import { toSnakeCase } from "strman";
+import snakeCase from "lodash/snakeCase";
 import { useTranslation } from "react-i18next";
 
 const wizardClass = cn("wizard");
@@ -64,16 +64,16 @@ const Label = ({ label, template, color }) => {
         </label>
         <span>{value}</span>
       </span>
-        <Button
-          type="button"
-          look="string"
-          size="smaller"
-          variant="negative"
-          onClick={() => template.removeLabel(label)}
-          aria-label={t("labelingConfig.deleteLabel")}
-          className="hidden !p-0 z-10 absolute right-0 [&_span]:!p-0 group-hover:inline-flex"
-          leading={<IconTrash className="w-4 h-4 fill-[currentColor]" />}
-        />
+      <Button
+        type="button"
+        look="string"
+        size="smaller"
+        variant="negative"
+        onClick={() => template.removeLabel(label)}
+        aria-label={t("labelingConfig.deleteLabel")}
+        className="hidden !p-0 z-10 absolute right-0 [&_span]:!p-0 group-hover:inline-flex"
+        leading={<IconTrash className="w-4 h-4 fill-[currentColor]" />}
+      />
     </li>
   );
 };
@@ -113,7 +113,7 @@ const ConfigureControl = ({ control, template }) => {
           className="lsf-textarea-ls p-2 px-3"
         />
         <Button type="button" size="small" look="outlined" onClick={onAddLabels} aria-label={t("labelingConfig.addLabels")}>
-          {t("labelingConfig.add")}
+          Add
         </Button>
       </form>
       <div className={configClass.elem("current-labels")}>
@@ -221,11 +221,10 @@ const ConfigureSettings = ({ template }) => {
   // check for active settings
   if (!items.filter(Boolean).length) return null;
 
-  const { t } = useTranslation();
   return (
     <ul className={configClass.elem("settings")}>
       <li>
-        <h4>{t("labelingConfig.configureSettings")}</h4>
+        <h4>Configure settings</h4>
         <ul className={configClass.elem("object-settings")}>{items}</ul>
       </li>
     </ul>
@@ -282,34 +281,20 @@ const ConfigureColumn = ({ template, obj, columns }) => {
     }
   };
 
-  const { t } = useTranslation();
   const columnsList = useMemo(() => {
     const cols = (columns ?? []).map((col) => {
       return {
         value: col,
-        label: col === DEFAULT_COLUMN ? t("labelingConfig.importedFile") : `$${col}`,
+        label: col === DEFAULT_COLUMN ? "<imported file>" : `$${col}`,
       };
     });
     if (!columns?.length) {
-      cols.push({ value, label: t("labelingConfig.importedFile") });
+      cols.push({ value, label: "<imported file>" });
     }
-    cols.push({ value: "-", label: t("labelingConfig.setManually") });
+    cols.push({ value: "-", label: "<set manually>" });
     return cols;
-  }, [columns, DEFAULT_COLUMN, value, t]);
+  }, [columns, DEFAULT_COLUMN, value]);
 
-  const tagName = obj.tagName.toLowerCase();
-  const objName = obj.getAttribute("name");
-  const hasMultipleObjects = template.objects > 1;
-  const hasField = columns?.length > 0 && columns[0] !== DEFAULT_COLUMN;
-  
-  let labelText;
-  if (hasMultipleObjects && objName) {
-    labelText = t("labelingConfig.useFromField", { tag: tagName, name: objName }) + (hasField ? ` ${t("labelingConfig.field")} ` : "");
-  } else {
-    const baseText = t("labelingConfig.useFrom", { tag: tagName });
-    labelText = baseText + (hasField ? ` ${t("labelingConfig.field")} ` : "");
-  }
-  
   return (
     <>
       <Select
@@ -317,7 +302,14 @@ const ConfigureColumn = ({ template, obj, columns }) => {
         value={isManual ? "-" : value}
         options={columnsList}
         isInline={true}
-        label={labelText}
+        label={
+          <>
+            Use {obj.tagName.toLowerCase()}
+            {template.objects > 1 && ` for ${obj.getAttribute("name")}`}
+            {" from "}
+            {columns?.length > 0 && columns[0] !== DEFAULT_COLUMN && "field "}
+          </>
+        }
         labelProps={{ className: "inline-flex" }}
         dataTestid={`select-trigger-use-image-from-field-${isManual ? "-" : value}`}
       />
@@ -327,18 +319,18 @@ const ConfigureColumn = ({ template, obj, columns }) => {
 };
 
 const ConfigureColumns = ({ columns, template }) => {
-  const { t } = useTranslation();
   if (!template.objects.length) return null;
 
   return (
     <div className={configClass.elem("object")}>
-      <h4>{t("labelingConfig.configureData")}</h4>
+      <h4>Configure data</h4>
       {template.objects.length > 1 && columns?.length > 0 && columns.length < template.objects.length && (
-        <p className={configClass.elem("object-error")}>{t("labelingConfig.templateRequiresMoreData")}</p>
+        <p className={configClass.elem("object-error")}>This template requires more data then you have for now</p>
       )}
       {columns?.length === 0 && (
         <p className={configClass.elem("object-error")}>
-          {t("labelingConfig.uploadDataToSelectFields")}
+          To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code
+          mode.
         </p>
       )}
       {template.objects.map((obj) => (
@@ -361,6 +353,7 @@ const Configurator = ({
   warning,
   hasChanges,
 }) => {
+  const { t } = useTranslation();
   const [configure, setConfigure] = React.useState(isEmptyConfig(config) ? "code" : "visual");
   const [visualLoaded, loadVisual] = React.useState(configure === "visual");
   const [waiting, setWaiting] = React.useState(false);
@@ -433,7 +426,6 @@ const Configurator = ({
     if (value === "visual") loadVisual(true);
   };
 
-  const { t: tOnChange } = useTranslation();
   const onChange = React.useCallback(
     (config) => {
       try {
@@ -441,12 +433,12 @@ const Configurator = ({
         setTemplate(config);
       } catch (e) {
         setParserError({
-          detail: tOnChange("labelingConfig.parserError"),
+          detail: "Parser error",
           validation_errors: [e.message],
         });
       }
     },
-    [setTemplate, tOnChange],
+    [setTemplate],
   );
 
   const onSave = async () => {
@@ -486,7 +478,6 @@ const Configurator = ({
     });
   }
 
-  const { t } = useTranslation();
   const extra = (
     <p className={configClass.elem("tags-link")}>
       {t("labelingConfig.configureWithTags")}
@@ -565,11 +556,9 @@ const Configurator = ({
         {disableSaveButton !== true && onSaveClick && (
           <Form.Actions size="small" extra={configure === "code" && extra} valid>
             {saved && (
-              <Block name="form-indicator">
-                <Elem tag="span" mod={{ type: "success" }} name="item">
-                  {t("labelingConfig.saved")}
-                </Elem>
-              </Block>
+              <div className={cn("form-indicator").toClassName()}>
+                <span className={cn("form-indicator").elem("item").mod({ type: "success" }).toClassName()}>{t("labelingConfig.saved")}</span>
+              </div>
             )}
             <Button
               size="small"
@@ -616,7 +605,7 @@ export const ConfigPage = ({
   const setSelectedGroup = React.useCallback(
     (group) => {
       _setSelectedGroup(group);
-      __lsa(`labeling_setup.list.${toSnakeCase(group)}`);
+      __lsa(`labeling_setup.list.${snakeCase(group)}`);
     },
     [_setSelectedGroup],
   );
@@ -685,7 +674,7 @@ export const ConfigPage = ({
       setTemplate(recipe.config);
       setSelectedRecipe(recipe);
       setMode("view");
-      __lsa(`labeling_setup.view.${toSnakeCase(recipe.group)}.${toSnakeCase(recipe.title)}`);
+      __lsa(`labeling_setup.view.${snakeCase(recipe.group)}.${snakeCase(recipe.title)}`);
     }
   });
 

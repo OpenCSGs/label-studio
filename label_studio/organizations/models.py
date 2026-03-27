@@ -1,6 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 import logging
+
 from core.utils.common import create_hash, load_func
 from django.conf import settings
 from django.db import models, transaction
@@ -15,14 +16,7 @@ OrganizationMemberMixin = load_func(settings.ORGANIZATION_MEMBER_MIXIN)
 
 
 class OrganizationMember(OrganizationMemberMixin, models.Model):
-    """组织成员模型"""
-    # 新增角色常量及选项
-    MEMBER = 'member'
-    ADMIN = 'admin'
-    ROLE_CHOICES = (
-        (MEMBER, _('Member')),
-        (ADMIN, _('Admin')),
-    )
+    """ """
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='om_through', help_text='User ID'
@@ -30,8 +24,6 @@ class OrganizationMember(OrganizationMemberMixin, models.Model):
     organization = models.ForeignKey(
         'organizations.Organization', on_delete=models.CASCADE, help_text='Organization ID'
     )
-    # 新增角色字段，指定默认是普通成员
-    role = models.CharField(_('role'), max_length=20, choices=ROLE_CHOICES, default=MEMBER)
 
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
@@ -43,8 +35,10 @@ class OrganizationMember(OrganizationMemberMixin, models.Model):
         blank=True,
         db_index=True,
         help_text='Timestamp indicating when the organization member was marked as deleted.  '
-                  'If NULL, the member is not considered deleted.',
+        'If NULL, the member is not considered deleted.',
     )
+
+    # objects = OrganizationMemberQuerySet.as_manager()
 
     @classmethod
     def find_by_user(cls, user_or_user_pk, organization_pk):
@@ -71,7 +65,10 @@ class OrganizationMember(OrganizationMemberMixin, models.Model):
             self.user.active_organization = self.user.organizations.filter(
                 organizationmember__deleted_at__isnull=True
             ).first()
-            self.user.save(update_fields=['active_organization'])
+            if self.user.avatar:
+                self.user.avatar.delete(save=False)
+                self.user.avatar = None
+            self.user.save(update_fields=['active_organization', 'avatar'])
 
         self.user.task_locks.all().delete()
 

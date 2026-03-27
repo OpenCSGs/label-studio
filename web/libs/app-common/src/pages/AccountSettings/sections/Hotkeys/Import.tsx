@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "@humansignal/ui";
 import { useTranslation } from "react-i18next";
+import { Button } from "@humansignal/ui";
 import {
   Dialog,
   DialogContent,
@@ -60,7 +60,7 @@ export const ImportDialog = ({ open, onOpenChange, onImport }: ImportDialogProps
    */
   const validateHotkey = (hotkey: unknown): void => {
     if (!hotkey || typeof hotkey !== "object") {
-      throw new Error(t("hotkeys.invalidHotkeyObject"));
+      throw new Error("Invalid hotkey object");
     }
 
     const hotkeyObj = hotkey as Record<string, unknown>;
@@ -68,7 +68,7 @@ export const ImportDialog = ({ open, onOpenChange, onImport }: ImportDialogProps
     const missingFields = requiredFields.filter((field) => !hotkeyObj[field]);
 
     if (missingFields.length > 0) {
-      throw new Error(t("hotkeys.missingRequiredFields", { fields: missingFields.join(", ") }));
+      throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
     }
   };
 
@@ -116,8 +116,8 @@ export const ImportDialog = ({ open, onOpenChange, onImport }: ImportDialogProps
         try {
           validateHotkey(hotkey);
         } catch (validationError: unknown) {
-          const errorMessage = validationError instanceof Error ? validationError.message : t("hotkeys.unknownValidationError");
-          throw new Error(t("hotkeys.hotkeyAtIndexError", { index, error: errorMessage }));
+          const errorMessage = validationError instanceof Error ? validationError.message : "Unknown validation error";
+          throw new Error(`Hotkey at index ${index}: ${errorMessage}`);
         }
       });
 
@@ -166,9 +166,7 @@ export const ImportDialog = ({ open, onOpenChange, onImport }: ImportDialogProps
       <DialogContent className="sm:max-w-[525px] bg-neutral-surface">
         <DialogHeader>
           <DialogTitle>{t("hotkeys.importHotkeys")}</DialogTitle>
-          <DialogDescription>
-            {t("hotkeys.importHotkeysDescription")}
-          </DialogDescription>
+          <DialogDescription>{t("hotkeys.importHotkeysDescription")}</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
@@ -189,7 +187,7 @@ export const ImportDialog = ({ open, onOpenChange, onImport }: ImportDialogProps
 
           {error && (
             <Alert variant="destructive" id="import-error">
-              <AlertTitle>{t("hotkeys.importError")}</AlertTitle>
+              <AlertTitle>{t("hotkeys.importErrorTitle")}</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

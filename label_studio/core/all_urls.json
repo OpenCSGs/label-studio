@@ -216,6 +216,12 @@
         "decorators": ""
     },
     {
+        "url": "/api/projects/<int:pk>/annotators/",
+        "module": "projects.api.ProjectAnnotatorsAPI",
+        "name": "projects:api:project-annotators",
+        "decorators": ""
+    },
+    {
         "url": "/api/templates/",
         "module": "projects.api.TemplateListAPI",
         "name": "projects:api-templates:template-list",
@@ -678,6 +684,12 @@
         "decorators": ""
     },
     {
+        "url": "/api/storages/s3/files",
+        "module": "io_storages.api.ImportStorageListFilesAPI",
+        "name": "storages:api:storage-s3-list-files",
+        "decorators": ""
+    },
+    {
         "url": "/api/storages/export/s3",
         "module": "io_storages.s3.api.S3ExportStorageListAPI",
         "name": "storages:api:export-storage-s3-list",
@@ -735,6 +747,12 @@
         "url": "/api/storages/azure/form",
         "module": "io_storages.azure_blob.api.AzureBlobImportStorageFormLayoutAPI",
         "name": "storages:api:storage-azure-form",
+        "decorators": ""
+    },
+    {
+        "url": "/api/storages/azure/files",
+        "module": "io_storages.api.ImportStorageListFilesAPI",
+        "name": "storages:api:storage-azure-list-files",
         "decorators": ""
     },
     {
@@ -798,6 +816,12 @@
         "decorators": ""
     },
     {
+        "url": "/api/storages/gcs/files",
+        "module": "io_storages.api.ImportStorageListFilesAPI",
+        "name": "storages:api:storage-gcs-list-files",
+        "decorators": ""
+    },
+    {
         "url": "/api/storages/export/gcs",
         "module": "io_storages.gcs.api.GCSExportStorageListAPI",
         "name": "storages:api:export-storage-gcs-list",
@@ -858,6 +882,12 @@
         "decorators": ""
     },
     {
+        "url": "/api/storages/redis/files",
+        "module": "io_storages.api.ImportStorageListFilesAPI",
+        "name": "storages:api:storage-redis-list-files",
+        "decorators": ""
+    },
+    {
         "url": "/api/storages/export/redis",
         "module": "io_storages.redis.api.RedisExportStorageListAPI",
         "name": "storages:api:export-storage-redis-list",
@@ -915,6 +945,12 @@
         "url": "/api/storages/localfiles/form",
         "module": "io_storages.localfiles.api.LocalFilesImportStorageFormLayoutAPI",
         "name": "storages:api:storage-localfiles-form",
+        "decorators": ""
+    },
+    {
+        "url": "/api/storages/localfiles/files",
+        "module": "io_storages.api.ImportStorageListFilesAPI",
+        "name": "storages:api:storage-localfiles-list-files",
         "decorators": ""
     },
     {
@@ -1092,9 +1128,21 @@
         "decorators": ""
     },
     {
+        "url": "/api/fsm/entities/<str:entity_name>/<int:entity_id>/history",
+        "module": "fsm.api.FSMEntityHistoryAPI",
+        "name": "fsm:fsm-entity-history",
+        "decorators": ""
+    },
+    {
+        "url": "/api/fsm/entities/<str:entity_name>/<int:entity_id>/transition/",
+        "module": "fsm.api.FSMEntityTransitionAPI",
+        "name": "fsm:fsm-entity-transition",
+        "decorators": ""
+    },
+    {
         "url": "/data/local-files/",
-        "module": "core.views.localfiles_data",
-        "name": "localfiles_data",
+        "module": "io_storages.localfiles.views.localfiles_data",
+        "name": "storages:localfiles_data",
         "decorators": ""
     },
     {
@@ -1813,13 +1861,19 @@
     },
     {
         "url": "/django-rq/",
-        "module": "django_rq.views.stats",
+        "module": "django_rq.stats_views.stats",
         "name": "rq_home",
         "decorators": ""
     },
     {
+        "url": "/django-rq/stats.json/",
+        "module": "django_rq.stats_views.stats_json",
+        "name": "rq_home_json",
+        "decorators": ""
+    },
+    {
         "url": "/django-rq/stats.json/<token>/",
-        "module": "django_rq.views.stats_json",
+        "module": "django_rq.stats_views.stats_json",
         "name": "rq_home_json",
         "decorators": ""
     },

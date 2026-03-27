@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
-import { Button } from "@humansignal/ui";
+import { Button, ToastType, useToast } from "@humansignal/ui";
+import { useTranslation } from "react-i18next";
 import { Form, Input } from "../../components/Form";
 import { Modal } from "../../components/Modal/Modal";
 import { Space } from "../../components/Space/Space";
 import { useAPI } from "../../providers/ApiProvider";
 import { useFixedLocation, useParams } from "../../providers/RoutesProvider";
-import { BemWithSpecifiContext } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import { isDefined } from "../../utils/helpers";
-import * as Toast from "@radix-ui/react-toast";
 import "./ExportPage.scss";
-import { message } from 'antd';
-import { useTranslation } from "react-i18next";
 
 // const formats = {
 //   json: 'JSON',
@@ -26,7 +24,30 @@ const downloadFile = (blob, filename) => {
   link.click();
 };
 
-const { Block, Elem } = BemWithSpecifiContext();
+const wait = () => new Promise((resolve) => setTimeout(resolve, 5000));
+
+/** Normalize format name to translation key (e.g. "JSON-MIN" -> "json_min") */
+const formatNameToKey = (name) =>
+  (name || "")
+    .toLowerCase()
+    .replace(/-/g, "_")
+    .replace(/\s+/g, "_");
+
+/** Get translated format title/description, fallback to API value */
+const getTranslatedFormat = (t, format, field) => {
+  const key = formatNameToKey(format.name);
+  const tKey = `export.formats.${key}.${field}`;
+  const translated = t(tKey);
+  return translated !== tKey ? translated : format[field];
+};
+
+/** Get translated tag, fallback to original */
+const getTranslatedTag = (t, tag) => {
+  const key = (tag || "").toLowerCase().replace(/\s+/g, "");
+  const tKey = `export.formats.tags.${key}`;
+  const translated = t(tKey);
+  return translated !== tKey ? translated : tag;
+};
 
 export const ExportPage = () => {
   const { t } = useTranslation();
@@ -34,37 +55,23 @@ export const ExportPage = () => {
   const location = useFixedLocation();
   const pageParams = useParams();
   const api = useAPI();
+  const toast = useToast();
 
   const [previousExports, setPreviousExports] = useState([]);
   const [downloading, setDownloading] = useState(false);
   const [downloadingMessage, setDownloadingMessage] = useState(false);
   const [availableFormats, setAvailableFormats] = useState([]);
   const [currentFormat, setCurrentFormat] = useState("JSON");
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastTitle, setToastTitle] = useState("");
 
   /** @type {import('react').RefObject<Form>} */
   const form = useRef();
 
-  const closeModal = () => {
-    const path = location.pathname.replace(ExportPage.path, "");
-    const search = location.search;
-    history.replace(`${path}${search !== "?" ? search : ""}`);
-  };
-
-  const showToast = (title, message) => {
-    setToastTitle(title);
-    setToastMessage(message);
-    setToastOpen(true);
-  };
-
   const proceedExport = async () => {
     setDownloading(true);
 
-    // const message = setTimeout(() => {
-    //   setDownloadingMessage(true);
-    // }, 1000);
+    const message = setTimeout(() => {
+      setDownloadingMessage(true);
+    }, 1000);
 
     try {
       const params = form.current.assembleFormData({
@@ -80,24 +87,28 @@ export const ExportPage = () => {
         },
       });
 
-      console.log(response,'responseresponseresponseresponse');
-      
-
-      if (response.status == 200) {
-        // const blob = await response.blob();
-        // downloadFile(blob, response.headers.get("filename"));
-        
-        // 立即关闭导出弹框
-        closeModal();
-        
-        message.success(t("export.exportCompletedSuccessfully"));
+      if (response.ok) {
+        const contentType = response.headers.get("content-type") || "";
+        // 导出到 CSGHub：后端返回 JSON，不触发本地下载
+        if (contentType.includes("application/json")) {
+          const data = await response.json().catch(() => ({}));
+          if (data.exported_to_csghub) {
+            toast?.show({
+              message: t("export.exportCompletedSuccessfully"),
+              type: ToastType.info,
+            });
+            const path = location.pathname.replace(ExportPage.path, "");
+            const search = location.search;
+            history.replace(`${path}${search !== "?" ? search : ""}`);
+            return;
+          }
+        }
+        // 否则为文件流，下载到本地
+        const blob = await response.blob();
+        downloadFile(blob, response.headers.get("filename"));
       } else {
         api.handleError(response);
-        // 显示错误提示
-        message.error(t("export.exportError"));
       }
-    } catch (error) {
-      console.error("Export failed:", error);
     } finally {
       setDownloading(false);
       setDownloadingMessage(false);
@@ -124,137 +135,97 @@ export const ExportPage = () => {
           },
         })
         .then((formats) => {
-          // 国际化格式标题和描述
-          const translatedFormats = formats.map((format) => {
-            const formatKey = format.name?.toLowerCase() || '';
-            const translatedFormat = { ...format };
-            
-            // 翻译标题 - 如果翻译键存在则使用翻译，否则使用原始值
-            const titleKey = `export.formats.${formatKey}.title`;
-            const translatedTitle = t(titleKey);
-            if (translatedTitle !== titleKey && format.title) {
-              translatedFormat.title = translatedTitle;
-            }
-            
-            // 翻译描述 - 如果翻译键存在则使用翻译，否则使用原始值
-            const descKey = `export.formats.${formatKey}.description`;
-            const translatedDesc = t(descKey);
-            if (translatedDesc !== descKey && format.description) {
-              translatedFormat.description = translatedDesc;
-            }
-            
-            // 翻译标签 - 标签翻译是共享的，放在 export.formats.tags 下
-            if (format.tags && Array.isArray(format.tags)) {
-              translatedFormat.tags = format.tags.map((tag) => {
-                const tagKey = tag?.toLowerCase()?.replace(/\s+/g, '') || '';
-                const tagTranslationKey = `export.formats.tags.${tagKey}`;
-                const translatedTag = t(tagTranslationKey);
-                // 如果翻译键存在（返回值不等于键本身），则使用翻译，否则使用原始标签
-                return translatedTag !== tagTranslationKey ? translatedTag : tag;
-              });
-            }
-            
-            return translatedFormat;
-          });
-          
-          setAvailableFormats(translatedFormats);
-          setCurrentFormat(translatedFormats[0]?.name);
+          setAvailableFormats(formats);
+          setCurrentFormat(formats[0]?.name);
         });
     }
-  }, [pageParams, t]);
+  }, [pageParams]);
 
   return (
-    <>
-      <Modal
-        onHide={closeModal}
-        title={t("export.exportData")}
-        style={{ width: 720 }}
-        closeOnClickOutside={false}
-        allowClose={!downloading}
-        visible
-      >
-        <Block name="export-page">
-          <FormatInfo
-            availableFormats={availableFormats}
-            selected={currentFormat}
-            onClick={(format) => setCurrentFormat(format.name)}
-          />
+    <Modal
+      onHide={() => {
+        const path = location.pathname.replace(ExportPage.path, "");
+        const search = location.search;
 
-          <Form ref={form}>
-            <Input type="hidden" name="exportType" value={currentFormat} />
-          </Form>
+        history.replace(`${path}${search !== "?" ? search : ""}`);
+      }}
+      title={t("export.exportData")}
+      style={{ width: 720 }}
+      closeOnClickOutside={false}
+      allowClose={!downloading}
+      // footer="Read more about supported export formats in the Documentation."
+      visible
+    >
+      <div className={cn("export-page").toClassName()}>
+        <FormatInfo
+          t={t}
+          availableFormats={availableFormats}
+          selected={currentFormat}
+          onClick={(format) => setCurrentFormat(format.name)}
+        />
 
-          <Elem name="footer">
-            <Space style={{ width: "100%" }} spread>
-              <Elem name="recent">{/* {exportHistory} */}</Elem>
-              <Elem name="actions">
-                <Space>
-                  {downloadingMessage && t("export.filesBeingPrepared")}
-                  <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label={t("export.exportData")}>
-                    {t("export.export")}
-                  </Button>
-                </Space>
-              </Elem>
-            </Space>
-          </Elem>
-        </Block>
-      </Modal>
+        <Form ref={form}>
+          <Input type="hidden" name="exportType" value={currentFormat} />
+        </Form>
 
-      {/* Toast 通知 */}
-      <Toast.Provider swipeDirection="right">
-        <Toast.Root
-          className="ToastRoot"
-          open={toastOpen}
-          onOpenChange={setToastOpen}
-          duration={3000}
-        >
-          <Toast.Title className="ToastTitle">{toastTitle}</Toast.Title>
-          <Toast.Description className="ToastDescription">
-            {toastMessage}
-          </Toast.Description>
-          <Toast.Action className="ToastAction" asChild altText={t("export.close")}>
-            <button className="Button small green">{t("export.close")}</button>
-          </Toast.Action>
-        </Toast.Root>
-        <Toast.Viewport className="ToastViewport" />
-      </Toast.Provider>
-    </>
+        <div className={cn("export-page").elem("footer").toClassName()}>
+          <Space style={{ width: "100%" }} spread>
+            <div className={cn("export-page").elem("recent").toClassName()}>{/* {exportHistory} */}</div>
+            <div className={cn("export-page").elem("actions").toClassName()}>
+              <Space>
+                {downloadingMessage && t("export.filesBeingPrepared")}
+                <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label={t("export.exportData")}>
+                  {t("export.export")}
+                </Button>
+              </Space>
+            </div>
+          </Space>
+        </div>
+      </div>
+    </Modal>
   );
 };
 
-const FormatInfo = ({ availableFormats, selected, onClick }) => {
-  const { t } = useTranslation();
+const FormatInfo = ({ t, availableFormats, selected, onClick }) => {
   return (
-    <Block name="formats">
-      <Elem name="info">{t("export.exportDatasetFormats")}</Elem>
-      <Elem name="list">
+    <div className={cn("formats").toClassName()}>
+      <div className={cn("formats").elem("info").toClassName()}>
+        {t("export.exportDatasetFormats")}
+      </div>
+      <div className={cn("formats").elem("list").toClassName()}>
         {availableFormats.map((format) => (
-          <Elem
+          <div
             key={format.name}
-            name="item"
-            mod={{
-              active: !format.disabled,
-              selected: format.name === selected,
-            }}
+            className={cn("formats")
+              .elem("item")
+              .mod({
+                active: !format.disabled,
+                selected: format.name === selected,
+              })
+              .toClassName()}
             onClick={!format.disabled ? () => onClick(format) : null}
           >
-            <Elem name="name">
-              {format.title}
+            <div className={cn("formats").elem("name").toClassName()}>
+              {getTranslatedFormat(t, format, "title")}
 
               <Space size="small">
                 {format.tags?.map?.((tag, index) => (
-                  <Elem key={index} name="tag">
-                    {tag}
-                  </Elem>
+                  <div key={index} className={cn("formats").elem("tag").toClassName()}>
+                    {getTranslatedTag(t, tag)}
+                  </div>
                 ))}
               </Space>
-            </Elem>
+            </div>
 
-            {format.description && <Elem name="description">{format.description}</Elem>}
-          </Elem>
+            {format.description && (
+              <div className={cn("formats").elem("description").toClassName()}>
+                {getTranslatedFormat(t, format, "description")}
+              </div>
+            )}
+          </div>
         ))}
-      </Elem>
-      <Elem name="feedback">
+      </div>
+      <div className={cn("formats").elem("feedback").toClassName()}>
         {t("export.cantFindFormat")}
         <br />
         {t("export.pleaseLetUsKnow")}{" "}
@@ -270,8 +241,8 @@ const FormatInfo = ({ availableFormats, selected, onClick }) => {
         >
           {t("export.repository")}
         </a>
-      </Elem>
-    </Block>
+      </div>
+    </div>
   );
 };
 

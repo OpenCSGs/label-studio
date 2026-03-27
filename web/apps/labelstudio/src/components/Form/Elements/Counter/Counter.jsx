@@ -1,5 +1,5 @@
 import React from "react";
-import { Block, Elem } from "../../../../utils/bem";
+import { cn } from "../../../../utils/bem";
 import { Oneof } from "../../../Oneof/Oneof";
 import { FormField } from "../../FormField";
 import { default as Label } from "../Label/Label";
@@ -85,6 +85,13 @@ const Counter = ({ label, className, validate, required, skip, labelProps, ...pr
     if (type === "decrease") return decrease();
   };
 
+  // Update currentValue when props.value changes
+  React.useEffect(() => {
+    if (props.value !== undefined && props.value !== null) {
+      setCurrentValue(normalizeValue(Number(props.value)));
+    }
+  }, [props.value]);
+
   const field = (
     <FormField
       label={label}
@@ -112,13 +119,12 @@ const Counter = ({ label, className, validate, required, skip, labelProps, ...pr
 
         return (
           <CounterContext.Provider value={contextValue}>
-            <Block name="counter" mod={{ focused, disabled: fieldDisabled }} mix={className}>
+            <div className={cn("counter").mod({ focused, disabled: fieldDisabled }).mix(className).toClassName()}>
               <CounterButton type="decrease" />
 
-              <Elem
+              <input
                 ref={ref}
-                tag="input"
-                name="input"
+                className={cn("counter").elem("input").toClassName()}
                 type="text"
                 disabled={fieldDisabled}
                 value={currentValue}
@@ -130,7 +136,7 @@ const Counter = ({ label, className, validate, required, skip, labelProps, ...pr
               />
 
               <CounterButton type="increase" />
-            </Block>
+            </div>
           </CounterContext.Provider>
         );
       }}
@@ -146,14 +152,16 @@ const CounterButton = ({ type }) => {
   const compareLimit = type === "increase" ? max : min;
 
   return (
-    <Elem
-      tag="a"
+    // biome-ignore lint/a11y/useValidAnchor: Legacy counter design uses anchor for styling
+    <a
+      className={cn("counter")
+        .elem("btn")
+        .mod({
+          type,
+          disabled: currentValue === compareLimit || disabled,
+        })
+        .toClassName()}
       href="#"
-      name="btn"
-      mod={{
-        type,
-        disabled: currentValue === compareLimit || disabled,
-      }}
       onClick={onClickHandler(type, ref)}
       onMouseDownCapture={(e) => e.preventDefault()}
     >
@@ -161,7 +169,7 @@ const CounterButton = ({ type }) => {
         <IconMinus case="decrease" />
         <IconPlus case="increase" />
       </Oneof>
-    </Elem>
+    </a>
   );
 };
 

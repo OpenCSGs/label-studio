@@ -16,7 +16,12 @@ import { IconChevron, IconChevronDown } from "@humansignal/icons";
 import clsx from "clsx";
 import styles from "./select.module.scss";
 import { cnm } from "../../utils/utils";
+import { VariableSizeList } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
 
+const VARIABLE_LIST_ITEM_HEIGHT = 40;
+const VARIABLE_LIST_COUNT_RENDERED = 5;
+const VARIABLE_LIST_PAGE_SIZE = 20;
 /*
  * This file defines a custom Select component for the Design System, which uses a fully custom UI for
  * dropdowns and options.
@@ -77,6 +82,13 @@ export const Select = forwardRef(
       selectedValueRenderer,
       selectFirstIfEmpty,
       renderSelected,
+      isVirtualList = false,
+      loadMore,
+      pageSize = VARIABLE_LIST_PAGE_SIZE,
+      page = 1,
+      itemCount,
+      onClose,
+      onOpen,
       ...props
     }: SelectProps<T, A>,
     _ref: ForwardedRef<HTMLSelectElement>,
@@ -133,7 +145,10 @@ export const Select = forwardRef(
           valueRef.current = val;
           setValue(val);
         }
-        !multiple && setIsOpen(false);
+        if (!multiple) {
+          setIsOpen(false);
+          onClose?.();
+        }
         props?.onChange?.(valueRef.current);
         setTimeout(() => {
           const changeEvent = new Event("change", {
@@ -176,7 +191,17 @@ export const Select = forwardRef(
     );
 
     const selectedOptions = useMemo(() => {
-      return flatOptions.filter((option) => isSelected(option));
+      const allSelected = flatOptions.filter((option) => isSelected(option));
+
+      const uniqueSelected = new Map();
+      allSelected.forEach((option) => {
+        const optionValue = option?.value ?? option;
+        if (!uniqueSelected.has(optionValue)) {
+          uniqueSelected.set(optionValue, option);
+        }
+      });
+
+      return Array.from(uniqueSelected.values());
     }, [flatOptions, isSelected, value, multiple]);
 
     const onSearchInputHandler = useCallback(
@@ -220,8 +245,84 @@ export const Select = forwardRef(
       );
     }, [selectedOptions, props?.placeholder, selectedValueRenderer]);
 
+    const renderedOptions = useMemo(() => {
+      return _options.map((option, index) => {
+        const optionValue = option?.value ?? option;
+        const label = option?.label ?? optionValue;
+        const children = option?.children;
+        const isIndeterminate = multiple && children?.some((child) => isSelected(child));
+        const isOptionSelected =
+          multiple && children ? children?.every((child) => isSelected(child)) : isSelected(optionValue);
+
+        if (children) {
+          return (
+            <CommandGroup key={index}>
+              {multiple ? (
+                <Option
+                  multiple={multiple}
+                  label={label}
+                  isIndeterminate={!isOptionSelected && isIndeterminate}
+                  isOptionSelected={isOptionSelected}
+                  onSelect={() => {
+                    children.forEach((child: SelectOption<T>) => {
+                      const childVal = child?.value ?? child;
+                      isOptionSelected ? _onChange(childVal, true) : _onChange(childVal, false);
+                    });
+                  }}
+                />
+              ) : (
+                <div className="pl-3 font-bold text-neutral-content-subtler pt-2">{label}</div>
+              )}
+              <div className="pl-2">
+                {children.map((item, i) => {
+                  const val = item?.value ?? item;
+                  const lab = item?.label ?? val;
+                  const isChildOptionSelected = isSelected(val);
+                  return (
+                    <Option
+                      key={`${val}_${i}`}
+                      value={val}
+                      label={lab}
+                      isOptionSelected={isChildOptionSelected}
+                      disabled={item?.disabled}
+                      style={item?.style}
+                      multiple={multiple}
+                      onSelect={() => {
+                        _onChange(val, isChildOptionSelected);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </CommandGroup>
+          );
+        }
+        return (
+          <Option
+            key={`${optionValue}_${index}`}
+            value={optionValue}
+            label={label}
+            isOptionSelected={isOptionSelected}
+            disabled={option?.disabled}
+            style={option?.style}
+            multiple={multiple}
+            onSelect={() => {
+              _onChange(optionValue, isOptionSelected);
+            }}
+          />
+        );
+      });
+    }, [_options, multiple, isSelected, _onChange]);
+
     const combobox = (
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover
+        open={isOpen}
+        onOpenChange={(open) => {
+          setIsOpen(open);
+          if (open) onOpen?.();
+          else onClose?.();
+        }}
+      >
         <PopoverTrigger asChild={true} disabled={disabled}>
           <button
             variant="outline"
@@ -281,72 +382,49 @@ export const Select = forwardRef(
                 <CommandEmpty>{searchable ? "No results found." : ""}</CommandEmpty>
                 <CommandGroup>
                   {props.header ? props.header : null}
-                  {_options.map((option, index) => {
-                    const optionValue = option?.value ?? option;
-                    const label = option?.label ?? optionValue;
-                    const children = option?.children;
-                    const isIndeterminate = multiple && children?.some((child) => isSelected(child));
-                    const isOptionSelected =
-                      multiple && children ? children?.every((child) => isSelected(child)) : isSelected(optionValue);
+                  {isVirtualList ? (
+                    <InfiniteLoader
+                      itemCount={itemCount ?? renderedOptions.length}
+                      loadMoreItems={() => loadMore?.()}
+                      isItemLoaded={(index) => index < renderedOptions.length}
+                      threshold={pageSize}
+                      minimumBatchSize={pageSize / 2}
+                    >
+                      {({
+                        onItemsRendered,
+                        ref: infiniteLoaderRef,
+                      }: {
+                        onItemsRendered: (params: any) => void;
+                        ref: any;
+                      }) => {
+                        // Calculate height based on actual item count from flatOptions
+                        // When searching, _options is filtered and flat; when not searching, _options === options (all items)
+                        const actualItemCount = searchable && query.trim() ? _options.length : flatOptions.length;
+                        const maxVisibleItems = VARIABLE_LIST_COUNT_RENDERED;
+                        const listHeight = Math.min(actualItemCount, maxVisibleItems) * VARIABLE_LIST_ITEM_HEIGHT;
 
-                    if (children) {
-                      return (
-                        <CommandGroup key={index}>
-                          {multiple ? (
-                            <Option
-                              multiple={multiple}
-                              label={label}
-                              isIndeterminate={!isOptionSelected && isIndeterminate}
-                              isOptionSelected={isOptionSelected}
-                              onSelect={() => {
-                                children.forEach((child: SelectOption<T>) => {
-                                  const childVal = child?.value ?? child;
-                                  isOptionSelected ? _onChange(childVal, true) : _onChange(childVal, false);
-                                });
-                              }}
-                            />
-                          ) : (
-                            <div className="pl-3 font-bold text-neutral-content-subtler pt-2">{label}</div>
-                          )}
-                          <div className="pl-2">
-                            {children.map((item, i) => {
-                              const val = item?.value ?? item;
-                              const lab = item?.label ?? val;
-                              const isChildOptionSelected = isSelected(val);
-                              return (
-                                <Option
-                                  key={`${val}_${i}`}
-                                  value={val}
-                                  label={lab}
-                                  isOptionSelected={isChildOptionSelected}
-                                  disabled={item?.disabled}
-                                  style={item?.style}
-                                  multiple={multiple}
-                                  onSelect={() => {
-                                    _onChange(val, isChildOptionSelected);
-                                  }}
-                                />
-                              );
-                            })}
-                          </div>
-                        </CommandGroup>
-                      );
-                    }
-                    return (
-                      <Option
-                        key={`${optionValue}_${index}`}
-                        value={optionValue}
-                        label={label}
-                        isOptionSelected={isOptionSelected}
-                        disabled={option?.disabled}
-                        style={option?.style}
-                        multiple={multiple}
-                        onSelect={() => {
-                          _onChange(optionValue, isOptionSelected);
-                        }}
-                      />
-                    );
-                  })}
+                        return (
+                          <VariableSizeList
+                            key={renderedOptions.length}
+                            itemData={renderedOptions}
+                            itemSize={() => VARIABLE_LIST_ITEM_HEIGHT}
+                            itemCount={renderedOptions.length}
+                            height={listHeight}
+                            // width={VARIABLE_LIST_WIDTH}
+                            onItemsRendered={onItemsRendered}
+                            ref={infiniteLoaderRef}
+                            overscanCount={1}
+                          >
+                            {({ index, style }) => {
+                              return <div style={style}>{renderedOptions[index]}</div>;
+                            }}
+                          </VariableSizeList>
+                        );
+                      }}
+                    </InfiniteLoader>
+                  ) : (
+                    renderedOptions
+                  )}
                 </CommandGroup>
               </CommandList>
             </Command>
@@ -465,7 +543,7 @@ const Option = ({
         data-disabled={disabled}
       >
         {multiple && <Checkbox tabIndex={-1} checked={isOptionSelected} indeterminate={isIndeterminate} readOnly />}
-        <div data-testid="select-option-label" className="w-full">
+        <div data-testid="select-option-label" className="w-full min-w-0 truncate">
           {label}
         </div>
       </div>

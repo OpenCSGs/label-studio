@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { Button } from "@humansignal/ui";
 import {
   Card,
@@ -8,7 +9,6 @@ import {
   CardDescription,
   CardFooter,
 } from "@humansignal/shad/components/ui/card";
-import { useTranslation } from "react-i18next";
 import { HotkeyItem } from "./Item";
 
 // Type definitions
@@ -83,6 +83,19 @@ export const HotkeySection = ({
   hasChanges,
 }: HotkeySectionProps) => {
   const { t } = useTranslation();
+
+  const sectionTitle = (() => {
+    const key = `hotkeys.sections.${section.id.replace(/_/g, "")}.title`;
+    const translated = t(key);
+    return translated !== key ? translated : section.title;
+  })();
+
+  const sectionDescription = (() => {
+    const key = `hotkeys.sections.${section.id.replace(/_/g, "")}.description`;
+    const translated = t(key);
+    return translated !== key ? translated : section.description ?? "";
+  })();
+
   /**
    * Groups hotkeys by their subgroup property
    * Hotkeys without a subgroup are placed in the 'default' group
@@ -120,8 +133,8 @@ export const HotkeySection = ({
   return (
     <Card className="mb-6">
       <CardHeader className="pb-2">
-        <CardTitle>{section.title}</CardTitle>
-        <CardDescription>{section.description}</CardDescription>
+        <CardTitle>{sectionTitle}</CardTitle>
+        <CardDescription>{sectionDescription}</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -146,7 +159,7 @@ export const HotkeySection = ({
           ))}
 
           {hotkeys.length === 0 && (
-            <div className="py-8 text-center text-muted-foreground italic">{t("hotkeys.noHotkeysInSection")}</div>
+            <div className="py-8 text-center text-muted-foreground italic">No hotkeys in this section</div>
           )}
         </div>
       </CardContent>

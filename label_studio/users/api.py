@@ -16,12 +16,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.functions import check_avatar
 from users.models import User
-from users.serializers import HotkeysSerializer, UserSerializer, UserSerializerUpdate
+from users.serializers import HotkeysSerializer, UserSerializer, UserSerializerUpdate, WhoAmIUserSerializer
 
-
-from django.middleware.csrf import get_token
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 logger = logging.getLogger(__name__)
 
 _user_schema = {
@@ -65,8 +61,6 @@ _user_schema = {
         },
     },
 }
-
-
 
 
 @method_decorator(
@@ -277,7 +271,7 @@ class UserAPI(viewsets.ModelViewSet):
 class UserResetTokenAPI(APIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = User.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_required = all_permissions.users_token_any
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -311,7 +305,7 @@ class UserResetTokenAPI(APIView):
 )
 class UserGetTokenAPI(APIView):
     parser_classes = (JSONParser,)
-    permission_classes = (IsAuthenticated,)
+    permission_required = all_permissions.users_token_any
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -326,7 +320,7 @@ class UserGetTokenAPI(APIView):
         summary='Retrieve my user',
         description='Retrieve details of the account that you are using to access the API.',
         request=None,
-        responses={200: UserSerializer},
+        responses={200: WhoAmIUserSerializer},
         extensions={
             'x-fern-sdk-group-name': 'users',
             'x-fern-sdk-method-name': 'whoami',
@@ -338,7 +332,7 @@ class UserWhoAmIAPI(generics.RetrieveAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = WhoAmIUserSerializer
 
     def get_object(self):
         return self.request.user
@@ -424,7 +418,3 @@ class UserHotkeysAPI(APIView):
         except Exception as e:
             logger.error(f'Error updating hotkeys for user {request.user.pk}: {str(e)}')
             return Response({'error': 'Failed to update hotkeys configuration'}, status=500)
-
-
-
-

@@ -16,4 +16,5 @@
 | [perItem] | <code>boolean</code> |  | Use this tag to select a choice for a specific item inside the object instead of the whole object |
 | [value] | <code>string</code> |  | Task data field containing a list of dynamically loaded choices (see example below) |
 | [allowNested] | <code>boolean</code> |  | Allow to use `children` field in dynamic choices to nest them. Submitted result will contain array of arrays, every item is a list of values from topmost parent choice down to selected one. |
+| [layout] | <code>select</code> \| <code>inline</code> \| <code>vertical</code> |  | Layout of the choices: `select` for dropdown/select box format, `inline` for horizontal single row display, `vertical` for vertically stacked display (default) |
 

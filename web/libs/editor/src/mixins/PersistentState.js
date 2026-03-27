@@ -1,4 +1,4 @@
-import { getRoot, types } from "mobx-state-tree";
+import { types } from "mobx-state-tree";
 
 const PersistentStateMixin = types
   .model({})
@@ -8,6 +8,10 @@ const PersistentStateMixin = types
     },
 
     get persistentValues() {
+      return {};
+    },
+
+    get persistentFingerprint() {
       return {};
     },
   }))
@@ -22,7 +26,7 @@ const PersistentStateMixin = types
 
     storeValues() {
       const key = self.persistentValuesKey;
-      const obj = { task: getRoot(self).task?.id, values: self.persistentValues };
+      const obj = { ...self.persistentFingerprint, values: self.persistentValues };
 
       localStorage.setItem(key, JSON.stringify(obj));
     },
@@ -30,7 +34,10 @@ const PersistentStateMixin = types
     restoreValues() {
       const stored = JSON.parse(localStorage.getItem(self.persistentValuesKey) || "{}");
 
-      if (!stored || stored.task !== getRoot(self).task?.id) return;
+      if (!stored) return;
+      if (!Object.keys(self.persistentFingerprint).every((key) => stored[key] === self.persistentFingerprint[key]))
+        return;
+
       const values = stored.values || {};
 
       for (const key of Object.keys(values)) {

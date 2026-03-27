@@ -350,3 +350,19 @@ export function getActualZoomingPosition(
 
   return [viewportNaturalX, viewportNaturalY];
 }
+
+/**
+ * Map brightness percentage to a value between -1 and 1 (Konva brightness value).
+ *
+ * 100% brightness is 0, 400% brightness is 0.8.
+ *
+ * @param {number} brightnessPercent
+ * @returns {number}
+ */
+export function mapKonvaBrightness(brightnessPercent) {
+  if (brightnessPercent <= 100) {
+    return (brightnessPercent - 100) / 100;
+  }
+  const normalized = (brightnessPercent - 100) / 300;
+  return normalized ** 0.5 * 0.8;
+}

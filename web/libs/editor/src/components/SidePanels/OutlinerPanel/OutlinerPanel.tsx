@@ -1,7 +1,6 @@
 import { observer } from "mobx-react";
 import { type FC, useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { PanelBase, type PanelProps } from "../PanelBase";
 import { OutlinerTree } from "./OutlinerTree";
 import { ViewControls } from "./ViewControls";
@@ -13,11 +12,7 @@ import { getDocsUrl } from "../../../utils/docs";
 
 // Local type definitions based on ViewControls and RegionStore
 type GroupingOptions = "manual" | "label" | "type";
-type OrderingOptions = "score" | "date";
-type Region = {
-  id: string;
-  [key: string]: any; // Allow other properties for flexibility
-};
+type OrderingOptions = "score" | "date" | "mediaStartTime";
 
 interface OutlinerPanelProps extends PanelProps {
   regions: any;
@@ -48,29 +43,20 @@ const OutlinerPanelComponent: FC<OutlinerPanelProps> = ({ regions, ...props }) =
     [regions],
   );
 
-  const onFilterChange = useCallback(
-    (value: Region[] | null) => {
-      regions.setFilteredRegions(value);
-    },
-    [regions],
-  );
-
   useEffect(() => {
     setGroup(regions.group);
   }, []);
 
   regions.setGrouping(group);
 
-  const { t } = useTranslation();
   return (
-    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title={t("annotation.outliner")}>
+    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title="Outliner">
       <ViewControls
         ordering={regions.sort}
         regions={regions}
         orderingDirection={regions.sortOrder}
         onOrderingChange={onOrderingChange}
         onGroupingChange={onGroupingChange}
-        onFilterChange={onFilterChange}
       />
       <OutlinerTreeComponent regions={regions} />
     </PanelBase>
@@ -92,50 +78,42 @@ const OutlinerStandAlone: FC<OutlinerPanelProps> = ({ regions }) => {
     [regions],
   );
 
-  const onFilterChange = useCallback(
-    (value: Region[] | null) => {
-      regions.setFilteredRegions(value);
-    },
-    [regions],
-  );
-
   return (
-    <Block name="outliner" mix={OutlinerFFClasses}>
+    <div
+      className={cn("outliner")
+        .mix(...OutlinerFFClasses)
+        .toClassName()}
+    >
       <ViewControls
         ordering={regions.sort}
         regions={regions}
         orderingDirection={regions.sortOrder}
         onOrderingChange={onOrderingChange}
         onGroupingChange={onGroupingChange}
-        onFilterChange={onFilterChange}
       />
       <OutlinerTreeComponent regions={regions} />
-    </Block>
+    </div>
   );
 };
 
-const OutlinerEmptyState = () => {
-  const { t } = useTranslation();
-  return (
-    <EmptyState
-      icon={<IconLsLabeling width={24} height={24} />}
-      header={t("annotation.labeledRegionsWillAppearHere")}
-      description={
-        <>
-          <span>
-            {t("annotation.startLabelingAndTrackResults")}
-            <br />
-            {t("annotation.usingThisPanel")}
-          </span>
-        </>
-      }
-      learnMore={{ href: getDocsUrl("guide/labeling"), text: t("annotation.learnMore"), testId: "regions-panel-learn-more" }}
-    />
-  );
-};
+const OutlinerEmptyState = () => (
+  <EmptyState
+    icon={<IconLsLabeling width={24} height={24} />}
+    header="Labeled regions will appear here"
+    description={
+      <>
+        <span>
+          Start labeling and track your results
+          <br />
+          using this panel
+        </span>
+      </>
+    }
+    learnMore={{ href: getDocsUrl("guide/labeling"), text: "Learn more", testId: "regions-panel-learn-more" }}
+  />
+);
 
 const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ regions }) => {
-  const { t } = useTranslation();
   const allRegionsHidden = regions?.regions?.length > 0 && regions?.filter?.length === 0;
 
   const hiddenRegions = useMemo(() => {
@@ -147,26 +125,28 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
   return (
     <>
       {allRegionsHidden ? (
-        <Block name="filters-info">
+        <div className={cn("filters-info").toClassName()}>
           <IconInfo width={21} height={20} />
-          <Elem name="filters-title">{t("annotation.allRegionsHidden")}</Elem>
-          <Elem name="filters-description">{t("annotation.adjustOrRemoveFiltersToView")}</Elem>
-        </Block>
+          <div className={cn("filters-info").elem("filters-title").toClassName()}>All regions hidden</div>
+          <div className={cn("filters-info").elem("filters-description").toClassName()}>
+            Adjust or remove the filters to view
+          </div>
+        </div>
       ) : regions?.regions?.length > 0 ? (
         <>
           <OutlinerTree
             regions={regions}
             footer={
               hiddenRegions > 0 && (
-                <Block name="filters-info">
+                <div className={cn("filters-info").toClassName()}>
                   <IconInfo width={21} height={20} />
-                  <Elem name="filters-title">
-                    {hiddenRegions === 1 
-                      ? t("annotation.hiddenRegionSingular", { count: hiddenRegions })
-                      : t("annotation.hiddenRegionsPlural", { count: hiddenRegions })}
-                  </Elem>
-                  <Elem name="filters-description">{t("annotation.adjustOrRemoveFiltersToView")}</Elem>
-                </Block>
+                  <div className={cn("filters-info").elem("filters-title").toClassName()}>
+                    There {hiddenRegions === 1 ? "is" : "are"} {hiddenRegions} hidden region{hiddenRegions > 1 && "s"}
+                  </div>
+                  <div className={cn("filters-info").elem("filters-description").toClassName()}>
+                    Adjust or remove filters to view
+                  </div>
+                </div>
               )
             }
           />

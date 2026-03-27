@@ -111,9 +111,9 @@ Below, both are explained from a security perspective.
 
 After connecting a storage to a project, you have several options to load tasks into the project. Depending on the option, you need to provide specific permissions:
 
-* **Sync media files** (**LIST** permission required): Storage Sync automatically creates Label Studio tasks based on the file list in your storage when **Treat every bucket object as a source file** is enabled. Label Studio does not read the file content; it simply references the files (e.g., `{"image": "s3://bucket/1.jpg"}`).
+* **Sync media files** (**LIST** permission required): Storage Sync automatically creates Label Studio tasks based on the file list in your storage when **Tasks** import method is enabled. Label Studio does not read the file content; it simply references the files (e.g., `{"image": "s3://bucket/1.jpg"}`).
 
-* **Sync JSON task files** (**LIST** and **GET** permissions required): Storage Sync reads Label Studio tasks from JSON files in your bucket and loads the entire JSON content into the Label Studio database when "Treat every bucket object as a source file" is enabled.
+* **Sync JSON task files** (**LIST** and **GET** permissions required): Storage Sync reads Label Studio tasks from JSON files in your bucket and loads the entire JSON content into the Label Studio database when **Tasks** import method is enabled.
 
 * **No sync** (**none** permissions required): You can manually import JSON files containing Label Studio tasks and reference storage URIs (e.g., `{"image": "s3://bucket/1.jpg"}`) inside tasks.
 

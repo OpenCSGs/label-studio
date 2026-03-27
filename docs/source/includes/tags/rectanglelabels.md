@@ -12,6 +12,7 @@
 | [strokeColor] | <code>string</code> |  | Stroke color in hexadecimal |
 | [strokeWidth] | <code>number</code> | <code>1</code> | Width of stroke |
 | [canRotate] | <code>boolean</code> | <code>true</code> | Show or hide rotation control. Note that the anchor point in the results is different than the anchor point used when rotating with the rotation tool. For more information, see [Rotation](/templates/image_bbox#Rotation). |
+| [snap] | <code>pixel</code> \| <code>none</code> | <code>none</code> | Snap rectangle to image pixels |
 
 ### Result parameters
 

@@ -25,7 +25,7 @@ from core.utils.common import (
     load_func,
     merge_labels_counters,
 )
-from core.utils.db import batch_update_with_retry, fast_first
+from core.utils.db import batch_update_with_retry, fast_first, has_column_cached
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
 from django.core.validators import MaxLengthValidator, MinLengthValidator
@@ -34,6 +34,8 @@ from django.db.models import Avg, BooleanField, Case, Count, GeneratedField, JSO
 from django.db.models.expressions import RawSQL
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from fsm.models import FsmHistoryStateModel
+from fsm.queryset_mixins import FSMStateQuerySetMixin
 from label_studio_sdk._extensions.label_studio_tools.core.label_config import parse_config
 from labels_manager.models import Label
 from projects.functions import (
@@ -61,7 +63,24 @@ from tasks.models import (
 logger = logging.getLogger(__name__)
 
 
+class ProjectQuerySet(models.QuerySet):
+    pass
+
+
+class ProjectQuerySetWithFSM(FSMStateQuerySetMixin, ProjectQuerySet):
+    pass
+
+
 class ProjectManager(models.Manager):
+    """
+    Manager for Project model.
+
+    Provides:
+    - User-scoped filtering
+    - Counter annotations for project statistics
+    - FSM state annotation support
+    """
+
     COUNTER_FIELDS = [
         'task_number',
         'finished_task_number',
@@ -84,11 +103,26 @@ class ProjectManager(models.Manager):
         'skipped_annotations_number': annotate_skipped_annotations_number,
     }
 
+    def get_queryset(self):
+        """Return ProjectQuerySet with FSM state annotation support"""
+        return ProjectQuerySetWithFSM(self.model, using=self._db)
+
     def for_user(self, user):
-        return self.filter(organization=user.active_organization)
+        return self.get_queryset().filter(organization=user.active_organization)
+
+    def with_state(self):
+        """
+        Return queryset with FSM state annotated.
+
+        Example:
+            projects = Project.objects.with_state().filter(organization=org)
+            for project in projects:
+                print(project.state)  # No N+1 queries!
+        """
+        return self.get_queryset().with_state()
 
     def with_counts(self, fields=None):
-        return self.with_counts_annotate(self, fields=fields)
+        return self.with_counts_annotate(self.get_queryset(), fields=fields)
 
     @staticmethod
     def with_counts_annotate(queryset, fields=None, exclude=None):
@@ -107,6 +141,17 @@ class ProjectManager(models.Manager):
         return queryset
 
 
+class ProjectVisibleManager(ProjectManager):
+    """Default manager that hides soft-deleted projects (deleted_at IS NULL)."""
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # Avoid referencing columns that might not exist during early migrations
+        if has_column_cached(self.model._meta.db_table, 'deleted_at'):
+            return qs.filter(deleted_at__isnull=True)
+        return qs
+
+
 ProjectMixin = load_func(settings.PROJECT_MIXIN)
 
 
@@ -114,7 +159,7 @@ ProjectMixin = load_func(settings.PROJECT_MIXIN)
 recalculate_all_stats = load_func(settings.RECALCULATE_ALL_STATS)
 
 
-class Project(ProjectMixin, models.Model):
+class Project(ProjectMixin, FsmHistoryStateModel):
     class SkipQueue(models.TextChoices):
         # requeue to the end of the same annotator’s queue => annotator gets this task at the end of the queue
         REQUEUE_FOR_ME = 'REQUEUE_FOR_ME', 'Requeue for me'
@@ -123,7 +168,9 @@ class Project(ProjectMixin, models.Model):
         # ignore skipped tasks => skip is a valid annotation, task is completed (finished=True)
         IGNORE_SKIPPED = 'IGNORE_SKIPPED', 'Ignore skipped'
 
-    objects = ProjectManager()
+    # Managers: default (visible only) and explicit unfiltered
+    objects = ProjectVisibleManager()
+    all_objects = ProjectManager()
     __original_label_config = None
 
     title = models.CharField(
@@ -266,7 +313,11 @@ class Project(ProjectMixin, models.Model):
     skip_queue = models.CharField(
         max_length=100, choices=SkipQueue.choices, null=True, default=SkipQueue.REQUEUE_FOR_OTHERS
     )
-    show_ground_truth_first = models.BooleanField(_('show ground truth first'), default=False)
+    show_ground_truth_first = models.BooleanField(
+        _('show ground truth first'),
+        default=False,
+        help_text='Onboarding mode (true): show ground truth tasks first in the labeling stream',
+    )
     show_overlap_first = models.BooleanField(_('show overlap first'), default=False)
     overlap_cohort_percentage = models.IntegerField(_('overlap_cohort_percentage'), default=100)
 
@@ -276,6 +327,9 @@ class Project(ProjectMixin, models.Model):
     task_data_password = models.CharField(
         _('task_data_password'), max_length=256, blank=True, null=True, help_text='Task data credentials: password'
     )
+    # CSGHub 二开
+    dataset = models.CharField(max_length=256, null=True, blank=True)
+    datasetBranches = models.CharField(max_length=256, null=True, blank=True)
 
     pinned_at = models.DateTimeField(_('pinned at'), null=True, default=None, help_text='Pinned date and time')
 
@@ -286,20 +340,38 @@ class Project(ProjectMixin, models.Model):
         help_text='Custom task lock TTL in seconds. If not set, the default value is used',
     )
 
-    dataset=models.CharField(max_length=256, null=True, blank=True)
-    datasetBranches=models.CharField(max_length=256, null=True, blank=True)
-
+    # Soft-delete lifecycle (OSS fields, used by LSE logic)
+    deleted_at = models.DateTimeField(_('deleted at'), null=True, blank=True)
+    deleted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='deleted_projects',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        db_index=False,
+        verbose_name=_('deleted by'),
+    )
+    purge_at = models.DateTimeField(_('purge at'), null=True, blank=True)
 
     def __init__(self, *args, **kwargs):
         super(Project, self).__init__(*args, **kwargs)
-        self.__original_label_config = self.label_config
-        self.__maximum_annotations = self.maximum_annotations
-        self.__overlap_cohort_percentage = self.overlap_cohort_percentage
-        self.__skip_queue = self.skip_queue
+        # This check is required because deferred fields cause issues with evaluating lazy (deferred) fields if read directly, which means that any attempt to optimize a queryset involving projects
+        # will result in a performance regression as it will n+1 or in some cases cause an infinite loop.
+        deferred_fields = self.get_deferred_fields()
+        self.__original_label_config = self.label_config if 'label_config' not in deferred_fields else None
+        self.__maximum_annotations = self.maximum_annotations if 'maximum_annotations' not in deferred_fields else None
+        self.__overlap_cohort_percentage = (
+            self.overlap_cohort_percentage if 'overlap_cohort_percentage' not in deferred_fields else None
+        )
+        self.__skip_queue = self.skip_queue if 'skip_queue' not in deferred_fields else None
 
         # TODO: once bugfix with incorrect data types in List
         # logging.warning('! Please, remove code below after patching of all projects (extract_data_types)')
-        if self.label_config is not None:
+        if (
+            'label_config' not in deferred_fields
+            and self.label_config is not None
+            and 'data_types' not in deferred_fields
+        ):
             data_types = extract_data_types(self.label_config)
             if self.data_types != data_types:
                 self.data_types = data_types
@@ -594,6 +666,9 @@ class Project(ProjectMixin, models.Model):
             diff_str = []
             for ann_tuple in different_annotations:
                 from_name, to_name, t = ann_tuple.split('|')
+                # TODO tags that operate as both object and control tags; should be special registry/logic for them
+                if from_name == to_name and t.lower() == 'chatmessage':
+                    continue
                 if t.lower() == 'textarea':  # avoid textarea to_name check (see DEV-1598)
                     continue
                 if (
@@ -764,7 +839,7 @@ class Project(ProjectMixin, models.Model):
         if label_config_has_changed or project_with_config_just_created:
             self.data_types = extract_data_types(self.label_config)
             self.parsed_label_config = parse_config(self.label_config)
-            self.label_config_hash = hash(str(self.parsed_label_config))
+            self.label_config_hash = hash(str(self.label_config))
             if update_fields is not None:
                 update_fields = {'data_types', 'parsed_label_config', 'label_config_hash'}.union(update_fields)
 
@@ -772,6 +847,12 @@ class Project(ProjectMixin, models.Model):
             self.control_weights = self.get_updated_weights()
             if update_fields is not None:
                 update_fields = {'control_weights'}.union(update_fields)
+
+        # If project is published and is draft, set is_draft to False
+        if self.is_published and self.is_draft:
+            self.is_draft = False
+            if update_fields is not None:
+                update_fields = {'is_published', 'is_draft'}.union(update_fields)
 
         super(Project, self).save(*args, update_fields=update_fields, **kwargs)
 
@@ -816,6 +897,21 @@ class Project(ProjectMixin, models.Model):
                     summary.reset()
                 elif self.num_annotations == 0 and self.num_drafts == 0:
                     summary.reset(tasks_data_based=False)
+
+        # Call dimensions postprocess if configured (LSE feature)
+        dimensions_postprocess = load_func(settings.PROJECT_SAVE_DIMENSIONS_POSTPROCESS)
+        if dimensions_postprocess is not None:
+            dimensions_postprocess(
+                project=self,
+                created=not exists,
+                label_config_has_changed=label_config_has_changed,
+            )
+
+    # ============================================================================
+    # FSM Integration
+    # ============================================================================
+    # Project uses FsmHistoryStateModel for FSM integration. All transition logic is defined
+    # in projects/transitions.py with declarative triggers. No custom methods needed.
 
     def get_member_ids(self):
         if hasattr(self, 'team_link'):
@@ -952,7 +1048,7 @@ class Project(ProjectMixin, models.Model):
                 result[field] = value
         return result
 
-    def get_model_versions(self, with_counters=False, extended=False):
+    def get_model_versions(self, with_counters=False, extended=False, limit=None):
         """
         Get model_versions from project predictions.
         :param with_counters: Boolean, if True, counts predictions for each version. Default is False.
@@ -961,23 +1057,25 @@ class Project(ProjectMixin, models.Model):
         """
         predictions = Prediction.objects.filter(project=self)
 
+        model_versions = (
+            predictions.values('model_version')
+            .annotate(count=Count('model_version'), latest=Max('created_at'))
+            .order_by('-latest')
+        )
+
         if extended:
-            model_versions = list(
-                predictions.values('model_version').annotate(count=Count('model_version'), latest=Max('created_at'))
-            )
-
-            # remove the load from the DB side and sort in here
-            model_versions.sort(key=lambda x: x['latest'], reverse=True)
-
-            return model_versions
+            return list(model_versions)
         else:
-            # TODO this needs to be removed at some point
-            model_versions = predictions.values('model_version').annotate(count=Count('model_version'))
+            if limit:
+                model_versions = model_versions[:limit]
             output = {r['model_version']: r['count'] for r in model_versions}
 
             # Ensure that self.model_version exists in output
             if self.model_version and self.model_version not in output:
-                output[self.model_version] = 0
+                if limit and len(output) < limit:
+                    output[self.model_version] = 0
+                elif not limit:
+                    output[self.model_version] = 0
 
             # Return as per requirement
             return output if with_counters else list(output.keys())
@@ -1110,14 +1208,41 @@ class Project(ProjectMixin, models.Model):
 
         return objs
 
+    def get_max_annotation_result_size(self):
+        """Get the maximum annotation result size for this project"""
+        # For SQLite, return 0 (no annotations to consider)
+        if settings.DJANGO_DB == settings.DJANGO_DB_SQLITE:
+            return 0
+
+        # Using raw SQL to ensure we use the specific index annotation_proj_result_octlen_idx
+        # which is optimized for this query pattern (project_id, octet_length DESC)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id,
+                       octet_length(result::text) AS bytes
+                FROM   task_completion
+                WHERE  project_id = %s
+                ORDER  BY octet_length(result::text) DESC
+                LIMIT  1
+            """,
+                [self.id],
+            )
+
+            row = cursor.fetchone()
+            if not row or not row[1]:
+                return 0
+
+            return row[1]
+
     def get_task_batch_size(self):
-        """Calculate optimal batch size based on task data size"""
+        """Calculate optimal batch size based on task data size and annotation result size"""
         # For SQLite, use default MAX_TASK_BATCH_SIZE
         if settings.DJANGO_DB == settings.DJANGO_DB_SQLITE:
             return settings.MAX_TASK_BATCH_SIZE
 
-        # Using raw SQL to ensure we use the specific index task_proj_octlen_idx
-        # which is optimized for this query pattern (project_id, octet_length DESC)
+        # Get maximum task data size using the optimized index
+        max_task_size = 0
         with connection.cursor() as cursor:
             cursor.execute(
                 """
@@ -1132,10 +1257,17 @@ class Project(ProjectMixin, models.Model):
             )
 
             row = cursor.fetchone()
-            if not row or not row[1]:
-                return settings.MAX_TASK_BATCH_SIZE
+            if row and row[1]:
+                max_task_size = row[1]
 
-            max_data_size = row[1]
+        # Get maximum annotation result size using the new optimized index
+        max_annotation_size = self.get_max_annotation_result_size()
+
+        # Use the larger of the two sizes for batch calculation
+        max_data_size = max(max_task_size, max_annotation_size)
+
+        if max_data_size == 0:
+            return settings.MAX_TASK_BATCH_SIZE
 
         batch_size = settings.TASK_DATA_PER_BATCH // max_data_size
 
@@ -1144,7 +1276,11 @@ class Project(ProjectMixin, models.Model):
         elif batch_size < 1:
             batch_size = 1
 
-        logger.info(f'Project {self.id}: max task data size {max_data_size} bytes, calculated batch size {batch_size}')
+        logger.info(
+            f'Project {self.id}: max task size {max_task_size} bytes, '
+            f'max annotation size {max_annotation_size} bytes, '
+            f'calculated batch size {batch_size}'
+        )
         return batch_size
 
     def __str__(self):

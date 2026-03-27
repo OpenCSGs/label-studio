@@ -93,7 +93,7 @@
       opacity: 1;
     }
 
-    &.icon {
+    > &__icon {
       background: var(--color-neutral-surface-active);
       box-shadow: inset 0 0 0 1px var(--color-primary-border-subtle);
       border-radius: 5px;

@@ -44,7 +44,7 @@
     </script>
     {% endif %}
   {% endblock %}
-  
+
   {% block app-scripts %}
   {% endblock %}
 
@@ -61,26 +61,8 @@
   </script>
 
   {% block page_labeling %}
-    <!-- <title>数据标注</title>
-    <link href="{{settings.HOSTNAME}}{% static 'images/favicon.ico' %}" rel="shortcut icon"/> -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <title>数据标注</title>
-    <meta
-      name="keywords"
-      content="开源大模型、算力平台、Huggingface、开源社区、开源社区、数据集、开源代码、算力租赁、英伟达的算力、A800、H800、新质生产力"
-    />
-    <meta
-      name="description"
-      content="OpenCSG愿景： 让大模型赋能每一个人,大模型驱动全民，推动技术创新，OpenCSG——平台有各个领域的大模型，提供模型探索体验、推理、训练、部署和应用的一站式服务，共建模型开源社区，发现、学习、定制和分享心仪的模型。"
-    />
-    <link
-      rel="shortcut icon"
-      href="https://opencsg.com/images/favicon.ico"
-    />
-
+    <title>Label Studio</title>
+    <link href="{{settings.HOSTNAME}}{% static 'images/favicon.ico' %}" rel="shortcut icon"/>
   {% endblock %}
 
   {% block head %}
@@ -130,10 +112,10 @@
       const match = key.match(prefixRegex);
       if (match) {
           const [, prefix, shortKey] = match;
-          
+
           // Get the current value
           const value = __customHotkeys[key];
-          
+
           // Check if value has active property set to false
           if (value && value.active === false) {
               // Create a copy of the value with key set to null
@@ -150,19 +132,19 @@
       // Check if custom hotkeys exist and the lookup is in there
       if (window.APP_SETTINGS?.user?.customHotkeys && lookup in window.APP_SETTINGS.user.customHotkeys) {
           const hotkeyValue = window.APP_SETTINGS.user.customHotkeys[lookup];
-          
+
           // If active is explicitly false, return a copy with key set to null
           if (hotkeyValue && hotkeyValue.active === false) {
               return {...hotkeyValue, key: null};
           }
-          
+
           // Otherwise return the original value
           return hotkeyValue;
-      } 
+      }
       // Fallback to default hotkeys if available
       else if (window.DEFAULT_HOTKEYS && lookup in window.DEFAULT_HOTKEYS) {
           return window.DEFAULT_HOTKEYS[lookup];
-      } 
+      }
       // No hotkey found
       else {
           return null;
@@ -171,12 +153,12 @@
 
   // Parse the default editor keymap
   var defaultEditorKeymap = JSON.parse({{ settings.EDITOR_KEYMAP|safe }});
-  
+
   // Merge the default keymap with custom editor hotkeys
   var mergedEditorKeymap = Object.assign({}, defaultEditorKeymap, editorCustomHotkeys);
-  
+
   window.APP_SETTINGS = Object.assign({
-    
+
     user: {
       id: {{ user.pk }},
       username: "{{user.username}}",
@@ -185,14 +167,16 @@
       initials: "{{user.get_initials}}",
 	email: "{{user.email}}",
 	customHotkeys: __customHotkeys,
-	
+
       allow_newsletters: {% if user.allow_newsletters is None %}null{% else %}{{user.allow_newsletters|yesno:"true,false"}}{% endif %},
       {% if user.avatar %}
       avatar: "{{user.avatar_url|safe}}",
       {% endif %}
+      {% block app_user_extra %}{% endblock %}
     },
     lookupHotkey: lookupHotkey,
     debug: {{settings.DEBUG|yesno:"true,false"}},
+    polling: {% if feature_flags.fflag_dev_disable_polling_killswitch_short %}false{% else %}true{% endif %},
     hostname: "{{settings.HOSTNAME}}",
     version: {{ versions|json_dumps_ensure_ascii|safe }},
     sentry_dsn: {% if settings.FRONTEND_SENTRY_DSN %}"{{ settings.FRONTEND_SENTRY_DSN }}"{% else %}null{% endif %},
@@ -201,13 +185,21 @@
     editor_keymap: mergedEditorKeymap,
     feature_flags: {{ feature_flags|json_dumps_ensure_ascii|safe }},
     feature_flags_default_value: {{ settings.FEATURE_FLAGS_DEFAULT_VALUE|json_dumps_ensure_ascii|safe }},
+    version_edition: "{{ settings.VERSION_EDITION }}",
     server_id: {{ request.server_id|json_dumps_ensure_ascii|safe }},
     collect_analytics: {{ settings.COLLECT_ANALYTICS|yesno:"true,false" }},
+    local_files_document_root: {{ settings.LOCAL_FILES_DOCUMENT_ROOT|json_dumps_ensure_ascii|safe }},
+    local_files_serving_enabled: {{ settings.LOCAL_FILES_SERVING_ENABLED|yesno:"true,false" }},
+
+    data_manager: {
+      max_users_to_display: {{ settings.DM_MAX_USERS_TO_DISPLAY }},
+    },
 
     {% block app_more_settings %}
+      page_title: "Label Studio",
       flags: {
         allow_organization_webhooks: {{settings.ALLOW_ORGANIZATION_WEBHOOKS|yesno:"true,false"}},
-        storage_persistence: {{ settings.STORAGE_PERSISTENCE|yesno:"true,false" }}, 
+        storage_persistence: {{ settings.STORAGE_PERSISTENCE|yesno:"true,false" }},
       },
     {% endblock %}
 
@@ -244,26 +236,6 @@
           }
         }
       });
-    })();
-
-    // 从URL参数中读取origin并写入Local Storage
-    (function() {
-      if (typeof(Storage) !== "undefined") {
-        try {
-          var urlParams = new URLSearchParams(window.location.search);
-          var origin = urlParams.get('origin');
-          if (origin) {
-            localStorage.setItem('origin', origin);
-            console.log('Origin saved to Local Storage from URL:', origin);
-            // 从URL中移除origin参数，避免在地址栏中显示，防止用户修改URL参数导致Local Storage被覆盖
-            urlParams.delete('origin');
-            var newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '') + window.location.hash;
-            window.history.replaceState({}, '', newUrl);
-          }
-        } catch (e) {
-          console.error('Error saving origin to Local Storage:', e);
-        }
-      }
     })();
 
   </script>

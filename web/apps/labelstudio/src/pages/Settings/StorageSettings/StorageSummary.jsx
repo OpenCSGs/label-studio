@@ -1,18 +1,19 @@
 import { format } from "date-fns/esm";
+import { useTranslation } from "react-i18next";
 import { Button, CodeBlock, IconFileCopy, Space, Tooltip } from "@humansignal/ui";
 import { DescriptionList } from "../../../components/DescriptionList/DescriptionList";
 import { modal } from "../../../components/Modal/Modal";
 import { Oneof } from "../../../components/Oneof/Oneof";
 import { getLastTraceback } from "../../../utils/helpers";
-import { useCopyText } from "@humansignal/core/lib/hooks/useCopyText";
+import { useCopyText } from "@humansignal/core";
 
 // Component to handle copy functionality within the modal
-const CopyButton = ({ msg }) => {
-  const [copyText, copied] = useCopyText(msg);
+const CopyButton = ({ msg, t }) => {
+  const [copyText, copied] = useCopyText({ defaultText: msg });
 
   return (
-    <Button variant="neutral" icon={<IconFileCopy />} onClick={copyText} disabled={copied} className="w-[7rem]">
-      {copied ? "Copied!" : "Copy"}
+    <Button variant="neutral" icon={<IconFileCopy />} onClick={() => copyText()} disabled={copied} className="w-[7rem]">
+      {copied ? t("storage.copied") : t("storage.copy")}
     </Button>
   );
 };
@@ -50,7 +51,7 @@ export const StorageSummary = ({ target, storage, className, storageTypes = [] }
       `meta = ${JSON.stringify(storage.meta)}\n`;
 
     const currentModal = modal({
-      title: "Storage Sync Error Log",
+      title: t("storage.storageSyncErrorLog"),
       body: <CodeBlock code={msg} variant="negative" className="max-h-[50vh] overflow-y-auto" />,
       footer: (
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -61,18 +62,18 @@ export const StorageSummary = ({ target, storage, className, storageTypes = [] }
                   href="https://labelstud.io/guide/storage.html#Troubleshooting"
                   target="_blank"
                   rel="noreferrer noopener"
-                  aria-label="Learn more about cloud storage troubleshooting"
+                  aria-label={t("storage.troubleshootingTips")}
                 >
-                  See docs
+                  {t("storage.seeDocs")}
                 </a>{" "}
-                for troubleshooting tips on cloud storage connections.
+                {t("storage.troubleshootingTips")}
               </>
             </div>
           )}
           <Space>
-            <CopyButton msg={msg} />
+            <CopyButton msg={msg} t={t} />
             <Button variant="primary" className="w-[7rem]" onClick={() => currentModal.close()}>
-              Close
+              {t("storage.close")}
             </Button>
           </Space>
         </div>
@@ -105,18 +106,19 @@ export const StorageSummary = ({ target, storage, className, storageTypes = [] }
             "Queued: sync job is in the queue, but not yet started",
             "In progress: sync job is running",
             "Failed: sync job stopped, some errors occurred",
+            "Completed with errors: sync job completed but some tasks had validation errors",
             "Completed: sync job completed successfully",
           ].join("\n")}
         >
-          {storageStatus === "Failed" ? (
+          {storage.status === "failed" || storage.status === "completed_with_errors" ? (
             <span
               className="cursor-pointer border-b border-dashed border-negative-border-subtle text-negative-content"
               onClick={handleButtonClick}
             >
-              Failed (View Logs)
+              {t(STATUS_KEYS[storage.status] || "storage.completed")} {t("storage.viewLogs")}
             </span>
           ) : (
-            storageStatus
+            t(STATUS_KEYS[storage.status] || "storage.completed")
           )}
         </DescriptionList.Item>
 
@@ -141,7 +143,7 @@ export const StorageSummary = ({ target, storage, className, storageTypes = [] }
         )}
 
         <DescriptionList.Item term="Last Sync">
-          {storage.last_sync ? format(new Date(storage.last_sync), "MMMM dd, yyyy ∙ HH:mm:ss") : "Not synced yet"}
+          {storage.last_sync ? format(new Date(storage.last_sync), "MMMM dd, yyyy ∙ HH:mm:ss") : t("storage.notSyncedYet")}
         </DescriptionList.Item>
       </DescriptionList>
     </div>

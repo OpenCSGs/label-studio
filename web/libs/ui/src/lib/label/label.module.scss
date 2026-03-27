@@ -15,8 +15,9 @@
     margin-top: 5px;
     font-size: 14px;
     line-height: 22px;
-    color: var(--color-neutral-content-subtle);
     display: block;
+
+    @apply text-neutral-content-subtler;
   }
 
   &__field {
@@ -78,6 +79,7 @@
   &_placement_left:not(.label_withDescription) &__field {
     display: flex;
     align-items: center;
+
   }
 
   &_placement_right.label_withDescription &__field,

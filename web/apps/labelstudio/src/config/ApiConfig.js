@@ -52,6 +52,7 @@ export const API_CONFIG = {
     updateStorage: "PATCH:/storages/:target?/:type/:pk",
     syncStorage: "POST:/storages/:target?/:type/:pk/sync",
     validateStorage: "POST:/storages/:target?/:type/validate",
+    storageFiles: "POST:/storages/:target?/:type/files",
 
     // ML
     mlBackends: "GET:/ml",
@@ -74,7 +75,7 @@ export const API_CONFIG = {
     // Version
     version: "/version",
 
-    // System Config
+    // System Config (CSGHub)
     systemConfig: "/system-config/",
 
     // Webhook
@@ -96,6 +97,9 @@ export const API_CONFIG = {
 
     accessTokenSettings: "GET:/jwt/settings",
     accessTokenUpdateSettings: "POST:/jwt/settings",
+
+    // FSM
+    fsmStateHistory: "GET:/fsm/entities/:entityType/:entityId/history",
   },
   alwaysExpectJSON: false,
 };

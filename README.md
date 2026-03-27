@@ -48,6 +48,7 @@ You can find all the generated assets, including SQLite3 database storage `label
 You can override the default launch command by appending the new arguments:
 ```bash
 docker run -it -p 8080:8080 -v $(pwd)/mydata:/label-studio/data -e CSGHUB_ENDPOINT= http://opencsg.com  heartexlabs/label-studio:latest label-studio --log-level DEBUG
+docker run -it -p 8080:8080 -v $(pwd)/mydata:/label-studio/data heartexlabs/label-studio:latest label-studio --log-level DEBUG
 ```
 
 #### Build a local image with Docker
@@ -257,3 +258,4 @@ Include a citation for Label Studio in the **References** section of your articl
 This software is licensed under the [Apache 2.0 LICENSE](/LICENSE) © [Heartex](https://www.heartex.com/). 2020-2025
 
 <img src="https://user-images.githubusercontent.com/12534576/192582529-cf628f58-abc5-479b-a0d4-8a3542a4b35e.png" title="Hey everyone!" width="180" />
+

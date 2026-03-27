@@ -14,16 +14,29 @@ export default class ErrorBoundary extends Component {
   }
 
   static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
+    // 忽略 ResizeObserver 良性错误，不显示遮罩层
+    const msg = error?.message ?? String(error);
+    if (/ResizeObserver loop/.test(msg)) {
+      return null; // 不更新 state，不显示错误 UI
+    }
     return { hasError: true, error };
   }
 
   componentDidCatch(error, { componentStack }) {
+    // 忽略 ResizeObserver 良性错误
+    const msg = error?.message ?? String(error);
+    if (/ResizeObserver loop/.test(msg)) {
+      return;
+    }
+    console.error(error);
+
     // Capture the error in Sentry, so we can fix it directly
     // Don't make the users copy and paste the stacktrace, it's not actionable
+    // Check if error has sentry_skip property (e.g., from ConfigurationError)
     captureException(error, {
       extra: {
         component_stacktrace: componentStack,
+        sentry_skip: error.sentry_skip || false,
       },
     });
     this.setState({

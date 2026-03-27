@@ -1,19 +1,20 @@
-import { useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "@humansignal/ui";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useUpdatePageTitle } from "@humansignal/core";
 import { HeidiTips } from "../../../components/HeidiTips/HeidiTips";
 import { modal } from "../../../components/Modal/Modal";
 import { Space } from "../../../components/Space/Space";
-import { Block, Elem } from "../../../utils/bem";
+import { cn } from "../../../utils/bem";
 import { FF_AUTH_TOKENS, FF_LSDV_E_297, isFF } from "../../../utils/feature-flags";
 import "./PeopleInvitation.scss";
 import { PeopleList } from "./PeopleList";
 import "./PeoplePage.scss";
-import { SelectedUser } from "./SelectedUser";
 import { TokenSettingsModal } from "@humansignal/app-common/blocks/TokenSettingsModal";
 import { IconPlus } from "@humansignal/icons";
 import { useToast } from "@humansignal/ui";
 import { InviteLink } from "./InviteLink";
-import { useTranslation } from "react-i18next";
+import { SelectedUser } from "./SelectedUser";
 
 export const PeoplePage = () => {
   const { t } = useTranslation();
@@ -21,6 +22,8 @@ export const PeoplePage = () => {
   const toast = useToast();
   const [selectedUser, setSelectedUser] = useState(null);
   const [invitationOpen, setInvitationOpen] = useState(false);
+
+  useUpdatePageTitle(t("organization.people"));
 
   const selectUser = useCallback(
     (user) => {
@@ -38,13 +41,13 @@ export const PeoplePage = () => {
       body: () => (
         <TokenSettingsModal
           onSaved={() => {
-            toast.show({ message: t("organization.apiTokensSettings") + " " + t("settings.saved") });
+            toast.show({ message: t("organization.apiTokenSettingsSaved") });
             apiSettingsModal.current?.close();
           }}
         />
       ),
     }),
-    [t],
+    [t, toast],
   );
 
   const showApiTokenSettingsModal = useCallback(() => {
@@ -57,8 +60,8 @@ export const PeoplePage = () => {
   }, []);
 
   return (
-    <Block name="people">
-      <Elem name="controls">
+    <div className={cn("people").toClassName()}>
+      <div className={cn("people").elem("controls").toClassName()}>
         <Space spread>
           <Space />
 
@@ -73,12 +76,12 @@ export const PeoplePage = () => {
               onClick={() => setInvitationOpen(true)}
               aria-label={t("organization.inviteNewMember")}
             >
-              {t("organization.addPeople")}
+              {t("organization.addMembers")}
             </Button>
           </Space>
         </Space>
-      </Elem>
-      <Elem name="content">
+      </div>
+      <div className={cn("people").elem("content").toClassName()}>
         <PeopleList
           selectedUser={selectedUser}
           defaultSelected={defaultSelected}
@@ -90,7 +93,7 @@ export const PeoplePage = () => {
         ) : (
           isFF(FF_LSDV_E_297) && <HeidiTips collection="organizationPage" />
         )}
-      </Elem>
+      </div>
       <InviteLink
         opened={invitationOpen}
         onClosed={() => {
@@ -98,9 +101,9 @@ export const PeoplePage = () => {
           setInvitationOpen(false);
         }}
       />
-    </Block>
+    </div>
   );
 };
 
-PeoplePage.title = "People"; // Will be translated in Breadcrumbs
+PeoplePage.titleKey = "organization.people";
 PeoplePage.path = "/";

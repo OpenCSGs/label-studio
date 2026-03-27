@@ -9,9 +9,9 @@ import React, {
 } from "react";
 
 import "./TaxonomySearch.scss";
-import { Block } from "../../utils/bem";
+import { cn } from "../../utils/bem";
 import type { AntTaxonomyItem } from "./NewTaxonomy";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 type TaxonomySearchProps = {
   treeData: AntTaxonomyItem[];
@@ -116,10 +116,9 @@ const TaxonomySearch = React.forwardRef<TaxonomySearchRef, TaxonomySearchProps>(
   );
 
   return (
-    <Block
-      ref={inputRef}
+    <input
+      ref={inputRef as any}
       value={inputValue}
-      tag={"input"}
       onChange={(e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
         handleSearch(e);
@@ -131,6 +130,7 @@ const TaxonomySearch = React.forwardRef<TaxonomySearchRef, TaxonomySearchProps>(
       placeholder={"Search"}
       data-testid={"taxonomy-search"}
       name={"taxonomy-search-input"}
+      className={cn("taxonomy-search-input").toClassName()}
     />
   );
 });

@@ -1,7 +1,7 @@
 import { types } from "mobx-state-tree";
 
-import Registry from "../../core/Registry";
 import ControlBase from "./Base";
+import Registry from "../../core/Registry";
 import { customTypes } from "../../core/CustomTypes";
 import { AnnotationMixin } from "../../mixins/AnnotationMixin";
 import SeparatedControlMixin from "../../mixins/SeparatedControlMixin";
@@ -31,6 +31,7 @@ import { ToolManagerMixin } from "../../mixins/ToolManagerMixin";
  * @param {boolean=} [canRotate=true]     - Whether to show or hide rotation control. Note that the anchor point in the results is different than the anchor point used when rotating with the rotation tool. For more information, see [Rotation](/templates/image_bbox#Rotation).
  * @param {boolean} [smart]               - Show smart tool for interactive pre-annotations
  * @param {boolean} [smartOnly]           - Only show smart tool for interactive pre-annotations
+ * @param {pixel|none} [snap=none]        - Snap rectangle to image pixels
  */
 const TagAttrs = types.model({
   toname: types.maybeNull(types.string),
@@ -43,6 +44,7 @@ const TagAttrs = types.model({
   fillopacity: types.maybeNull(customTypes.range()),
 
   canrotate: types.optional(types.boolean, true),
+  snap: types.optional(types.string, "none"),
 });
 
 const Model = types
