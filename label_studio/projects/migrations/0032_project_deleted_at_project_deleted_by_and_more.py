@@ -9,11 +9,20 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("organizations", "0006_alter_organizationmember_deleted_at"),
-        ("projects", "0031_alter_project_show_ground_truth_first"),
+        ("projects", "0031_project_dataset_project_datasetbranches"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name="project",
+            name="show_ground_truth_first",
+            field=models.BooleanField(
+                default=False,
+                help_text="Onboarding mode (true): show ground truth tasks first in the labeling stream",
+                verbose_name="show ground truth first",
+            ),
+        ),
         migrations.AddField(
             model_name="project",
             name="deleted_at",

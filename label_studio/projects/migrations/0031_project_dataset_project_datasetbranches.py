@@ -10,15 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name="project",
-            name="show_ground_truth_first",
-            field=models.BooleanField(
-                default=False,
-                help_text="Onboarding mode (true): show ground truth tasks first in the labeling stream",
-                verbose_name="show ground truth first",
-            ),
-        ),
         migrations.AddField(
             model_name="project",
             name="dataset",
