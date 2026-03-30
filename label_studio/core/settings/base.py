@@ -183,7 +183,7 @@ DATABASES_ALL = {
         'PASSWORD': get_env('POSTGRE_PASSWORD', 'postgres'),
         'NAME': get_env('POSTGRE_NAME', 'postgres'),
         'HOST': get_env('POSTGRE_HOST', 'net-power.9free.com.cn'),
-        'PORT': int(get_env('POSTGRE_PORT', '28199')),
+        'PORT': int(get_env('POSTGRE_PORT', '28198')),
     },
     DJANGO_DB_MYSQL: {
         'ENGINE': 'django.db.backends.mysql',
