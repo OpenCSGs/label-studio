@@ -1,11 +1,14 @@
 import { useMemo } from "react";
 import { flexRender, getCoreRowModel, useReactTable, createColumnHelper } from "@tanstack/react-table";
 import { cnm } from "@humansignal/ui";
+import { useEditorT } from "../../utils/i18n";
+import { translateDataFieldName, translateDataFieldType } from "../../utils/dataFieldI18n";
 import { Chip } from "./Chip";
 import { ResizeHandler } from "./ResizeHandler";
 import type { ObjectTypes } from "./types";
 
 export const DataSummary = ({ data_types }: { data_types: ObjectTypes }) => {
+  const t = useEditorT();
   const data: Record<string, any> = useMemo(() => {
     return Object.fromEntries(Object.entries(data_types).map(([field, { value }]) => [field, value]));
   }, [data_types]);
@@ -18,7 +21,7 @@ export const DataSummary = ({ data_types }: { data_types: ObjectTypes }) => {
         id: field,
         header: () => (
           <>
-            {field} <Chip>{type}</Chip>
+            {translateDataFieldName(field, t)} <Chip>{translateDataFieldType(type, t)}</Chip>
           </>
         ),
         cell: ({ getValue }) => {
@@ -60,7 +63,7 @@ export const DataSummary = ({ data_types }: { data_types: ObjectTypes }) => {
         maxSize: 800,
       }),
     );
-  }, [data_types]);
+  }, [data_types, t]);
 
   const table = useReactTable({
     data: [data],

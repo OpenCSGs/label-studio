@@ -3,12 +3,14 @@ import { Button, Space } from "@humansignal/ui";
 import { cn } from "../../utils/bem";
 import { isSelfServe } from "../../utils/billing";
 import { FF_BULK_ANNOTATION, isFF } from "../../utils/feature-flags";
+import { useEditorT } from "../../utils/i18n";
 import { AutoAcceptToggle } from "../AnnotationTab/AutoAcceptToggle";
 import { DynamicPreannotationsToggle } from "../AnnotationTab/DynamicPreannotationsToggle";
 import { GroundTruth } from "../CurrentEntity/GroundTruth";
 import { EditingHistory } from "./HistoryActions";
 
 export const Actions = ({ store }) => {
+  const t = useEditorT();
   const annotationStore = store.annotationStore;
   const entity = annotationStore.selected;
   const isPrediction = entity?.type === "prediction";
@@ -34,12 +36,12 @@ export const Actions = ({ store }) => {
       )}
       <Button
         type="text"
-        aria-label="Settings"
+        aria-label={t("editor.toolbarSettings")}
         size="small"
         look="string"
         variant="neutral"
         onClick={() => store.toggleSettings()}
-        tooltip="Settings"
+        tooltip={t("editor.toolbarSettings")}
         className="!p-0"
       >
         <IconSettings />

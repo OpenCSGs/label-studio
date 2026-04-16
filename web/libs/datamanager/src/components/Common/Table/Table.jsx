@@ -184,16 +184,16 @@ export const Table = observer(
           <FieldsButton
             className={cn("table-toolbar").elem("customize-button").toString()}
             wrapper={FieldsButton.Checkbox}
-            title={"Columns"}
+            title={_t("dataManager.columns")}
             size="small"
             trailingIcon={<Icon icon={IconChevronDown} />}
-            tooltip={"Customize Columns"}
+            tooltip={_t("dataManager.customizeColumns")}
             data-testid="columns-picker-quickview"
           />
           <DensityToggle size="small" onChange={onDensityChange} data-testid="density-toggle-quickview" />
         </div>
       );
-    }, [toolbarVisible, onDensityChange]);
+    }, [toolbarVisible, onDensityChange, _t]);
 
     const renderTableHeader = useCallback(
       ({ style }) => (

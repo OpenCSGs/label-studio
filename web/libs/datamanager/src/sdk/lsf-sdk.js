@@ -603,6 +603,20 @@ export class LSFWrapper {
   };
 
   /** @private */
+  dmT(key, fallbackEn) {
+    const translated = this.datamanager.t(key);
+    if (!translated || translated === key) return fallbackEn;
+    return translated;
+  }
+
+  /** @private */
+  dmTInterpolated(key, options, fallbackFn) {
+    const translated = this.datamanager.t(key, options);
+    if (!translated || translated === key) return fallbackFn(options);
+    return translated;
+  }
+
+  /** @private */
   showOperationToast(status, successMessage, errorAction, result) {
     if (status === 200 || status === 201) {
       this.datamanager.invoke("toast", { message: successMessage, type: "info" });
@@ -610,10 +624,18 @@ export class LSFWrapper {
       const requestId = result?.$meta?.headers?.get("x-ls-request-id");
       const supportUrl = requestId ? `${SUPPORT_URL}?${SUPPORT_URL_REQUEST_ID_PARAM}=${requestId}` : SUPPORT_URL;
 
+      const before = this.dmTInterpolated(
+        "dataManager.toastErrorBeforeSupport",
+        { action: errorAction },
+        ({ action }) => `${action}, please try again or `,
+      );
+      const linkText = this.dmT("dataManager.contactSupportTeam", "contact our team");
+      const after = this.dmT("dataManager.toastErrorAfterSupport", " if it doesn't help.");
+
       this.datamanager.invoke("toast", {
         message: (
           <span>
-            {errorAction}, please try again or{" "}
+            {before}
             <a
               href={supportUrl}
               target="_blank"
@@ -621,9 +643,9 @@ export class LSFWrapper {
               style={{ color: "inherit", textDecoration: "underline" }}
               onClick={(e) => e.stopPropagation()}
             >
-              contact our team
-            </a>{" "}
-            if it doesn't help.
+              {linkText}
+            </a>
+            {after}
           </span>
         ),
         type: "error",
@@ -651,7 +673,12 @@ export class LSFWrapper {
     );
     const status = result?.$meta?.status;
 
-    this.showOperationToast(status, "Annotation saved successfully", "Annotation is not saved", result);
+    this.showOperationToast(
+      status,
+      this.dmT("dataManager.annotationSavedSuccessfully", "Annotation saved successfully"),
+      this.dmT("dataManager.annotationNotSaved", "Annotation is not saved"),
+      result,
+    );
 
     if (exitStream) return this.exitStream();
   };
@@ -682,7 +709,12 @@ export class LSFWrapper {
     });
     const status = result?.$meta?.status;
 
-    this.showOperationToast(status, "Annotation updated successfully", "Annotation is not updated", result);
+    this.showOperationToast(
+      status,
+      this.dmT("dataManager.annotationUpdatedSuccessfully", "Annotation updated successfully"),
+      this.dmT("dataManager.annotationNotUpdated", "Annotation is not updated"),
+      result,
+    );
 
     this.datamanager.invoke("updateAnnotation", ls, annotation, result);
 
@@ -745,7 +777,12 @@ export class LSFWrapper {
   };
 
   draftToast = (status, result = null) => {
-    this.showOperationToast(status, "Draft saved successfully", "Draft is not saved", result);
+    this.showOperationToast(
+      status,
+      this.dmT("dataManager.draftSavedSuccessfully", "Draft saved successfully"),
+      this.dmT("dataManager.draftNotSaved", "Draft is not saved"),
+      result,
+    );
   };
 
   needsDraftSave = (annotation) => {
@@ -821,7 +858,9 @@ export class LSFWrapper {
     const canSkip = taskAllowSkip || hasForceSkipPermission;
     if (!canSkip) {
       console.warn("Task cannot be skipped: allow_skip is false and user lacks manager role");
-      this.showOperationToast(400, null, "This task cannot be skipped", { error: "Task cannot be skipped" });
+      this.showOperationToast(400, null, this.dmT("dataManager.taskCannotBeSkipped", "This task cannot be skipped"), {
+        error: "Task cannot be skipped",
+      });
       return;
     }
     const result = await this.submitCurrentAnnotation(
@@ -847,7 +886,12 @@ export class LSFWrapper {
     );
     const status = result?.$meta?.status;
 
-    this.showOperationToast(status, "Task skipped successfully", "Task is not skipped", result);
+    this.showOperationToast(
+      status,
+      this.dmT("dataManager.taskSkippedSuccessfully", "Task skipped successfully"),
+      this.dmT("dataManager.taskNotSkipped", "Task is not skipped"),
+      result,
+    );
   };
 
   onUnskipTask = async () => {

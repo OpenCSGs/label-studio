@@ -1,4 +1,6 @@
 import { format, formatDistanceToNow } from "date-fns";
+import { enUS } from "date-fns/locale/en-US";
+import { zhCN } from "date-fns/locale/zh-CN";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -30,6 +32,13 @@ type TimeAgoProps = React.ComponentPropsWithoutRef<"time"> & {
   date: number | string | Date;
 };
 
+const getTimeAgoLocale = () => {
+  if (typeof window === "undefined") return { locale: enUS, isZh: false };
+  const lng = (window as { __LABELSTUDIO_I18N__?: { language?: string } }).__LABELSTUDIO_I18N__?.language;
+  const isZh = lng === "zh";
+  return { locale: isZh ? zhCN : enUS, isZh };
+};
+
 export const TimeAgo = ({ date, ...rest }: TimeAgoProps) => {
   const [timestamp, forceUpdate] = useState(Date.now());
   const fromTS = useMemo(() => {
@@ -52,15 +61,19 @@ export const TimeAgo = ({ date, ...rest }: TimeAgoProps) => {
     };
   }, [date, timestamp]);
 
-  // Replace the longer english text when less than a minute in time. This is done this way due to a limiting API
-  // with the date-fns function. If we require an entire overhaul to the messaging for the en-US locale, revisit this and replace with an entire locale override option.
-  const text =
-    formatDistanceToNow(fromTS, { addSuffix: true }) === "less than a minute ago"
-      ? "seconds ago"
-      : formatDistanceToNow(fromTS, { addSuffix: true });
+  const { locale, isZh } = getTimeAgoLocale();
+  let text = formatDistanceToNow(fromTS, { addSuffix: true, locale });
+  // Shorter phrasing in English only; Chinese uses date-fns zhCN wording (e.g. 不到 1 分钟前).
+  if (!isZh && text === "less than a minute ago") {
+    text = "seconds ago";
+  }
 
   return (
-    <time dateTime={format(fromTS, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")} title={format(fromTS, "PPpp")} {...rest}>
+    <time
+      dateTime={format(fromTS, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}
+      title={format(fromTS, "PPpp", { locale })}
+      {...rest}
+    >
       {text}
     </time>
   );

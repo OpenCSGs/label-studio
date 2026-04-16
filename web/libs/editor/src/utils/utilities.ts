@@ -1,4 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
+import { enUS } from "date-fns/locale/en-US";
+import { zhCN } from "date-fns/locale/zh-CN";
 import { destroy, detach } from "mobx-state-tree";
 import camelCase from "lodash/camelCase";
 import snakeCase from "lodash/snakeCase";
@@ -258,11 +260,14 @@ export const triggerResizeEvent = () => {
   window.dispatchEvent(event);
 };
 
-export const humanDateDiff = (date: string | number): string => {
-  const fnsDate = formatDistanceToNow(new Date(date), { addSuffix: true });
+const getDistanceLocale = () => {
+  if (typeof window === "undefined") return enUS;
+  const lng = (window as { __LABELSTUDIO_I18N__?: { language?: string } }).__LABELSTUDIO_I18N__?.language;
+  return lng === "zh" ? zhCN : enUS;
+};
 
-  if (fnsDate === "less than a minute ago") return "just now";
-  return fnsDate;
+export const humanDateDiff = (date: string | number): string => {
+  return formatDistanceToNow(new Date(date), { addSuffix: true, locale: getDistanceLocale() });
 };
 
 export const destroyMSTObject = (object: any) => {

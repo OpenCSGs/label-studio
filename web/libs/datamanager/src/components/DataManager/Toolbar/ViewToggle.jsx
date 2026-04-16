@@ -5,10 +5,11 @@ import { Tooltip } from "@humansignal/ui";
 
 const viewInjector = inject(({ store }) => ({
   view: store.currentView,
+  t: store?.t ?? ((k) => k),
 }));
 
 export const ViewToggle = viewInjector(
-  observer(({ view, size, ...rest }) => {
+  observer(({ view, size, t, ...rest }) => {
     return (
       <RadioGroup
         size={size}
@@ -17,16 +18,16 @@ export const ViewToggle = viewInjector(
         {...rest}
         style={{ "--button-padding": "0 var(--spacing-tighter)" }}
       >
-        <Tooltip title="List view">
+        <Tooltip title={t("dataManager.listView")}>
           <div>
-            <RadioGroup.Button value="list" aria-label="Switch to list view">
+            <RadioGroup.Button value="list" aria-label={t("dataManager.switchToListView")}>
               <IconList />
             </RadioGroup.Button>
           </div>
         </Tooltip>
-        <Tooltip title="Grid view">
+        <Tooltip title={t("dataManager.gridView")}>
           <div>
-            <RadioGroup.Button value="grid" aria-label="Switch to grid view">
+            <RadioGroup.Button value="grid" aria-label={t("dataManager.switchToGridView")}>
               <IconGrid />
             </RadioGroup.Button>
           </div>

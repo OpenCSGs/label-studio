@@ -19,6 +19,7 @@ import { Tooltip, Userpic } from "@humansignal/ui";
 import { Space } from "../../common/Space/Space";
 import { cn } from "../../utils/bem";
 import { humanDateDiff, userDisplayName } from "../../utils/utilities";
+import { useEditorT } from "../../utils/i18n";
 import { EmptyState } from "../SidePanels/Components/EmptyState";
 import "./AnnotationHistory.scss";
 
@@ -119,6 +120,7 @@ const AnnotationHistoryComponent: FC<any> = ({
   const hasChanges = annotation.history.hasChanges;
   const infoIsHidden = annotationStore.store.hasInterface("annotations:hide-info");
   const currentUser = window.APP_SETTINGS?.user;
+  const t = useEditorT();
 
   // if user makes changes at the first time there are no draft yet
   const isDraftSelected =
@@ -133,8 +135,8 @@ const AnnotationHistoryComponent: FC<any> = ({
   const defaultEmptyState = (
     <EmptyState
       icon={<IconHistoryRewind width={24} height={24} />}
-      header="View annotation activity"
-      description={<>See a log of user actions for this annotation</>}
+      header={t("annotation.viewAnnotationActivity")}
+      description={<>{t("annotation.seeLogOfUserActions")}</>}
     />
   );
 

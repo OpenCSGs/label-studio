@@ -8,6 +8,7 @@ import { useAtomValue } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Input } from "../../../components/Form";
+import "./PeopleInvitation.scss";
 
 const linkAtom = atomWithQuery(() => ({
   queryKey: ["invite-link"],

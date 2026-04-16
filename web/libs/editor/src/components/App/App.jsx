@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react";
 import { Result, Spin } from "antd";
-import { getEnv, getRoot } from "mobx-state-tree";
+import { getRoot } from "mobx-state-tree";
 import { observer, Provider } from "mobx-react";
 
 /**
@@ -24,7 +24,6 @@ import "../../tags/Custom";
  * Utils and common components
  */
 import { Space } from "../../common/Space/Space";
-import { Button } from "@humansignal/ui";
 import { cn } from "../../utils/bem";
 import { isSelfServe } from "../../utils/billing";
 import { FF_BULK_ANNOTATION, FF_DEV_3873, FF_LSDV_4620_3_ML, FF_SIMPLE_INIT, isFF } from "../../utils/feature-flags";
@@ -47,6 +46,7 @@ import { SidePanels } from "../SidePanels/SidePanels";
 import { SideTabsPanels } from "../SidePanels/TabPanels/SideTabsPanels";
 import { TopBar } from "../TopBar/TopBar";
 import { ViewAll } from "./ViewAll";
+import { EditorMessageResult, NothingToLabelView } from "./EditorEmptyStates";
 
 /**
  * Styles
@@ -66,55 +66,19 @@ class App extends Component {
   }
 
   renderSuccess() {
-    return (
-      <div className={cn("editor").toClassName()}>
-        <Result status="success" title={getEnv(this.props.store).messages.DONE} />
-      </div>
-    );
+    return <EditorMessageResult messageKey="editor.msgDone" />;
   }
 
   renderNoAnnotation() {
-    return (
-      <div className={cn("editor").toClassName()}>
-        <Result status="success" title={getEnv(this.props.store).messages.NO_COMP_LEFT} />
-      </div>
-    );
+    return <EditorMessageResult messageKey="editor.msgNoAnnotationsLeft" />;
   }
 
   renderNothingToLabel(store) {
-    return (
-      <div
-        className={cn("editor").toClassName()}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          paddingBottom: "30vh",
-        }}
-      >
-        <Result status="success" title={getEnv(this.props.store).messages.NO_NEXT_TASK} />
-        <div className={cn("sub__result").toClassName()}>All tasks in the queue have been completed</div>
-        {store.taskHistory.length > 0 && (
-          <Button
-            onClick={(e) => store.prevTask(e, true)}
-            variant="neutral"
-            className="mx-0 my-4"
-            aria-label="Previous task"
-          >
-            Go to Previous Task
-          </Button>
-        )}
-      </div>
-    );
+    return <NothingToLabelView store={store} />;
   }
 
   renderNoAccess() {
-    return (
-      <div className={cn("editor").toClassName()}>
-        <Result status="warning" title={getEnv(this.props.store).messages.NO_ACCESS} />
-      </div>
-    );
+    return <EditorMessageResult status="warning" messageKey="editor.msgNoAccess" />;
   }
 
   renderConfigValidationException(store) {
