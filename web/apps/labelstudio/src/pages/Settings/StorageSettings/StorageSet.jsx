@@ -32,6 +32,7 @@ export const StorageSet = forwardRef(
   ) => {
     const api = useContext(ApiContext);
     const project = useAtomValue(projectAtom);
+    const { t } = useTranslation();
 
     const useNewStorageScreen = ff.isActive(ff.FF_NEW_STORAGES);
 

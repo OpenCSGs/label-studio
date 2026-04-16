@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 
 import { IconViewAll, IconPlus } from "@humansignal/icons";
+import { useEditorT } from "../../utils/i18n";
 import { Button } from "@humansignal/ui";
 import { ff } from "@humansignal/core";
 import { cn } from "../../utils/bem";
@@ -16,6 +17,7 @@ import { CurrentTask } from "./CurrentTask";
 import "./TopBar.scss";
 
 export const TopBar = observer(({ store }) => {
+  const t = useEditorT();
   const annotationStore = store.annotationStore;
   const entity = annotationStore?.selected;
   const isPrediction = entity?.type === "prediction";
@@ -38,11 +40,11 @@ export const TopBar = observer(({ store }) => {
             <Button
               className={"topbar__button"}
               type={isViewAll ? undefined : "string"}
-              aria-label="Compare all annotations"
+              aria-label={t("annotation.ariaCompareAllAnnotations")}
               onClick={annotationStore.toggleViewingAllAnnotations}
               variant={isViewAll ? "primary" : "neutral"}
               look={isViewAll ? "filled" : "string"}
-              tooltip="Compare all annotations"
+              tooltip={t("annotation.tooltipCompareAllAnnotations")}
               size="small"
             >
               <IconViewAll />
@@ -52,11 +54,11 @@ export const TopBar = observer(({ store }) => {
             <Button
               className={"topbar__button"}
               type={isViewAll ? undefined : "text"}
-              aria-label="Create an annotation"
+              aria-label={t("annotation.ariaCreateAnnotation")}
               variant="neutral"
               size="small"
               look="string"
-              tooltip="Create a new annotation"
+              tooltip={t("annotation.tooltipCreateNewAnnotation")}
               onClick={(event) => {
                 event.preventDefault();
                 const created = store.annotationStore.createAnnotation();

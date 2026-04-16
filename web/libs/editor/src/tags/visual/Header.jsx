@@ -8,6 +8,7 @@ import { guidGenerator } from "../../utils/unique";
 import { clamp } from "../../utils/utilities";
 import "./Header.scss";
 import { Typography } from "@humansignal/ui";
+import { useEditorT } from "../../utils/i18n";
 
 /**
  * The `Header` tag is used to show a header on the labeling interface.
@@ -42,8 +43,13 @@ const Model = types.model({
 const HeaderModel = types.compose("HeaderModel", Model, ProcessAttrsMixin);
 
 const HtxHeader = observer(({ item }) => {
+  const t = useEditorT();
   const size = clamp(Number.parseInt(item.size), 1, 5);
   const style = item.style ? Tree.cssConverter(item.style) : { margin: "10px 0" };
+  const raw = item._value ?? "";
+  const templateKey = `labelingConfig.templateTitles.${raw}`;
+  const translated = t(templateKey);
+  const displayText = translated !== templateKey ? translated : raw;
   const sizeMap = {
     1: { variant: "display", size: "small" },
     2: { variant: "headline", size: "large" },
@@ -59,7 +65,7 @@ const HtxHeader = observer(({ item }) => {
       style={style}
       className={item.underline ? "underline" : ""}
     >
-      {item._value}
+      {displayText}
     </Typography>
   );
 });

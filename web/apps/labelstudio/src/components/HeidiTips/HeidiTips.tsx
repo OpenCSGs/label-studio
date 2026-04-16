@@ -6,5 +6,5 @@ import { useRandomTip } from "./hooks";
 export const HeidiTips: FC<HeidiTipsProps> = memo(({ collection }) => {
   const [tip, dismiss, onLinkClick] = useRandomTip(collection);
 
-  return tip && <HeidiTip tip={tip} onDismiss={dismiss} onLinkClick={onLinkClick} />;
+  return tip && <HeidiTip collection={collection} tip={tip} onDismiss={dismiss} onLinkClick={onLinkClick} />;
 });

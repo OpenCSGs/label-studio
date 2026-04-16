@@ -27,6 +27,7 @@ import { isFF } from "../../utils/feature-flags";
 // eslint-disable-next-line
 // @ts-ignore
 import { confirm } from "../../common/Modal/Modal";
+import { useEditorT } from "../../utils/i18n";
 import { type ContextMenuAction, ContextMenu, ContextMenuTrigger, type MenuActionOnClick } from "../ContextMenu";
 import "./AnnotationButton.scss";
 
@@ -110,6 +111,7 @@ export const AnnotationButton = observer(
 
     const AnnotationButtonContextMenu = injector(
       observer(({ entity, capabilities, store }: AnnotationButtonInterface) => {
+        const t = useEditorT();
         const annotationLink = useMemo(() => {
           const url = new URL(window.location.href);
           if (entity.pk) {
@@ -143,19 +145,19 @@ export const AnnotationButton = observer(
           copyLink();
           dropdown?.close();
           toast?.show({
-            message: "Annotation link copied to clipboard",
+            message: t("annotation.toastAnnotationLinkCopied"),
             type: ToastType.info,
           });
-        }, [entity, copyLink]);
+        }, [copyLink, dropdown, toast, t]);
         const [copyAnnotationId] = useCopyText({ defaultText: entity.pk?.toString() ?? entity.id?.toString() ?? "" });
         const copyAnnotationIdHandler = useCallback<MenuActionOnClick>(() => {
           copyAnnotationId();
           dropdown?.close();
           toast?.show({
-            message: "Annotation ID copied to clipboard",
+            message: t("annotation.toastAnnotationIdCopied"),
             type: ToastType.info,
           });
-        }, [entity, copyAnnotationId]);
+        }, [copyAnnotationId, dropdown, toast, t]);
         const openPerformanceDashboard = useCallback<MenuActionOnClick>(() => {
           // Only available in LSE
           const isLSE = (window as any).APP_SETTINGS?.version?.edition === "Enterprise";
@@ -191,21 +193,15 @@ export const AnnotationButton = observer(
         const deleteAnnotation = useCallback(() => {
           clickHandler();
           confirm({
-            title: "Delete annotation?",
-            body: (
-              <>
-                This will <strong>delete all existing regions</strong>. Are you sure you want to delete them?
-                <br />
-                This action cannot be undone.
-              </>
-            ),
+            title: t("annotation.deleteAnnotationConfirmTitle"),
+            body: t("annotation.deleteAnnotationConfirmBody"),
             buttonLook: "negative",
-            okText: "Delete",
+            okText: t("annotation.deleteAnnotationConfirmOk"),
             onOk: () => {
               entity.list.deleteAnnotation(entity);
             },
           });
-        }, [entity]);
+        }, [entity, t]);
         const isPrediction = entity.type === "prediction";
         const isDraft = !isDefined(entity.pk);
         const showGroundTruth = capabilities.groundTruthEnabled && !isPrediction && !isDraft;
@@ -218,13 +214,15 @@ export const AnnotationButton = observer(
         const actions = useMemo<ContextMenuAction[]>(
           () => [
             {
-              label: "Copy Annotation ID",
+              label: t("annotation.menuCopyAnnotationId"),
               onClick: copyAnnotationIdHandler,
               icon: <IconClipboardCheck width={20} height={20} />,
               enabled: !isDraft,
             },
             {
-              label: `${isGroundTruth ? "Unset " : "Set "} as Ground Truth`,
+              label: t(
+                isGroundTruth ? "annotation.menuUnsetAsGroundTruth" : "annotation.menuSetAsGroundTruth",
+              ),
               onClick: setGroundTruth,
               icon: isGroundTruth ? (
                 <IconStar color="#FFC53D" width={iconSize} height={iconSize} />
@@ -234,31 +232,31 @@ export const AnnotationButton = observer(
               enabled: showGroundTruth,
             },
             {
-              label: "Duplicate Annotation",
+              label: t("annotation.menuDuplicateAnnotation"),
               onClick: duplicateAnnotation,
               icon: <IconDuplicate width={20} height={20} />,
               enabled: showDuplicateAnnotation,
             },
             {
-              label: "Copy Annotation Link",
+              label: t("annotation.menuCopyAnnotationLink"),
               onClick: linkAnnotation,
               icon: <IconLink />,
               enabled: !isDraft && store.hasInterface("annotations:copy-link"),
             },
             {
-              label: "Open Performance Dashboard",
+              label: t("annotation.menuOpenPerformanceDashboard"),
               onClick: openPerformanceDashboard,
               icon: <IconAnalytics width={20} height={20} />,
               enabled: isLSE && hasProjectId && !isDraft && !isPrediction,
             },
             {
-              label: "Show Other Annotations",
+              label: t("annotation.menuShowOtherAnnotations"),
               onClick: showOtherAnnotations,
               icon: <IconViewAll width={20} height={20} />,
               enabled: true,
             },
             {
-              label: "Delete Annotation",
+              label: t("annotation.menuDeleteAnnotation"),
               onClick: deleteAnnotation,
               icon: <IconTrashRect />,
               separator: true,
@@ -279,6 +277,8 @@ export const AnnotationButton = observer(
             copyAnnotationIdHandler,
             openPerformanceDashboard,
             showOtherAnnotations,
+            deleteAnnotation,
+            t,
           ],
         );
 

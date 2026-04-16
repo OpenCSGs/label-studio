@@ -6,6 +6,7 @@ import "./Config.scss";
 import { EMPTY_CONFIG } from "./Template";
 import { API_CONFIG } from "../../../config/ApiConfig";
 import { useAPI } from "../../../providers/ApiProvider";
+import { translateApiValidationMessage } from "../../../utils/translateApiValidationMessage";
 
 const configClass = cn("configure");
 
@@ -141,22 +142,27 @@ export const Preview = ({ config, data, error, loading, project }) => {
   }, []);
 
   const { t } = useTranslation();
+  const errorDetailRaw = error?.detail === "Validation error" ? t("labelingConfig.validationError") : error?.detail;
+  const errorDetail =
+    typeof errorDetailRaw === "string"
+      ? translateApiValidationMessage(errorDetailRaw, t)
+      : errorDetailRaw;
   return (
     <div className={configClass.elem("preview")}>
       <h3>{t("labelingConfig.uiPreview")}</h3>
       {error && (
         <div className={configClass.elem("preview-error")}>
           <h2>
-            {error.detail} {error.id}
+            {errorDetail} {error.id}
           </h2>
           {error.validation_errors?.non_field_errors?.map?.((err) => (
-            <p key={err}>{err}</p>
+            <p key={String(err)}>{translateApiValidationMessage(err, t)}</p>
           ))}
           {error.validation_errors?.label_config?.map?.((err) => (
-            <p key={err}>{err}</p>
+            <p key={String(err)}>{translateApiValidationMessage(err, t)}</p>
           ))}
           {error.validation_errors?.map?.((err) => (
-            <p key={err}>{err}</p>
+            <p key={String(err)}>{translateApiValidationMessage(err, t)}</p>
           ))}
         </div>
       )}

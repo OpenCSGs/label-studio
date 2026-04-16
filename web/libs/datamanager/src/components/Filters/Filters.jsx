@@ -67,7 +67,7 @@ export const Filters = injector(({ views, currentView, filters, t }) => {
             />
           ))
         ) : (
-          <div className={cn("filters").elem("empty").toClassName()}>No filters applied</div>
+          <div className={cn("filters").elem("empty").toClassName()}>{t("dataManager.noFiltersApplied")}</div>
         )}
       </div>
       <div className={cn("filters").elem("actions").toClassName()}>
@@ -77,7 +77,7 @@ export const Filters = injector(({ views, currentView, filters, t }) => {
           onClick={() => currentView.createFilter()}
           leading={<IconPlus className="!h-3 !w-3" />}
         >
-          Add {filters.length ? "Another Filter" : "Filter"}
+          {filters.length ? t("dataManager.addAnotherFilter") : t("dataManager.addFilter")}
         </Button>
 
         {!sidebarEnabled ? (
@@ -85,9 +85,9 @@ export const Filters = injector(({ views, currentView, filters, t }) => {
             look="string"
             type="link"
             size="small"
-            tooltip="Pin to sidebar"
+            tooltip={t("dataManager.pinToSidebar")}
             onClick={() => views.expandFilters()}
-            aria-label="Pin filters to sidebar"
+            aria-label={t("dataManager.pinFiltersToSidebar")}
           >
             <IconChevronRight className="!w-4 !h-4" />
           </Button>

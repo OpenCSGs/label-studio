@@ -1,12 +1,12 @@
-import { format, isValid } from "date-fns";
-import { dateTimeFormat } from "../CellViews/DateTimeCell";
+import { isValid } from "date-fns";
 import clsx from "clsx";
+import { formatTableDateTime } from "../../utils/dateFnsLocale";
 
 export const valueToString = (value) => {
   if (typeof value === "string") return value;
   /* if undefined or null we'll treat it as empty string */
   if (value === undefined || value === null) return "";
-  if (value instanceof Date && isValid(value)) return format(value, dateTimeFormat);
+  if (value instanceof Date && isValid(value)) return formatTableDateTime(value);
 
   try {
     /* JSON.stringify will handle JSON and non-strings, non-null, non-undefined */

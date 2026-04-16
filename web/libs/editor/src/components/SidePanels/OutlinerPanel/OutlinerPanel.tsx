@@ -9,6 +9,7 @@ import { IconInfo } from "@humansignal/icons";
 import { IconLsLabeling } from "@humansignal/ui";
 import { EmptyState } from "../Components/EmptyState";
 import { getDocsUrl } from "../../../utils/docs";
+import { useEditorT } from "../../../utils/i18n";
 
 // Local type definitions based on ViewControls and RegionStore
 type GroupingOptions = "manual" | "label" | "type";
@@ -96,24 +97,28 @@ const OutlinerStandAlone: FC<OutlinerPanelProps> = ({ regions }) => {
   );
 };
 
-const OutlinerEmptyState = () => (
-  <EmptyState
-    icon={<IconLsLabeling width={24} height={24} />}
-    header="Labeled regions will appear here"
-    description={
-      <>
-        <span>
-          Start labeling and track your results
-          <br />
-          using this panel
-        </span>
-      </>
-    }
-    learnMore={{ href: getDocsUrl("guide/labeling"), text: "Learn more", testId: "regions-panel-learn-more" }}
-  />
-);
+const OutlinerEmptyState = () => {
+  const t = useEditorT();
+  return (
+    <EmptyState
+      icon={<IconLsLabeling width={24} height={24} />}
+      header={t("annotation.labeledRegionsWillAppearHere")}
+      description={
+        <>
+          <span>
+            {t("annotation.startLabelingAndTrackResults")}
+            <br />
+            {t("annotation.usingThisPanel")}
+          </span>
+        </>
+      }
+      learnMore={{ href: getDocsUrl("guide/labeling"), text: t("annotation.learnMore"), testId: "regions-panel-learn-more" }}
+    />
+  );
+};
 
 const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ regions }) => {
+  const t = useEditorT();
   const allRegionsHidden = regions?.regions?.length > 0 && regions?.filter?.length === 0;
 
   const hiddenRegions = useMemo(() => {
@@ -127,9 +132,9 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
       {allRegionsHidden ? (
         <div className={cn("filters-info").toClassName()}>
           <IconInfo width={21} height={20} />
-          <div className={cn("filters-info").elem("filters-title").toClassName()}>All regions hidden</div>
+          <div className={cn("filters-info").elem("filters-title").toClassName()}>{t("annotation.allRegionsHidden")}</div>
           <div className={cn("filters-info").elem("filters-description").toClassName()}>
-            Adjust or remove the filters to view
+            {t("annotation.adjustOrRemoveFiltersToView")}
           </div>
         </div>
       ) : regions?.regions?.length > 0 ? (
@@ -141,10 +146,13 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
                 <div className={cn("filters-info").toClassName()}>
                   <IconInfo width={21} height={20} />
                   <div className={cn("filters-info").elem("filters-title").toClassName()}>
-                    There {hiddenRegions === 1 ? "is" : "are"} {hiddenRegions} hidden region{hiddenRegions > 1 && "s"}
+                    {t(
+                      hiddenRegions === 1 ? "annotation.hiddenRegionSingular" : "annotation.hiddenRegionsPlural",
+                      { count: hiddenRegions },
+                    )}
                   </div>
                   <div className={cn("filters-info").elem("filters-description").toClassName()}>
-                    Adjust or remove filters to view
+                    {t("annotation.adjustOrRemoveFiltersToView")}
                   </div>
                 </div>
               )

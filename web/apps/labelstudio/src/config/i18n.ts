@@ -4,6 +4,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import enTranslations from "../locales/en.json";
 import zhTranslations from "../locales/zh.json";
+import heidiTipsZh from "../locales/heidiTips/zh.json";
 
 // 从 sessionStorage 或 URL 参数中获取语言
 const getLanguageFromStorage = (): string => {
@@ -28,7 +29,12 @@ i18n
   .init({
     resources: {
       en: { translation: enTranslations as Record<string, unknown> },
-      zh: { translation: zhTranslations as Record<string, unknown> },
+      zh: {
+        translation: {
+          ...(zhTranslations as Record<string, unknown>),
+          heidiTips: heidiTipsZh,
+        },
+      },
     },
     lng: language,
     fallbackLng: "en",

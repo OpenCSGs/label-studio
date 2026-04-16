@@ -113,7 +113,7 @@ const ConfigureControl = ({ control, template }) => {
           className="lsf-textarea-ls p-2 px-3"
         />
         <Button type="button" size="small" look="outlined" onClick={onAddLabels} aria-label={t("labelingConfig.addLabels")}>
-          Add
+          {t("labelingConfig.add")}
         </Button>
       </form>
       <div className={configClass.elem("current-labels")}>
@@ -136,6 +136,7 @@ const ConfigureControl = ({ control, template }) => {
 };
 
 const ConfigureSettings = ({ template }) => {
+  const { t } = useTranslation();
   const { settings } = template;
 
   if (!settings) return null;
@@ -168,13 +169,17 @@ const ConfigureSettings = ({ template }) => {
           }
           template.render();
         };
+        const arrayOptions = options.type.map((opt) => ({
+          value: opt,
+          label: t(`labelingConfig.labelPlacement.${opt}`),
+        }));
         return (
           <li key={key}>
             <Select
               triggerClassName="border"
               value={value}
               onChange={onChange}
-              options={options.type}
+              options={arrayOptions}
               label={options.title}
               isInline={true}
               dataTestid={`select-trigger-${options.title.replace(/\s+/g, "-").replace(":", "").toLowerCase()}-${value}`}
@@ -224,7 +229,7 @@ const ConfigureSettings = ({ template }) => {
   return (
     <ul className={configClass.elem("settings")}>
       <li>
-        <h4>Configure settings</h4>
+        <h4>{t("labelingConfig.configureSettings")}</h4>
         <ul className={configClass.elem("object-settings")}>{items}</ul>
       </li>
     </ul>
@@ -233,6 +238,7 @@ const ConfigureSettings = ({ template }) => {
 
 // configure value source for `obj` object tag
 const ConfigureColumn = ({ template, obj, columns }) => {
+  const { t, i18n } = useTranslation();
   const valueAttr = obj.hasAttribute("valueList") ? "valueList" : "value";
   const value = obj.getAttribute(valueAttr)?.replace(/^\$/, "");
   // if there is a value set already and it's not in the columns
@@ -285,15 +291,23 @@ const ConfigureColumn = ({ template, obj, columns }) => {
     const cols = (columns ?? []).map((col) => {
       return {
         value: col,
-        label: col === DEFAULT_COLUMN ? "<imported file>" : `$${col}`,
+        label: col === DEFAULT_COLUMN ? t("labelingConfig.importedFile") : `$${col}`,
       };
     });
     if (!columns?.length) {
-      cols.push({ value, label: "<imported file>" });
+      cols.push({ value, label: t("labelingConfig.importedFile") });
     }
-    cols.push({ value: "-", label: "<set manually>" });
+    cols.push({ value: "-", label: t("labelingConfig.setManually") });
     return cols;
-  }, [columns, DEFAULT_COLUMN, value]);
+  }, [columns, DEFAULT_COLUMN, value, t, i18n.language]);
+
+  const useFromLabel =
+    template.objects > 1
+      ? t("labelingConfig.useFromField", {
+          tag: obj.tagName.toLowerCase(),
+          name: obj.getAttribute("name"),
+        })
+      : t("labelingConfig.useFrom", { tag: obj.tagName.toLowerCase() });
 
   return (
     <>
@@ -304,10 +318,8 @@ const ConfigureColumn = ({ template, obj, columns }) => {
         isInline={true}
         label={
           <>
-            Use {obj.tagName.toLowerCase()}
-            {template.objects > 1 && ` for ${obj.getAttribute("name")}`}
-            {" from "}
-            {columns?.length > 0 && columns[0] !== DEFAULT_COLUMN && "field "}
+            {useFromLabel}
+            {columns?.length > 0 && columns[0] !== DEFAULT_COLUMN && <> {t("labelingConfig.field")} </>}
           </>
         }
         labelProps={{ className: "inline-flex" }}
@@ -319,19 +331,17 @@ const ConfigureColumn = ({ template, obj, columns }) => {
 };
 
 const ConfigureColumns = ({ columns, template }) => {
+  const { t } = useTranslation();
   if (!template.objects.length) return null;
 
   return (
     <div className={configClass.elem("object")}>
-      <h4>Configure data</h4>
+      <h4>{t("labelingConfig.configureData")}</h4>
       {template.objects.length > 1 && columns?.length > 0 && columns.length < template.objects.length && (
-        <p className={configClass.elem("object-error")}>This template requires more data then you have for now</p>
+        <p className={configClass.elem("object-error")}>{t("labelingConfig.templateRequiresMoreData")}</p>
       )}
       {columns?.length === 0 && (
-        <p className={configClass.elem("object-error")}>
-          To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code
-          mode.
-        </p>
+        <p className={configClass.elem("object-error")}>{t("labelingConfig.uploadDataToSelectFields")}</p>
       )}
       {template.objects.map((obj) => (
         <ConfigureColumn key={obj.getAttribute("name")} {...{ obj, template, columns }} />
@@ -433,12 +443,12 @@ const Configurator = ({
         setTemplate(config);
       } catch (e) {
         setParserError({
-          detail: "Parser error",
+          detail: t("labelingConfig.parserError"),
           validation_errors: [e.message],
         });
       }
     },
-    [setTemplate],
+    [setTemplate, t],
   );
 
   const onSave = async () => {

@@ -24,6 +24,7 @@ export type HeidiTipsProps = {
 };
 
 export type HeidiTipProps = {
+  collection: keyof TipsCollection | "authPage";
   tip: Tip;
   onDismiss: () => void;
   onLinkClick: () => void;

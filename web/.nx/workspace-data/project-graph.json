@@ -26094,12 +26094,17 @@
       },
       {
         "source": "labelstudio",
-        "target": "app-common",
+        "target": "npm:react-i18next",
         "type": "static"
       },
       {
         "source": "labelstudio",
-        "target": "npm:react-i18next",
+        "target": "npm:i18next",
+        "type": "static"
+      },
+      {
+        "source": "labelstudio",
+        "target": "app-common",
         "type": "static"
       },
       {
@@ -26120,11 +26125,6 @@
       {
         "source": "labelstudio",
         "target": "npm:@sentry/react",
-        "type": "static"
-      },
-      {
-        "source": "labelstudio",
-        "target": "npm:i18next",
         "type": "static"
       },
       {
@@ -60156,5 +60156,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1773889155572
+  "computedAt": 1775728779881
 }
