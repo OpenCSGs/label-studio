@@ -1,0 +1,196 @@
+{
+  "dismissTooltip": "不再显示",
+  "projectCreation": {
+    "find_and_manage_projects": {
+      "title": "你知道吗？",
+      "content": "使用 Label Studio Enterprise 将项目整理到工作区后，可以更轻松地找到项目。",
+      "link": "了解更多"
+    },
+    "faster_provisioning": {
+      "title": "更快完成访问授权",
+      "content": "在 Label Studio Enterprise 中通过工作区为成员授权，简化向多个项目分配人员的流程。",
+      "link": "了解更多"
+    },
+    "annotator_dashboard": {
+      "title": "你知道吗？",
+      "content": "在 Enterprise 平台中，管理员可查看标注员绩效看板，以优化资源分配、改进团队管理并支持薪酬决策。",
+      "link": "了解更多"
+    },
+    "access_to_projects": {
+      "title": "你知道吗？",
+      "content": "您可以使用 Label Studio Enterprise 控制内部成员与外部标注员对特定项目和工作区的访问权限。",
+      "link": "了解更多"
+    },
+    "templates": {
+      "title": "你知道吗？",
+      "content": "您可以使用或修改大量模板来配置标注界面，或使用简单的类 XML 标签从头编写自定义配置。",
+      "link": "了解更多"
+    },
+    "genai_templates": {
+      "title": "面向生成式 AI 的标注",
+      "content": "Label Studio 提供用于监督式 LLM 微调、RAG 检索排序、RLHF、聊天机器人评估等场景的模板。",
+      "link": "浏览模板"
+    },
+    "databricks_uc_live": {
+      "title": "新增存储连接器",
+      "content": "您可以将 Label Studio Enterprise 连接到 Databricks Unity Catalog (UC) Volume，以导入文件作为任务并导出标注结果。",
+      "link": "了解更多"
+    },
+    "starter_cloud_live": {
+      "title": "你知道吗？",
+      "content": "试试面向小团队与项目优化的 Label Studio Starter Cloud。",
+      "link": "了解更多"
+    },
+    "access_to_projects_live": {
+      "title": "你知道吗？",
+      "content": "您可以使用 Label Studio Enterprise 控制内部成员与外部标注员对特定项目和工作区的访问权限。",
+      "link": "了解更多"
+    },
+    "genai_templates_live": {
+      "title": "面向生成式 AI 的标注",
+      "content": "Label Studio 提供用于监督式 LLM 微调、RAG 检索排序、RLHF、聊天机器人评估等场景的模板。",
+      "link": "浏览模板"
+    }
+  },
+  "organizationPage": {
+    "team_growing": {
+      "title": "团队似乎在壮大！",
+      "content": "使用 Label Studio Enterprise 为团队分配角色，并在项目与工作区级别控制对敏感数据的访问。",
+      "link": "了解更多"
+    },
+    "enable_sso": {
+      "title": "希望简化并加强登录安全？",
+      "content": "使用 SAML、SCIM2 或 LDAP 为团队启用单点登录（SSO），配合 Label Studio Enterprise。",
+      "link": "了解更多"
+    },
+    "starter_cloud_live": {
+      "title": "你知道吗？",
+      "content": "Label Studio 现已推出面向小团队与项目优化的 Starter Cloud 方案。",
+      "link": "了解更多"
+    },
+    "automate_distribution": {
+      "title": "希望自动化任务分发？",
+      "content": "创建规则、自动化任务如何分发给标注员，并在每位标注员的视图中仅显示分配给其的任务，并控制任务可见性。",
+      "link": "了解更多"
+    },
+    "share_knowledge": {
+      "title": "与社区分享经验",
+      "content": "有问题或技巧想与其他 Label Studio 用户分享？加入社区 Slack 频道获取最新动态。",
+      "link": "加入社区"
+    },
+    "integration_points": {
+      "title": "你知道吗？",
+      "content": "Label Studio 支持与云存储、机器学习模型及多种常用工具的多点集成，以自动化您的机器学习流水线。",
+      "link": "查看集成目录"
+    },
+    "team_growing_live": {
+      "title": "团队似乎在壮大！",
+      "content": "使用 Label Studio Enterprise 为团队分配角色，并在项目与工作区级别控制对敏感数据的访问。",
+      "link": "了解更多"
+    },
+    "enable_sso_live": {
+      "title": "希望简化并加强登录安全？",
+      "content": "使用 SAML、SCIM2 或 LDAP 为团队启用单点登录（SSO），配合 Label Studio Enterprise。",
+      "link": "了解更多"
+    },
+    "share_knowledge_live": {
+      "title": "与社区分享经验",
+      "content": "有问题或技巧想与其他 Label Studio 用户分享？加入社区 Slack 频道获取最新动态。",
+      "link": "加入社区"
+    },
+    "integration_points_live": {
+      "title": "你知道吗？",
+      "content": "Label Studio 支持与云存储、机器学习模型及多种常用工具的多点集成，以自动化您的机器学习流水线。",
+      "link": "查看集成目录"
+    },
+    "compliance_live": {
+      "title": "需要合规？",
+      "content": "Label Studio Enterprise 符合 SOC 2 与 HIPAA。需要更高控制权？可本地部署以获得最大灵活性。",
+      "link": "联系我们"
+    }
+  },
+  "projectSettings": {
+    "auto_labeling": {
+      "title": "用自动标注节省时间",
+      "content": "在 Enterprise 平台中使用自动化，即时标注大规模数据集且不牺牲质量。",
+      "link": "了解更多"
+    },
+    "quality_and_agreement": {
+      "title": "你知道吗？",
+      "content": "借助 Label Studio Enterprise 的审核工作流与任务一致性分数，您可以提升标注数据质量。",
+      "link": "了解更多"
+    },
+    "evals": {
+      "title": "评估生成式 AI 模型",
+      "content": "在 Enterprise 平台中结合自动化与人工监督，评估并保障大语言模型质量。",
+      "link": "了解更多"
+    },
+    "infrastructure_and_upgrades": {
+      "title": "你知道吗？",
+      "content": "使用 Enterprise 云服务可节省基础设施与升级管理时间，并获得更多自动化、质量与团队管理功能。",
+      "link": "了解更多"
+    },
+    "starter_cloud_live": {
+      "title": "你知道吗？",
+      "content": "试试面向小团队与项目优化的 Label Studio Starter Cloud。",
+      "link": "了解更多"
+    },
+    "connect_ml_models": {
+      "title": "你知道吗？",
+      "content": "您可以通过后端 SDK 连接机器学习模型，利用预标注或主动学习节省时间。",
+      "link": "了解更多"
+    },
+    "auto_labeling_live": {
+      "title": "用自动标注节省时间",
+      "content": "在 Enterprise 平台中使用自动化，即时标注大规模数据集且不牺牲质量。",
+      "link": "了解更多"
+    },
+    "evals_live": {
+      "title": "评估生成式 AI 模型",
+      "content": "在 Enterprise 平台中结合自动化与人工监督，评估并保障大语言模型质量。",
+      "link": "了解更多"
+    },
+    "connect_ml_models_live": {
+      "title": "你知道吗？",
+      "content": "您可以通过后端 SDK 连接机器学习模型，利用预标注或主动学习节省时间。",
+      "link": "了解更多"
+    },
+    "lse_pdf_live": {
+      "title": "原生 PDF 支持即将推出！",
+      "content": "Label Studio Enterprise 将提供原生 PDF 支持。",
+      "link": "申请抢先体验"
+    }
+  },
+  "authPage": {
+    "wrapped_webinar_2025_live": {
+      "title": "12 月 10 日直播",
+      "content": "与 Label Studio 产品团队一起快速了解本年度最重要的发布内容",
+      "link": "2025 年 12 月 10 日 上午 9 点（太平洋时间）"
+    },
+    "prompts_auto_labeling_live": {
+      "title": "使用 Prompt 自动标注",
+      "content": "使用大语言模型为成千上万条任务即时生成准确的预标注。",
+      "link": "了解更多"
+    },
+    "legalbench_live": {
+      "title": "基准背后",
+      "content": "了解 Legalbenchmarks.ai 如何构建并扩展面向实际合同起草任务的基准，并结合 LLM 评判与人工审核。",
+      "link": "了解更多"
+    },
+    "chat_live": {
+      "title": "全新企业级功能！",
+      "content": "对话现已成为原生数据类型，可用于创建和评估基于聊天的 AI 体验。",
+      "link": "了解更多"
+    },
+    "starter_cloud_live": {
+      "title": "你知道吗？",
+      "content": "试试面向小团队与项目优化的 Label Studio Starter Cloud。",
+      "link": "了解更多"
+    },
+    "enterprise_platform_live": {
+      "title": "你知道吗？",
+      "content": "Label Studio 提供功能更丰富、自动化程度更高的企业版，帮助您更快完成标注并保障最高质量。",
+      "link": "了解更多"
+    }
+  }
+}
