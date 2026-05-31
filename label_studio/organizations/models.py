@@ -18,12 +18,20 @@ OrganizationMemberMixin = load_func(settings.ORGANIZATION_MEMBER_MIXIN)
 class OrganizationMember(OrganizationMemberMixin, models.Model):
     """ """
 
+    ROLE_MEMBER = 'member'
+    ROLE_ADMIN = 'admin'
+    ROLE_CHOICES = (
+        (ROLE_MEMBER, _('Member')),
+        (ROLE_ADMIN, _('Admin')),
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='om_through', help_text='User ID'
     )
     organization = models.ForeignKey(
         'organizations.Organization', on_delete=models.CASCADE, help_text='Organization ID'
     )
+    role = models.CharField(_('role'), max_length=20, choices=ROLE_CHOICES, default=ROLE_MEMBER)
 
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
@@ -143,7 +151,7 @@ class Organization(OrganizationMixin, models.Model):
             return
 
         with transaction.atomic():
-            om = OrganizationMember(user=user, organization=self)
+            om = OrganizationMember(user=user, organization=self, role=OrganizationMember.ROLE_MEMBER)
             om.save()
 
             return om
