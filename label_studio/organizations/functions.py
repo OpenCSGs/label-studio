@@ -12,7 +12,11 @@ def create_organization(title, created_by, legacy_api_tokens_enabled=False, **kw
 
     with transaction.atomic():
         org = Organization.objects.create(title=title, created_by=created_by, **kwargs)
-        OrganizationMember.objects.create(user=created_by, organization=org)
+        OrganizationMember.objects.create(
+            user=created_by,
+            organization=org,
+            role=OrganizationMember.ROLE_MEMBER,
+        )
         if JWT_ACCESS_TOKEN_ENABLED:
             # set auth tokens to new system for new users, unless specified otherwise
             org.jwt.api_tokens_enabled = True
