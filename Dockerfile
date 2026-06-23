@@ -1,11 +1,10 @@
-# syntax=docker/dockerfile:1
 ARG NODE_VERSION=22
 ARG PYTHON_VERSION=3.13
 ARG POETRY_VERSION=2.1.4
 ARG VERSION_OVERRIDE
 ARG BRANCH_OVERRIDE
 ARG BUILD_CN=false
-ARG BASE_IMAGE_PATH=
+ARG BASE_IMAGE_PATH
 
 ################################ Overview
 
@@ -93,7 +92,7 @@ RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     set -eux; \
     if [ "$BUILD_CN" = "true" ]; then \
-      sed -i 's#http://deb.debian.org/#https://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list.d/debian.sources; \
+      sed -i 's#http://deb.debian.org/#https://mirrors.aliyun.com/#' /etc/apt/sources.list.d/debian.sources; \
     fi; \
     apt-get update; \
     apt-get install --no-install-recommends -y build-essential git; \
@@ -115,9 +114,9 @@ ARG INCLUDE_DEV=false
 # Install dependencies without dev packages
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR,sharing=locked \
     if [ "$BUILD_CN" = "true" ]; then \
-      poetry config repositories.tuna https://pypi.tuna.tsinghua.edu.cn/simple/ && \
+      poetry config repositories.aliyun https://mirrors.aliyun.com/pypi/simple/ && \
       poetry config pypi-token.pypi --unset && \
-      poetry source add --priority=primary tuna https://pypi.tuna.tsinghua.edu.cn/simple/; \
+      poetry source add --priority=primary aliyun https://mirrors.aliyun.com/pypi/simple/; \
     fi && \
     poetry lock && \
     poetry check --lock && \
@@ -161,14 +160,14 @@ ARG BUILD_CN=false
 RUN --mount=type=cache,target="/var/cache/apt",sharing=locked \
     --mount=type=cache,target="/var/lib/apt/lists",sharing=locked \
     if [ "$BUILD_CN" = "true" ]; then \
-      sed -i 's#http://deb.debian.org/#https://mirrors.tuna.tsinghua.edu.cn/#' /etc/apt/sources.list.d/debian.sources; \
+      sed -i 's#http://deb.debian.org/#https://mirrors.aliyun.com/#' /etc/apt/sources.list.d/debian.sources; \
     fi; \
     apt-get update; \
     apt-get install --no-install-recommends -y libexpat1 libgl1 libglx-mesa0 libglib2.0-0t64 gnupg2 curl nginx; \
     apt-get clean; rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
-    mkdir -p $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR $OPT_DIR; \
+    mkdir -p $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR $OPT_DIR /var/log/nginx /etc/nginx ; \
     chown -R 1001:0 $LS_DIR $LABEL_STUDIO_BASE_DATA_DIR $OPT_DIR /var/log/nginx /etc/nginx
 
 COPY --chown=1001:0 deploy/default.conf /etc/nginx/nginx.conf
