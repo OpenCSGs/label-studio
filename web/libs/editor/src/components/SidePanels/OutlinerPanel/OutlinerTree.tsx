@@ -18,6 +18,7 @@ import {
 import Registry from "../../../core/Registry";
 import { PER_REGION_MODES } from "../../../mixins/PerRegionModes";
 import { cn } from "../../../utils/bem";
+import { useEditorT } from "../../../utils/i18n";
 import { FF_DEV_2755, FF_DEV_3873, isFF } from "../../../utils/feature-flags";
 import { flatten, isDefined, isMacOS } from "../../../utils/utilities";
 import { NodeIcon } from "../../Node/Node";
@@ -388,6 +389,7 @@ const RootTitle: FC<any> = observer(
     isArea,
     ...props
   }) => {
+    const t = useEditorT();
     const hovered = item?.highlighted;
     const [collapsed, setCollapsed] = useState(false);
 
@@ -420,7 +422,7 @@ const RootTitle: FC<any> = observer(
             )}
             {(item?.isDrawing || item?.incomplete) && (
               <span className={cn("outliner-item").elem("incomplete").toClassName()}>
-                <Tooltip title={`Incomplete ${item.type?.replace("region", "") ?? "region"}`}>
+                <Tooltip title={t("annotation.incompleteRegion", { type: item.type?.replace("region", "") ?? "region" })}>
                   <IconWarning />
                 </Tooltip>
               </span>
@@ -474,6 +476,7 @@ const injector = inject(({ store }) => {
 
 const RegionControls: FC<RegionControlsProps> = injector(
   observer(({ hovered, item, entity, collapsed, regions, hasControls, type, toggleCollapsed, store }) => {
+    const t = useEditorT();
     const { regions: regionStore } = useContext(OutlinerContext);
 
     const hidden = useMemo(() => {
@@ -515,7 +518,7 @@ const RegionControls: FC<RegionControlsProps> = injector(
           .toClassName()}
       >
         {isFF(FF_DEV_3873) ? (
-          <Tooltip title={"Confidence Score"}>
+          <Tooltip title={t("annotation.confidenceScore")}>
             <div className={cn("outliner-item").elem("control-wrapper").toClassName()}>
               <div className={cn("outliner-item").elem("control").mod({ type: "predict" }).toClassName()}>
                 {item?.origin === "prediction" && <IconSparks style={{ width: 18, height: 18 }} />}
@@ -553,7 +556,7 @@ const RegionControls: FC<RegionControlsProps> = injector(
               onClick={onToggleLocked}
               variant="neutral"
               look="string"
-              tooltip={item?.locked ? "Unlock Region" : "Lock Region"}
+              tooltip={item?.locked ? t("editor.regionActions.unlockRegion") : t("editor.regionActions.lockRegion")}
             />
           </div>
           <div className={cn("outliner-item").elem("control").mod({ type: "visibility" }).toClassName()}>

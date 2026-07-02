@@ -9,6 +9,7 @@ import { IconEraserTool } from "@humansignal/icons";
 import { Tool } from "../components/Toolbar/Tool";
 import { Range } from "../common/Range/Range";
 import { BrushCursorMixin } from "./Brush";
+import { useEditorT } from "../utils/i18n";
 
 const MIN_SIZE = 1;
 const MAX_SIZE = 50;
@@ -28,9 +29,10 @@ const IconDot = ({ size }) => {
 };
 
 const ToolView = observer(({ item }) => {
+  const t = useEditorT();
   return (
     <Tool
-      label="Eraser"
+      label={t("annotation.toolEraser")}
       ariaLabel="eraser"
       shortcut="tool:eraser"
       active={item.selected}

@@ -1,8 +1,10 @@
 import { observer } from "mobx-react";
 import type { MSTTimelineRegion } from "../../Timeline/Types";
+import { useEditorT } from "../../../utils/i18n";
 import styles from "./TimelineRegionEditor.module.scss";
 
 export const TimelineRegionEditor = observer(({ region }: { region: MSTTimelineRegion }) => {
+  const t = useEditorT();
   const { start, end } = region.ranges[0];
   const length = region.object.length;
 
@@ -18,9 +20,23 @@ export const TimelineRegionEditor = observer(({ region }: { region: MSTTimelineR
 
   return (
     <div className={styles.container}>
-      <Field label="Start frame" value={start} onChange={changeStartTimeHandler} region={region} min={1} max={end} />
-      <Field label="End frame" value={end} onChange={changeEndTimeHandler} region={region} min={start} max={length} />
-      <Field label="Duration" value={end - start + 1} region={region} />
+      <Field
+        label={t("annotation.startFrame")}
+        value={start}
+        onChange={changeStartTimeHandler}
+        region={region}
+        min={1}
+        max={end}
+      />
+      <Field
+        label={t("annotation.endFrame")}
+        value={end}
+        onChange={changeEndTimeHandler}
+        region={region}
+        min={start}
+        max={length}
+      />
+      <Field label={t("annotation.duration")} value={end - start + 1} region={region} />
     </div>
   );
 });

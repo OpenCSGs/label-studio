@@ -1,5 +1,6 @@
 import { types } from "mobx-state-tree";
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 
 import ProcessAttrsMixin from "../../mixins/ProcessAttrs";
 import Registry from "../../core/Registry";
@@ -43,13 +44,14 @@ const Model = types.model({
 const HeaderModel = types.compose("HeaderModel", Model, ProcessAttrsMixin);
 
 const HtxHeader = observer(({ item }) => {
-  const t = useEditorT();
+  const { t } = useTranslation();
+  const editorT = useEditorT();
   const size = clamp(Number.parseInt(item.size), 1, 5);
   const style = item.style ? Tree.cssConverter(item.style) : { margin: "10px 0" };
   const raw = item._value ?? "";
   const templateKey = `labelingConfig.templateTitles.${raw}`;
-  const translated = t(templateKey);
-  const displayText = translated !== templateKey ? translated : raw;
+  const translated = editorT(templateKey);
+  const displayText = translated !== templateKey ? translated : t(raw, { defaultValue: raw });
   const sizeMap = {
     1: { variant: "display", size: "small" },
     2: { variant: "headline", size: "large" },

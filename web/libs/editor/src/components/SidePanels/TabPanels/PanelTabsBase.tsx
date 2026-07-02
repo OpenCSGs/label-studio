@@ -439,7 +439,7 @@ export const PanelTabsBase: FC<BasePropsWithChildren> = ({
                   <div
                     className={cn("tabs-panel").elem("toggle").mod({ detached, collapsed, alignment }).toClassName()}
                     onClick={handleGroupPanelToggle}
-                    data-tooltip={`${tooltipText} Group`}
+                    data-tooltip={visible && !collapsed ? t("annotation.collapseGroup") : t("annotation.expandGroup")}
                   >
                     {Side.left === alignment ? <IconChevronLeft /> : <IconChevronRight />}
                   </div>

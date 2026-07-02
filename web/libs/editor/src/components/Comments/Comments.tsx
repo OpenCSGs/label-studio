@@ -1,5 +1,6 @@
 import { type FC, useEffect } from "react";
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "../../utils/bem";
 import { CommentForm } from "./Comment/CommentForm";
@@ -11,6 +12,7 @@ import "./Comments.scss";
 
 export const Comments: FC<{ annotationStore: any; commentStore: any; cacheKey?: string }> = observer(
   ({ annotationStore, commentStore, cacheKey }) => {
+    const { t } = useTranslation();
     const mounted = useMounted();
 
     const loadComments = async () => {
@@ -32,7 +34,7 @@ export const Comments: FC<{ annotationStore: any; commentStore: any; cacheKey?: 
     useEffect(() => {
       const confirmCommentsLoss = (e: any) => {
         if (commentStore.hasUnsaved) {
-          e.returnValue = "You have unpersisted comments which will be lost if continuing.";
+          e.returnValue = t("annotation.unpersistedCommentsWarning");
         }
 
         return e;

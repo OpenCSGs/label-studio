@@ -339,8 +339,13 @@ class FileUpload(models.Model):
                     '.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac',
                     '.mp4', '.avi', '.mov', '.mkv', '.webm'
                 )
+                # HTML/XML are imported as a single hypertext asset (one file -> one task)
+                hypertext_asset = file_format and file_format.lower() in ('.html', '.htm', '.xml')
                 is_supported = (
-                    file_upload.format_could_be_tasks_list or file_format == '.json' or media_asset
+                    file_upload.format_could_be_tasks_list
+                    or file_format == '.json'
+                    or media_asset
+                    or hypertext_asset
                 )
                 if base_name.startswith('.') or not is_supported:
                     logger.warning('Skipping non-task-list file during import: %s', file_upload.file.name)
@@ -411,8 +416,13 @@ class FileUpload(models.Model):
                     '.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac',
                     '.mp4', '.avi', '.mov', '.mkv', '.webm'
                 )
+                # HTML/XML are imported as a single hypertext asset (one file -> one task)
+                hypertext_asset = file_format and file_format.lower() in ('.html', '.htm', '.xml')
                 is_supported = (
-                    file_upload.format_could_be_tasks_list or file_format == '.json' or media_asset
+                    file_upload.format_could_be_tasks_list
+                    or file_format == '.json'
+                    or media_asset
+                    or hypertext_asset
                 )
                 if base_name.startswith('.') or not is_supported:
                     logger.warning('Skipping non-task-list file during import: %s', file_upload.file.name)

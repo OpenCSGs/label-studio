@@ -144,8 +144,8 @@ class DataExport(object):
         return sorted(formats, key=lambda f: f.get('disabled', False))
 
     @staticmethod
-    def generate_export_file(project, tasks, output_format, download_resources, get_args, hostname=None, request=None):
-        """Generate export file and return it as an open file object. request 可选，用于 CSGHub 上传。"""
+    def generate_export_file(project, tasks, output_format, download_resources, get_args, hostname=None, request=None, target_dataset='', target_branch=''):
+        """Generate export file and return it as an open file object. request 可选，用于 CSGHub 上传。target_dataset 和 target_branch 为用户指定的目标数据集和分支。"""
         now = datetime.now()
         data = json.dumps(tasks, ensure_ascii=False)
         md5 = hashlib.md5(json.dumps(data).encode('utf-8')).hexdigest()   # nosec
@@ -170,7 +170,8 @@ class DataExport(object):
                 output_file = files[0]
                 ext = os.path.splitext(output_file)[-1]
                 filename = name + os.path.splitext(output_file)[-1]
-                if request and getattr(project, 'dataset', None) and getattr(request.user, 'user_token', None):
+                # CSGHub 上传：使用用户指定的目标数据集和分支
+                if request and target_dataset and target_branch and getattr(request.user, 'user_token', None):
                     target_dir = os.path.join(settings.EXPORT_DIR, f'project_{project.id}')
                     os.makedirs(target_dir, exist_ok=True)
                     shutil.copy2(output_file, os.path.join(target_dir, filename))
@@ -178,7 +179,7 @@ class DataExport(object):
                     shutil.copy2(input_json, os.path.join(target_dir, name + '.json'))
                     shutil.copy2(os.path.join(settings.EXPORT_DIR, name + '-info.json'), os.path.join(target_dir, name + '-info.json'))
                     try:
-                        upload_without_cache_check(request, project, target_dir)
+                        upload_without_cache_check(request, target_dataset, target_branch, target_dir)
                     except Exception as e:
                         logger.exception('CSGHub 上传失败: %s', e)
                 out = path_to_open_binary_file(output_file)
@@ -187,7 +188,8 @@ class DataExport(object):
             zip_base = os.path.join(os.path.dirname(tmp_dir), name)
             zip_path = shutil.make_archive(zip_base, 'zip', tmp_dir)
             filename = name + '.zip'
-            if request and getattr(project, 'dataset', None) and getattr(request.user, 'user_token', None):
+            # CSGHub 上传：使用用户指定的目标数据集和分支
+            if request and target_dataset and target_branch and getattr(request.user, 'user_token', None):
                 target_dir = os.path.join(settings.EXPORT_DIR, f'project_{project.id}')
                 os.makedirs(target_dir, exist_ok=True)
                 shutil.copy2(zip_path, os.path.join(target_dir, filename))
@@ -195,7 +197,7 @@ class DataExport(object):
                 shutil.copy2(input_json, os.path.join(target_dir, name + '.json'))
                 shutil.copy2(os.path.join(settings.EXPORT_DIR, name + '-info.json'), os.path.join(target_dir, name + '-info.json'))
                 try:
-                    upload_without_cache_check(request, project, target_dir)
+                    upload_without_cache_check(request, target_dataset, target_branch, target_dir)
                 except Exception as e:
                     logger.exception('CSGHub 上传失败: %s', e)
             out = path_to_open_binary_file(zip_path)

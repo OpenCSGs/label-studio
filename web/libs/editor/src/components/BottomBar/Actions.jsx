@@ -24,11 +24,11 @@ export const Actions = ({ store }) => {
       {store.description && store.hasInterface("instruction") && (
         <Button
           type="text"
-          aria-label="Instructions"
+          aria-label={t("annotation.instructions")}
           size="small"
           variant="neutral"
           look="string"
-          tooltip="Show instructions"
+          tooltip={t("annotation.showInstructions")}
           onClick={() => store.toggleDescription()}
         >
           <IconInfoOutline />

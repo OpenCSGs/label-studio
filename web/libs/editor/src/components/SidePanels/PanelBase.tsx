@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { cn } from "../../utils/bem";
+import { useEditorT } from "../../utils/i18n";
 import { IconArrowLeft, IconArrowRight, IconOutlinerCollapse, IconOutlinerExpand } from "@humansignal/icons";
 
 import "./PanelBase.scss";
@@ -94,6 +95,7 @@ export const PanelBase: FC<PanelBaseProps> = ({
   onPositionChangeBegin,
   children,
 }) => {
+  const t = useEditorT();
   const headerRef = useRef<HTMLDivElement>();
   const panelRef = useRef<HTMLDivElement>();
   const resizerRef = useRef<HTMLDivElement>();
@@ -166,8 +168,8 @@ export const PanelBase: FC<PanelBaseProps> = ({
   }, [detached, visible, alignment]);
 
   const tooltipText = useMemo(() => {
-    return `${visible ? "Collapse" : "Expand"} ${tooltip}`;
-  }, [visible, tooltip]);
+    return `${visible ? t("annotation.collapse") : t("annotation.expand")} ${tooltip}`;
+  }, [visible, tooltip, t]);
 
   useEffect(() => {
     Object.assign(handlers.current, {

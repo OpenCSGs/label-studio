@@ -37,12 +37,13 @@ export const ViewToggle = viewInjector(
   }),
 );
 
-export const DataStoreToggle = viewInjector(({ view, size, ...rest }) => {
+export const DataStoreToggle = viewInjector(({ view, size, t, ...rest }) => {
+  const _t = t ?? ((k) => k);
   return (
     <RadioGroup value={view.target} size={size} onChange={(e) => view.setTarget(e.target.value)} {...rest}>
-      <RadioGroup.Button value="tasks">Tasks</RadioGroup.Button>
+      <RadioGroup.Button value="tasks">{_t("dataManager.tasks")}</RadioGroup.Button>
       <RadioGroup.Button value="annotations" disabled>
-        Annotations
+        {_t("dataManager.annotations")}
       </RadioGroup.Button>
     </RadioGroup>
   );

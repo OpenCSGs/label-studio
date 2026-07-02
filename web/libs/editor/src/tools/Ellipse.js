@@ -4,6 +4,7 @@ import BaseTool, { DEFAULT_DIMENSIONS } from "./Base";
 import ToolMixin from "../mixins/Tool";
 import { TwoPointsDrawingTool } from "../mixins/DrawingTool";
 import { NodeViews } from "../components/Node/Node";
+import { editorT } from "../utils/i18n";
 
 const _Tool = types
   .model("EllipseTool", {
@@ -23,7 +24,7 @@ const _Tool = types
         };
       },
       get viewTooltip() {
-        return "Ellipse region";
+        return editorT("annotation.toolEllipse");
       },
       get iconComponent() {
         return self.dynamic ? NodeViews.EllipseRegionModel.altIcon : NodeViews.EllipseRegionModel.icon;

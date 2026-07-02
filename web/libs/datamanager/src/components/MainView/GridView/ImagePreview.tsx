@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, type CSSProperties, useCallback } from "react";
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import styles from "./GridPreview.module.scss";
 import { cn } from "@humansignal/ui";
 
@@ -18,6 +19,7 @@ type ImagePreviewProps = {
 
 // @todo constrain the position of the image to the container
 const ImagePreview = observer(({ task, field }: ImagePreviewProps) => {
+  const { t } = useTranslation();
   const src = task.data?.[field] ?? "";
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -217,7 +219,7 @@ const ImagePreview = observer(({ task, field }: ImagePreviewProps) => {
         <img
           ref={imageRef}
           src={src}
-          alt="Task Preview"
+          alt={t("dataManager.taskPreview")}
           style={imageStyle}
           className={styles.image}
           onLoad={handleImageLoad}

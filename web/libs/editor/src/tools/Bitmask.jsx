@@ -8,6 +8,7 @@ import { DrawingTool } from "../mixins/DrawingTool";
 import { Tool } from "../components/Toolbar/Tool";
 import { Range } from "../common/Range/Range";
 import { NodeViews } from "../components/Node/Node";
+import { useEditorT } from "../utils/i18n";
 
 const MIN_SIZE = 1;
 const MAX_SIZE = 50;
@@ -27,9 +28,10 @@ const IconDot = ({ size }) => {
 };
 
 const ToolView = observer(({ item }) => {
+  const t = useEditorT();
   return (
     <Tool
-      label="Bitmask"
+      label={t("annotation.toolBitmask")}
       ariaLabel="bitmask-tool"
       active={item.selected}
       shortcut={item.shortcut}

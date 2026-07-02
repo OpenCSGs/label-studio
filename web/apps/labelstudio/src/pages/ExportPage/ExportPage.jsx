@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { Button, ToastType, useToast } from "@humansignal/ui";
 import { useTranslation } from "react-i18next";
-import { Form, Input } from "../../components/Form";
+import { Form, Input, Select } from "../../components/Form";
 import { Modal } from "../../components/Modal/Modal";
 import { Space } from "../../components/Space/Space";
 import { useAPI } from "../../providers/ApiProvider";
@@ -63,10 +63,28 @@ export const ExportPage = () => {
   const [availableFormats, setAvailableFormats] = useState([]);
   const [currentFormat, setCurrentFormat] = useState("JSON");
 
+  // CSGHub 数据集和分支选择
+  const [datasets, setDatasets] = useState([]);
+  const [branches, setBranches] = useState([]);
+  const [selectedDataset, setSelectedDataset] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [loadingDatasets, setLoadingDatasets] = useState(false);
+  const [loadingBranches, setLoadingBranches] = useState(false);
+  const [project, setProject] = useState(null);
+
   /** @type {import('react').RefObject<Form>} */
   const form = useRef();
 
   const proceedExport = async () => {
+    // 检查是否选择了数据集和分支
+    if (!selectedDataset || !selectedBranch) {
+      toast?.show({
+        message: t("export.pleaseSelectDatasetAndBranch"),
+        type: ToastType.warning,
+      });
+      return;
+    }
+
     setDownloading(true);
 
     const message = setTimeout(() => {
@@ -79,6 +97,10 @@ export const ExportPage = () => {
         full: true,
         booleansAsNumbers: true,
       });
+
+      // 添加目标数据集和分支参数
+      params.target_dataset = selectedDataset;
+      params.target_branch = selectedBranch;
 
       const response = await api.callApi("exportRaw", {
         params: {
@@ -118,6 +140,28 @@ export const ExportPage = () => {
 
   useEffect(() => {
     if (isDefined(pageParams.id)) {
+      // 获取项目信息
+      api
+        .callApi("project", {
+          params: {
+            pk: pageParams.id,
+          },
+        })
+        .then((projectData) => {
+          setProject(projectData);
+
+          // 如果项目绑定了个人数据集（不是组织数据集），设置为默认值
+          if (projectData.dataset && projectData.datasetBranches) {
+            const dataset = projectData.dataset;
+            // 检查是否为个人数据集：通过判断 dataset 是否在个人数据集列表中
+            // 先加载个人数据集列表，然后在回调中设置默认值
+            loadPersonalDatasetsWithDefault(dataset, projectData.datasetBranches);
+          } else {
+            // 没有绑定数据集，直接加载个人数据集列表
+            loadPersonalDatasets();
+          }
+        });
+
       api
         .callApi("previousExports", {
           params: {
@@ -141,6 +185,93 @@ export const ExportPage = () => {
     }
   }, [pageParams]);
 
+  // 加载个人数据集列表
+  const loadPersonalDatasets = async () => {
+    setLoadingDatasets(true);
+    try {
+      const data = await api.callApi("publicList");
+      const list = Array.isArray(data) ? data : [];
+      setDatasets(list.map((item) => ({ value: item, label: item })));
+
+      if (list.length === 0) {
+        toast?.show({
+          message: t("export.noPersonalDatasets"),
+          type: ToastType.warning,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch personal datasets:", err);
+      setDatasets([]);
+      toast?.show({
+        message: t("export.failedToLoadDatasets"),
+        type: ToastType.error,
+      });
+    } finally {
+      setLoadingDatasets(false);
+    }
+  };
+
+  // 加载个人数据集列表并设置默认值
+  const loadPersonalDatasetsWithDefault = async (defaultDataset, defaultBranch) => {
+    setLoadingDatasets(true);
+    try {
+      const data = await api.callApi("publicList");
+      const list = Array.isArray(data) ? data : [];
+      setDatasets(list.map((item) => ({ value: item, label: item })));
+
+      // 只有当默认数据集在个人数据集列表中时，才设置为默认值
+      if (list.includes(defaultDataset)) {
+        setSelectedDataset(defaultDataset);
+        setSelectedBranch(defaultBranch);
+      }
+
+      if (list.length === 0) {
+        toast?.show({
+          message: t("export.noPersonalDatasets"),
+          type: ToastType.warning,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch personal datasets:", err);
+      setDatasets([]);
+      toast?.show({
+        message: t("export.failedToLoadDatasets"),
+        type: ToastType.error,
+      });
+    } finally {
+      setLoadingDatasets(false);
+    }
+  };
+
+  // 加载分支列表
+  const loadBranches = async (repoId) => {
+    if (!repoId) return;
+    setLoadingBranches(true);
+    try {
+      const data = await api.callApi("datasetBranches", {
+        params: { repo_id: repoId },
+      });
+      const list = Array.isArray(data) ? data : [];
+      setBranches(list.map((branch) => ({ value: branch, label: branch })));
+    } catch (err) {
+      console.error("Failed to fetch branches:", err);
+      setBranches([]);
+      toast?.show({
+        message: t("export.failedToLoadBranches"),
+        type: ToastType.error,
+      });
+    } finally {
+      setLoadingBranches(false);
+    }
+  };
+
+  // 分支改为手动输入：清空数据集时一并清空已输入的分支
+  useEffect(() => {
+    if (!selectedDataset) {
+      setSelectedBranch("");
+    }
+  }, [selectedDataset]);
+
   return (
     <Modal
       onHide={() => {
@@ -157,6 +288,48 @@ export const ExportPage = () => {
       visible
     >
       <div className={cn("export-page").toClassName()}>
+        {/* CSGHub 数据集和分支选择 */}
+        <div className={cn("export-page").elem("csghub-section").toClassName()}>
+          <div className={cn("export-page").elem("csghub-title").toClassName()}>
+            {t("export.exportToCSGHub")}
+          </div>
+
+          <Form ref={form}>
+            <div className={cn("export-page").elem("csghub-selectors").toClassName()}>
+              <Select
+                label={t("export.targetDataset")}
+                placeholder={t("export.selectDataset")}
+                options={datasets}
+                value={selectedDataset}
+                onChange={(val) => setSelectedDataset(val)}
+                disabled={loadingDatasets || datasets.length === 0}
+                style={{ marginBottom: '12px' }}
+              />
+
+              <div style={{ marginBottom: '12px' }}>
+                <div style={{ marginBottom: '4px' }}>{t("export.targetBranch")}</div>
+                <input
+                  type="text"
+                  className={cn("input-ls").toClassName()}
+                  placeholder={t("export.enterBranch")}
+                  value={selectedBranch}
+                  onChange={(e) => setSelectedBranch(e.target.value)}
+                  disabled={!selectedDataset}
+                  style={{ width: "100%" }}
+                />
+              </div>
+            </div>
+
+            <Input type="hidden" name="exportType" value={currentFormat} />
+          </Form>
+
+          {datasets.length === 0 && !loadingDatasets && (
+            <div className={cn("export-page").elem("csghub-warning").toClassName()}>
+              {t("export.pleaseCreateDatasetFirst")}
+            </div>
+          )}
+        </div>
+
         <FormatInfo
           t={t}
           availableFormats={availableFormats}
@@ -164,17 +337,19 @@ export const ExportPage = () => {
           onClick={(format) => setCurrentFormat(format.name)}
         />
 
-        <Form ref={form}>
-          <Input type="hidden" name="exportType" value={currentFormat} />
-        </Form>
-
         <div className={cn("export-page").elem("footer").toClassName()}>
           <Space style={{ width: "100%" }} spread>
             <div className={cn("export-page").elem("recent").toClassName()}>{/* {exportHistory} */}</div>
             <div className={cn("export-page").elem("actions").toClassName()}>
               <Space>
                 {downloadingMessage && t("export.filesBeingPrepared")}
-                <Button className="w-[135px]" onClick={proceedExport} waiting={downloading} aria-label={t("export.exportData")}>
+                <Button
+                  className="w-[135px]"
+                  onClick={proceedExport}
+                  waiting={downloading}
+                  disabled={!selectedDataset || !selectedBranch}
+                  aria-label={t("export.exportData")}
+                >
                   {t("export.export")}
                 </Button>
               </Space>

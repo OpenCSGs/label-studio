@@ -9,7 +9,7 @@ import type React from "react";
 import { useCallback, useState } from "react";
 
 import { Button, ButtonGroup, type ButtonProps } from "@humansignal/ui";
-import { useEditorT } from "../../utils/i18n";
+import { useEditorT, editorT } from "../../utils/i18n";
 import { IconBan, IconChevronDown } from "@humansignal/icons";
 import { Dropdown } from "@humansignal/ui";
 import type { CustomButtonType } from "../../stores/CustomButton";
@@ -44,7 +44,7 @@ type ControlButtonProps = {
   onClick: (e: React.MouseEvent) => void;
 };
 
-export const EMPTY_SUBMIT_TOOLTIP = "Empty annotations denied in this project";
+export const EMPTY_SUBMIT_TOOLTIP = editorT("annotation.emptyAnnotationsDenied");
 
 /**
  * Custom action button component, rendering buttons from store.customButtons
@@ -169,7 +169,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
           const selected = store.annotationStore?.selected;
 
           if (store.hasInterface("comments:reject")) {
-            handleActionWithComments(e, action, "Please enter a comment before rejecting");
+            handleActionWithComments(e, action, t("annotation.enterCommentBeforeRejecting"));
           } else {
             selected?.submissionInProgress();
             await store.commentStore.commentFormSubmit();
@@ -183,14 +183,14 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
     } else if (annotation.skipped) {
       buttons.push(
         <div className={cn("controls").elem("skipped-info").toClassName()} key="skipped">
-          <IconBan /> Was skipped
+          <IconBan /> {t("annotation.wasSkipped")}
         </div>,
       );
       buttons.push(<UnskipButton key="unskip" disabled={disabled} store={store} />);
     } else {
       if (store.hasInterface("skip")) {
         const onSkipWithComment = (e: React.MouseEvent, action: () => any) => {
-          handleActionWithComments(e, action, "Please enter a comment before skipping");
+          handleActionWithComments(e, action, t("annotation.enterCommentBeforeSkipping"));
         };
 
         buttons.push(<SkipButton key="skip" disabled={disabled} store={store} onSkipWithComment={onSkipWithComment} />);
@@ -241,7 +241,7 @@ export const Controls = controlsInjector<{ annotation: MSTAnnotation }>(
       };
 
       if (userGenerate || (store.explore && !userGenerate && store.hasInterface("submit"))) {
-        const title = submitDisabled ? EMPTY_SUBMIT_TOOLTIP : t("annotation.saveResultsShortcut");
+        const title = submitDisabled ? t("annotation.emptyAnnotationsDenied") : t("annotation.saveResultsShortcut");
 
         buttons.push(
           <ButtonTooltip key="submit" title={title}>

@@ -28,6 +28,7 @@ const OutlinerFFClasses: string[] = [];
 OutlinerFFClasses.push("ff_hide_all_regions");
 
 const OutlinerPanelComponent: FC<OutlinerPanelProps> = ({ regions, ...props }) => {
+  const t = useEditorT();
   const [group, setGroup] = useState<GroupingOptions>(regions.group);
   const onOrderingChange = useCallback(
     (value: OrderingOptions) => {
@@ -51,7 +52,7 @@ const OutlinerPanelComponent: FC<OutlinerPanelProps> = ({ regions, ...props }) =
   regions.setGrouping(group);
 
   return (
-    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title="Outliner">
+    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title={t("annotation.outliner")}>
       <ViewControls
         ordering={regions.sort}
         regions={regions}

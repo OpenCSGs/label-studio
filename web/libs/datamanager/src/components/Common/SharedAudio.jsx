@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getI18n } from "react-i18next";
 import { IconTimelinePause, IconTimelinePlay } from "@humansignal/icons";
 import { Button } from "./Button/Button";
 import { Space } from "./Space/Space";
@@ -78,7 +79,7 @@ export class SharedAudio extends Component {
         </Button>
 
         {this.state.error ? (
-          <div>Unable to play</div>
+          <div>{getI18n().t("dataManager.unableToPlay")}</div>
         ) : this.audio ? (
           <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
             <PlaybackControl

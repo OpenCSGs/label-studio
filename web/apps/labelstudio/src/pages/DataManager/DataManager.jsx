@@ -23,7 +23,7 @@ const loadDependencies = () => [import("@humansignal/datamanager"), import("@hum
 
 const initializeDataManager = async (root, props, params) => {
   if (!window.LabelStudio) throw Error("Label Studio Frontend doesn't exist on the page");
-  if (!root && root.dataset.dmInitialized) return;
+  if (!root || root.dataset.dmInitialized) return;
 
   root.dataset.dmInitialized = true;
 
@@ -32,7 +32,9 @@ const initializeDataManager = async (root, props, params) => {
 
   const dmConfig = {
     root,
-    projectId: params.id,
+    // 优先用已加载的 project.id（init 守卫已保证它存在），避免导航时序中路由
+    // params.id 尚未就绪（undefined）导致 DM 漏带 project 参数 → columns 请求 404。
+    projectId: params.project?.id ?? params.id,
     apiGateway: `${window.APP_SETTINGS.hostname}/api/dm`,
     apiVersion: 2,
     project: params.project,
@@ -75,6 +77,7 @@ export const DataManagerPage = ({ ...props }) => {
   const [crashed, setCrashed] = useState(false);
   const [loading, setLoading] = useState(!window.DataManager || !window.LabelStudio);
   const dataManagerRef = useRef();
+  const initializingRef = useRef(false);
   const projectId = project?.id;
 
   const init = useCallback(async () => {
@@ -82,23 +85,41 @@ export const DataManagerPage = ({ ...props }) => {
     if (!window.DataManager) return;
     if (!root.current) return;
     if (!project?.id) return;
-    if (dataManagerRef.current) return;
+    // 防止异步竞态：dataManagerRef.current 要到 await 之后才赋值，
+    // 用同步占位锁 initializingRef 保证并发的 init 只有一个能进入初始化。
+    if (dataManagerRef.current || initializingRef.current) return;
+    initializingRef.current = true;
 
     const mlBackends = await api.callApi("mlBackends", {
       params: { project: project.id },
     });
 
+    // await 期间组件可能已卸载（点设置/项目名导航离开会触发 destroyDM 复位锁）：
+    // 放弃这次僵尸初始化，避免在已卸载的组件上创建 DM 并发起 columns 等请求。
+    if (!initializingRef.current || !root.current) {
+      initializingRef.current = false;
+      return;
+    }
+
     const interactiveBacked = (mlBackends ?? []).find(({ is_interactive }) => is_interactive);
 
-    const dataManager = (dataManagerRef.current =
-      dataManagerRef.current ??
-      (await initializeDataManager(root.current, props, {
-        ...params,
-        project,
-        autoAnnotation: isDefined(interactiveBacked),
-        t,
-        i18n,
-      })));
+    const dataManager = await initializeDataManager(root.current, props, {
+      ...params,
+      project,
+      autoAnnotation: isDefined(interactiveBacked),
+      t,
+      i18n,
+    });
+
+    // initializeDataManager 也是异步：若期间已卸载，销毁刚建的实例，避免僵尸 DM 残留并请求后端。
+    if (!dataManager || !root.current || !initializingRef.current) {
+      dataManager?.destroy?.();
+      initializingRef.current = false;
+      return;
+    }
+
+    dataManagerRef.current = dataManager;
+    initializingRef.current = false;
 
     Object.assign(window, { dataManager });
 
@@ -203,6 +224,7 @@ export const DataManagerPage = ({ ...props }) => {
       dataManagerRef.current.destroy();
       dataManagerRef.current = null;
     }
+    initializingRef.current = false;
   }, []);
 
   useEffect(() => {

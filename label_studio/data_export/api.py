@@ -208,6 +208,10 @@ class ExportAPI(generics.RetrieveAPIView):
         download_resources = query_serializer.validated_data['download_resources']
         interpolate_key_frames = query_serializer.validated_data['interpolate_key_frames']
 
+        # CSGHub 二开：获取目标数据集和分支
+        target_dataset = request.GET.get('target_dataset', '')
+        target_branch = request.GET.get('target_branch', '')
+
         tasks_ids = request.GET.getlist('ids[]')
 
         logger.debug('Get tasks')
@@ -239,10 +243,12 @@ class ExportAPI(generics.RetrieveAPIView):
             request.GET,
             hostname=request.build_absolute_uri('/'),
             request=request,
+            target_dataset=target_dataset,
+            target_branch=target_branch,
         )
 
         # 已上传到 CSGHub 时返回 JSON，前端不触发本地下载
-        if getattr(project, 'dataset', None) and getattr(request.user, 'user_token', None):
+        if target_dataset and target_branch and getattr(request.user, 'user_token', None):
             if hasattr(export_file, 'close'):
                 export_file.close()
             return Response(

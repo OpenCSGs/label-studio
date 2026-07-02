@@ -34,6 +34,7 @@ export const RegionItem: FC<RegionItemProps> = observer(
     mainDetails: MainDetails,
     metaDetails: MetaDetails,
   }) => {
+    const t = useEditorT();
     const { annotation } = region;
     const { selectedRegions: nodes } = annotation;
     const [editMode, setEditMode] = useState(false);
@@ -71,7 +72,7 @@ export const RegionItem: FC<RegionItemProps> = observer(
           <div className={cn("detailed-region").elem("warning").toClassName()}>
             <IconWarning />
             <div className={cn("detailed-region").elem("warning-text").toClassName()}>
-              Incomplete {region.type?.replace("region", "") ?? "region"}
+              {t("annotation.incompleteRegion", { type: region.type?.replace("region", "") ?? "region" })}
             </div>
           </div>
         )}
@@ -118,6 +119,7 @@ const RegionAction: FC<any> = observer(({ region, annotation, editMode, onEditMo
             annotation.startLinkingMode(CREATE_RELATION_MODE, region);
           }
         }}
+        tooltip={t("editor.regionActions.createRelation")}
         aria-label={t("editor.regionActions.createRelation")}
       >
         <IconRelationLink />
@@ -132,6 +134,7 @@ const RegionAction: FC<any> = observer(({ region, annotation, editMode, onEditMo
         look={editMode ? "filled" : "string"}
         variant={editMode ? "primary" : "neutral"}
         onClick={() => onEditModeChange(!editMode)}
+        tooltip={t("editor.regionActions.editRegionMeta")}
         aria-label={t("editor.regionActions.editRegionMeta")}
       >
         <IconPlus />

@@ -10,6 +10,9 @@ _api_urlpatterns = [
     path('file-upload/<int:pk>', api.FileUploadAPI.as_view(), name='file-upload-detail'),
     path('public-list/', api.PublicListAPI.as_view(), name='public-list'),
     path('dataset-branches/', api.DatasetBranchesAPI.as_view(), name='dataset-branches'),
+    path('organization-list/', api.OrganizationListAPI.as_view(), name='organization-list'),
+    path('organization-datasets/', api.OrganizationDatasetsAPI.as_view(), name='organization-datasets'),
+    path('user-namespaces/', api.UserNamespacesAPI.as_view(), name='user-namespaces'),
 ]
 
 _api_projects_urlpatterns = [

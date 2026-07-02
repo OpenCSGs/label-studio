@@ -28,6 +28,7 @@ from drf_spectacular.utils import OpenApiExample, OpenApiParameter, OpenApiRespo
 from projects.models import Project
 from projects.serializers import ProjectSerializer
 from rest_framework import generics, viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -478,7 +479,11 @@ class ProjectColumnsAPI(APIView):
     permission_required = all_permissions.projects_view
 
     def get(self, request):
-        pk = int_from_request(request.GET, 'project', 1)
+        # 缺少 project 参数时明确报错，而不是默认查 project=1（原 debug 残留），
+        # 避免前端时序问题导致请求不带 project 时返回误导性的 404。
+        pk = int_from_request(request.GET, 'project', 0)
+        if not pk:
+            raise ValidationError({'project': 'Query parameter "project" is required.'})
         project = generics.get_object_or_404(Project, pk=pk)
         self.check_object_permissions(request, project)
         GET_ALL_COLUMNS = load_func(settings.DATA_MANAGER_GET_ALL_COLUMNS)

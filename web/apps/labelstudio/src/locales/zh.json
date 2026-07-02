@@ -425,7 +425,7 @@
     "columnDrafts": "草稿",
     "columnDraftsHelp": "如果任务至少存在一个草稿则为 true",
     "columnImage": "图像",
-    "columnImg": "图片",
+    "columnImg": "img",
     "and": "且",
     "or": "或",
     "filters": "筛选条件",
@@ -455,7 +455,6 @@
     "default": "默认",
     "sortAscending": "升序排序",
     "sortDescending": "降序排序",
-    "tasks": "任务",
     "filteredTasks": "筛选后的任务",
     "totalTasksInProject": "项目中的总任务数",
     "submittedAnnotations": "已提交的标注",
@@ -467,7 +466,6 @@
     "destructiveAction": "危险操作",
     "confirmAction": "确认操作",
     "record": "记录",
-    "task": "任务",
     "rename": "重命名",
     "duplicate": "复制",
     "close": "关闭",
@@ -487,19 +485,50 @@
     "connectStorageOrUpload": "连接您的云存储或从计算机上传文件",
     "connectCloudStorage": "连接云存储",
     "seeDocsOnImporting": "查看数据导入文档",
-    "columnId": "ID",
-    "columnImage": "图像",
-    "columnData": "数据",
-    "columnCompleted": "已完成",
-    "columnAnnotatedBy": "标注者",
-    "columnImg": "img",
     "fitImagesToWidth": "适应图像宽度",
     "gridSettings": "网格设置",
     "columnsCount": "列数",
     "decreaseColumns": "减少列数",
     "increaseColumns": "增加列数",
     "showTaskSource": "显示任务源",
-    "sourceForTask": "任务 {{id}} 的源"
+    "sourceForTask": "任务 {{id}} 的源",
+    "displayAs": "显示为",
+    "decreaseColumnsNumber": "减少列数",
+    "increaseColumnsNumber": "增加列数",
+    "copyJson": "复制 JSON",
+    "copied": "已复制！",
+    "cancel": "取消",
+    "ok": "确定",
+    "unableToPlay": "无法播放",
+    "clickToLoad": "点击加载",
+    "fields": "字段",
+    "data": "数据",
+    "columnTitle": {
+      "id": "ID",
+      "innerId": "内部 ID",
+      "completed": "已完成",
+      "annotations": "标注",
+      "cancelled": "已取消",
+      "predictions": "预测",
+      "annotatedBy": "标注者",
+      "annotationResults": "标注结果",
+      "annotationIds": "标注 ID",
+      "predictionScore": "预测得分",
+      "predictionModelVersions": "预测模型版本",
+      "predictionResults": "预测结果",
+      "uploadFilename": "上传文件名",
+      "annotatorsIds": "标注者 ID",
+      "annotationDrafts": "标注草稿",
+      "annotated": "已标注",
+      "agreement": "一致性",
+      "reviewsAccepted": "已通过审核",
+      "reviewsRejected": "已拒绝审核",
+      "groundTruth": "标准答案",
+      "comments": "评论",
+      "unresolvedComments": "未解决评论",
+      "createdAt": "创建时间",
+      "updatedAt": "更新时间"
+    }
   },
   "createProject": {
     "title": "创建项目",
@@ -515,6 +544,10 @@
     "projectNameStep": "项目名称",
     "dataImportStep": "数据导入",
     "labelingSetupStep": "标注设置",
+    "selectOwnerType": "选择数据所有者",
+    "personal": "个人",
+    "organization": "组织",
+    "selectOrganization": "选择组织",
     "selectDataset": "选择数据集",
     "selectBranch": "选择分支",
     "addDataset": "添加数据集",
@@ -556,7 +589,12 @@
     "importPreannotatedData": "导入预标注数据",
     "pleaseSelectBothDatasetAndBranch": "上传文件前请选择数据集和分支",
     "pleaseSelectBothDatasetAndBranchForUrl": "请选择数据集和分支",
-    "failedToLoadBranches": "加载分支失败"
+    "failedToLoadBranches": "加载分支失败",
+    "unsupportedFileType": "文件 \"{{name}}\" 的格式不受支持。",
+    "noFilesToAnnotate": "没有需要标注的文件：该数据集中没有受支持格式的文件，所有文件均已跳过。",
+    "dataOwnerLabel": "数据所有者：",
+    "dataSourceLabel": "数据来源：",
+    "branchLabel": "分支："
   },
   "annotation": {
     "title": "标注",
@@ -669,7 +707,122 @@
     "tooltipCreateNewAnnotation": "创建新标注",
     "ariaCreateAnnotation": "创建标注",
     "tooltipCompareAllAnnotations": "比较所有标注",
-    "ariaCompareAllAnnotations": "比较所有标注"
+    "ariaCompareAllAnnotations": "比较所有标注",
+    "createRelationBetweenRegions": "创建区域间关系",
+    "editRegionMeta": "编辑区域元信息",
+    "showSelectedRegion": "显示所选区域",
+    "hideSelectedRegion": "隐藏所选区域",
+    "deleteSelectedRegion": "删除所选区域",
+    "regionControl": "区域控制",
+    "ratingLabel": "评分：",
+    "textLabel": "文本：",
+    "choicesLabel": "选项：",
+    "taxonomyLabel": "分类法：",
+    "meta": "元信息",
+    "showRelationLabels": "显示关系标签",
+    "hideRelationLabels": "隐藏关系标签",
+    "showRelation": "显示关系",
+    "hideRelation": "隐藏关系",
+    "deleteRelation": "删除关系",
+    "selectLabels": "选择标签",
+    "startFrame": "起始帧",
+    "endFrame": "结束帧",
+    "duration": "时长",
+    "collapseGroup": "折叠分组",
+    "expandGroup": "展开分组",
+    "taskCountOf": "{{current}} / {{total}}",
+    "previousTask": "上一个任务",
+    "nextTask": "下一个任务",
+    "rejectAnnotationTooltip": "拒绝标注: [ Ctrl+Space ]",
+    "rejectCurrentAnnotation": "拒绝当前标注",
+    "enterCommentBeforeRejecting": "拒绝前请输入评论",
+    "reject": "拒绝",
+    "acceptAnnotationTooltip": "接受标注: [ Ctrl+Enter ]",
+    "acceptCurrentAnnotation": "接受当前标注",
+    "fixAndAccept": "修正并接受",
+    "accept": "接受",
+    "wasSkipped": "已跳过",
+    "cancelSkipTooltip": "取消跳过: []",
+    "cancelSkipAndReturn": "取消跳过并返回标注",
+    "cancelSkip": "取消跳过",
+    "cancelSkipTaskTooltip": "取消（跳过）任务: [ Ctrl+Space ]",
+    "skipCurrentTask": "跳过当前任务",
+    "enterCommentBeforeSkipping": "跳过前请输入评论",
+    "skip": "跳过",
+    "emptyAnnotationsDenied": "本项目不允许空标注",
+    "saveResultsTooltip": "保存结果: [ Ctrl+Enter ]",
+    "updateTaskTooltipAlt": "更新此任务: [ Alt+Enter ]",
+    "updateCurrentAnnotation": "更新当前标注",
+    "annotationsListToggle": "标注列表切换",
+    "createAnnotation": "创建标注",
+    "createdPrefix": "创建于,",
+    "compareAllAnnotations": "对比所有标注",
+    "createAnAnnotation": "创建标注",
+    "createNewAnnotation": "创建新标注",
+    "deleteAnnotation": "删除标注",
+    "delete": "删除",
+    "actionCannotBeUndone": "此操作无法撤销",
+    "proceed": "继续",
+    "createCopyOfCurrent": "创建当前{{type}}的副本",
+    "copyAnnotation": "复制标注",
+    "settings": "设置",
+    "instructions": "说明",
+    "undo": "撤销",
+    "redo": "重做",
+    "reset": "重置",
+    "updateTaskTooltip": "更新此任务: [ Ctrl+Enter ]",
+    "showInstructions": "显示说明",
+    "autoDetect": "自动检测",
+    "zoomPresets": "缩放预设（点击查看选项）",
+    "setGroundTruth": "将此结果设为标准答案",
+    "unsetGroundTruth": "取消将此结果设为标准答案",
+    "toolMove": "移动",
+    "toolPanImage": "平移图像",
+    "toolZoomIn": "放大",
+    "toolZoomOut": "缩小",
+    "toolZoomToFit": "缩放以适应",
+    "toolZoomToActualSize": "缩放至实际大小",
+    "toolRotateLeft": "向左旋转",
+    "toolRotateRight": "向右旋转",
+    "toolBrightness": "亮度",
+    "toolContrast": "对比度",
+    "toolBitmask": "位掩码",
+    "toolBrush": "画笔",
+    "toolEraser": "橡皮擦",
+    "toolMagicWand": "魔棒",
+    "toolRectangle": "矩形",
+    "tool3PointRectangle": "三点矩形",
+    "toolEllipse": "椭圆",
+    "toolPolygon": "多边形",
+    "toolKeypoint": "关键点",
+    "error": "错误",
+    "warning": "警告",
+    "success": "成功",
+    "linkTo": "链接到…",
+    "selectObjectToLink": "选择一个对象以将其链接到此评论。",
+    "unlinkComment": "取消链接评论",
+    "areYouSure": "确定吗？",
+    "deleteComment": "删除评论",
+    "yes": "是",
+    "no": "否",
+    "cancelDelete": "取消删除",
+    "resolve": "解决",
+    "unresolve": "取消解决",
+    "edit": "编辑",
+    "cancelEdit": "取消编辑",
+    "unlink": "取消链接",
+    "commentOptions": "评论选项",
+    "noPreviousTask": "没有上一个任务",
+    "submitAnnotationToContinue": "提交标注以继续",
+    "postponeTask": "推迟任务",
+    "cannotPostponeTaskCannotBeSkipped": "无法推迟：此任务不可跳过",
+    "noNextTaskAvailable": "没有可用的下一个任务",
+    "taskCannotBeSkipped": "此任务不可跳过",
+    "skipNotAllowedInfo": "标注员和审核员将无法跳过此任务",
+    "toggleVisibility": "切换可见性",
+    "unpersistedCommentsWarning": "您有未保存的评论，如果继续将会丢失。",
+    "submitComment": "提交评论",
+    "updatedPrefix": "已更新"
   },
   "unsavedChanges": {
     "saveAndLeave": "保存并离开",
@@ -841,6 +994,16 @@
     "orSubmitIssue": "告诉我们，或向",
     "repository": "仓库",
     "close": "关闭",
+    "exportToCSGHub": "导出到 CSGHub（必选）",
+    "targetDataset": "目标数据集",
+    "targetBranch": "目标分支",
+    "selectDataset": "请选择数据集...",
+    "selectBranch": "请选择分支...",
+    "pleaseSelectDatasetAndBranch": "请选择目标数据集和分支",
+    "noPersonalDatasets": "您还没有个人数据集，请先在 CSGHub 创建数据集",
+    "failedToLoadDatasets": "加载数据集列表失败",
+    "failedToLoadBranches": "加载分支列表失败",
+    "pleaseCreateDatasetFirst": "⚠️ 您还没有个人数据集，请先在 CSGHub 创建数据集后再导出",
     "formats": {
       "json": {
         "title": "JSON",
@@ -915,7 +1078,8 @@
         "namedentityrecognition": "命名实体识别",
         "speechrecognition": "语音识别"
       }
-    }
+    },
+    "enterBranch": "请输入分支"
   },
   "accountSettings": {
     "myAccount": "我的账户",
@@ -1351,6 +1515,234 @@
       "phrases_previous-region": {
         "label": "短语中的上一个区域",
         "description": "在当前短语内导航到上一个区域"
+      },
+      "annotation.submit": {
+        "label": "提交标注",
+        "description": "提交当前标注"
+      },
+      "annotation.skip": {
+        "label": "跳过任务",
+        "description": "跳过当前任务"
+      },
+      "annotation.undo": {
+        "label": "撤销",
+        "description": "撤销上一个操作"
+      },
+      "annotation.redo": {
+        "label": "重做",
+        "description": "重做之前撤销的操作"
+      },
+      "dm.focus-previous": {
+        "label": "聚焦上一个任务",
+        "description": "将焦点移动到上一个任务"
+      },
+      "dm.focus-next": {
+        "label": "聚焦下一个任务",
+        "description": "将焦点移动到下一个任务"
+      },
+      "dm.close-labeling": {
+        "label": "聚焦已关闭任务",
+        "description": "聚焦到已关闭任务列"
+      },
+      "dm.open-labeling": {
+        "label": "聚焦已打开任务",
+        "description": "聚焦到已打开任务列"
+      },
+      "dm.toggle-bulk-sidebar-minimization": {
+        "label": "切换批量操作侧边栏",
+        "description": "最小化或展开批量操作侧边栏"
+      },
+      "region.delete-all": {
+        "label": "删除所有区域",
+        "description": "移除所有区域"
+      },
+      "region.focus": {
+        "label": "聚焦第一个区域",
+        "description": "将焦点移动到第一个可聚焦的区域"
+      },
+      "region.relation": {
+        "label": "创建区域关系",
+        "description": "在选定的区域之间创建关系"
+      },
+      "region.visibility": {
+        "label": "切换区域可见性",
+        "description": "显示或隐藏选定的区域"
+      },
+      "region.visibility-all": {
+        "label": "切换所有区域可见性",
+        "description": "显示或隐藏所有区域"
+      },
+      "region.lock": {
+        "label": "锁定区域",
+        "description": "锁定或解锁选定的区域"
+      },
+      "region.meta": {
+        "label": "编辑区域元数据",
+        "description": "编辑选定区域的元数据"
+      },
+      "region.unselect": {
+        "label": "取消选择区域",
+        "description": "取消选择当前选定的区域"
+      },
+      "region.exit": {
+        "label": "退出区域模式",
+        "description": "退出关系模式并取消选择区域"
+      },
+      "region.delete": {
+        "label": "删除选定区域",
+        "description": "删除当前选定的区域"
+      },
+      "region.cycle": {
+        "label": "循环区域",
+        "description": "循环遍历所有区域"
+      },
+      "region.duplicate": {
+        "label": "复制区域",
+        "description": "创建选定区域的副本"
+      },
+      "segment.delete": {
+        "label": "删除片段",
+        "description": "删除选定的片段"
+      },
+      "audio.playpause": {
+        "label": "播放 / 暂停音频",
+        "description": "切换音频播放"
+      },
+      "audio.step-forward": {
+        "label": "前进一步",
+        "description": "前进一帧"
+      },
+      "media.step-backward": {
+        "label": "后退一步",
+        "description": "后退一帧"
+      },
+      "video.keyframe-backward": {
+        "label": "上一个关键帧",
+        "description": "跳转到上一个关键帧"
+      },
+      "video.keyframe-forward": {
+        "label": "下一个关键帧",
+        "description": "跳转到下一个关键帧"
+      },
+      "video.backward": {
+        "label": "向后搜索",
+        "description": "向后搜索视频"
+      },
+      "video.rewind": {
+        "label": "第一帧",
+        "description": "跳转到第一帧"
+      },
+      "video.forward": {
+        "label": "向前搜索",
+        "description": "向前搜索视频"
+      },
+      "video.fastforward": {
+        "label": "最后一帧",
+        "description": "跳转到最后一帧"
+      },
+      "video.hop-backward": {
+        "label": "快速后退",
+        "description": "快速向后跳转"
+      },
+      "video.hop-forward": {
+        "label": "快速前进",
+        "description": "快速向前跳转"
+      },
+      "ts.grow-left": {
+        "label": "向左扩展",
+        "description": "将区域向左扩展"
+      },
+      "ts.grow-right": {
+        "label": "向右扩展",
+        "description": "将区域向右扩展"
+      },
+      "ts.shrink-left": {
+        "label": "从左侧收缩",
+        "description": "从左侧收缩区域"
+      },
+      "ts.shrink-right": {
+        "label": "从右侧收缩",
+        "description": "从右侧收缩区域"
+      },
+      "ts.grow-left-large": {
+        "label": "向左扩展（大幅）",
+        "description": "大幅向左扩展区域"
+      },
+      "ts.grow-right-large": {
+        "label": "向右扩展（大幅）",
+        "description": "大幅向右扩展区域"
+      },
+      "ts.shrink-left-large": {
+        "label": "从左侧收缩（大幅）",
+        "description": "大幅从左侧收缩区域"
+      },
+      "image.prev": {
+        "label": "上一张图像",
+        "description": "查看上一张图像"
+      },
+      "image.next": {
+        "label": "下一张图像",
+        "description": "查看下一张图像"
+      },
+      "tool.zoom-in": {
+        "label": "放大",
+        "description": "放大图像"
+      },
+      "tool.pan-image": {
+        "label": "平移图像",
+        "description": "平移图像"
+      },
+      "tool.zoom-to-fit": {
+        "label": "适应窗口",
+        "description": "缩放以适应完整图像"
+      },
+      "tool.zoom-to-actual": {
+        "label": "缩放到 100%",
+        "description": "缩放到实际图像大小（100%）"
+      },
+      "tool.zoom-out": {
+        "label": "缩小",
+        "description": "缩小图像"
+      },
+      "tool.move": {
+        "label": "移动工具",
+        "description": "选择移动工具以重新定位标注"
+      },
+      "tool.brush": {
+        "label": "画笔工具",
+        "description": "选择画笔工具"
+      },
+      "tool.ellipse": {
+        "label": "椭圆工具",
+        "description": "选择椭圆工具"
+      },
+      "tool.eraser": {
+        "label": "橡皮擦工具",
+        "description": "选择橡皮擦工具"
+      },
+      "tool.auto-detect": {
+        "label": "自动检测",
+        "description": "使用自动检测工具自动建议区域"
+      },
+      "tool.magic-wand": {
+        "label": "魔术棒",
+        "description": "选择魔术棒工具进行智能区域选择"
+      },
+      "tool.rect": {
+        "label": "矩形工具",
+        "description": "选择矩形标注工具"
+      },
+      "tool.rect-3point": {
+        "label": "三点矩形",
+        "description": "使用三点选择绘制旋转矩形"
+      },
+      "tool.rotate-right": {
+        "label": "向右旋转",
+        "description": "将图像向右旋转 90°"
+      },
+      "tool.increase-tool": {
+        "label": "增大工具大小",
+        "description": "增大工具大小"
       }
     }
   },
@@ -1470,5 +1862,76 @@
       "zoomToFit": "适应窗口",
       "zoomToActualSize": "实际大小"
     }
-  }
+  },
+  "Select label and click the image to start": "选择标签并点击图像开始",
+  "Select label and click on image to start": "选择标签并点击图像开始",
+  "Attributes": "属性",
+  "Audio transcription:": "音频转写：",
+  "Author": "作者",
+  "Choose response": "选择回复",
+  "Choose similar images:": "选择相似图像：",
+  "Choose text sentiment": "选择文本情感",
+  "Choose text sentiment:": "选择文本情感：",
+  "Contains sexual content": "包含色情内容",
+  "Contains violent content": "包含暴力内容",
+  "Denigrates a protected class": "诋毁受保护群体",
+  "Describe the image:": "描述图像：",
+  "Encourages or fails to discourage violence/abuse/terrorism/self-harm": "鼓励或未能阻止暴力/虐待/恐怖主义/自残",
+  "Enter your question:": "输入你的问题：",
+  "Expresses moral judgment": "表达道德判断",
+  "Expresses opinion": "表达观点",
+  "Facts:": "事实：",
+  "Fails to follow the correct instruction / task": "未遵循正确的指令/任务",
+  "Forecast next trend:": "预测下一个趋势：",
+  "Gives harmful advice": "给出有害建议",
+  "Hallucination": "幻觉",
+  "Inappropriate for customer assistant": "不适合客服助手",
+  "Labeling Confidence": "标注置信度",
+  "Labels": "标签",
+  "Level 1": "级别 1",
+  "Level 2": "级别 2",
+  "Level 3": "级别 3",
+  "Level 3A": "级别 3A",
+  "Level 3B": "级别 3B",
+  "Listen the audio:": "听音频：",
+  "Long Document": "长文档",
+  "Main questions": "主要问题",
+  "New Author": "新作者",
+  "Overall quality Likert scale; 1-7": "整体质量李克特量表；1-7",
+  "Please answer these questions:": "请回答以下问题：",
+  "Please provide additional comments": "请提供补充评论",
+  "Please read the passage": "请阅读这段文字",
+  "Please read the text": "请阅读文本",
+  "Please select the class": "请选择类别",
+  "Prompt: ": "提示：",
+  "Provide Transcription": "提供转写",
+  "Provide one sentence summary": "提供一句话摘要",
+  "Provide response": "提供回复",
+  "Provide translation in Spanish": "提供西班牙语翻译",
+  "Rate last answer:": "评价最后的回答：",
+  "Rate the Document Summary:": "评价文档摘要：",
+  "Rate this article": "评价这篇文章",
+  "Read the sentence in English": "阅读英文句子",
+  "Regions": "区域",
+  "Relationships": "关系",
+  "Satisfies constraint provided in the instruction": "满足指令中提供的约束",
+  "Search Quality": "搜索质量",
+  "Select a text span answering the following question:": "选择回答以下问题的文本片段：",
+  "Select document related to the query:": "选择与查询相关的文档：",
+  "Select genre:": "选择类型：",
+  "Select its topic:": "选择其主题：",
+  "Select predictable region spans in time series:": "选择时间序列中可预测的区域范围：",
+  "Select regions:": "选择区域：",
+  "Select the more accurate summary": "选择更准确的摘要",
+  "Selected level": "已选级别",
+  "Sentiment": "情感",
+  "Sentiment Labels": "情感标签",
+  "Short Summary": "简短摘要",
+  "Task: ": "任务：",
+  "Transcript": "转写文本",
+  "Unselected level": "未选级别",
+  "Utterance Review": "话语审查",
+  "Watch the video:": "观看视频：",
+  "Why?": "为什么？",
+  "Your answer:": "你的答案："
 }

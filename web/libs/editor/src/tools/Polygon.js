@@ -6,6 +6,7 @@ import ToolMixin from "../mixins/Tool";
 import { MultipleClicksDrawingTool } from "../mixins/DrawingTool";
 import { NodeViews } from "../components/Node/Node";
 import { observe } from "mobx";
+import { editorT } from "../utils/i18n";
 
 const _Tool = types
   .model("PolygonTool", {
@@ -39,7 +40,7 @@ const _Tool = types
       },
 
       get viewTooltip() {
-        return "Polygon region";
+        return editorT("annotation.toolPolygon");
       },
       get iconComponent() {
         return self.dynamic ? NodeViews.PolygonRegionModel.altIcon : NodeViews.PolygonRegionModel.icon;

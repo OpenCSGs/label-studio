@@ -2,6 +2,7 @@ import { IconQuestionOutline } from "@humansignal/icons";
 import { Tooltip } from "@humansignal/ui";
 import { inject } from "mobx-react";
 import { getColumnTitle, getColumnHelp } from "../../../utils/column-i18n";
+import { translateColumnTitle } from "../../../utils/column-title";
 import { getRoot } from "mobx-state-tree";
 import { useCallback, useMemo } from "react";
 import { useShortcut } from "../../../sdk/hotkeys";
@@ -186,9 +187,9 @@ export const DataView = injector(
         if (store.SDK.type === "DE" && ["canceled", "failed"].includes(datasetStatusID)) {
           return (
             <div className={cn("syncInProgress").toClassName()}>
-              <h3 className={cn("syncInProgress").elem("title").toClassName()}>Failed to sync data</h3>
+              <h3 className={cn("syncInProgress").elem("title").toClassName()}>{t("dataManager.failedToSyncData")}</h3>
               <div className={cn("syncInProgress").elem("text").toClassName()}>
-                Check your storage settings. You may need to recreate this dataset
+                {t("dataManager.checkStorageSettings")}
               </div>
             </div>
           );
@@ -200,9 +201,9 @@ export const DataView = injector(
         ) {
           return (
             <div className={cn("syncInProgress").toClassName()}>
-              <h3 className={cn("syncInProgress").elem("title").toClassName()}>Nothing found</h3>
+              <h3 className={cn("syncInProgress").elem("title").toClassName()}>{t("dataManager.nothingFound")}</h3>
               <div className={cn("syncInProgress").elem("text").toClassName()}>
-                Try adjusting the filter or similarity search parameters
+                {t("dataManager.tryAdjustingFilter")}
               </div>
             </div>
           );
@@ -211,10 +212,10 @@ export const DataView = injector(
           return (
             <div className={cn("syncInProgress").toClassName()}>
               <h3 className={cn("syncInProgress").elem("title").toClassName()}>
-                Hang tight! Records are syncing in the background
+                {t("dataManager.recordsSyncing")}
               </h3>
               <div className={cn("syncInProgress").elem("text").toClassName()}>
-                Press the button below to see any synced records
+                {t("dataManager.pressButtonToSeeSyncedRecords")}
               </div>
               <Button
                 size="small"
@@ -227,7 +228,7 @@ export const DataView = injector(
                   await store.currentView?.reload();
                 }}
               >
-                Refresh
+                {t("dataManager.refresh")}
               </Button>
             </div>
           );
@@ -290,7 +291,7 @@ export const DataView = injector(
       }
 
       const rawTitle = column.title ?? col.title;
-      return getColumnTitle(col, rawTitle, t);
+      return translateColumnTitle(t, getColumnTitle(col, rawTitle, t));
     };
 
     const commonDecoration = useCallback(

@@ -5,6 +5,7 @@ import { cn } from "../../utils/bem";
 import { Dropdown } from "@humansignal/ui";
 import { Menu } from "./Menu/Menu";
 import { getColumnTitle } from "../../utils/column-i18n";
+import { translateColumnTitle } from "../../utils/column-title";
 
 const injector = inject(({ store }) => {
   return {
@@ -16,7 +17,7 @@ const injector = inject(({ store }) => {
 const FieldsMenu = observer(({ columns, WrapperComponent, onClick, onReset, selected, resetTitle, t }) => {
   const _t = t ?? ((k) => k);
   const MenuItem = (col, onClick) => {
-    const displayTitle = getColumnTitle(col, col.title, _t);
+    const displayTitle = translateColumnTitle(_t, getColumnTitle(col, col.title, _t));
     return (
       <Menu.Item key={col.key} name={col.key} onClick={onClick} disabled={col.disabled}>
         {WrapperComponent && col.wra !== false ? (
@@ -45,7 +46,7 @@ const FieldsMenu = observer(({ columns, WrapperComponent, onClick, onReset, sele
       {columns.map((col) => {
         if (col.children) {
           return (
-            <Menu.Group key={col.key} title={getColumnTitle(col, col.title, _t)}>
+            <Menu.Group key={col.key} title={translateColumnTitle(_t, getColumnTitle(col, col.title, _t))}>
               {col.children.map((col) => MenuItem(col, () => onClick?.(col)))}
             </Menu.Group>
           );

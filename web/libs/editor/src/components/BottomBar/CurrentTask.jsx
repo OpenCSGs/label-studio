@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react";
+import { useEditorT } from "../../utils/i18n";
 import { Button, IconChevronLeft, IconChevronRight, Tooltip } from "@humansignal/ui";
 import { cn } from "../../utils/bem";
 import { guidGenerator } from "../../utils/unique";
@@ -11,6 +12,7 @@ import "./CurrentTask.scss";
 const MANAGER_ROLES = ["OW", "AD", "MA"];
 
 export const CurrentTask = observer(({ store }) => {
+  const t = useEditorT();
   const currentIndex = useMemo(() => {
     return store.taskHistory.findIndex((x) => x.taskId === store.task.id) + 1;
   }, [store.taskHistory]);
@@ -43,25 +45,25 @@ export const CurrentTask = observer(({ store }) => {
 
   // Memoized messages for previous button
   const prevButtonMessage = useMemo(() => {
-    return !store.canGoPrevTask ? "No previous task" : "Previous task";
-  }, [store.canGoPrevTask]);
+    return !store.canGoPrevTask ? t("annotation.noPreviousTask") : t("annotation.previousTask");
+  }, [store.canGoPrevTask, t]);
 
   // Memoized messages for next button
   const nextButtonMessage = useMemo(() => {
     if (requiresAnnotationSubmission) {
-      return "Submit an annotation to continue";
+      return t("annotation.submitAnnotationToContinue");
     }
     if (canNavigateNext) {
-      return "Next task";
+      return t("annotation.nextTask");
     }
     if (canPostponeTask) {
-      return "Postpone task";
+      return t("annotation.postponeTask");
     }
     if (!canSkipOrPostpone) {
-      return "Cannot postpone: task cannot be skipped";
+      return t("annotation.cannotPostponeTaskCannotBeSkipped");
     }
-    return "No next task available";
-  }, [requiresAnnotationSubmission, canNavigateNext, canPostponeTask, canSkipOrPostpone]);
+    return t("annotation.noNextTaskAvailable");
+  }, [requiresAnnotationSubmission, canNavigateNext, canPostponeTask, canSkipOrPostpone, t]);
 
   return (
     <div className={cn("bottombar").elem("section").toClassName()}>
@@ -71,11 +73,11 @@ export const CurrentTask = observer(({ store }) => {
           {historyEnabled &&
             (isFF(FF_TASK_COUNT_FIX) ? (
               <div className={cn("current-task").elem("task-count").toClassName()}>
-                {store.queuePosition} of {store.queueTotal}
+                {t("annotation.taskCountOf", { current: store.queuePosition, total: store.queueTotal })}
               </div>
             ) : (
               <div className={cn("current-task").elem("task-count").toClassName()}>
-                {currentIndex} of {store.taskHistory.length}
+                {t("annotation.taskCountOf", { current: currentIndex, total: store.taskHistory.length })}
               </div>
             ))}
         </div>

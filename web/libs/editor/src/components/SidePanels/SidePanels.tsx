@@ -23,6 +23,7 @@ import type { PanelProps } from "./PanelBase";
 import "./SidePanels.scss";
 import { SidePanelsContext } from "./SidePanelsContext";
 import { useRegionsCopyPaste } from "../../hooks/useRegionsCopyPaste";
+import { editorT } from "../../utils/i18n";
 import { FF_DEV_3873, isFF } from "../../utils/feature-flags";
 
 const maxWindowWidth = 980;
@@ -415,7 +416,7 @@ const SidePanelsComponent: FC<SidePanelsProps> = ({ currentEntity, panelsHidden,
         ...commonProps,
         top: panelData.storedTop ?? panelData.top,
         left: panelData.storedLeft ?? panelData.left,
-        tooltip: view.title,
+        tooltip: editorT(name === "outliner" ? "annotation.outliner" : "annotation.details"),
         icon: <Icon />,
         positioning,
         maxWidth: panelMaxWidth,

@@ -7,17 +7,19 @@ const injector = inject(({ store }) => {
     store,
     needsDataFetch: store.needsDataFetch,
     projectFetch: store.projectFetch,
+    t: store?.t ?? ((k) => k),
   };
 });
 
-export const RefreshButton = injector(({ store, needsDataFetch, projectFetch, size, style, ...rest }) => {
+export const RefreshButton = injector(({ store, needsDataFetch, projectFetch, size, style, t, ...rest }) => {
+  const _t = t ?? ((k) => k);
   return (
     <Button
       size={size ?? "small"}
       look={needsDataFetch ? "filled" : "outlined"}
       variant={needsDataFetch ? "primary" : "neutral"}
       waiting={projectFetch}
-      aria-label="Refresh data"
+      aria-label={_t("dataManager.refreshData")}
       onClick={async () => {
         await store.fetchProject({ force: true, interaction: "refresh" });
         await store.currentView?.reload();

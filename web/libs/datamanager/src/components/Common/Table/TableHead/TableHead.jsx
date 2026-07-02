@@ -18,6 +18,7 @@ import { getRoot } from "mobx-state-tree";
 import { AgreementSelected } from "../../../CellViews/AgreementSelected";
 import { IconChevronDown } from "@humansignal/icons";
 import { isActive, FF_AGREEMENT_FILTERED } from "@humansignal/core/lib/utils/feature-flags";
+import { translateColumnTitle } from "../../../../utils/column-title";
 
 const tableHeadCN = cn("table-head");
 
@@ -36,7 +37,11 @@ const DropdownWrapper = observer(({ column, cellViews, children, onChange }) => 
   return (
     <Dropdown.Trigger
       content={
-        <Menu title="Display as" size="compact" selectedKeys={[column.currentType]}>
+        <Menu
+          title={(getRoot(column.original)?.t ?? ((k) => k))("dataManager.displayAs")}
+          size="compact"
+          selectedKeys={[column.currentType]}
+        >
           {types.map((type) => {
             return (
               <Menu.Item key={type} onClick={() => onChange?.(column, type)}>
@@ -142,7 +147,7 @@ const ColumnRenderer = observer(
     const canOrder = sortingEnabled && column.original?.canOrder;
     const Decoration = decoration?.get?.(column);
     const extra = !isDE && columnHeaderExtra ? columnHeaderExtra(column, Decoration) : null;
-    const content = Decoration?.content ? Decoration.content(column) : column.title;
+    const content = Decoration?.content ? Decoration.content(column) : translateColumnTitle(root.t, column.title);
     const style = getStyle(cellViews, column, Decoration);
 
     const headContent = (

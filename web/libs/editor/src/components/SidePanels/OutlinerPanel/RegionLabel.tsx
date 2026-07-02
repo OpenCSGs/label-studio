@@ -1,13 +1,15 @@
 import { observer } from "mobx-react";
 import { cn } from "../../../utils/bem";
+import { useEditorT } from "../../../utils/i18n";
 
 export type RegionLabelProps = {
   item: any;
 };
 export const RegionLabel = observer(({ item }: RegionLabelProps) => {
+  const t = useEditorT();
   const { type } = item ?? {};
   if (!type) {
-    return "No Label";
+    return t("annotation.noLabel");
   }
   if (type.includes("label")) {
     return item.value;
@@ -27,7 +29,7 @@ export const RegionLabel = observer(({ item }: RegionLabelProps) => {
             // This comes from an Elem tag that was set without a name. The CSS was fixed to make it work,
             // but this is clearly bad CSS usage.
             <div key={label.id} className={cn("labels-list").toClassName()} style={{ color }}>
-              {label.value || "No label"}
+              {label.value || t("annotation.noLabel")}
             </div>,
           ];
         })}

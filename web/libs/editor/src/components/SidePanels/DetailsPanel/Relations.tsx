@@ -11,6 +11,7 @@ import { Button, Select } from "@humansignal/ui";
 import { observer } from "mobx-react";
 import { type FC, useCallback, useMemo, useState } from "react";
 import { cn } from "../../../utils/bem";
+import { useEditorT } from "../../../utils/i18n";
 import { wrapArray } from "../../../utils/utilities";
 import { RegionItem } from "./RegionItem";
 import "./Relations.scss";
@@ -40,6 +41,7 @@ const RelationsList: FC<RelationsListProps> = observer(({ relations }) => {
 });
 
 const RelationItem: FC<{ relation: any }> = observer(({ relation }) => {
+  const t = useEditorT();
   const [hovered, setHovered] = useState(false);
 
   const onMouseEnter = useCallback(() => {
@@ -94,7 +96,7 @@ const RelationItem: FC<{ relation: any }> = observer(({ relation }) => {
             {(hovered || relation.showMeta) && relation.hasRelations && (
               <Button
                 primary={relation.showMeta}
-                aria-label={`${relation.showMeta ? "Hide" : "Show"} Relation Labels`}
+                aria-label={relation.showMeta ? t("annotation.hideRelationLabels") : t("annotation.showRelationLabels")}
                 type={relation.showMeta ? undefined : "text"}
                 onClick={relation.toggleMeta}
                 style={{ padding: 0 }}
@@ -109,9 +111,9 @@ const RelationItem: FC<{ relation: any }> = observer(({ relation }) => {
                 variant="neutral"
                 look="string"
                 size="small"
-                tooltip="Toggle Visibility"
+                tooltip={t("annotation.toggleVisibility")}
                 onClick={relation.toggleVisibility}
-                aria-label={`${relation.visible ? "Hide" : "Show"} Relation`}
+                aria-label={relation.visible ? t("annotation.hideRelation") : t("annotation.showRelation")}
               >
                 {relation.visible ? (
                   <IconEyeOpened style={{ width: 20, height: 20 }} />
@@ -127,8 +129,8 @@ const RelationItem: FC<{ relation: any }> = observer(({ relation }) => {
                 variant="negative"
                 look="string"
                 size="small"
-                aria-label="Delete Relation"
-                tooltip="Delete Relation"
+                aria-label={t("annotation.deleteRelation")}
+                tooltip={t("annotation.deleteRelation")}
                 onClick={() => {
                   relation.node1.setHighlight(false);
                   relation.node2.setHighlight(false);
@@ -147,6 +149,7 @@ const RelationItem: FC<{ relation: any }> = observer(({ relation }) => {
 });
 
 const RelationMeta: FC<any> = observer(({ relation }) => {
+  const t = useEditorT();
   const { selectedValues, control } = relation;
   const { children, choice } = control;
 
@@ -176,7 +179,7 @@ const RelationMeta: FC<any> = observer(({ relation }) => {
       <Select
         multiple={selectionMode}
         style={{ width: "100%" }}
-        placeholder="Select labels"
+        placeholder={t("annotation.selectLabels")}
         value={selectedValues}
         onChange={onChange}
         options={options}

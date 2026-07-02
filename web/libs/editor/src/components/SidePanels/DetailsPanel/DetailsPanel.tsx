@@ -22,10 +22,11 @@ interface DetailsPanelProps extends PanelProps {
 }
 
 const DetailsPanelComponent: FC<DetailsPanelProps> = ({ currentEntity, regions, ...props }) => {
+  const t = useEditorT();
   const selectedRegions = regions.selection;
 
   return (
-    <PanelBase {...props} currentEntity={currentEntity} name="details" title="Details">
+    <PanelBase {...props} currentEntity={currentEntity} name="details" title={t("annotation.details")}>
       <Content selection={selectedRegions} currentEntity={currentEntity} />
     </PanelBase>
   );

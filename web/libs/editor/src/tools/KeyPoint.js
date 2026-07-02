@@ -5,6 +5,7 @@ import ToolMixin from "../mixins/Tool";
 import { NodeViews } from "../components/Node/Node";
 import { DrawingTool } from "../mixins/DrawingTool";
 import { FF_DEV_3793, isFF } from "../utils/feature-flags";
+import { editorT } from "../utils/i18n";
 
 const _Tool = types
   .model("KeyPointTool", {
@@ -21,7 +22,7 @@ const _Tool = types
       };
     },
     get viewTooltip() {
-      return "Key Point";
+      return editorT("annotation.toolKeypoint");
     },
     get iconComponent() {
       return self.dynamic ? NodeViews.KeyPointRegionModel.altIcon : NodeViews.KeyPointRegionModel.icon;
