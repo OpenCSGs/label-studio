@@ -1,4 +1,5 @@
 import { observer } from "mobx-react";
+import { getRoot } from "mobx-state-tree";
 import { cn } from "../../../utils/bem";
 import { Button } from "@humansignal/ui";
 import { IconClose } from "@humansignal/icons";
@@ -10,11 +11,12 @@ import { FilterOperation } from "./FilterOperation";
 import { Icon } from "../../Common/Icon/Icon";
 
 const Conjunction = observer(({ index, view }) => {
+  const _t = getRoot(view)?.t ?? ((k) => k);
   return (
     <FilterDropdown
       items={[
-        { value: "and", label: "And" },
-        { value: "or", label: "Or" },
+        { value: "and", label: _t("dataManager.and") },
+        { value: "or", label: _t("dataManager.or") },
       ]}
       disabled={index > 1}
       value={view.conjunction}
@@ -35,7 +37,7 @@ export const FilterLine = observer(({ filter, availableFilters, index, view, sid
         {/* Main filter row */}
         <div className={cn("filterLine").elem("column").mix("conjunction")}>
           {index === 0 ? (
-            <span style={{ fontSize: 12, paddingRight: 5 }}>Where</span>
+            <span style={{ fontSize: 12, paddingRight: 5 }}>{_t("dataManager.where")}</span>
           ) : (
             <Conjunction index={index} view={view} />
           )}
@@ -43,7 +45,7 @@ export const FilterLine = observer(({ filter, availableFilters, index, view, sid
 
         <div className={cn("filterLine").elem("column").mix("field")}>
           <FilterDropdown
-            placeholder="Column"
+            placeholder={_t("dataManager.column")}
             defaultValue={filter.filter.id}
             items={availableFilters}
             dropdownClassName={dropdownClassName}
@@ -151,7 +153,7 @@ export const FilterLine = observer(({ filter, availableFilters, index, view, sid
     <div className={cn("filterLine").mod({ hasChild: !!childFilter })}>
       <div className={cn("filterLine").elem("column").mix("conjunction")}>
         {index === 0 ? (
-          <span style={{ fontSize: 12, paddingRight: 5 }}>Where</span>
+          <span style={{ fontSize: 12, paddingRight: 5 }}>{_t("dataManager.where")}</span>
         ) : (
           <Conjunction index={index} view={view} />
         )}
@@ -159,7 +161,7 @@ export const FilterLine = observer(({ filter, availableFilters, index, view, sid
 
       <div className={cn("filterLine").elem("column").mix("field")}>
         <FilterDropdown
-          placeholder="Column"
+          placeholder={_t("dataManager.column")}
           defaultValue={filter.filter.id}
           items={availableFilters}
           width={80}

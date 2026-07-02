@@ -5,15 +5,17 @@ import BaseTool from "./Base";
 import ToolMixin from "../mixins/Tool";
 import { Tool } from "../components/Toolbar/Tool";
 import { IconRotateLeftTool, IconRotateRightTool } from "@humansignal/icons";
+import { useEditorT } from "../utils/i18n";
 
 const ToolView = observer(({ item }) => {
+  const t = useEditorT();
   return (
     <>
       <Tool
         active={item.selected}
         icon={<IconRotateLeftTool />}
         ariaLabel="rotate-left"
-        label="Rotate Left"
+        label={t("annotation.toolRotateLeft")}
         shortcut="tool:rotate-left"
         onClick={() => {
           item.rotate(-90);
@@ -23,7 +25,7 @@ const ToolView = observer(({ item }) => {
         active={item.selected}
         icon={<IconRotateRightTool />}
         ariaLabel="rotate-right"
-        label="Rotate Right"
+        label={t("annotation.toolRotateRight")}
         shortcut="tool:rotate-right"
         onClick={() => {
           item.rotate(90);

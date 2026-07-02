@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import type React from "react";
 import { type FC, useCallback, useContext, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Tooltip, Userpic } from "@humansignal/ui";
 import { IconCheck, IconEllipsis } from "@humansignal/icons";
 import { Button } from "@humansignal/ui";
@@ -52,6 +53,7 @@ interface CommentItemProps {
 
 export const CommentItem: FC<CommentItemProps> = observer(
   ({ comment, listComments, classificationsItems }: CommentItemProps) => {
+    const { t } = useTranslation();
     const {
       classifications,
       updatedAt,
@@ -150,7 +152,7 @@ export const CommentItem: FC<CommentItemProps> = observer(
         return (
           <div className={cn("comment-item").elem("date").toClassName()}>
             <Tooltip alignment="top-right" title={new Date(time).toLocaleString()}>
-              <span>{`${isEdited ? "updated" : ""} ${humanDateDiff(time)}`}</span>
+              <span>{`${isEdited ? t("annotation.updatedPrefix") : ""} ${humanDateDiff(time)}`}</span>
             </Tooltip>
           </div>
         );
@@ -209,19 +211,23 @@ export const CommentItem: FC<CommentItemProps> = observer(
               </>
             ) : isConfirmDelete ? (
               <div className={cn("comment-item").elem("confirmForm").toClassName()}>
-                <div className={cn("comment-item").elem("question").toClassName()}>Are you sure?</div>
+                <div className={cn("comment-item").elem("question").toClassName()}>{t("annotation.areYouSure")}</div>
                 <div className={cn("comment-item").elem("controls").toClassName()}>
                   <Button
                     onClick={() => deleteComment()}
                     size="small"
                     look="danger"
                     autoFocus
-                    aria-label="Delete comment"
+                    aria-label={t("annotation.deleteComment")}
                   >
-                    Yes
+                    {t("annotation.yes")}
                   </Button>
-                  <Button onClick={() => setConfirmMode(false)} size="small" aria-label="Cancel delete">
-                    No
+                  <Button
+                    onClick={() => setConfirmMode(false)}
+                    size="small"
+                    aria-label={t("annotation.cancelDelete")}
+                  >
+                    {t("annotation.no")}
                   </Button>
                 </div>
               </div>
@@ -255,7 +261,9 @@ export const CommentItem: FC<CommentItemProps> = observer(
               <Dropdown.Trigger
                 content={
                   <Menu size="auto">
-                    <Menu.Item onClick={toggleResolve}>{resolved ? "Unresolve" : "Resolve"}</Menu.Item>
+                    <Menu.Item onClick={toggleResolve}>
+                      {resolved ? t("annotation.unresolve") : t("annotation.resolve")}
+                    </Menu.Item>
                     {isCreator && (
                       <>
                         <Menu.Item
@@ -268,16 +276,18 @@ export const CommentItem: FC<CommentItemProps> = observer(
                             }
                           }}
                         >
-                          {isEditMode ? "Cancel edit" : "Edit"}
+                          {isEditMode ? t("annotation.cancelEdit") : t("annotation.edit")}
                         </Menu.Item>
-                        <Menu.Item onClick={toggleLink}>{regionRef?.region ? "Unlink" : "Link to..."}</Menu.Item>
+                        <Menu.Item onClick={toggleLink}>
+                          {regionRef?.region ? t("annotation.unlink") : t("annotation.linkTo")}
+                        </Menu.Item>
                         {!isConfirmDelete && (
                           <Menu.Item
                             onClick={() => {
                               setConfirmMode(true);
                             }}
                           >
-                            Delete
+                            {t("annotation.delete")}
                           </Menu.Item>
                         )}
                       </>
@@ -285,7 +295,7 @@ export const CommentItem: FC<CommentItemProps> = observer(
                   </Menu>
                 }
               >
-                <Button size="small" look="string" icon={<IconEllipsis />} aria-label="Comment options" />
+                <Button size="small" look="string" icon={<IconEllipsis />} aria-label={t("annotation.commentOptions")} />
               </Dropdown.Trigger>
             )}
           </div>

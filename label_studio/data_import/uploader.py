@@ -155,7 +155,7 @@ def tasks_from_url(file_upload_ids, project, user, url, could_be_tasks_list):
         project.datasetBranches = dataset_branches
         project.save(update_fields=['dataset', 'datasetBranches'])
         token = getattr(user, 'user_token', None) or ''
-        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:18120')
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
         if not endpoint:
             raise ValidationError('未配置 CSGHUB_ENDPOINT')
         local_folder = os.path.join(os.path.dirname(__file__), 'Downloads')
@@ -187,6 +187,13 @@ def tasks_from_url(file_upload_ids, project, user, url, could_be_tasks_list):
                 if file_upload.format_could_be_tasks_list:
                     could_be_tasks_list = True
                 file_upload_ids.append(file_upload.id)
+        # 数据集中所有文件都因扩展名不受支持被跳过：给出明确、可被前端识别的错误，
+        # 而不是笼统的 "No tasks added"。
+        if not file_upload_ids:
+            raise ValidationError(
+                'NoSupportedFilesToAnnotate: no files with a supported extension were found in the '
+                'dataset; all files were skipped'
+            )
         tasks, found_formats, data_keys = FileUpload.load_tasks_from_uploaded_files(project, file_upload_ids)
         _clear_folder(local_folder)
         return data_keys, found_formats, tasks, file_upload_ids, could_be_tasks_list

@@ -30,3 +30,16 @@ export const useEditorT = (): ((key: string) => string) => {
     ? (key: string, options?: Record<string, unknown>) => (appI18n!.t as any)(key, options)
     : (key: string) => key;
 };
+
+/**
+ * Non-hook translation helper for use outside of React components
+ * (e.g. MST model views/getters such as tool `viewTooltip`).
+ * Reads from the app's global i18n instance when available,
+ * otherwise falls back to the key (or provided defaultValue).
+ */
+export const editorT = (key: string, options?: Record<string, unknown>): string => {
+  const appI18n = typeof window !== "undefined" ? window.__LABELSTUDIO_I18N__ : undefined;
+  if (appI18n?.t) return (appI18n.t as any)(key, options);
+  if (options && typeof options.defaultValue === "string") return options.defaultValue as string;
+  return key;
+};

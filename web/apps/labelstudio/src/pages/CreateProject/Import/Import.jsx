@@ -36,7 +36,6 @@ const supportedExtensions = {
   video: ["mp4", "webm"],
   image: ["bmp", "gif", "jpg", "jpeg", "png", "svg", "webp"],
   html: ["html", "htm", "xml"],
-  pdf: ["pdf"],
   structuredData: ["csv", "tsv", "json"],
 };
 const allSupportedExtensions = flatten(Object.values(supportedExtensions));
@@ -166,13 +165,18 @@ export const ImportPage = ({
   const sampleConfig = useAtomValue(sampleDatasetAtom);
 
   // 数据集与分支（CSGHub）
+  // 数据所有者列表（namespaces）：每项 {path, type}，type=user 为个人、organization 为组织
+  const [owners, setOwners] = useState([]);
+  const [selectedOwner, setSelectedOwner] = useState("");
   const [datasets, setDatasets] = useState([]);
   const [branches, setBranches] = useState([]);
   const [selectedDataset, setSelectedDataset] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
+  const [loadingOwners, setLoadingOwners] = useState(false);
   const [loadingDatasets, setLoadingDatasets] = useState(false);
   const [loadingBranches, setLoadingBranches] = useState(false);
   const [datasetsFetched, setDatasetsFetched] = useState(false);
+  const [ownersFetched, setOwnersFetched] = useState(false);
   const isUploadDisabled = !selectedDataset || !selectedBranch;
 
   const processFiles = (state, action) => {
@@ -231,10 +235,20 @@ export const ImportPage = ({
 
   const onError = (err) => {
     console.error(err);
-    if (typeof err === "string" && err.includes("RequestDataTooBig")) {
+    // 兼容 string / 数组(DRF ValidationError) / 对象三种后端返回结构，提取错误文本
+    const errText =
+      typeof err === "string"
+        ? err
+        : Array.isArray(err)
+          ? err.join(" ")
+          : err?.detail || err?.message || "";
+    if (errText.includes("RequestDataTooBig")) {
       const message = t("settings.importedFileTooBig");
-      const extra = err.match(/"exception_value">(.*)<\/pre>/)?.[1];
+      const extra = errText.match(/"exception_value">(.*)<\/pre>/)?.[1];
       err = { message, extra };
+    } else if (errText.includes("NoSupportedFilesToAnnotate")) {
+      // CSGHub 数据集导入时所有文件都因不受支持被跳过
+      err = { message: t("createProject.noFilesToAnnotate") };
     }
     setError(err);
     onWaiting?.(false);
@@ -320,7 +334,7 @@ export const ImportPage = ({
       fd.append("datasetBranches", selectedBranch);
       for (const f of files) {
         if (!allSupportedExtensions.includes(getFileExtension(f.name))) {
-          onError(new Error(`The filetype of file "${f.name}" is not supported.`));
+          onError(new Error(t("createProject.unsupportedFileType", { name: f.name })));
           return;
         }
         fd.append(f.name, f);
@@ -342,20 +356,55 @@ export const ImportPage = ({
     [sendFiles, selectedDataset, selectedBranch, t],
   );
 
+  const fetchOwners = useCallback(async () => {
+    if (ownersFetched) return;
+    setLoadingOwners(true);
+    try {
+      const data = await api.callApi("userNamespaces");
+      const list = Array.isArray(data) ? data : [];
+      setOwners(list);
+      // 默认选中个人（type=user）
+      const personal = list.find((o) => o.type === "user");
+      if (personal) setSelectedOwner(personal.path);
+      else if (list.length > 0) setSelectedOwner(list[0].path);
+    } catch (err) {
+      console.error("Failed to fetch owners:", err);
+      setOwners([]);
+    } finally {
+      setLoadingOwners(false);
+      setOwnersFetched(true);
+    }
+  }, [api, ownersFetched]);
+
   const fetchDatasets = useCallback(async () => {
-    if (datasetsFetched) return;
+    if (datasetsFetched || !selectedOwner) return;
     setLoadingDatasets(true);
     try {
-      const data = await api.callApi("publicList");
+      const owner = owners.find((o) => o.path === selectedOwner);
+      let data;
+      if (owner?.type === "user") {
+        // 个人：当前用户的数据集
+        data = await api.callApi("publicList");
+      } else if (owner?.type === "organization") {
+        // 组织：用 namespace path 作为 org_name
+        data = await api.callApi("organizationDatasets", {
+          params: { org_name: selectedOwner },
+        });
+      } else {
+        setDatasets([]);
+        setLoadingDatasets(false);
+        return;
+      }
       const list = Array.isArray(data) ? data : [];
       setDatasets(list.map((item) => ({ value: item, label: item })));
     } catch (err) {
       console.error("Failed to fetch datasets:", err);
+      setDatasets([]);
     } finally {
       setLoadingDatasets(false);
       setDatasetsFetched(true);
     }
-  }, [api, datasetsFetched]);
+  }, [api, datasetsFetched, selectedOwner, owners]);
 
   const fetchBranches = useCallback(
     async (repoId) => {
@@ -378,8 +427,25 @@ export const ImportPage = ({
   );
 
   useEffect(() => {
-    if (!datasetsFetched) fetchDatasets();
-  }, [fetchDatasets, datasetsFetched]);
+    // 初始化时加载数据所有者列表
+    if (!ownersFetched) fetchOwners();
+  }, [fetchOwners, ownersFetched]);
+
+  useEffect(() => {
+    // 数据所有者变化时，重置并重新加载数据集
+    setDatasetsFetched(false);
+    setDatasets([]);
+    setSelectedDataset("");
+    setBranches([]);
+    setSelectedBranch("");
+  }, [selectedOwner]);
+
+  useEffect(() => {
+    // 加载数据集列表
+    if (!datasetsFetched && selectedOwner) {
+      fetchDatasets();
+    }
+  }, [fetchDatasets, datasetsFetched, selectedOwner]);
 
   useEffect(() => {
     if (selectedDataset) {
@@ -449,34 +515,64 @@ export const ImportPage = ({
           method="POST"
           onSubmit={onLoadDataset}
         >
-          <select
-            className={importClass.elem("native-select")}
-            value={selectedDataset}
-            onChange={(e) => setSelectedDataset(e.target.value)}
-            disabled={loadingDatasets}
-            aria-label={t("createProject.selectDataset")}
-          >
-            <option value="">{t("createProject.selectDataset")}</option>
-            {datasets.map((d) => (
-              <option key={d.value} value={d.value}>
-                {d.label}
-              </option>
-            ))}
-          </select>
-          <select
-            className={importClass.elem("native-select")}
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-            disabled={!selectedDataset || loadingBranches}
-            aria-label={t("createProject.selectBranch")}
-          >
-            <option value="">{t("createProject.selectBranch")}</option>
-            {branches.map((b) => (
-              <option key={b.value} value={b.value}>
-                {b.label}
-              </option>
-            ))}
-          </select>
+          {/* 数据所有者（个人 + 组织，默认个人） */}
+          <label className={`${importClass.elem("field")} inline-flex items-center gap-1`}>
+            <span className={importClass.elem("field-label")}>{t("createProject.dataOwnerLabel")}</span>
+            <select
+              className={importClass.elem("native-select")}
+              value={selectedOwner}
+              onChange={(e) => setSelectedOwner(e.target.value)}
+              disabled={loadingOwners}
+              aria-label={t("createProject.selectOwnerType")}
+            >
+              {owners.length === 0 && <option value="">{t("createProject.selectOwnerType")}</option>}
+              {owners.map((o) => (
+                <option key={o.path} value={o.path}>
+                  {o.type === "user"
+                    ? `${o.path}（${t("createProject.personal")}）`
+                    : `${o.path}（${t("createProject.organization")}）`}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* 数据来源 */}
+          <label className={`${importClass.elem("field")} inline-flex items-center gap-1`}>
+            <span className={importClass.elem("field-label")}>{t("createProject.dataSourceLabel")}</span>
+            <select
+              className={importClass.elem("native-select")}
+              value={selectedDataset}
+              onChange={(e) => setSelectedDataset(e.target.value)}
+              disabled={loadingDatasets || !selectedOwner}
+              aria-label={t("createProject.selectDataset")}
+            >
+              <option value="">{t("createProject.selectDataset")}</option>
+              {datasets.map((d) => (
+                <option key={d.value} value={d.value}>
+                  {d.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* 数据来源分支 */}
+          <label className={`${importClass.elem("field")} inline-flex items-center gap-1`}>
+            <span className={importClass.elem("field-label")}>{t("createProject.branchLabel")}</span>
+            <select
+              className={importClass.elem("native-select")}
+              value={selectedBranch}
+              onChange={(e) => setSelectedBranch(e.target.value)}
+              disabled={!selectedDataset || loadingBranches}
+              aria-label={t("createProject.selectBranch")}
+            >
+              <option value="">{t("createProject.selectBranch")}</option>
+              {branches.map((b) => (
+                <option key={b.value} value={b.value}>
+                  {b.label}
+                </option>
+              ))}
+            </select>
+          </label>
           <Button
             type="submit"
             variant="primary"
@@ -574,8 +670,6 @@ export const ImportPage = ({
                       <dd>{supportedExtensions.text.join(", ")}</dd>
                       <dt>{t("createProject.structuredData")}</dt>
                       <dd>{supportedExtensions.structuredData.join(", ")}</dd>
-                      <dt>{t("createProject.pdf")}</dt>
-                      <dd>{supportedExtensions.pdf.join(", ")}</dd>
                     </dl>
                     <div className="tips">
                       <b>{t("createProject.important")}</b>

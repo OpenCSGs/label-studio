@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { inject, observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 
 import { useWindowSize } from "../../common/Utils/useWindowSize";
 import { cn } from "../../utils/bem";
@@ -69,6 +70,7 @@ export const Toolbar = inject("store")(
 );
 
 const SmartTools = observer(({ tools }) => {
+  const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = useState(
     Math.max(
       tools.findIndex((t) => t.selected),
@@ -85,7 +87,7 @@ const SmartTools = observer(({ tools }) => {
       <div className={cn("toolbar").elem("group").toClassName()}>
         <Tool
           smart
-          label="Auto-Detect"
+          label={t("annotation.autoDetect")}
           active={hasSelected}
           icon={selected.iconClass}
           shortcut="tool:auto-detect"

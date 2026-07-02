@@ -4,9 +4,11 @@ import { Button, ToastType, useToast } from "@humansignal/ui";
 import { observer } from "mobx-react";
 import { type FC, useCallback, useMemo, useState } from "react";
 import { cn } from "../../../utils/bem";
+import { useEditorT } from "../../../utils/i18n";
 import { ContextMenu, type ContextMenuAction, ContextMenuTrigger, type MenuActionOnClick } from "../../ContextMenu";
 
 export const RegionContextMenu: FC<{ item: any }> = observer(({ item }: { item: any }) => {
+  const t = useEditorT();
   const [open, setOpen] = useState(false);
   const regionLink = useMemo(() => {
     const url = new URL(window.location.href);
@@ -26,22 +28,22 @@ export const RegionContextMenu: FC<{ item: any }> = observer(({ item }: { item: 
       copyLink();
       ctx.dropdown?.close();
       toast.show({
-        message: "Region link copied to clipboard",
+        message: t("annotation.regionLinkCopiedToClipboard"),
         type: ToastType.info,
       });
     },
-    [copyLink],
+    [copyLink, t],
   );
 
   const actions = useMemo<ContextMenuAction[]>(
     () => [
       {
-        label: "Copy Region Link",
+        label: t("annotation.copyRegionLink"),
         onClick: onCopyLink,
         icon: <IconLink />,
       },
     ],
-    [onCopyLink],
+    [onCopyLink, t],
   );
 
   return (
@@ -50,7 +52,7 @@ export const RegionContextMenu: FC<{ item: any }> = observer(({ item }: { item: 
       content={<ContextMenu actions={actions} />}
       onToggle={(isOpen) => setOpen(isOpen)}
     >
-      <Button variant="neutral" look="string" size="smaller" aria-label="Region options">
+      <Button variant="neutral" look="string" size="smaller" aria-label={t("annotation.regionOptions")}>
         <IconEllipsis />
       </Button>
     </ContextMenuTrigger>

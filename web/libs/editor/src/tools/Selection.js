@@ -7,14 +7,16 @@ import { AnnotationMixin } from "../mixins/AnnotationMixin";
 import ToolMixin from "../mixins/Tool";
 import { FF_LSDV_4930, isFF } from "../utils/feature-flags";
 import BaseTool from "./Base";
+import { useEditorT } from "../utils/i18n";
 
 const ToolView = observer(({ item }) => {
+  const t = useEditorT();
   return (
     <Tool
       ariaLabel="move-tool"
       active={item.selected}
       icon={<IconMoveTool />}
-      label="Move"
+      label={t("annotation.toolMove")}
       shortcut={item.shortcut}
       extraShortcuts={item.extraShortcuts}
       onClick={() => {

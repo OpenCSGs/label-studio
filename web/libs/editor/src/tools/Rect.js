@@ -6,6 +6,7 @@ import { ThreePointsDrawingTool, TwoPointsDrawingTool } from "../mixins/DrawingT
 import { AnnotationMixin } from "../mixins/AnnotationMixin";
 import { NodeViews } from "../components/Node/Node";
 import { FF_DEV_3793, isFF } from "../utils/feature-flags";
+import { editorT } from "../utils/i18n";
 
 const _BaseNPointTool = types
   .model("BaseNTool", {
@@ -104,7 +105,7 @@ const _Tool = types
   })
   .views((self) => ({
     get viewTooltip() {
-      return "Rectangle";
+      return editorT("annotation.toolRectangle");
     },
     get iconComponent() {
       return self.dynamic ? NodeViews.RectRegionModel.altIcon : NodeViews.RectRegionModel.icon;
@@ -117,7 +118,7 @@ const _Tool3Point = types
   })
   .views((self) => ({
     get viewTooltip() {
-      return "3 Point Rectangle";
+      return editorT("annotation.tool3PointRectangle");
     },
     get iconComponent() {
       return self.dynamic ? NodeViews.Rect3PointRegionModel.altIcon : NodeViews.Rect3PointRegionModel.icon;

@@ -2,12 +2,15 @@ import type { FC } from "react";
 import { observer } from "mobx-react";
 
 import { cn } from "../../../utils/bem";
+import { useEditorT } from "../../../utils/i18n";
 
 export const RegionLabels: FC<{ region: LSFRegion }> = observer(({ region }) => {
+  const t = useEditorT();
   const labelsInResults = region.labelings.map((result: any) => result.selectedLabels || []);
   const labels: any[] = [].concat(...labelsInResults);
 
-  if (!labels.length) return <div className={cn("labels-list").toClassName()}>{region.noLabelView || "No label"}</div>;
+  if (!labels.length)
+    return <div className={cn("labels-list").toClassName()}>{region.noLabelView || t("annotation.noLabel")}</div>;
 
   return (
     <div className={cn("labels-list").toClassName()}>

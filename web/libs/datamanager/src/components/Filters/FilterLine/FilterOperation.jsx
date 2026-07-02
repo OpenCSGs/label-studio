@@ -18,6 +18,7 @@ import { Common } from "../types/Common";
  * @param {{field: FieldConfig}} param0
  */
 export const FilterOperation = observer(({ filter, field, operator, value, disabled }) => {
+  const _t = getRoot(filter)?.t ?? ((k) => k);
   const cellView = filter.cellView;
   const types = cellView?.customOperators ?? [
     ...(FilterInputs[filter.filter.currentType] ?? FilterInputs.String),
@@ -67,8 +68,8 @@ export const FilterOperation = observer(({ filter, field, operator, value, disab
   const operators = operatorList.map(({ key, label }) => {
     if (filter.filter.field.isAnnotationResultsFilterColumn) {
       if (filter.schema?.multiple ?? false) {
-        if (key === "contains") label = "includes all";
-        if (key === "not_contains") label = "does not include all";
+        if (key === "contains") label = _t("dataManager.includesAll");
+        if (key === "not_contains") label = _t("dataManager.doesNotIncludeAll");
       } else {
         if (key === "contains") label = "is";
         if (key === "not_contains") label = "is not";
@@ -82,7 +83,7 @@ export const FilterOperation = observer(({ filter, field, operator, value, disab
     <>
       <div className={columnClass.mix("operation").toString()}>
         <FilterDropdown
-          placeholder="Condition"
+          placeholder={_t("dataManager.condition")}
           value={filter.operator}
           disabled={types.length === 1 || disabled}
           items={availableOperators ? operators.filter((op) => availableOperators.includes(op.value)) : operators}

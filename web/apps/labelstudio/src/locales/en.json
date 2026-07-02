@@ -389,7 +389,7 @@
     "columnIdHelp": "Task ID",
     "columnInnerId": "Inner ID",
     "columnInnerIdHelp": "Internal task ID starting from 1 for the current project",
-    "columnData": "data",
+    "columnData": "Data",
     "columnCompleted": "Completed",
     "columnCompletedHelp": "Last annotation date",
     "columnAnnotations": "Annotations",
@@ -424,7 +424,7 @@
     "columnLeadTimeHelp": "Average lead time over all annotations (seconds)",
     "columnDrafts": "Drafts",
     "columnDraftsHelp": "True if at least one draft exists for the task",
-    "columnImage": "image",
+    "columnImage": "Image",
     "columnImg": "img",
     "and": "And",
     "or": "Or",
@@ -455,7 +455,6 @@
     "default": "Default",
     "sortAscending": "Sort ascending",
     "sortDescending": "Sort descending",
-    "tasks": "Tasks",
     "filteredTasks": "Filtered tasks",
     "totalTasksInProject": "Total tasks in the project",
     "submittedAnnotations": "Submitted annotations",
@@ -467,7 +466,6 @@
     "destructiveAction": "Destructive action",
     "confirmAction": "Confirm action",
     "record": "Record",
-    "task": "Task",
     "rename": "Rename",
     "duplicate": "Duplicate",
     "close": "Close",
@@ -487,19 +485,50 @@
     "connectStorageOrUpload": "Connect your cloud storage or upload files from your computer",
     "connectCloudStorage": "Connect Cloud Storage",
     "seeDocsOnImporting": "See docs on importing data",
-    "columnId": "ID",
-    "columnImage": "Image",
-    "columnData": "Data",
-    "columnCompleted": "Completed",
-    "columnAnnotatedBy": "Annotated by",
-    "columnImg": "img",
     "fitImagesToWidth": "Fit images to width",
     "gridSettings": "Grid settings",
     "columnsCount": "Columns",
     "decreaseColumns": "Decrease columns number",
     "increaseColumns": "Increase columns number",
     "showTaskSource": "Show task source",
-    "sourceForTask": "Source for task {{id}}"
+    "sourceForTask": "Source for task {{id}}",
+    "displayAs": "Display as",
+    "decreaseColumnsNumber": "Decrease columns number",
+    "increaseColumnsNumber": "Increase columns number",
+    "copyJson": "Copy JSON",
+    "copied": "Copied!",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "unableToPlay": "Unable to play",
+    "clickToLoad": "Click to load",
+    "fields": "Fields",
+    "data": "Data",
+    "columnTitle": {
+      "id": "ID",
+      "innerId": "Inner ID",
+      "completed": "Completed",
+      "annotations": "Annotations",
+      "cancelled": "Cancelled",
+      "predictions": "Predictions",
+      "annotatedBy": "Annotated by",
+      "annotationResults": "Annotation results",
+      "annotationIds": "Annotation IDs",
+      "predictionScore": "Prediction score",
+      "predictionModelVersions": "Prediction model versions",
+      "predictionResults": "Prediction results",
+      "uploadFilename": "Upload filename",
+      "annotatorsIds": "Annotators IDs",
+      "annotationDrafts": "Annotation drafts",
+      "annotated": "Annotated",
+      "agreement": "Agreement",
+      "reviewsAccepted": "Reviews accepted",
+      "reviewsRejected": "Reviews rejected",
+      "groundTruth": "Ground truth",
+      "comments": "Comments",
+      "unresolvedComments": "Unresolved comments",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    }
   },
   "createProject": {
     "title": "Create Project",
@@ -515,6 +544,10 @@
     "projectNameStep": "Project Name",
     "dataImportStep": "Data Import",
     "labelingSetupStep": "Labeling Setup",
+    "selectOwnerType": "Select Owner Type",
+    "personal": "Personal",
+    "organization": "Organization",
+    "selectOrganization": "Select Organization",
     "selectDataset": "Select a dataset",
     "selectBranch": "Select Branch",
     "addDataset": "Add Dataset",
@@ -556,7 +589,12 @@
     "importPreannotatedData": "import preannotated data",
     "pleaseSelectBothDatasetAndBranch": "Please select both dataset and branch before uploading files",
     "pleaseSelectBothDatasetAndBranchForUrl": "Please select both dataset and branch",
-    "failedToLoadBranches": "Failed to load branches"
+    "failedToLoadBranches": "Failed to load branches",
+    "unsupportedFileType": "The file type of \"{{name}}\" is not supported.",
+    "noFilesToAnnotate": "No files to annotate: the dataset contains no files in a supported format. All files were skipped.",
+    "dataOwnerLabel": "Data owner:",
+    "dataSourceLabel": "Data source:",
+    "branchLabel": "Branch:"
   },
   "annotation": {
     "title": "Annotation",
@@ -669,7 +707,122 @@
     "tooltipCreateNewAnnotation": "Create a new annotation",
     "ariaCreateAnnotation": "Create an annotation",
     "tooltipCompareAllAnnotations": "Compare all annotations",
-    "ariaCompareAllAnnotations": "Compare all annotations"
+    "ariaCompareAllAnnotations": "Compare all annotations",
+    "createRelationBetweenRegions": "Create relation between regions",
+    "editRegionMeta": "Edit region's meta",
+    "showSelectedRegion": "Show selected region",
+    "hideSelectedRegion": "Hide selected region",
+    "deleteSelectedRegion": "Delete selected region",
+    "regionControl": "Region control",
+    "ratingLabel": "Rating:",
+    "textLabel": "Text:",
+    "choicesLabel": "Choices:",
+    "taxonomyLabel": "Taxonomy:",
+    "meta": "Meta",
+    "showRelationLabels": "Show Relation Labels",
+    "hideRelationLabels": "Hide Relation Labels",
+    "showRelation": "Show Relation",
+    "hideRelation": "Hide Relation",
+    "deleteRelation": "Delete Relation",
+    "selectLabels": "Select labels",
+    "startFrame": "Start frame",
+    "endFrame": "End frame",
+    "duration": "Duration",
+    "collapseGroup": "Collapse Group",
+    "expandGroup": "Expand Group",
+    "taskCountOf": "{{current}} of {{total}}",
+    "previousTask": "Previous task",
+    "nextTask": "Next task",
+    "rejectAnnotationTooltip": "Reject annotation: [ Ctrl+Space ]",
+    "rejectCurrentAnnotation": "Reject current annotation",
+    "enterCommentBeforeRejecting": "Please enter a comment before rejecting",
+    "reject": "Reject",
+    "acceptAnnotationTooltip": "Accept annotation: [ Ctrl+Enter ]",
+    "acceptCurrentAnnotation": "Accept current annotation",
+    "fixAndAccept": "Fix + Accept",
+    "accept": "Accept",
+    "wasSkipped": "Was skipped",
+    "cancelSkipTooltip": "Cancel skip: []",
+    "cancelSkipAndReturn": "Cancel skip and return to annotation",
+    "cancelSkip": "Cancel skip",
+    "cancelSkipTaskTooltip": "Cancel (skip) task: [ Ctrl+Space ]",
+    "skipCurrentTask": "Skip current task",
+    "enterCommentBeforeSkipping": "Please enter a comment before skipping",
+    "skip": "Skip",
+    "emptyAnnotationsDenied": "Empty annotations denied in this project",
+    "saveResultsTooltip": "Save results: [ Ctrl+Enter ]",
+    "updateTaskTooltipAlt": "Update this task: [ Alt+Enter ]",
+    "updateCurrentAnnotation": "Update current annotation",
+    "annotationsListToggle": "Annotations List Toggle",
+    "createAnnotation": "Create Annotation",
+    "createdPrefix": "created,",
+    "compareAllAnnotations": "Compare all annotations",
+    "createAnAnnotation": "Create an annotation",
+    "createNewAnnotation": "Create a new annotation",
+    "deleteAnnotation": "Delete annotation",
+    "delete": "Delete",
+    "actionCannotBeUndone": "This action cannot be undone",
+    "proceed": "Proceed",
+    "createCopyOfCurrent": "Create copy of current {{type}}",
+    "copyAnnotation": "Copy Annotation",
+    "settings": "Settings",
+    "instructions": "Instructions",
+    "undo": "Undo",
+    "redo": "Redo",
+    "reset": "Reset",
+    "updateTaskTooltip": "Update this task: [ Ctrl+Enter ]",
+    "showInstructions": "Show instructions",
+    "autoDetect": "Auto-Detect",
+    "zoomPresets": "Zoom presets (click to see options)",
+    "setGroundTruth": "Set this result as a ground truth",
+    "unsetGroundTruth": "Unset this result as a ground truth",
+    "toolMove": "Move",
+    "toolPanImage": "Pan Image",
+    "toolZoomIn": "Zoom In",
+    "toolZoomOut": "Zoom Out",
+    "toolZoomToFit": "Zoom to fit",
+    "toolZoomToActualSize": "Zoom to actual size",
+    "toolRotateLeft": "Rotate Left",
+    "toolRotateRight": "Rotate Right",
+    "toolBrightness": "Brightness",
+    "toolContrast": "Contrast",
+    "toolBitmask": "Bitmask",
+    "toolBrush": "Brush",
+    "toolEraser": "Eraser",
+    "toolMagicWand": "Magic Wand",
+    "toolRectangle": "Rectangle",
+    "tool3PointRectangle": "3 Point Rectangle",
+    "toolEllipse": "Ellipse region",
+    "toolPolygon": "Polygon region",
+    "toolKeypoint": "Key Point",
+    "error": "Error",
+    "warning": "Warning",
+    "success": "Success",
+    "linkTo": "Link to...",
+    "selectObjectToLink": "Select an object to link it to this comment.",
+    "unlinkComment": "Unlink comment",
+    "areYouSure": "Are you sure?",
+    "deleteComment": "Delete comment",
+    "yes": "Yes",
+    "no": "No",
+    "cancelDelete": "Cancel delete",
+    "resolve": "Resolve",
+    "unresolve": "Unresolve",
+    "edit": "Edit",
+    "cancelEdit": "Cancel edit",
+    "unlink": "Unlink",
+    "commentOptions": "Comment options",
+    "noPreviousTask": "No previous task",
+    "submitAnnotationToContinue": "Submit an annotation to continue",
+    "postponeTask": "Postpone task",
+    "cannotPostponeTaskCannotBeSkipped": "Cannot postpone: task cannot be skipped",
+    "noNextTaskAvailable": "No next task available",
+    "taskCannotBeSkipped": "This task cannot be skipped",
+    "skipNotAllowedInfo": "Annotators and Reviewers will not be able to skip this task",
+    "toggleVisibility": "Toggle Visibility",
+    "unpersistedCommentsWarning": "You have unpersisted comments which will be lost if continuing.",
+    "submitComment": "Submit comment",
+    "updatedPrefix": "updated"
   },
   "unsavedChanges": {
     "saveAndLeave": "Save and Leave",
@@ -836,6 +989,16 @@
     "orSubmitIssue": "or submit an issue to the",
     "repository": "Repository",
     "close": "Close",
+    "exportToCSGHub": "Export to CSGHub (Required)",
+    "targetDataset": "Target Dataset",
+    "targetBranch": "Target Branch",
+    "selectDataset": "Select dataset...",
+    "selectBranch": "Select branch...",
+    "pleaseSelectDatasetAndBranch": "Please select target dataset and branch",
+    "noPersonalDatasets": "You don't have any personal datasets. Please create one in CSGHub first",
+    "failedToLoadDatasets": "Failed to load datasets",
+    "failedToLoadBranches": "Failed to load branches",
+    "pleaseCreateDatasetFirst": "⚠️ You don't have any personal datasets. Please create a dataset in CSGHub first before exporting",
     "formats": {
       "json": {
         "title": "JSON",
@@ -910,7 +1073,8 @@
         "namedentityrecognition": "Named Entity Recognition",
         "speechrecognition": "Speech Recognition"
       }
-    }
+    },
+    "enterBranch": "Enter branch"
   },
   "accountSettings": {
     "myAccount": "My Account",
@@ -1346,6 +1510,202 @@
       "phrases_previous-region": {
         "label": "Previous Region in Phrase",
         "description": "Navigate to the previous region within current phrase"
+      },
+      "annotation.submit": {
+        "label": "Submit Annotation",
+        "description": "Submit the current annotation"
+      },
+      "annotation.undo": {
+        "label": "Undo",
+        "description": "Undo last action"
+      },
+      "annotation.redo": {
+        "label": "Redo",
+        "description": "Redo previously undone action"
+      },
+      "dm.focus-previous": {
+        "label": "Focus Previous Task",
+        "description": "Move focus to the previous task"
+      },
+      "dm.close-labeling": {
+        "label": "Focus Closed Task",
+        "description": "Focus on the closed task column"
+      },
+      "dm.toggle-bulk-sidebar-minimization": {
+        "label": "Toggle Bulk Sidebar",
+        "description": "Minimize or expand bulk actions sidebar"
+      },
+      "region.focus": {
+        "label": "Focus First Region",
+        "description": "Move focus to the first focusable region"
+      },
+      "region.relation": {
+        "label": "Create Region Relation",
+        "description": "Create a relation between selected regions"
+      },
+      "region.visibility": {
+        "label": "Toggle Region Visibility",
+        "description": "Show or hide the selected region"
+      },
+      "region.lock": {
+        "label": "Lock Region",
+        "description": "Lock or unlock the selected region"
+      },
+      "region.unselect": {
+        "label": "Unselect Region",
+        "description": "Deselect the currently selected region"
+      },
+      "region.delete": {
+        "label": "Delete Selected Region",
+        "description": "Delete currently selected region"
+      },
+      "region.duplicate": {
+        "label": "Duplicate Region",
+        "description": "Create a copy of the selected region"
+      },
+      "segment.delete": {
+        "label": "Delete Segment",
+        "description": "Delete selected segment"
+      },
+      "audio.back": {
+        "label": "Rewind 1 Second",
+        "description": "Rewind the audio by 1 second"
+      },
+      "audio.step-backward": {
+        "label": "Step Back",
+        "description": "Step back one frame"
+      },
+      "media.playpause": {
+        "label": "Play / Pause Video",
+        "description": "Toggle video playback"
+      },
+      "media.step-forward": {
+        "label": "Step Forward",
+        "description": "Step one frame forward"
+      },
+      "video.keyframe-forward": {
+        "label": "Next Keyframe",
+        "description": "Jump to next keyframe"
+      },
+      "video.backward": {
+        "label": "Seek Backward",
+        "description": "Seek video backward"
+      },
+      "video.rewind": {
+        "label": "First Frame",
+        "description": "Jump to first frame"
+      },
+      "video.fastforward": {
+        "label": "Last Frame",
+        "description": "Jump to last frame"
+      },
+      "video.hop-forward": {
+        "label": "Hop Forward",
+        "description": "Hop forward quickly"
+      },
+      "ts.grow-left": {
+        "label": "Extend Left",
+        "description": "Extend the region to the left"
+      },
+      "ts.shrink-left": {
+        "label": "Shrink Left",
+        "description": "Shrink the region from the left"
+      },
+      "ts.grow-left-large": {
+        "label": "Extend Left (Large)",
+        "description": "Extend region left significantly"
+      },
+      "ts.grow-right-large": {
+        "label": "Extend Right (Large)",
+        "description": "Extend region right significantly"
+      },
+      "ts.shrink-left-large": {
+        "label": "Shrink Left (Large)",
+        "description": "Shrink region from left significantly"
+      },
+      "ts.shrink-right-large": {
+        "label": "Shrink Right (Large)",
+        "description": "Shrink region from right significantly"
+      },
+      "image.prev": {
+        "label": "Previous Image",
+        "description": "View previous image"
+      },
+      "image.next": {
+        "label": "Next Image",
+        "description": "View next image"
+      },
+      "tool.zoom-in": {
+        "label": "Zoom In",
+        "description": "Zoom in on the image"
+      },
+      "tool.pan-image": {
+        "label": "Pan Image",
+        "description": "Pan around the image"
+      },
+      "tool.zoom-to-fit": {
+        "label": "Zoom to Fit",
+        "description": "Zoom to fit the full image in view"
+      },
+      "tool.zoom-to-actual": {
+        "label": "Zoom to 100%",
+        "description": "Zoom to actual image size (100%)"
+      },
+      "tool.zoom-out": {
+        "label": "Zoom Out",
+        "description": "Zoom out of the image"
+      },
+      "tool.brush": {
+        "label": "Brush Tool",
+        "description": "Select the brush tool"
+      },
+      "tool.ellipse": {
+        "label": "Ellipse Tool",
+        "description": "Select the ellipse tool"
+      },
+      "tool.eraser": {
+        "label": "Eraser Tool",
+        "description": "Select the eraser tool"
+      },
+      "tool.auto-detect": {
+        "label": "Auto Detect",
+        "description": "Use the auto-detect tool to automatically suggest regions"
+      },
+      "tool.key-point": {
+        "label": "Key Point Tool",
+        "description": "Select the key point annotation tool"
+      },
+      "tool.magic-wand": {
+        "label": "Magic Wand",
+        "description": "Select the magic wand tool for smart region selection"
+      },
+      "tool.polygon": {
+        "label": "Polygon Tool",
+        "description": "Select the polygon annotation tool"
+      },
+      "tool.rect": {
+        "label": "Rectangle Tool",
+        "description": "Select the rectangle annotation tool"
+      },
+      "tool.rect-3point": {
+        "label": "3-Point Rectangle",
+        "description": "Draw a rotated rectangle using 3-point selection"
+      },
+      "tool.rotate-left": {
+        "label": "Rotate Left",
+        "description": "Rotate the image 90° to the left"
+      },
+      "tool.rotate-right": {
+        "label": "Rotate Right",
+        "description": "Rotate the image 90° to the right"
+      },
+      "tool.decrease-tool": {
+        "label": "Decrease Tool Size",
+        "description": "Decrease tool size"
+      },
+      "tool.increase-tool": {
+        "label": "Increase Tool Size",
+        "description": "Increase tool size"
       }
     }
   },
@@ -1465,5 +1825,76 @@
       "zoomToFit": "Zoom to fit",
       "zoomToActualSize": "Zoom to actual size"
     }
-  }
+  },
+  "Select label and click the image to start": "Select label and click the image to start",
+  "Select label and click on image to start": "Select label and click on image to start",
+  "Attributes": "Attributes",
+  "Audio transcription:": "Audio transcription:",
+  "Author": "Author",
+  "Choose response": "Choose response",
+  "Choose similar images:": "Choose similar images:",
+  "Choose text sentiment": "Choose text sentiment",
+  "Choose text sentiment:": "Choose text sentiment:",
+  "Contains sexual content": "Contains sexual content",
+  "Contains violent content": "Contains violent content",
+  "Denigrates a protected class": "Denigrates a protected class",
+  "Describe the image:": "Describe the image:",
+  "Encourages or fails to discourage violence/abuse/terrorism/self-harm": "Encourages or fails to discourage violence/abuse/terrorism/self-harm",
+  "Enter your question:": "Enter your question:",
+  "Expresses moral judgment": "Expresses moral judgment",
+  "Expresses opinion": "Expresses opinion",
+  "Facts:": "Facts:",
+  "Fails to follow the correct instruction / task": "Fails to follow the correct instruction / task",
+  "Forecast next trend:": "Forecast next trend:",
+  "Gives harmful advice": "Gives harmful advice",
+  "Hallucination": "Hallucination",
+  "Inappropriate for customer assistant": "Inappropriate for customer assistant",
+  "Labeling Confidence": "Labeling Confidence",
+  "Labels": "Labels",
+  "Level 1": "Level 1",
+  "Level 2": "Level 2",
+  "Level 3": "Level 3",
+  "Level 3A": "Level 3A",
+  "Level 3B": "Level 3B",
+  "Listen the audio:": "Listen the audio:",
+  "Long Document": "Long Document",
+  "Main questions": "Main questions",
+  "New Author": "New Author",
+  "Overall quality Likert scale; 1-7": "Overall quality Likert scale; 1-7",
+  "Please answer these questions:": "Please answer these questions:",
+  "Please provide additional comments": "Please provide additional comments",
+  "Please read the passage": "Please read the passage",
+  "Please read the text": "Please read the text",
+  "Please select the class": "Please select the class",
+  "Prompt: ": "Prompt: ",
+  "Provide Transcription": "Provide Transcription",
+  "Provide one sentence summary": "Provide one sentence summary",
+  "Provide response": "Provide response",
+  "Provide translation in Spanish": "Provide translation in Spanish",
+  "Rate last answer:": "Rate last answer:",
+  "Rate the Document Summary:": "Rate the Document Summary:",
+  "Rate this article": "Rate this article",
+  "Read the sentence in English": "Read the sentence in English",
+  "Regions": "Regions",
+  "Relationships": "Relationships",
+  "Satisfies constraint provided in the instruction": "Satisfies constraint provided in the instruction",
+  "Search Quality": "Search Quality",
+  "Select a text span answering the following question:": "Select a text span answering the following question:",
+  "Select document related to the query:": "Select document related to the query:",
+  "Select genre:": "Select genre:",
+  "Select its topic:": "Select its topic:",
+  "Select predictable region spans in time series:": "Select predictable region spans in time series:",
+  "Select regions:": "Select regions:",
+  "Select the more accurate summary": "Select the more accurate summary",
+  "Selected level": "Selected level",
+  "Sentiment": "Sentiment",
+  "Sentiment Labels": "Sentiment Labels",
+  "Short Summary": "Short Summary",
+  "Task: ": "Task: ",
+  "Transcript": "Transcript",
+  "Unselected level": "Unselected level",
+  "Utterance Review": "Utterance Review",
+  "Watch the video:": "Watch the video:",
+  "Why?": "Why?",
+  "Your answer:": "Your answer:"
 }

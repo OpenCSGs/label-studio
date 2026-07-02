@@ -7,6 +7,7 @@
 import { inject, observer } from "mobx-react";
 import type React from "react";
 import { memo, type ReactElement } from "react";
+import { useEditorT, editorT } from "../../utils/i18n";
 import { Tooltip, Button } from "@humansignal/ui";
 import { IconInfoOutline } from "@humansignal/icons";
 import type { MSTStore } from "../../stores/types";
@@ -50,6 +51,7 @@ type AcceptButtonProps = {
 
 export const AcceptButton = memo(
   observer(({ disabled, history, store }: AcceptButtonProps) => {
+    const t = useEditorT();
     const annotation = store.annotationStore.selected;
     // changes in current sessions or saved draft
     const hasChanges = history.canUndo || annotation.versions.draft;
@@ -57,7 +59,7 @@ export const AcceptButton = memo(
     return (
       <Button
         key="accept"
-        tooltip="Accept annotation: [ Ctrl+Enter ]"
+        tooltip={t("annotation.acceptAnnotationTooltip")}
         aria-label="accept-annotation"
         disabled={disabled}
         onClick={async () => {
@@ -66,7 +68,7 @@ export const AcceptButton = memo(
           store.acceptAnnotation();
         }}
       >
-        {hasChanges ? "Fix + Accept" : "Accept"}
+        {hasChanges ? t("annotation.fixAndAccept") : t("annotation.accept")}
       </Button>
     );
   }),
@@ -75,11 +77,11 @@ export const AcceptButton = memo(
 export const RejectButtonDefinition = {
   id: "reject",
   name: "reject",
-  title: "Reject",
+  title: editorT("annotation.reject"),
   variant: "negative",
   look: "outlined",
   ariaLabel: "reject-annotation",
-  tooltip: "Reject annotation: [ Ctrl+Space ]",
+  tooltip: editorT("annotation.rejectAnnotationTooltip"),
   // @todo we need this for types compatibility, but better to fix CustomButtonType
   disabled: false,
 };
@@ -99,6 +101,7 @@ const MANAGER_ROLES = ["OW", "AD", "MA"];
 
 export const SkipButton = memo(
   observer(({ disabled, store, onSkipWithComment }: SkipButtonProps) => {
+    const t = useEditorT();
     const task = store.task;
     const taskAllowSkip = (task as any)?.allow_skip !== false;
     const userRole = (window as any).APP_SETTINGS?.user?.role;
@@ -106,14 +109,14 @@ export const SkipButton = memo(
     const canSkip = taskAllowSkip || hasForceSkipPermission;
     const isDisabled = disabled || !canSkip;
 
-    const tooltip: string = canSkip ? "Cancel (skip) task [ Ctrl+Space ]" : "This task cannot be skipped";
+    const tooltip: string = canSkip ? t("annotation.cancelSkipTaskTooltip") : t("annotation.taskCannotBeSkipped");
 
     const showInfoIcon = !taskAllowSkip && hasForceSkipPermission;
 
     return (
       <>
         {showInfoIcon && (
-          <Tooltip title="Annotators and Reviewers will not be able to skip this task">
+          <Tooltip title={t("annotation.skipNotAllowedInfo")}>
             <IconInfoOutline width={20} height={20} className="text-neutral-content ml-auto cursor-pointer" />
           </Tooltip>
         )}
@@ -136,7 +139,7 @@ export const SkipButton = memo(
             }
           }}
         >
-          Skip
+          {t("annotation.skip")}
         </Button>
       </>
     );
@@ -145,10 +148,11 @@ export const SkipButton = memo(
 
 export const UnskipButton = memo(
   observer(({ disabled, store }: { disabled: boolean; store: MSTStore }) => {
+    const t = useEditorT();
     return (
       <Button
         key="cancel-skip"
-        tooltip="Cancel skip: []"
+        tooltip={t("annotation.cancelSkipTooltip")}
         aria-label="cancel-skip"
         look="outlined"
         disabled={disabled}
@@ -160,7 +164,7 @@ export const UnskipButton = memo(
           store.unskipTask();
         }}
       >
-        Cancel skip
+        {t("annotation.cancelSkip")}
       </Button>
     );
   }),

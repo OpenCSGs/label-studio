@@ -3,6 +3,7 @@
  */
 
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Space } from "../../common/Space/Space";
 import { IconPlusCircle, IconComment, IconCommentRed, IconSparks } from "@humansignal/icons";
@@ -15,6 +16,7 @@ import { TimeAgo } from "../../common/TimeAgo/TimeAgo";
 import { reaction } from "mobx";
 
 export const Annotations = observer(({ store, annotationStore, commentStore }) => {
+  const { t } = useTranslation();
   const dropdownRef = useRef();
   const [opened, setOpened] = useState(false);
   const enableAnnotations = store.hasInterface("annotations:tabs");
@@ -139,7 +141,7 @@ export const Annotations = observer(({ store, annotationStore, commentStore }) =
       <div className={cn("annotations-list").toClassName()} ref={dropdownRef}>
         <div className={cn("annotations-list").elem("selected").toClassName()}>
           <Annotation
-            aria-label="Annotations List Toggle"
+            aria-label={t("annotation.annotationsListToggle")}
             entity={annotationStore.selected}
             onClick={(e) => {
               e.stopPropagation();
@@ -173,6 +175,7 @@ export const Annotations = observer(({ store, annotationStore, commentStore }) =
 });
 
 const CreateAnnotation = observer(({ annotationStore, onClick }) => {
+  const { t } = useTranslation();
   const onCreateAnnotation = useCallback(() => {
     const c = annotationStore.createAnnotation();
 
@@ -183,20 +186,21 @@ const CreateAnnotation = observer(({ annotationStore, onClick }) => {
   return (
     <div
       className={cn("annotations-list").elem("create").toClassName()}
-      aria-label="Create Annotation"
+      aria-label={t("annotation.createAnnotation")}
       onClick={onCreateAnnotation}
     >
       <Space size="small">
         <Userpic className={cn("annotations-list").elem("userpic").mod({ prediction: true }).toClassName()}>
           <IconPlusCircle />
         </Userpic>
-        Create Annotation
+        {t("annotation.createAnnotation")}
       </Space>
     </div>
   );
 });
 
 const Annotation = observer(({ entity, selected, onClick, extra, ...props }) => {
+  const { t } = useTranslation();
   const isPrediction = entity.type === "prediction";
   const username = userDisplayName(
     entity.user ?? {
@@ -228,7 +232,7 @@ const Annotation = observer(({ entity, selected, onClick, extra, ...props }) => 
               </div>
             ) : (
               <div className={cn("annotations-list").elem("created").toClassName()}>
-                created,{" "}
+                {t("annotation.createdPrefix")}{" "}
                 <TimeAgo className={cn("annotations-list").elem("date").toClassName()} date={entity.createdDate} />
               </div>
             )}

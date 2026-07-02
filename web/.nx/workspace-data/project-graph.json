@@ -25942,6 +25942,11 @@
       },
       {
         "source": "datamanager",
+        "target": "npm:@hello-pangea/dnd",
+        "type": "static"
+      },
+      {
+        "source": "datamanager",
         "target": "npm:react-datepicker",
         "type": "static"
       },
@@ -25998,6 +26003,11 @@
       {
         "source": "datamanager",
         "target": "npm:shallow-equal",
+        "type": "static"
+      },
+      {
+        "source": "datamanager",
+        "target": "npm:react-i18next",
         "type": "static"
       },
       {
@@ -26492,6 +26502,11 @@
       },
       {
         "source": "editor",
+        "target": "npm:@hello-pangea/dnd",
+        "type": "static"
+      },
+      {
+        "source": "editor",
         "target": "npm:react-dom",
         "type": "static"
       },
@@ -26553,6 +26568,11 @@
       {
         "source": "editor",
         "target": "npm:@testing-library/react",
+        "type": "static"
+      },
+      {
+        "source": "editor",
+        "target": "npm:i18next",
         "type": "static"
       },
       {
@@ -60156,5 +60176,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1775728779881
+  "computedAt": 1782972929429
 }

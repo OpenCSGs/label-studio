@@ -68,7 +68,7 @@ class PublicListAPI(APIView):
         authorization = getattr(request.user, 'authorization', None) or ''
         if not user_name:
             return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
-        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:18120')
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
         if not endpoint:
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}/datasets?per=50&page=1"
@@ -91,7 +91,7 @@ class DatasetBranchesAPI(APIView):
         if not repo_id:
             return Response({"error": "缺少 repo_id 参数"}, status=status.HTTP_400_BAD_REQUEST)
         authorization = getattr(request.user, 'authorization', None) or ''
-        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:18120')
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
         if not endpoint:
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/datasets/{repo_id}/branches"
@@ -101,6 +101,98 @@ class DatasetBranchesAPI(APIView):
             data = resp.json()
             names = [item.get('name', '') for item in (data.get('data') or []) if item and item.get('name')]
             return Response(names)
+        except requests.RequestException as e:
+            return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
+
+
+@method_decorator(name='get', decorator=extend_schema(exclude=True))
+class OrganizationListAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_name = getattr(request.user, 'user_name', None) or ''
+        authorization = getattr(request.user, 'authorization', None) or ''
+        if not user_name:
+            return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
+        if not endpoint:
+            return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}"
+        try:
+            resp = requests.get(url, headers={"Authorization": authorization, "User-Token": authorization}, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            # 提取组织列表
+            orgs = data.get('data', {}).get('orgs', [])
+            # 返回组织信息: {name, path, uuid, namespace_uuid}
+            org_list = []
+            for org in orgs:
+                org_info = {
+                    'name': org.get('name', ''),
+                    'path': org.get('path', ''),
+                    'uuid': org.get('uuid', ''),
+                    'namespace_uuid': org.get('namespace', {}).get('UUID', '')
+                }
+                if org_info['name'] and org_info['path']:
+                    org_list.append(org_info)
+            return Response(org_list)
+        except requests.RequestException as e:
+            return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
+
+
+@method_decorator(name='get', decorator=extend_schema(exclude=True))
+class OrganizationDatasetsAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        org_name = request.query_params.get('org_name')
+        if not org_name:
+            return Response({"error": "缺少 org_name 参数"}, status=status.HTTP_400_BAD_REQUEST)
+        user_name = getattr(request.user, 'user_name', None) or ''
+        authorization = getattr(request.user, 'authorization', None) or ''
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
+        if not endpoint:
+            return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        url = f"{endpoint.rstrip('/')}/api/v1/organization/{org_name}/datasets?current_user={user_name}&per=50"
+        try:
+            resp = requests.get(url, headers={"Authorization": authorization}, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            paths = [item.get('path', '') for item in (data.get('data') or []) if item and item.get('path')]
+            return Response(paths)
+        except requests.RequestException as e:
+            return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
+
+
+@method_decorator(name='get', decorator=extend_schema(exclude=True))
+class UserNamespacesAPI(APIView):
+    """代理 CSGHub /api/v1/user/{user_name}，返回数据所有者列表（namespaces）。
+    每项 {path, type}，type=user 为个人，type=organization 为组织。
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_name = getattr(request.user, 'user_name', None) or ''
+        authorization = getattr(request.user, 'authorization', None) or ''
+        if not user_name:
+            return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
+        endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
+        if not endpoint:
+            return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}"
+        try:
+            resp = requests.get(url, headers={"Authorization": authorization, "User-Token": authorization}, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            namespaces = data.get('data', {}).get('namespaces', []) or []
+            result = []
+            for ns in namespaces:
+                path = ns.get('Path', '')
+                ns_type = ns.get('Type', '')
+                if path:
+                    result.append({'path': path, 'type': ns_type})
+            return Response(result)
         except requests.RequestException as e:
             return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
 

@@ -1,6 +1,7 @@
 import { cn } from "../../utils/bem";
 import { isDefined } from "../../utils/utilities";
 import { Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Hotkey } from "../../core/Hotkey";
 
 const hotkeys = Hotkey("SegmentationToolbar", "Segmentation Tools");
@@ -39,6 +40,7 @@ const shortcutView = (shortcut) => {
 };
 
 export const FlyoutMenu = ({ items, icon }) => {
+  const { t } = useTranslation();
   const [isClicked, setClicked] = useState(false);
 
   useEffect(() => {
@@ -101,7 +103,7 @@ export const FlyoutMenu = ({ items, icon }) => {
           .elem("icon")
           .mix(isClicked ? "isClicked" : "")
           .toClassName()}
-        title="Zoom presets (click to see options)"
+        title={t("annotation.zoomPresets")}
       >
         {icon}
       </div>

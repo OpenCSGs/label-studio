@@ -32,7 +32,7 @@ const LabelingHeader = ({ SDK, onClick, isExplorerMode }) => {
             wrapper={FieldsButton.Checkbox}
             icon={<Icon icon={IconGearNewUI} />}
             trailingIcon={<Icon icon={IconChevronDown} />}
-            title={"Fields"}
+            title={(SDK?.t ?? ((k) => k))("dataManager.fields")}
           />
         ) : null}
       </Space>

@@ -39,6 +39,9 @@ export const API_CONFIG = {
     dataSummary: "/projects/:pk/summary",
     publicList: "/import/public-list",
     datasetBranches: "/import/dataset-branches",
+    organizationList: "/import/organization-list",
+    organizationDatasets: "/import/organization-datasets",
+    userNamespaces: "/import/user-namespaces",
 
     // DM
     deleteTabs: "DELETE:/dm/views/reset",

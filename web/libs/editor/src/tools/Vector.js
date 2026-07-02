@@ -5,6 +5,7 @@ import ToolMixin from "../mixins/Tool";
 import { MultipleClicksDrawingTool } from "../mixins/DrawingTool";
 import { NodeViews } from "../components/Node/Node";
 import { observe } from "mobx";
+import { editorT } from "../utils/i18n";
 
 const _Tool = types
   .model("VectorTool", {
@@ -38,7 +39,7 @@ const _Tool = types
       },
 
       get viewTooltip() {
-        return "Vector region";
+        return editorT("annotation.toolVector");
       },
 
       get iconComponent() {
