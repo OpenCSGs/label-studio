@@ -158,8 +158,11 @@ def tasks_from_url(file_upload_ids, project, user, url, could_be_tasks_list):
         endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
         if not endpoint:
             raise ValidationError('未配置 CSGHUB_ENDPOINT')
-        local_folder = os.path.join(os.path.dirname(__file__), 'Downloads')
+        # 按项目 id 隔离下载目录，避免多个项目并发导入时缓存位置冲突；
+        # 下载前清空该项目目录，防止上一次导入的旧文件残留。
+        local_folder = os.path.join(os.path.dirname(__file__), 'Downloads', str(project.id))
         os.makedirs(local_folder, exist_ok=True)
+        _clear_folder(local_folder)
         try:
             snapshot_download(
                 dataset, repo_type='dataset', cache_dir=local_folder,
