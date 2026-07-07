@@ -321,7 +321,9 @@ def generate_sample_task_without_check(label_config, mode='upload', secure_mode=
                     params['sep'] = sep
                 if time_format:
                     params['tf'] = time_format
-                task[value] = '/samples/time-series.csv?' + urlencode(params)
+                # 加上 HOSTNAME 前缀，与其它样例 URL（图片等经 <HOSTNAME> 替换）保持一致，
+                # 否则子路径部署（如 /-/label-studio）时时间序列样例路径缺前缀导致加载失败。
+                task[value] = settings.HOSTNAME + '/samples/time-series.csv?' + urlencode(params)
             else:
                 # data is JSON
                 task[value] = generate_time_series_json(time_column, value_columns, time_format)
