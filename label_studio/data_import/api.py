@@ -107,6 +107,12 @@ class DatasetBranchesAPI(APIView):
 
 @method_decorator(name='get', decorator=extend_schema(exclude=True))
 class OrganizationListAPI(APIView):
+    """代理 CSGHub /api/v1/user/{user_name}，返回数据所有者列表（个人 + 全部组织）。
+    每项 {path, name, type, uuid}，type=user 为个人、organization 为组织。
+    数据源用 data.username（个人）+ data.orgs（组织），不用 data.namespaces
+    （namespaces 可能不包含用户加入的全部组织）。
+    """
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -122,20 +128,29 @@ class OrganizationListAPI(APIView):
             resp = requests.get(url, headers={"Authorization": authorization, "User-Token": authorization}, timeout=30)
             resp.raise_for_status()
             data = resp.json()
-            # 提取组织列表
-            orgs = data.get('data', {}).get('orgs', [])
-            # 返回组织信息: {name, path, uuid, namespace_uuid}
-            org_list = []
-            for org in orgs:
-                org_info = {
-                    'name': org.get('name', ''),
-                    'path': org.get('path', ''),
+            d = data.get('data', {}) or {}
+            result = []
+            # 个人（数据所有者本人）
+            personal_path = d.get('username', '') or ''
+            if personal_path:
+                result.append({
+                    'path': personal_path,
+                    'name': d.get('nickname', '') or personal_path,
+                    'type': 'user',
+                    'uuid': d.get('uuid', ''),
+                })
+            # 组织列表（用户加入的全部组织）
+            for org in d.get('orgs', []) or []:
+                org_path = org.get('path', '')
+                if not org_path:
+                    continue
+                result.append({
+                    'path': org_path,
+                    'name': org.get('name', '') or org_path,
+                    'type': 'organization',
                     'uuid': org.get('uuid', ''),
-                    'namespace_uuid': org.get('namespace', {}).get('UUID', '')
-                }
-                if org_info['name'] and org_info['path']:
-                    org_list.append(org_info)
-            return Response(org_list)
+                })
+            return Response(result)
         except requests.RequestException as e:
             return Response({"error": f"调用 CSGHub API 失败: {str(e)}"}, status=status.HTTP_502_BAD_GATEWAY)
 

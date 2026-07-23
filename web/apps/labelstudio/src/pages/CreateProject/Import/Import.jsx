@@ -360,7 +360,7 @@ export const ImportPage = ({
     if (ownersFetched) return;
     setLoadingOwners(true);
     try {
-      const data = await api.callApi("userNamespaces");
+      const data = await api.callApi("organizationList");
       const list = Array.isArray(data) ? data : [];
       setOwners(list);
       // 默认选中个人（type=user）
