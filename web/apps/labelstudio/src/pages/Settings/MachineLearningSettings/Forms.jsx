@@ -7,6 +7,7 @@ import { Form, Input, Select, TextArea, Toggle } from "../../../components/Form"
 import "./MachineLearningSettings.scss";
 
 const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
+  const { t } = useTranslation();
   const [selectedAuthMethod, setAuthMethod] = useState("NONE");
   const [, setMLError] = useState();
 
