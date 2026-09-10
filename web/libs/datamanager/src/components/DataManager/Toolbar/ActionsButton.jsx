@@ -58,10 +58,25 @@ const DialogContent = ({ text, form, formRef, store, action }) => {
   );
 };
 
-const ActionButton = ({ action, parentRef, store, formRef }) => {
+const actionTitleKeys = {
+  retrieve_tasks_predictions: "dataManager.actionTitles.retrievePredictions",
+  predictions_to_annotations: "dataManager.actionTitles.createAnnotationsFromPredictions",
+  remove_duplicates: "dataManager.actionTitles.removeDuplicatedTasks",
+  delete_tasks: "dataManager.actionTitles.deleteTasks",
+  delete_tasks_annotations: "dataManager.actionTitles.deleteAnnotations",
+  delete_tasks_predictions: "dataManager.actionTitles.deletePredictions",
+};
+
+const getActionTitle = (action, t) => {
+  const key = actionTitleKeys[action.id];
+  return key ? t(key, { defaultValue: action.title }) : action.title;
+};
+
+const ActionButton = ({ action, parentRef, store, formRef, t }) => {
   const isDeleteAction = action.id.includes("delete");
   const hasChildren = !!action.children?.length;
   const submenuRef = useRef();
+  const actionTitle = getActionTitle(action, t);
 
   const onClick = useCallback(
     (e) => {
@@ -90,13 +105,13 @@ const ActionButton = ({ action, parentRef, store, formRef }) => {
         .toClassName()}
       size="small"
       onClick={onClick}
-      aria-label={action.title}
+      aria-label={actionTitle}
     >
       <div
         className={cn("actionButton").elem("titleContainer").toClassName()}
         {...(action.disabled ? { title: action.disabledReason } : {})}
       >
-        <div className={cn("actionButton").elem("title").toClassName()}>{action.title}</div>
+        <div className={cn("actionButton").elem("title").toClassName()}>{actionTitle}</div>
         {hasChildren ? <IconChevronRight className={cn("actionButton").elem("icon").toClassName()} /> : null}
       </div>
     </Menu.Item>
@@ -118,6 +133,7 @@ const ActionButton = ({ action, parentRef, store, formRef }) => {
                 parentRef={parentRef}
                 store={store}
                 formRef={formRef}
+                t={t}
               />
             ))}
           </ul>
@@ -141,9 +157,9 @@ const ActionButton = ({ action, parentRef, store, formRef }) => {
           }`}
           icon={isDeleteAction && <IconTrash />}
           title={action.disabled ? action.disabledReason : null}
-          aria-label={action.title}
+          aria-label={actionTitle}
         >
-          {action.title}
+          {actionTitle}
         </Menu.Item>
       </div>
     </Tooltip>
@@ -227,9 +243,12 @@ export const ActionsButton = injector(
       return [...store.availableActions, ...serverActions].filter((a) => !a.hidden).sort((a, b) => a.order - b.order);
     }, [store.availableActions, serverActions]);
     const actionButtons = actions.map((action) => (
-      <ActionButton key={action.id} action={action} parentRef={formRef} store={store} formRef={formRef} />
+      <ActionButton key={action.id} action={action} parentRef={formRef} store={store} formRef={formRef} t={t} />
     ));
-    const recordTypeLabel = isFFLOPSE3 && store.SDK.type === "DE" ? "Record" : "Task";
+    const isRecordType = isFFLOPSE3 && store.SDK.type === "DE";
+    const recordTypeLabel = isRecordType
+      ? t(selectedCount === 1 ? "dataManager.record" : "dataManager.records")
+      : t(selectedCount === 1 ? "dataManager.task" : "dataManager.tasks");
 
     return (
       <Dropdown.Trigger
@@ -257,7 +276,7 @@ export const ActionsButton = injector(
           aria-label={t("dataManager.tasksActions")}
           {...rest}
         >
-          {selectedCount > 0 ? `${selectedCount} ${recordTypeLabel}${selectedCount > 1 ? "s" : ""}` : t("dataManager.actions")}
+          {selectedCount > 0 ? `${selectedCount} ${recordTypeLabel}` : t("dataManager.actions")}
         </Button>
       </Dropdown.Trigger>
     );

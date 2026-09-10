@@ -9,6 +9,10 @@ export const API_CONFIG = {
     me: "/current-user/whoami",
     hotkeys: "GET:/current-user/hotkeys/",
     updateHotkeys: "PATCH:/current-user/hotkeys/",
+    legacyApiToken: "GET:/current-user/token",
+    createLegacyApiToken: "POST:/current-user/reset-token/",
+    jwtApiTokens: "/token/",
+    createJwtApiToken: "POST:/token/",
 
     // Organization
     memberships: "/organizations/:pk/memberships",

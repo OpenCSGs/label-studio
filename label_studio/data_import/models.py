@@ -20,6 +20,11 @@ from rest_framework.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
+IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp', '.tiff'}
+AUDIO_EXTENSIONS = {'.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac'}
+VIDEO_EXTENSIONS = {'.mp4', '.avi', '.mov', '.mkv', '.webm'}
+MEDIA_EXTENSIONS = IMAGE_EXTENSIONS | AUDIO_EXTENSIONS | VIDEO_EXTENSIONS
+
 
 def upload_name_generator(instance, filename):
     project = str(instance.project_id)
@@ -238,11 +243,59 @@ class FileUpload(models.Model):
 
     def read_task_from_uploaded_file(self):
         logger.debug('Read 1 task from uploaded file {}'.format(self.filepath))
+        data_key = self._configured_data_key_for_file()
         if settings.CLOUD_FILE_STORAGE_ENABLED:
-            tasks = [{'data': {settings.DATA_UNDEFINED_NAME: self.filepath}}]
+            value = self.filepath
         else:
-            tasks = [{'data': {settings.DATA_UNDEFINED_NAME: self.url}}]
-        return tasks
+            value = self.url
+        return [{'data': {data_key: value}}]
+
+    def _configured_data_key_for_file(self):
+        """Return the configured scalar data key compatible with this file.
+
+        Label Studio supports arbitrary variable names (for example $photo), so
+        raw uploads must be mapped by object type rather than hard-coded names.
+        valueList inputs are grouped by load_tasks_from_uploaded_files and are
+        deliberately not treated as scalar inputs here.
+        """
+        project_data_types = getattr(self.project, 'data_types', {}) or {}
+        multipage_keys = {
+            value.lstrip('$')
+            for value in (getattr(self.project, 'multipage_labeling_values', []) or [])
+            if isinstance(value, str)
+        }
+        ext = (self.format or '').lower()
+        expected_type = None
+        if ext in IMAGE_EXTENSIONS:
+            expected_type = 'Image'
+        elif ext in AUDIO_EXTENSIONS:
+            expected_type = 'Audio'
+        elif ext in VIDEO_EXTENSIONS:
+            expected_type = 'Video'
+
+        compatible_keys = [
+            key
+            for key, data_type in project_data_types.items()
+            if data_type == expected_type and key not in multipage_keys
+        ]
+        if len(compatible_keys) == 1:
+            return compatible_keys[0]
+        return settings.DATA_UNDEFINED_NAME
+
+    @staticmethod
+    def _multipage_image_key(project):
+        values = {
+            value.lstrip('$')
+            for value in (getattr(project, 'multipage_labeling_values', []) or [])
+            if isinstance(value, str) and value.lstrip('$')
+        }
+        return next(iter(values)) if len(values) == 1 else None
+
+    @staticmethod
+    def _uploaded_file_value(file_upload):
+        if settings.CLOUD_FILE_STORAGE_ENABLED:
+            return file_upload.filepath
+        return file_upload.url
 
     @property
     def format_could_be_tasks_list(self):
@@ -324,9 +377,30 @@ class FileUpload(models.Model):
         common_data_fields = set()
 
         # scan all files
-        file_uploads = FileUpload.objects.filter(project=project)
+        file_uploads = FileUpload.objects.filter(project=project).order_by('id')
         if file_upload_ids:
             file_uploads = file_uploads.filter(id__in=file_upload_ids)
+        file_uploads = list(file_uploads)
+
+        # A valueList Image consumes the image files from one import/reimport
+        # request as one ordered multi-page task. FileUpload records remain
+        # independent, preserving the original upload lifecycle.
+        multipage_key = cls._multipage_image_key(project)
+        multipage_uploads = [
+            upload
+            for upload in file_uploads
+            if (upload.format or '').lower() in IMAGE_EXTENSIONS
+            and (not formats or upload.format in formats)
+        ] if multipage_key else []
+        if multipage_uploads:
+            tasks.append({
+                'data': {multipage_key: [cls._uploaded_file_value(upload) for upload in multipage_uploads]},
+                'file_upload_id': multipage_uploads[0].id,
+            })
+            common_data_fields = {multipage_key}
+            fileformats.extend(upload.format for upload in multipage_uploads)
+            multipage_ids = {upload.id for upload in multipage_uploads}
+            file_uploads = [upload for upload in file_uploads if upload.id not in multipage_ids]
         for file_upload in file_uploads:
             file_format = file_upload.format
             if formats and file_format not in formats:
@@ -334,11 +408,7 @@ class FileUpload(models.Model):
             # Skip hidden files and unsupported formats when expecting files as tasks list
             base_name = os.path.basename(file_upload.file.name)
             if files_as_tasks_list:
-                media_asset = file_format and file_format.lower() in (
-                    '.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp', '.tiff',
-                    '.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac',
-                    '.mp4', '.avi', '.mov', '.mkv', '.webm'
-                )
+                media_asset = file_format and file_format.lower() in MEDIA_EXTENSIONS
                 # HTML/XML are imported as a single hypertext asset (one file -> one task)
                 hypertext_asset = file_format and file_format.lower() in ('.html', '.htm', '.xml')
                 is_supported = (
@@ -353,11 +423,7 @@ class FileUpload(models.Model):
             # If project has multiple data keys, skip any non-structured file types except media assets
             if not project.one_object_in_label_config:
                 structured = file_format in ('.csv', '.tsv', '.txt', '.json')
-                media_asset = file_format and file_format.lower() in (
-                    '.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp', '.tiff',
-                    '.wav', '.mp3', '.flac', '.m4a', '.ogg', '.aac',
-                    '.mp4', '.avi', '.mov', '.mkv', '.webm'
-                )
+                media_asset = file_format and file_format.lower() in MEDIA_EXTENSIONS
                 if not (structured or media_asset):
                     logger.warning(
                         'Skipping non-structured file for multi-key project during import: %s',
@@ -394,6 +460,22 @@ class FileUpload(models.Model):
         cls, project, file_upload_ids=None, formats=None, files_as_tasks_list=True, batch_size=5000
     ):
         """Stream tasks from uploaded files in batches to reduce memory usage using true streaming for JSON files"""
+        # Multi-page image tasks must be assembled across the complete upload
+        # batch. Reuse the non-streaming assembler, then yield bounded batches.
+        if cls._multipage_image_key(project):
+            tasks, fileformats, common_data_fields = cls.load_tasks_from_uploaded_files(
+                project,
+                file_upload_ids=file_upload_ids,
+                formats=formats,
+                files_as_tasks_list=files_as_tasks_list,
+            )
+            if not tasks:
+                yield [], fileformats, common_data_fields
+                return
+            for index in range(0, len(tasks), batch_size):
+                yield tasks[index:index + batch_size], fileformats, common_data_fields
+            return
+
         fileformats = []
         common_data_fields = set()
         accumulated_batch = []

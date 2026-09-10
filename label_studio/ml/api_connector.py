@@ -161,6 +161,12 @@ class MLApi(BaseHTTPAPI):
         except requests.exceptions.RequestException as e:
             error_string = str(e)
             status_code = response.status_code if response is not None else 0
+            if response is not None:
+                try:
+                    error_body = response.json()
+                    error_string = error_body.get('detail') or error_body.get('error') or error_string
+                except ValueError:
+                    pass
             return MLApiResult(url, request, {'error': error_string}, headers, 'error', status_code=status_code)
         status_code = response.status_code
         try:
@@ -229,14 +235,14 @@ class MLApi(BaseHTTPAPI):
     def validate(self, config):
         return self._request(VALIDATE_URL, request={'config': config}, timeout=self._validate_request_timeout)
 
-    def setup(self, project, extra_params=None, **kwargs):
+    def setup(self, project, extra_params=None, ls_access_token=None, **kwargs):
         return self._request(
             SETUP_URL,
             request={
                 'project': self._create_project_uid(project),
                 'schema': project.label_config,
                 'hostname': settings.HOSTNAME if settings.HOSTNAME else ('http://localhost:' + settings.INTERNAL_PORT),
-                'access_token': project.created_by.auth_token.key,
+                'access_token': ls_access_token,
                 'extra_params': extra_params,
             },
             timeout=TIMEOUT_SETUP,

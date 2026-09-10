@@ -309,8 +309,8 @@ class UserGetTokenAPI(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        token = Token.objects.get(user=user)
-        return Response({'token': str(token)}, status=200)
+        token = Token.objects.filter(user=user).first()
+        return Response({'token': str(token) if token else None}, status=200)
 
 
 @method_decorator(
