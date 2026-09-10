@@ -129,6 +129,10 @@ class MLBackend(models.Model):
         return self.get_user_jwt_token(owner)
 
     @staticmethod
+    def _get_label_studio_url():
+        return settings.HOSTNAME or f'http://localhost:{settings.INTERNAL_PORT}'
+
+    @staticmethod
     def get_user_jwt_token(user):
         if user is None:
             raise ValueError('The model connection has no owner.')
@@ -320,6 +324,7 @@ class MLBackend(models.Model):
         request_params = ml_api._prep_prediction_req([task_ser], self.project)
         request_params['params']['credentials'] = self.request_credentials
         request_params['params']['ls_access_token'] = self._get_creator_token()
+        request_params['params']['ls_url'] = self._get_label_studio_url()
         ml_api_result = ml_api._request(PREDICT_URL, request_params, verbose=False, timeout=TIMEOUT_PREDICT)
 
         if ml_api_result.is_error:
@@ -375,6 +380,7 @@ class MLBackend(models.Model):
         request = self.api._prep_prediction_req(serialized_tasks, self.project)
         request['params']['credentials'] = self.request_credentials
         request['params']['ls_access_token'] = self._get_creator_token()
+        request['params']['ls_url'] = self._get_label_studio_url()
         result = self.api._request(PREDICT_URL, request, verbose=False, timeout=TIMEOUT_PREDICT)
 
         # response validation
@@ -468,6 +474,7 @@ class MLBackend(models.Model):
         request = self.api._prep_prediction_req(tasks_ser, self.project, context=context)
         request['params']['credentials'] = self.request_credentials
         request['params']['ls_access_token'] = self._get_creator_token()
+        request['params']['ls_url'] = self._get_label_studio_url()
         ml_api_result = self.api._request(PREDICT_URL, request, verbose=False, timeout=TIMEOUT_PREDICT)
         if ml_api_result.is_error:
             logger.info(f'Prediction not created for project {self}: {ml_api_result.error_message}')
