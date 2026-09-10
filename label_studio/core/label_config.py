@@ -139,13 +139,16 @@ def extract_data_types(label_config):
     if xml is None:
         raise etree.ParseError('Project config is empty or incorrect')
 
-    # take all tags with values attribute and fit them to tag types
+    # Take all object tags with scalar (value) or list (valueList) data
+    # references and fit them to tag types. Multi-page Image templates use
+    # valueList="$pages", so ignoring valueList leaves project.data_types empty
+    # and prevents uploaded files from being mapped to the configured field.
     data_type = {}
-    parent = xml.findall('.//*[@value]')
+    parent = xml.findall('.//*[@value]') + xml.findall('.//*[@valueList]')
     for match in parent:
         if not match.get('name'):
             continue
-        name = match.get('value')
+        name = match.get('value') or match.get('valueList')
 
         # simple one
         if len(name) > 1 and (name[0] == '$'):

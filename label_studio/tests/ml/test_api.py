@@ -2,6 +2,7 @@ import json
 
 import pytest
 from projects.models import Task
+from ml.models import MLBackend
 from rest_framework import status
 
 from label_studio.tests.utils import make_project, register_ml_backend_mock
@@ -9,6 +10,38 @@ from label_studio.tests.utils import make_project, register_ml_backend_mock
 ORIG_MODEL_NAME = 'basic_ml_backend'
 PROJECT_CONFIG = """<View><Image name="image" value="$image_url"/><Choices name="label"
           toName="image"><Choice value="pos"/><Choice value="neg"/></Choices></View>"""
+
+
+@pytest.mark.django_db
+def test_third_party_credentials_are_encrypted_and_filtered_by_template(business_client):
+    project = make_project(
+        config=dict(
+            is_published=True,
+            label_config='<View><Image name="image" value="$image"/><RectangleLabels name="labels" toName="image"/></View>',
+            title='credential routing',
+        ),
+        user=business_client.user,
+    )
+    backend = MLBackend.objects.create(
+        project=project,
+        url='https://ml.example.com',
+        created_by=business_client.user,
+        use_third_party_models=True,
+        seed_api_key_encrypted=MLBackend.encrypt_credential('seed-secret'),
+        entity_segment_access_key_encrypted=MLBackend.encrypt_credential('ak-secret'),
+        entity_segment_secret_key_encrypted=MLBackend.encrypt_credential('sk-secret'),
+    )
+
+    assert 'seed-secret' not in backend.seed_api_key_encrypted
+    assert backend.request_credentials == {'seed_api_key': 'seed-secret'}
+
+    project.label_config = '<View><Image name="image" value="$image"/><BrushLabels name="labels" toName="image"/></View>'
+    project.save(update_fields=['label_config'])
+    assert backend.request_credentials == {
+        'seed_api_key': 'seed-secret',
+        'entity_segment_access_key': 'ak-secret',
+        'entity_segment_secret_key': 'sk-secret',
+    }
 
 
 @pytest.fixture
