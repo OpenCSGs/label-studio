@@ -59,13 +59,25 @@ ProjectImportPermission = load_func(settings.PROJECT_IMPORT_PERMISSION)
 # ---------- CSGHub 二开 ----------
 
 
+def _get_csghub_auth_headers(user):
+    """Build CSGHub REST headers from the persisted user token."""
+    token = (getattr(user, 'user_token', None) or '').strip()
+    if not token:
+        return {}
+    if token.lower().startswith('bearer '):
+        authorization = token
+    else:
+        authorization = f'Bearer {token}'
+    return {'Authorization': authorization}
+
+
 @method_decorator(name='get', decorator=extend_schema(exclude=True))
 class PublicListAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user_name = getattr(request.user, 'user_name', None) or ''
-        authorization = getattr(request.user, 'authorization', None) or ''
+        headers = _get_csghub_auth_headers(request.user)
         if not user_name:
             return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
         endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
@@ -73,7 +85,7 @@ class PublicListAPI(APIView):
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}/datasets?per=50&page=1"
         try:
-            resp = requests.get(url, headers={"Authorization": authorization}, timeout=30)
+            resp = requests.get(url, headers=headers, timeout=30)
             resp.raise_for_status()
             data = resp.json()
             paths = [item.get('path', '') for item in (data.get('data') or []) if item and item.get('path')]
@@ -90,13 +102,13 @@ class DatasetBranchesAPI(APIView):
         repo_id = request.query_params.get('repo_id')
         if not repo_id:
             return Response({"error": "缺少 repo_id 参数"}, status=status.HTTP_400_BAD_REQUEST)
-        authorization = getattr(request.user, 'authorization', None) or ''
+        headers = _get_csghub_auth_headers(request.user)
         endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
         if not endpoint:
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/datasets/{repo_id}/branches"
         try:
-            resp = requests.get(url, headers={"Authorization": authorization}, timeout=30)
+            resp = requests.get(url, headers=headers, timeout=30)
             resp.raise_for_status()
             data = resp.json()
             names = [item.get('name', '') for item in (data.get('data') or []) if item and item.get('name')]
@@ -117,7 +129,7 @@ class OrganizationListAPI(APIView):
 
     def get(self, request):
         user_name = getattr(request.user, 'user_name', None) or ''
-        authorization = getattr(request.user, 'authorization', None) or ''
+        headers = _get_csghub_auth_headers(request.user)
         if not user_name:
             return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
         endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
@@ -125,7 +137,7 @@ class OrganizationListAPI(APIView):
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}"
         try:
-            resp = requests.get(url, headers={"Authorization": authorization, "User-Token": authorization}, timeout=30)
+            resp = requests.get(url, headers=headers, timeout=30)
             resp.raise_for_status()
             data = resp.json()
             d = data.get('data', {}) or {}
@@ -164,13 +176,13 @@ class OrganizationDatasetsAPI(APIView):
         if not org_name:
             return Response({"error": "缺少 org_name 参数"}, status=status.HTTP_400_BAD_REQUEST)
         user_name = getattr(request.user, 'user_name', None) or ''
-        authorization = getattr(request.user, 'authorization', None) or ''
+        headers = _get_csghub_auth_headers(request.user)
         endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
         if not endpoint:
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/organization/{org_name}/datasets?current_user={user_name}&per=50"
         try:
-            resp = requests.get(url, headers={"Authorization": authorization}, timeout=30)
+            resp = requests.get(url, headers=headers, timeout=30)
             resp.raise_for_status()
             data = resp.json()
             paths = [item.get('path', '') for item in (data.get('data') or []) if item and item.get('path')]
@@ -189,7 +201,7 @@ class UserNamespacesAPI(APIView):
 
     def get(self, request):
         user_name = getattr(request.user, 'user_name', None) or ''
-        authorization = getattr(request.user, 'authorization', None) or ''
+        headers = _get_csghub_auth_headers(request.user)
         if not user_name:
             return Response({"error": "当前用户未设置 user_name"}, status=status.HTTP_400_BAD_REQUEST)
         endpoint = os.environ.get('CSGHUB_ENDPOINT', 'http://net-power.9free.com.cn:58120')
@@ -197,7 +209,7 @@ class UserNamespacesAPI(APIView):
             return Response({"error": "未配置 CSGHUB_ENDPOINT"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         url = f"{endpoint.rstrip('/')}/api/v1/user/{user_name}"
         try:
-            resp = requests.get(url, headers={"Authorization": authorization, "User-Token": authorization}, timeout=30)
+            resp = requests.get(url, headers=headers, timeout=30)
             resp.raise_for_status()
             data = resp.json()
             namespaces = data.get('data', {}).get('namespaces', []) or []

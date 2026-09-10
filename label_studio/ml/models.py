@@ -1,5 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+import base64
+import hashlib
 import logging
 from typing import Dict, List
 
@@ -9,15 +11,27 @@ from django.db import models, transaction
 from django.db.models import Count, JSONField, Q
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from cryptography.fernet import Fernet, InvalidToken
+from jwt_auth.models import TruncatedLSAPIToken
 from ml.api_connector import PREDICT_URL, TIMEOUT_PREDICT, MLApi
 from projects.models import Project
+from rest_framework.exceptions import APIException
+from rest_framework_simplejwt.exceptions import TokenBackendError, TokenError
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from tasks.serializers import PredictionSerializer, TaskSimpleSerializer
 from webhooks.serializers import Webhook, WebhookSerializer
 
 logger = logging.getLogger(__name__)
 
 MAX_JOBS_PER_PROJECT = 1
+
+
+class MLPredictionError(APIException):
+    status_code = 502
+    default_code = 'ml_prediction_failed'
+    default_detail = 'ML prediction failed.'
 
 InteractiveAnnotatingDataSerializer = load_func(settings.INTERACTIVE_DATA_SERIALIZER)
 
@@ -65,6 +79,72 @@ class MLBackend(models.Model):
         default='default',
         help_text='Name of the machine learning backend',
     )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='created_ml_backends',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    seed_api_key_encrypted = models.TextField(blank=True, default='')
+    entity_segment_access_key_encrypted = models.TextField(blank=True, default='')
+    entity_segment_secret_key_encrypted = models.TextField(blank=True, default='')
+    use_third_party_models = models.BooleanField(default=False)
+
+    @staticmethod
+    def _credential_cipher():
+        digest = hashlib.sha256(settings.SECRET_KEY.encode('utf-8')).digest()
+        return Fernet(base64.urlsafe_b64encode(digest))
+
+    @classmethod
+    def encrypt_credential(cls, value):
+        return cls._credential_cipher().encrypt(value.encode('utf-8')).decode('ascii') if value else ''
+
+    @classmethod
+    def decrypt_credential(cls, value):
+        if not value:
+            return ''
+        try:
+            return cls._credential_cipher().decrypt(value.encode('ascii')).decode('utf-8')
+        except InvalidToken:
+            logger.error('Unable to decrypt ML backend credential')
+            return ''
+
+    @property
+    def request_credentials(self):
+        if not self.use_third_party_models:
+            return {}
+        credentials = {'seed_api_key': self.decrypt_credential(self.seed_api_key_encrypted)}
+        config = self.project.label_config
+        if '<BrushLabels' in config or '<PolygonLabels' in config:
+            credentials.update({
+                'entity_segment_access_key': self.decrypt_credential(self.entity_segment_access_key_encrypted),
+                'entity_segment_secret_key': self.decrypt_credential(self.entity_segment_secret_key_encrypted),
+            })
+        return {key: value for key, value in credentials.items() if value}
+
+    def _get_creator_token(self):
+        owner = self.created_by or self.project.created_by
+        return self.get_user_jwt_token(owner)
+
+    @staticmethod
+    def get_user_jwt_token(user):
+        if user is None:
+            raise ValueError('The model connection has no owner.')
+
+        blacklisted_ids = BlacklistedToken.objects.values_list('token_id', flat=True)
+        tokens = (
+            OutstandingToken.objects.filter(user=user, expires_at__gt=timezone.now())
+            .exclude(id__in=blacklisted_ids)
+            .order_by('-created_at')
+        )
+        for token in tokens:
+            try:
+                return TruncatedLSAPIToken(str(token.token)).get_full_jwt()
+            except (TokenError, TokenBackendError):
+                continue
+        raise ValueError('The model connection owner has no valid JWT API token. Please create one and save the connection again.')
 
     auth_method = models.CharField(
         max_length=255,
@@ -238,6 +318,8 @@ class MLBackend(models.Model):
         task_ser = TaskSimpleSerializer(task).data
 
         request_params = ml_api._prep_prediction_req([task_ser], self.project)
+        request_params['params']['credentials'] = self.request_credentials
+        request_params['params']['ls_access_token'] = self._get_creator_token()
         ml_api_result = ml_api._request(PREDICT_URL, request_params, verbose=False, timeout=TIMEOUT_PREDICT)
 
         if ml_api_result.is_error:
@@ -290,12 +372,18 @@ class MLBackend(models.Model):
             return []
 
     def _get_predictions_from_ml_backend(self, serialized_tasks: List[Dict]) -> List[Dict]:
-        result = self.api.make_predictions(serialized_tasks, self.project)
+        request = self.api._prep_prediction_req(serialized_tasks, self.project)
+        request['params']['credentials'] = self.request_credentials
+        request['params']['ls_access_token'] = self._get_creator_token()
+        result = self.api._request(PREDICT_URL, request, verbose=False, timeout=TIMEOUT_PREDICT)
 
         # response validation
         if result.is_error:
             logger.error(f'Error occurred: {result.error_message}')
-            return []
+            self.state = MLBackendState.ERROR
+            self.error_message = str(result.error_message)[:5000]
+            self.save(update_fields=['state', 'error_message', 'updated_at'])
+            raise MLPredictionError(f'ML 模型调用失败：{result.error_message}')
         elif not isinstance(result.response, dict) or 'results' not in result.response:
             logger.error(f'ML backend returns an incorrect response, it must be a dict: {result.response}')
             return []
@@ -377,11 +465,10 @@ class MLBackend(models.Model):
         tasks_ser = InteractiveAnnotatingDataSerializer(
             [task], many=True, expand=['drafts', 'predictions', 'annotations'], context=options
         ).data
-        ml_api_result = self.api.make_predictions(
-            tasks=tasks_ser,
-            project=self.project,
-            context=context,
-        )
+        request = self.api._prep_prediction_req(tasks_ser, self.project, context=context)
+        request['params']['credentials'] = self.request_credentials
+        request['params']['ls_access_token'] = self._get_creator_token()
+        ml_api_result = self.api._request(PREDICT_URL, request, verbose=False, timeout=TIMEOUT_PREDICT)
         if ml_api_result.is_error:
             logger.info(f'Prediction not created for project {self}: {ml_api_result.error_message}')
             result['errors'] = [ml_api_result.error_message]

@@ -17,6 +17,7 @@ from core.label_config import (
     get_annotation_tuple,
     get_original_fromname_by_regex,
     get_sample_task,
+    parse_config_to_xml,
     validate_label_config,
 )
 from core.utils.common import (
@@ -1139,14 +1140,14 @@ class Project(ProjectMixin, FsmHistoryStateModel):
         Check if the project's label config contains an Image tag with a valueList attribute,
         which indicates multipage labeling.
         """
-        config = self.get_parsed_config()
-        values = []
-        for tag in config.values():
-            for object_tag in tag.get('inputs', []):
-                if object_tag.get('type') == 'Image':
-                    if object_tag.get('valueList') is not None:
-                        values.append(object_tag.get('valueList'))
-        return values
+        xml = parse_config_to_xml(self.label_config)
+        if xml is None:
+            return []
+        return [
+            image.get('valueList')
+            for image in xml.findall('.//Image[@valueList]')
+            if image.get('valueList')
+        ]
 
     def resolve_storage_uri(self, url: str) -> Optional[Mapping[str, Any]]:
         from io_storages.functions import get_storage_by_url
