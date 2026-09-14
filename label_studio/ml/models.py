@@ -20,6 +20,7 @@ from projects.models import Project
 from rest_framework.exceptions import APIException
 from rest_framework_simplejwt.exceptions import TokenBackendError, TokenError
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from rest_framework_simplejwt.tokens import RefreshToken
 from tasks.serializers import PredictionSerializer, TaskSimpleSerializer
 from webhooks.serializers import Webhook, WebhookSerializer
 
@@ -145,7 +146,8 @@ class MLBackend(models.Model):
         )
         for token in tokens:
             try:
-                return TruncatedLSAPIToken(str(token.token)).get_full_jwt()
+                refresh_token = TruncatedLSAPIToken(str(token.token)).get_full_jwt()
+                return str(RefreshToken(refresh_token).access_token)
             except (TokenError, TokenBackendError):
                 continue
         raise ValueError('The model connection owner has no valid JWT API token. Please create one and save the connection again.')
