@@ -749,6 +749,13 @@ SVG_SECURITY_CLEANUP = get_bool_env('SVG_SECURITY_CLEANUP', False)
 
 ML_BLOCK_LOCAL_IP = get_bool_env('ML_BLOCK_LOCAL_IP', False)
 
+# Gate Magic Wand rendering on a response from an external ML service. The
+# prediction returned by this service is intentionally not used by the editor;
+# the existing client-side Magic Wand algorithm remains the source of the mask.
+MAGIC_WAND_ML_ENABLED = get_bool_env('MAGIC_WAND_ML_ENABLED', True)
+MAGIC_WAND_ML_URL = get_env('MAGIC_WAND_ML_URL', 'http://localhost:9091/predict')
+MAGIC_WAND_ML_TIMEOUT = float(get_env('MAGIC_WAND_ML_TIMEOUT', 100))
+
 RQ_LONG_JOB_TIMEOUT = int(get_env('RQ_LONG_JOB_TIMEOUT', 36000))
 
 APP_WEBSERVER = get_env('APP_WEBSERVER', 'django')

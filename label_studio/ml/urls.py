@@ -8,6 +8,7 @@ app_name = 'ml'
 
 # ML backend CRUD
 _api_urlpatterns = [
+    path('magic-wand', api.MagicWandMLAPI.as_view(), name='magic-wand'),
     # All ml backends
     path('', api.MLBackendListAPI.as_view(), name='ml-list'),
     path('<int:pk>', api.MLBackendDetailAPI.as_view(), name='ml-detail'),

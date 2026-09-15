@@ -1,6 +1,8 @@
 import chroma from "chroma-js";
+import { ToastType, useToast } from "@humansignal/ui";
 import { observer } from "mobx-react";
 import { flow, types } from "mobx-state-tree";
+import { useEffect } from "react";
 
 import BaseTool from "./Base";
 import Canvas from "../utils/canvas";
@@ -12,7 +14,14 @@ import { drawMask } from "../utils/magic-wand";
 import { guidGenerator } from "../core/Helpers";
 import { IconMagicWandTool } from "@humansignal/icons";
 import { Tool } from "../components/Toolbar/Tool";
-import { useEditorT } from "../utils/i18n";
+import { editorT, useEditorT } from "../utils/i18n";
+
+const MAGIC_WAND_ERROR_KEYS = {
+  magic_wand_model_not_configured: "annotation.magicWandModelNotConfigured",
+  magic_wand_project_required: "annotation.magicWandProjectRequired",
+  magic_wand_service_not_configured: "annotation.magicWandServiceNotConfigured",
+  magic_wand_service_failed: "annotation.magicWandServiceFailed",
+};
 
 /**
  * Technical Overview:
@@ -68,6 +77,13 @@ import { useEditorT } from "../utils/i18n";
 
 const ToolView = observer(({ item }) => {
   const t = useEditorT();
+  const toast = useToast();
+
+  useEffect(() => {
+    item.setToast(toast);
+    return () => item.setToast(null);
+  }, [item, toast]);
+
   return (
     <Tool
       label={t("annotation.toolMagicWand")}
@@ -133,6 +149,10 @@ const _Tool = types
     rotation: null,
 
     timeTravellerListener: null,
+
+    isWaitingForML: false,
+    pointerReleasedWhileWaiting: false,
+    toast: null,
   }))
   .views((self) => ({
     get viewClass() {
@@ -210,7 +230,15 @@ const _Tool = types
     },
   }))
   .actions((self) => ({
-    mousedownEv(ev) {
+    setToast(toast) {
+      self.toast = toast;
+    },
+
+    showError(message) {
+      self.toast?.show({ message, type: ToastType.error });
+    },
+
+    mousedownEv: flow(function* mousedownEv(ev) {
       // If this is the first time the Magic Wand is being used, make sure we capture if an undo/redo
       // happens to invalidate our cache.
       if (!self.timeTravellerListener) {
@@ -224,6 +252,7 @@ const _Tool = types
       self.mode = "drawing";
       self.currentThreshold = self.defaultthreshold;
       self.currentRegion = null;
+      self.pointerReleasedWhileWaiting = false;
 
       const image = self.obj;
       const imageRef = image.imageRef;
@@ -240,6 +269,8 @@ const _Tool = types
       self.negativezoom = self.zoomScale < 1;
       self.rotation = image.rotation;
 
+      [self.anchorImgX, self.anchorImgY, self.anchorScreenX, self.anchorScreenY] = self.getEventCoords(ev);
+
       if (self.rotation || image.crosshair) {
         self.mode = "viewing";
         self.annotation.history.unfreeze();
@@ -247,12 +278,16 @@ const _Tool = types
         let msg;
 
         if (self.rotation) {
-          msg = "The Magic Wand is not supported on rotated images";
+          msg = editorT("annotation.magicWandRotationUnsupported", {
+            defaultValue: "The Magic Wand is not supported on rotated images",
+          });
         } else {
-          msg = "The Magic Wand is not supported if the crosshair is turned on";
+          msg = editorT("annotation.magicWandCrosshairUnsupported", {
+            defaultValue: "The Magic Wand is not supported if the crosshair is turned on",
+          });
         }
 
-        alert(msg);
+        self.showError(msg);
         throw msg;
       }
 
@@ -261,15 +296,37 @@ const _Tool = types
       // as otherwise the escape key gets eaten by other keyboard listeners.
       window.addEventListener("keydown", self.keydownEv, true /* useCapture */);
 
-      [self.anchorImgX, self.anchorImgY, self.anchorScreenX, self.anchorScreenY] = self.getEventCoords(ev);
+      self.isWaitingForML = true;
+      try {
+        yield self.requestMagicWandML();
+      } catch (error) {
+        self.isWaitingForML = false;
+        self.mode = "viewing";
+        self.annotation.history.unfreeze();
+        window.removeEventListener("keydown", self.keydownEv, true /* useCapture */);
+        self.showError(error instanceof Error ? error.message : "Magic Wand ML service request failed");
+        return;
+      }
+      self.isWaitingForML = false;
+
+      // Escape may have cancelled the interaction while the request was in flight.
+      if (self.mode !== "drawing") return;
+
       self.initCache();
       self.initCanvas();
       self.initCurrentRegion();
-    },
+
+      // A regular click usually releases before a network round trip finishes.
+      if (self.pointerReleasedWhileWaiting) {
+        self.mode = "viewing";
+        window.removeEventListener("keydown", self.keydownEv, true /* useCapture */);
+        yield self.setupFinalMask();
+      }
+    }),
 
     mousemoveEv(ev) {
       // If we are in magic wand mode, change the threshold based on the mouse movement.
-      if (self.mode !== "drawing") return;
+      if (self.mode !== "drawing" || self.isWaitingForML) return;
 
       const [_newImgX, _newImgY, newScreenX, newScreenY] = self.getEventCoords(ev);
 
@@ -283,6 +340,11 @@ const _Tool = types
 
       // Were we cancelled mid-way while using the Magic Wand?
       if (self.mode === "viewing") return;
+
+      if (self.isWaitingForML) {
+        self.pointerReleasedWhileWaiting = true;
+        return;
+      }
 
       // Finish magic wand thresholding.
       self.mode = "viewing";
@@ -300,8 +362,60 @@ const _Tool = types
         e.stopPropagation();
 
         self.mode = "viewing";
+        self.isWaitingForML = false;
         window.removeEventListener("keydown", self.keydownEv, true /* useCapture */);
-        self.overlayCtx.clearRect(0, 0, self.overlay.width, self.overlay.height);
+        self.annotation.history.unfreeze();
+        if (self.overlayCtx) self.overlayCtx.clearRect(0, 0, self.overlay.width, self.overlay.height);
+      }
+    },
+
+    async requestMagicWandML() {
+      const hostname = window.APP_SETTINGS?.hostname?.replace(/\/$/, "") ?? "";
+      const routeProjectId = window.location.pathname.match(/\/projects\/(\d+)/)?.[1];
+      const routeTaskId = new URLSearchParams(window.location.search).get("task");
+      const task = self.annotation.store.task;
+      const response = await fetch(`${hostname}/api/ml/magic-wand`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          project: self.annotation.store.project?.id ?? routeProjectId,
+          task: task?.id ?? routeTaskId,
+          task_data: task?.dataObj ?? {},
+          image_name: self.obj.name,
+          x: self.anchorImgX,
+          y: self.anchorImgY,
+        }),
+      });
+
+      if (!response.ok) {
+        let message = editorT("annotation.magicWandServiceFailed", {
+          defaultValue: "Magic Wand ML service request failed",
+        });
+        try {
+          const data = await response.json();
+          const translationKey = MAGIC_WAND_ERROR_KEYS[data.code];
+          if (translationKey) {
+            message = editorT(translationKey, { defaultValue: data.detail });
+          } else if (data.detail) {
+            message = data.detail;
+          }
+        } catch (_error) {
+          // Keep the generic message for non-JSON error responses.
+        }
+        throw new Error(message);
+      }
+
+      // The response is deliberately only an acknowledgement. Any random or
+      // real prediction returned by the ML service is ignored by the editor.
+      const data = await response.json();
+      if (data.enabled === false) {
+        const translationKey = MAGIC_WAND_ERROR_KEYS[data.code] ?? "annotation.magicWandModelNotConfigured";
+        throw new Error(
+          editorT(translationKey, {
+            defaultValue: "The annotation model is not configured. Please contact the administrator.",
+          }),
+        );
       }
     },
 

@@ -46,6 +46,11 @@ services:
       - CSGHUB_ENDPOINT= http://opencsg.com
       - FRONTEND_SENTRY_DSN=""
       - LATEST_VERSION_CHECK=False
+      - MAGIC_WAND_ML_ENABLED=${MAGIC_WAND_ML_ENABLED:-true}
+      - MAGIC_WAND_ML_URL=${MAGIC_WAND_ML_URL:-http://host.docker.internal:9091/predict}
+      - MAGIC_WAND_ML_TIMEOUT=${MAGIC_WAND_ML_TIMEOUT:-100}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     #      - LOG_LEVEL=DEBUG
     volumes:
       - ./mydata:/label-studio/data:rw

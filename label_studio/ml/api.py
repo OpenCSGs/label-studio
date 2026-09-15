@@ -2,6 +2,8 @@
 """
 import logging
 
+import requests
+
 from core.feature_flags import flag_set
 from core.permissions import ViewClassPermission, all_permissions
 from django.conf import settings
@@ -18,6 +20,87 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 logger = logging.getLogger(__name__)
+
+
+class MagicWandMLAPI(APIView):
+    """Wait for the configured ML service before the browser renders a Magic Wand mask."""
+
+    parser_classes = (JSONParser,)
+    permission_required = ViewClassPermission(POST=all_permissions.projects_view)
+
+    def post(self, request):
+        if not settings.MAGIC_WAND_ML_ENABLED:
+            return Response(
+                {
+                    'enabled': False,
+                    'acknowledged': True,
+                    'code': 'magic_wand_model_not_configured',
+                    'detail': 'Magic Wand annotation model is not configured.',
+                }
+            )
+
+        project_id = request.data.get('project')
+        task_id = request.data.get('task')
+        if not project_id:
+            return Response(
+                {'code': 'magic_wand_project_required', 'detail': 'Project is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        project = generics.get_object_or_404(Project, pk=project_id)
+        self.check_object_permissions(request, project)
+        if task_id:
+            task = generics.get_object_or_404(Task, pk=task_id, project=project)
+            task_payload = {'id': task.id, 'data': task.data}
+        else:
+            task_payload = {'id': None, 'data': request.data.get('task_data') or {}}
+
+        service_url = settings.MAGIC_WAND_ML_URL
+        if not service_url:
+            return Response(
+                {
+                    'code': 'magic_wand_service_not_configured',
+                    'detail': 'MAGIC_WAND_ML_URL is not configured.',
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        payload = {
+            'tasks': [task_payload],
+            'project': f'{project.id}.{int(project.created_at.timestamp())}',
+            'label_config': project.label_config,
+            'params': {
+                'context': {
+                    'magic_wand': {
+                        'x': request.data.get('x'),
+                        'y': request.data.get('y'),
+                        'image_name': request.data.get('image_name'),
+                    }
+                }
+            },
+        }
+
+        try:
+            ml_response = requests.post(
+                service_url,
+                json=payload,
+                timeout=settings.MAGIC_WAND_ML_TIMEOUT,
+            )
+            ml_response.raise_for_status()
+            # Return the ML payload for observability, while the editor treats
+            # it only as a synchronization signal and never renders it.
+            ml_result = ml_response.json()
+        except (requests.RequestException, ValueError) as exc:
+            logger.warning('Magic Wand ML request failed: %s', exc)
+            return Response(
+                {
+                    'code': 'magic_wand_service_failed',
+                    'detail': 'Magic Wand ML service request failed.',
+                },
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+        return Response({'enabled': True, 'acknowledged': True, 'ml_result': ml_result})
 
 _ml_backend_schema = {
     'type': 'object',
