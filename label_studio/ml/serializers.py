@@ -3,6 +3,7 @@
 from core.utils.io import validate_upload_url
 from django.conf import settings
 from ml.models import MLBackend, MLBackendAuth
+from ml.template_requirements import requires_entity_segment
 from rest_framework import serializers
 
 
@@ -111,7 +112,7 @@ class MLBackendSerializer(serializers.ModelSerializer):
 
         project = attrs.get('project', getattr(self.instance, 'project', None))
         label_config = project.label_config if project else ''
-        requires_segment = '<BrushLabels' in label_config or '<PolygonLabels' in label_config
+        requires_segment = requires_entity_segment(label_config)
         use_third_party_models = attrs.get(
             'use_third_party_models',
             self.instance.use_third_party_models if self.instance else False,
