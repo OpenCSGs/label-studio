@@ -17,7 +17,17 @@ const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
   const [creatingLSKey, setCreatingLSKey] = useState(false);
   const [showEntitySegmentHelp, setShowEntitySegmentHelp] = useState(false);
   const [useThirdPartyModels, setUseThirdPartyModels] = useState(backend?.use_third_party_models ?? true);
-  const requiresEntitySegment = /<(BrushLabels|PolygonLabels)\b/.test(project.label_config ?? "");
+  const configDocument = new DOMParser().parseFromString(project.label_config ?? "", "text/xml");
+  const requiresEntitySegment = Array.from(
+    configDocument.querySelectorAll("BrushLabels, PolygonLabels, RectangleLabels"),
+  ).some((control) => {
+    const target = control.getAttribute("toName");
+    const image = Array.from(configDocument.querySelectorAll("Image"))
+      .find((tag) => tag.getAttribute("name") === target);
+    const isOCR = Array.from(configDocument.querySelectorAll("TextArea"))
+      .some((tag) => tag.getAttribute("toName") === target);
+    return image && !isOCR && !(control.tagName === "RectangleLabels" && image.hasAttribute("valueList"));
+  });
   const seedKeyDocs = "https://console.volcengine.com/ark/region:cn-beijing/docs/82379/1541594?lang=zh";
   const entitySegmentKeyDocs = "https://docs.volcengine.com/docs/86081/1660009?lang=zh#1I2Ed9UH";
   const entitySegmentServiceDocs = "https://docs.volcengine.com/docs/86081/1660009?lang=zh#Alqoq01b";
