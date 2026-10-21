@@ -1,0 +1,106 @@
+name: Docker Image CI
+
+# Storage-optimized build:
+# 1. Split multi-arch into per-platform matrix jobs so each self-hosted
+#    runner only handles one architecture (halves per-runner disk peak).
+# 2. Enable GitHub Actions layer cache (type=gha) so yarn/poetry/apt layers
+#    are reused on rebuilds instead of being re-fetched.
+# 3. Prune stale docker images/buildkit cache before each build.
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build:
+    name: build ${{ matrix.platform }}
+    runs-on: [self-hosted]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            suffix: amd64
+          - platform: linux/arm64
+            suffix: arm64
+
+    steps:
+      - name: Prune docker resources to free disk
+        run: |
+          docker system prune -af || true
+          docker builder prune -af || true
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Log in to ACR
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+          registry: ${{ secrets.ACR_REGISTRY }}
+
+      - name: Build and push per-platform image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          provenance: false
+          platforms: ${{ matrix.platform }}
+          tags: |
+            opencsghq/label-studio:${{ github.ref_name }}-${{ matrix.suffix }}
+            ${{ secrets.ACR_REGISTRY }}/opencsghq/label-studio:${{ github.ref_name }}-${{ matrix.suffix }}
+          cache-from: type=gha,scope=label-studio-${{ matrix.suffix }}
+          cache-to: type=gha,mode=max,scope=label-studio-${{ matrix.suffix }}
+
+  manifest:
+    name: merge multi-arch manifest
+    needs: build
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Log in to ACR
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+          registry: ${{ secrets.ACR_REGISTRY }}
+
+      - name: Create and push multi-arch manifest to Docker Hub
+        run: |
+          docker buildx imagetools create \
+            -t opencsghq/label-studio:${{ github.ref_name }} \
+            opencsghq/label-studio:${{ github.ref_name }}-amd64 \
+            opencsghq/label-studio:${{ github.ref_name }}-arm64
+
+      - name: Create and push multi-arch manifest to ACR
+        run: |
+          docker buildx imagetools create \
+            -t ${{ secrets.ACR_REGISTRY }}/opencsghq/label-studio:${{ github.ref_name }} \
+            ${{ secrets.ACR_REGISTRY }}/opencsghq/label-studio:${{ github.ref_name }}-amd64 \
+            ${{ secrets.ACR_REGISTRY }}/opencsghq/label-studio:${{ github.ref_name }}-arm64
