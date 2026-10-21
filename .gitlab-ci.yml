@@ -4,10 +4,10 @@ stages:
 
 include:
   # Scan for leaked secrets on MRs and the default branch (GitLab Secret Detection template).
-  - component: git-devops.opencsg.com/gitlab/ci-components/secret-detection@v1.4.13
+  - component: git-devops.opencsg.com/gitlab/ci-components/secret-detection@v1.4.14
 
   # Build multi-platform images with Docker buildx and push to registry.opencsg.com.
-  - component: git-devops.opencsg.com/gitlab/ci-components/build@v1.4.13
+  - component: git-devops.opencsg.com/gitlab/ci-components/build@v1.4.14
     inputs:
       environment: prod
       edition: all
@@ -20,3 +20,4 @@ include:
       no_proxy: "localhost,127.0.0.1,docker,${CI_REGISTRY},${CI_SERVER_HOST},registry.opencsg.com"
       build_args:
         - "BUILD_CN=true"
+      remove_git_dir: false
