@@ -1,11 +1,10 @@
 name: Docker Image CI
 
-# Storage-optimized build:
-# 1. Split multi-arch into per-platform matrix jobs so each self-hosted
-#    runner only handles one architecture (halves per-runner disk peak).
-# 2. Enable GitHub Actions layer cache (type=gha) so yarn/poetry/apt layers
-#    are reused on rebuilds instead of being re-fetched.
-# 3. Prune stale docker images/buildkit cache before each build.
+# Storage-optimized multi-arch build on GitHub-hosted runners:
+# 1. Build amd64 and arm64 in parallel matrix jobs so each runner handles
+#    only one architecture (each fresh VM gets its own 14GB SSD)
+# 2. Reuse heavy yarn/poetry/apt layers via GHA layer cache (cloud-backed)
+# 3. Final job merges per-platform images into a single multi-arch tag
 
 on:
   push:
@@ -15,7 +14,7 @@ on:
 jobs:
   build:
     name: build ${{ matrix.platform }}
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -26,11 +25,6 @@ jobs:
             suffix: arm64
 
     steps:
-      - name: Prune docker resources to free disk
-        run: |
-          docker system prune -af || true
-          docker builder prune -af || true
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -72,7 +66,7 @@ jobs:
   manifest:
     name: merge multi-arch manifest
     needs: build
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Set up Docker Buildx
