@@ -324,6 +324,11 @@ export const Menubar = ({ enabled, defaultOpened, defaultPinned, children, onSid
       )}
 
       <div className={contentClass.elem("body")}>
+          {!enabled && (
+            <div className="portal-page-actions">
+              <RightContextMenu className={contextItem.mod({ right: true })} />
+            </div>
+          )}
           {enabled && (
             <Dropdown
               ref={menuDropdownRef}

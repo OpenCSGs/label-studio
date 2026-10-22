@@ -1,7 +1,24 @@
 @import '../themes/default/variables';
 
 body {
-  --header-height: 48px;
+  --header-height: 0px;
+  // Portal branding, shared by primary buttons and their outlined variants.
+  --color-primary-surface: #C7921C;
+  --color-primary-surface-raw: 199 146 28;
+  --color-primary-surface-hover: #B58218;
+  --color-primary-surface-hover-raw: 181 130 24;
+  --color-primary-surface-active: #9F7114;
+  --color-primary-surface-active-raw: 159 113 20;
+  --color-primary-surface-content: #FFFFFF;
+  --color-primary-surface-content-raw: 255 255 255;
+  --color-primary-content: #C7921C;
+  --color-primary-content-raw: 199 146 28;
+  --color-primary-content-hover: #9F7114;
+  --color-primary-border: #C7921C;
+  --color-primary-border-bold: #C7921C;
+  --color-primary-focus-outline: rgb(199 146 28 / 30%);
+  --color-primary-emphasis: #F3E4BF;
+  --color-primary-emphasis-subtle: #FBF5E7;
   --menu-animation-duration: 0.15s;
   --menu-animation-curve: cubic-bezier(0.21, 1.04, 0.68, 1);
   --menu-animation-start: -10px;
@@ -20,6 +37,20 @@ body {
   width: 100vw;
   max-width: 100%;
   min-height: 100vh;
+}
+
+.portal-page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 24px;
+  flex-shrink: 0;
+
+  .menu-header__context-item_right {
+    margin-left: auto;
+  }
 }
 
 .global-error {
