@@ -49,6 +49,12 @@ services:
       - MAGIC_WAND_ML_ENABLED=${MAGIC_WAND_ML_ENABLED:-true}
       - MAGIC_WAND_ML_URL=${MAGIC_WAND_ML_URL:-http://host.docker.internal:9091/predict}
       - MAGIC_WAND_ML_TIMEOUT=${MAGIC_WAND_ML_TIMEOUT:-100}
+      # Portal origin(s), comma separated; include scheme/port, omit paths.
+      # Enables credentialed CORS, CSRF trust, SameSite=None; Secure cookies
+      # and the iframe CSP allowlist. LS must be accessed over HTTPS.
+      - PORTAL_ALLOWED_ORIGINS=${PORTAL_ALLOWED_ORIGINS:-http://csghub.example.com}
+      - FRONTEND_HMR=false
+      - FRONTEND_HOSTNAME=
     extra_hosts:
       - "host.docker.internal:host-gateway"
     #      - LOG_LEVEL=DEBUG
