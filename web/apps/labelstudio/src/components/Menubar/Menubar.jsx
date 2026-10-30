@@ -324,6 +324,22 @@ export const Menubar = ({ enabled, defaultOpened, defaultPinned, children, onSid
       )}
 
       <div className={contentClass.elem("body")}>
+          {!enabled && (
+            <div className={cn("portal-page-header")}>
+            <nav className={cn("portal-breadcrumbs")} aria-label={t("menu.projects")}>
+              <a href="/projects/" aria-label={t("menu.projects")}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z" />
+                </svg>
+              </a>
+              <span aria-hidden="true">/</span>
+              <LeftContextMenu className={cn("portal-breadcrumbs").elem("trail")} />
+            </nav>
+            <div className={cn("portal-page-actions")}>
+              <RightContextMenu className={contextItem.mod({ right: true })} />
+            </div>
+            </div>
+          )}
           {enabled && (
             <Dropdown
               ref={menuDropdownRef}

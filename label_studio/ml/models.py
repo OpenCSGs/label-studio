@@ -16,6 +16,7 @@ from django.utils.translation import gettext_lazy as _
 from cryptography.fernet import Fernet, InvalidToken
 from jwt_auth.models import TruncatedLSAPIToken
 from ml.api_connector import PREDICT_URL, TIMEOUT_PREDICT, MLApi
+from ml.template_requirements import requires_entity_segment
 from projects.models import Project
 from rest_framework.exceptions import APIException
 from rest_framework_simplejwt.exceptions import TokenBackendError, TokenError
@@ -118,7 +119,7 @@ class MLBackend(models.Model):
             return {}
         credentials = {'seed_api_key': self.decrypt_credential(self.seed_api_key_encrypted)}
         config = self.project.label_config
-        if '<BrushLabels' in config or '<PolygonLabels' in config:
+        if requires_entity_segment(config):
             credentials.update({
                 'entity_segment_access_key': self.decrypt_credential(self.entity_segment_access_key_encrypted),
                 'entity_segment_secret_key': self.decrypt_credential(self.entity_segment_secret_key_encrypted),

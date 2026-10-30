@@ -1,3 +1,47 @@
+.portal-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 72px;
+  padding: 16px 24px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-neutral-border);
+
+  .portal-page-actions {
+    margin-left: auto;
+    padding: 0;
+  }
+}
+
+.portal-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 32px;
+  box-sizing: border-box;
+  color: var(--color-neutral-content-subtler);
+
+  > a {
+    display: inline-flex;
+    color: inherit;
+
+    &:hover {
+      color: var(--color-primary-content-hover);
+    }
+  }
+
+  &__trail {
+    min-width: 0;
+
+    .breadcrumbs__item {
+      font-size: 16px;
+    }
+  }
+}
+
 .menu-wrapper {
   max-width: 100%;
   min-height: 100vh;
