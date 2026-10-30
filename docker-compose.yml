@@ -46,6 +46,12 @@ services:
       - CSGHUB_ENDPOINT= http://opencsg.com
       - FRONTEND_SENTRY_DSN=""
       - LATEST_VERSION_CHECK=False
+      # Portal origin(s), comma separated; include scheme/port, omit paths.
+      # Enables credentialed CORS, CSRF trust, SameSite=None; Secure cookies
+      # and the iframe CSP allowlist. LS must be accessed over HTTPS.
+      - PORTAL_ALLOWED_ORIGINS=${PORTAL_ALLOWED_ORIGINS:-http://csghub.example.com}
+      - FRONTEND_HMR=false
+      - FRONTEND_HOSTNAME=
     #      - LOG_LEVEL=DEBUG
     volumes:
       - ./mydata:/label-studio/data:rw

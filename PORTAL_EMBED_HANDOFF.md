@@ -73,3 +73,12 @@ Dataflow 保持原逻辑。本次不要改造为一次性票据，也不要把�
 3. 使用真实测试 Portal/Dataflow 地址验证现有登录链路。
 4. 根据部署域名决定使用同域反向代理，或补充跨域 Cookie/CORS 配置。
 5. 验证完成后创建 PR 合并到目标分支。
+
+## 本轮补充：iframe 跨域支持
+
+- 新增 `PORTAL_ALLOWED_ORIGINS` 配置，填写 Portal 的完整 Origin（协议、域名、端口，不含路径），多个值以逗号分隔。
+- 配置后自动启用携带凭据的 CORS、CSRF 可信来源、`SameSite=None; Secure` Session/CSRF Cookie。
+- 新增 iframe 白名单中间件，设置强制执行的 CSP `frame-ancestors`，保留其他 CSP 指令，并移除应用生成的冲突 X-Frame-Options。
+- 未设置时保持原有行为；目前 Portal 地址未确认，尚未在当前服务启用。
+- 部署示例及联调说明：`deploy/portal-embed.env.example`、`deploy/PORTAL_EMBED.md`。
+- 不修改现有 Dataflow/LS 登录接口。真实 Portal、网关响应头及浏览器第三方 Cookie 策略仍需联调。

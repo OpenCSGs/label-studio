@@ -63,3 +63,21 @@ except IOError:
     FEATURE_FLAGS_FROM_FILE = False
 
 STORAGE_PERSISTENCE = get_bool_env('STORAGE_PERSISTENCE', True)
+
+# Enable cross-origin Portal embedding only for explicitly configured origins.
+# Applied after the base settings so its cookie defaults cannot override this mode.
+from core.portal_embed import portal_origins
+
+PORTAL_ALLOWED_ORIGINS = portal_origins(get_env('PORTAL_ALLOWED_ORIGINS', ''))
+if PORTAL_ALLOWED_ORIGINS:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = list(dict.fromkeys([*globals().get('CORS_ALLOWED_ORIGINS', []), *PORTAL_ALLOWED_ORIGINS]))
+    CORS_ALLOWED_ORIGIN_REGEXES = []
+    CORS_ALLOW_CREDENTIALS = True
+    CSRF_TRUSTED_ORIGINS = list(dict.fromkeys([*CSRF_TRUSTED_ORIGINS, *PORTAL_ALLOWED_ORIGINS]))
+    SESSION_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = 'None'
+    CSRF_COOKIE_SECURE = True
+    # First in the chain means its response headers run after other middleware.
+    MIDDLEWARE.insert(0, 'core.portal_embed.PortalFrameMiddleware')
