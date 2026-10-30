@@ -6,17 +6,17 @@ import enTranslations from "../locales/en.json";
 import zhTranslations from "../locales/zh.json";
 import heidiTipsZh from "../locales/heidiTips/zh.json";
 
-// 从 sessionStorage 或 URL 参数中获取语言
+// Explicit Portal language takes precedence over a previous session preference.
 const getLanguageFromStorage = (): string => {
-  const storedLang = sessionStorage.getItem("language");
-  if (storedLang) {
-    return storedLang;
-  }
   const urlParams = new URLSearchParams(window.location.search);
   const langParam = urlParams.get("lang") || urlParams.get("language");
   if (langParam) {
     sessionStorage.setItem("language", langParam);
     return langParam;
+  }
+  const storedLang = sessionStorage.getItem("language");
+  if (storedLang) {
+    return storedLang;
   }
   return navigator.language.startsWith("zh") ? "zh" : "en";
 };
@@ -44,7 +44,7 @@ i18n
       escapeValue: false,
     },
     detection: {
-      order: ["sessionStorage", "querystring", "navigator"],
+      order: ["querystring", "sessionStorage", "navigator"],
       lookupSessionStorage: "language",
       caches: ["sessionStorage"],
     },
