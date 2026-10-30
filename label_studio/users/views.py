@@ -1,7 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 import logging
-from urllib.parse import quote
+from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 
 from core.feature_flags import flag_set
 from core.middleware import enforce_csrf_checks
@@ -300,9 +300,13 @@ def login_reques(request):
         next_page = reverse('projects:project-index')
 
     def add_origin_to_url(url):
+        parts = urlsplit(url)
+        params = [(key, value) for key, value in parse_qsl(parts.query, keep_blank_values=True)
+                  if key not in ('lang', 'language') and not (origin and key == 'origin')]
+        params.append(('language', language))
         if origin:
-            return f"{url}{'&' if '?' in url else '?'}origin={quote(origin)}"
-        return url
+            params.append(('origin', origin))
+        return urlunsplit(parts._replace(query=urlencode(params)))
 
     if request.user.is_authenticated:
         if email and request.user.email != email:
