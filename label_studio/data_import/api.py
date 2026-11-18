@@ -1089,6 +1089,13 @@ class UploadedFileResponse(generics.RetrieveAPIView):
         logger.debug(f'Fetch uploaded file by user {request.user} => {file}')
         file_upload = FileUpload.objects.filter(file=file).last()
 
+        if file_upload is None:
+            logger.warning(
+                f'Uploaded file {filename} has no FileUpload record, '
+                f'requested by user {request.user}'
+            )
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         if not file_upload.has_permission(request.user):
             return Response(status=status.HTTP_403_FORBIDDEN)
 

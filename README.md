@@ -4,6 +4,8 @@
 
 [Website](https://labelstud.io/) • [Docs](https://labelstud.io/guide/) • [Join Slack Community <img src="https://app.heartex.ai/docs/images/slack-mini.png" width="18px"/>](https://slack.labelstud.io/?source=github-1)
 
+English | [简体中文](README_cn.md)
+
 
 ## What is Label Studio?
 
@@ -234,6 +236,27 @@ You can use Label Studio as an independent part of your machine learning workflo
 | [Data Manager library](web/libs/datamanager/) | A library for the Data Manager, our data exploration tool. | 
 | [label-studio-converter](https://github.com/HumanSignal/label-studio-sdk/tree/master/src/label_studio_sdk/converter) | Encode labels in the format of your favorite machine learning library |
 | [label-studio-transformers](https://github.com/HumanSignal/label-studio-transformers) | Transformers library connected and configured for use with Label Studio |
+
+## Upgrade Notes
+
+When migrating or upgrading from an older version (e.g. the Label Studio bundled with CSGHub 2.4.0) to 2.7 or later, media files that were brought over by copying the `upload/` directory (rather than re-uploading through the UI) exist on disk but have no corresponding `FileUpload` record in the `data_import_fileupload` table. As a result, images and other local media of migrated projects cannot be displayed (older versions returned 500; after the fix they return 404). See [Issue #58](https://github.com/OpenCSGs/label-studio/issues/58) for details.
+
+To fix this, this version provides a backfill command for existing files. After upgrading, run:
+
+```bash
+# 1. Preview the records that would be created (no database writes)
+python label_studio/manage.py backfill_fileupload --dry-run
+
+# 2. Once the output looks correct, perform the backfill
+python label_studio/manage.py backfill_fileupload
+```
+
+Notes:
+
+- Without arguments, the command processes all project directories under `MEDIA_ROOT/upload/`; use `--project <id>` to process a single project.
+- The command is idempotent: files that already have a registration record are skipped, so it is safe to run repeatedly.
+- Backfilled records are attributed to the project creator (`project.created_by`); permission checks are based on project permissions, not on the record's user.
+- If a directory has no matching `Project` record (e.g. leftover directories of deleted projects), the command prints a warning and skips it without aborting.
 
 ## Citation
 
