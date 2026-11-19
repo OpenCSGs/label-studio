@@ -166,9 +166,12 @@ export class LabelStudio {
     });
 
     this.destroy = () => {
-      if (isFF(FF_LSDV_4620_3_ML)) {
-        clearRenderedApp();
-      }
+      // Unmount the React tree first, while the stores are still alive,
+      // so component cleanups run against a live store. Destroying the store
+      // while <App> is still mounted makes mobx observers read a dead tree
+      // (e.g. AppStore.labeledSuccess) and crash with
+      // "Object is no longer part of a state tree" (OpenCSGs/label-studio#21).
+      clearRenderedApp();
       destroySharedStore();
       if (isFF(FF_LSDV_4620_3_ML)) {
         /*
@@ -179,6 +182,7 @@ export class LabelStudio {
       }
       destroy(this.store);
       Hotkey.unbindAll();
+      window.Htx = null;
       if (isFF(FF_LSDV_4620_3_ML)) {
         /*
             ...
